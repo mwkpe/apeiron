@@ -28,7 +28,7 @@ void apeiron::World::render(float time)
     glm::mat4 model;
     glm::mat4 view;
     model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-    model = glm::rotate(model, time * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, -0.4f));
+    model = glm::rotate(model, time * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
     view = glm::translate(view, glm::vec3(0.5f, 0.0f, -3.0f));
     shader_.set_uniform("color", 0.9f, 0.0f, 0.9f, 1.0f);
     shader_.set_uniform("model", model);
@@ -40,7 +40,7 @@ void apeiron::World::render(float time)
     glm::mat4 model;
     glm::mat4 view;
     model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-    model = glm::rotate(model, time * glm::radians(50.0f), glm::vec3(-0.3f, 0.7f, 0.3f));
+    model = glm::rotate(model, time * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
     view = glm::translate(view, glm::vec3(-0.5f, 0.0f, -3.0f));
     shader_.set_uniform("color", 0.2f, 0.905f, 0.968f, 1.0f);
     shader_.set_uniform("model", model);

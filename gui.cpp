@@ -32,7 +32,7 @@ void set_style(ImGuiStyle& style)
   style.GrabMinSize = 5.0f;
   style.GrabRounding = 5.0f;
 
-  Color blackglass{0.1f, 0.1f, 0.1f, 0.7f};
+  Color blackglass{0.1f, 0.1f, 0.1f, 0.85f};
   Color fuchsia{0.9f, 0.0f, 0.9f, 1.0f};
   Color turquoise{0.2f, 0.905f, 0.968f, 1.0f};
   Color darkgrey{0.2f, 0.2f, 0.2f, 0.8f};

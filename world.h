@@ -13,7 +13,7 @@ namespace apeiron {
 class World
 {
 public:
-  World() : cylinder_{16} {}
+  World() : cylinder_{8} {}
   void init();
   void render(float time);
 
