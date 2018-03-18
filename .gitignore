@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# Header libraries
+imgui/
+
+# Build directories
+cmake-build*/
