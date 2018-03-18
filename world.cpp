@@ -4,7 +4,6 @@
 #include "GL/glew.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 
 void apeiron::World::init()
@@ -15,10 +14,6 @@ void apeiron::World::init()
 
 void apeiron::World::render(float time)
 {
-  glEnable(GL_DEPTH_TEST);
-  glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
   shader_.use();
   glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 0.1f, 100.0f);
   shader_.set_uniform("projection", projection);
