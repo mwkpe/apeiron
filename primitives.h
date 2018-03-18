@@ -12,12 +12,13 @@ class Cube
 {
 public:
   Cube();
+  ~Cube();
   void render() const;
 
 private:
-  std::uint32_t vao_;
-  std::uint32_t vbo_;
-  std::uint32_t vertex_count_;
+  std::uint32_t vao_ = 0;
+  std::uint32_t vbo_ = 0;
+  std::uint32_t vertex_count_ = 0;
 };
 
 
@@ -25,12 +26,13 @@ class Cylinder
 {
 public:
   Cylinder(int points);
+  ~Cylinder();
   void render() const;
 
 private:
-  std::uint32_t vao_;
-  std::uint32_t vbo_;
-  std::uint32_t vertex_count_;
+  std::uint32_t vao_ = 0;
+  std::uint32_t vbo_ = 0;
+  std::uint32_t vertex_count_ = 0;
 };
 
 

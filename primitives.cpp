@@ -104,6 +104,13 @@ apeiron::primitives::Cube::Cube() : vertex_count_{sizeof(cube_vertices) / 3}
 }
 
 
+apeiron::primitives::Cube::~Cube()
+{
+  glDeleteBuffers(1, &vbo_);
+  glDeleteVertexArrays(1, &vao_);
+}
+
+
 void apeiron::primitives::Cube::render() const
 {
   glBindVertexArray(vao_);
@@ -122,6 +129,13 @@ apeiron::primitives::Cylinder::Cylinder(int points)
   glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, static_cast<void*>(0));
   glEnableVertexAttribArray(0);
+}
+
+
+apeiron::primitives::Cylinder::~Cylinder()
+{
+  glDeleteBuffers(1, &vbo_);
+  glDeleteVertexArrays(1, &vao_);
 }
 
 
