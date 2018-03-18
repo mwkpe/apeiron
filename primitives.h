@@ -17,7 +17,7 @@ public:
 private:
   std::uint32_t vao_;
   std::uint32_t vbo_;
-  int vertex_count_;
+  std::uint32_t vertex_count_;
 };
 
 
@@ -30,7 +30,7 @@ public:
 private:
   std::uint32_t vao_;
   std::uint32_t vbo_;
-  int vertex_count_;
+  std::uint32_t vertex_count_;
 };
 
 

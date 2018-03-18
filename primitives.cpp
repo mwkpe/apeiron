@@ -10,7 +10,7 @@ namespace {
 
 
 constexpr float pi = 3.14159f;
-constexpr float tau = 2 * pi;
+constexpr float tau = 2.0f * pi;
 
 
 float cube_vertices[] = {
@@ -60,19 +60,29 @@ float cube_vertices[] = {
 
 std::vector<float> build_cylinder_vertices(int points, float radius = 0.5f, float height = 1.0f)
 {
-  std::vector<float> cylinder((points + 1) * 2 * 3);
-  int offset = 0;
+  int wall_vertices = (points + 1) * 2 * 3;
+  int circle_vertices = wall_vertices / 2;
+  std::vector<float> cylinder(wall_vertices + circle_vertices * 2);
+  int wall_index = 0;
+  int bottom_circle_index = wall_vertices;
+  int top_circle_index = wall_vertices + circle_vertices;
 
   for (int i=0; i<=points; ++i) {
     float angle = static_cast<float>(i) / points * tau;
     float x = radius * std::cos(-angle);
     float y = radius * std::sin(-angle);
-    cylinder[offset++] = x;
-    cylinder[offset++] = y;
-    cylinder[offset++] = -height/2.0f;
-    cylinder[offset++] = x;
-    cylinder[offset++] = y;
-    cylinder[offset++] = height/2.0f;
+    cylinder[wall_index++] = x;
+    cylinder[wall_index++] = y;
+    cylinder[wall_index++] = -height / 2.0f;
+    cylinder[wall_index++] = x;
+    cylinder[wall_index++] = y;
+    cylinder[wall_index++] = height / 2.0f;
+    cylinder[bottom_circle_index++] = x;
+    cylinder[bottom_circle_index++] = y;
+    cylinder[bottom_circle_index++] = -height / 2.0f;
+    cylinder[top_circle_index++] = x;
+    cylinder[top_circle_index++] = y;
+    cylinder[top_circle_index++] = height / 2.0f;
   }
 
   return cylinder;
@@ -101,9 +111,10 @@ void apeiron::primitives::Cube::render() const
 }
 
 
-apeiron::primitives::Cylinder::Cylinder(int points) : vertex_count_{(points + 1) * 2}
+apeiron::primitives::Cylinder::Cylinder(int points)
 {
   auto vertices = build_cylinder_vertices(points);
+  vertex_count_ = vertices.size() / 3;
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   glBindVertexArray(vao_);
@@ -117,5 +128,9 @@ apeiron::primitives::Cylinder::Cylinder(int points) : vertex_count_{(points + 1)
 void apeiron::primitives::Cylinder::render() const
 {
   glBindVertexArray(vao_);
-  glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count_);
+  auto wall_vertices = vertex_count_ / 2;
+  auto circle_vertices = wall_vertices / 2;
+  glDrawArrays(GL_TRIANGLE_STRIP, 0, wall_vertices);  // Walls
+  glDrawArrays(GL_TRIANGLE_FAN, wall_vertices, circle_vertices);  // Bottom circle
+  glDrawArrays(GL_TRIANGLE_FAN, wall_vertices + circle_vertices, circle_vertices);  // Top circle
 }
