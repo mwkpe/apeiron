@@ -1,6 +1,7 @@
 #include <iostream>
 #include "SDL2/SDL.h"
 #include "GL/glew.h"
+#include "options.h"
 #include "error.h"
 #include "gui.h"
 #include "world.h"
@@ -13,6 +14,8 @@ int main(int argc, char *argv[])
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+  SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+  SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 16);
 
   auto* window = SDL_CreateWindow("Apeiron", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
       1280, 720, SDL_WINDOW_OPENGL);
@@ -26,8 +29,9 @@ int main(int argc, char *argv[])
 
   SDL_GL_SetSwapInterval(1);
 
-  apeiron::World world;
-  apeiron::Gui gui(window);
+  apeiron::Options options;
+  apeiron::World world(options);
+  apeiron::Gui gui(window, options);
   try {
     world.init();
     gui.init();
@@ -37,18 +41,19 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  bool stop = false;
-  bool show_gui = false;
-  while (!stop) {
+  while (!options.quit) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
       gui.process(&event);
-      stop = event.type == SDL_QUIT;
+      options.quit = event.type == SDL_QUIT;
       switch (event.type) {
         case SDL_KEYDOWN: {
           switch (event.key.keysym.sym) {
             case SDLK_F1:
-              show_gui = !show_gui;
+              options.show_gui = !options.show_gui;
+              break;
+            case SDLK_F2:
+              options.wireframe = !options.wireframe;
               break;
           }
         } break;
@@ -61,7 +66,7 @@ int main(int argc, char *argv[])
 
     auto time = SDL_GetTicks() / 1000.0f;
     world.render(time);
-    if (show_gui)
+    if (options.show_gui)
       gui.render(time);
 
     SDL_GL_SwapWindow(window);

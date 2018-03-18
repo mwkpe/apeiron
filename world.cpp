@@ -14,16 +14,27 @@ void apeiron::World::init()
 
 void apeiron::World::render(float time)
 {
+  frame_++;
+  if (options_.autorotate)
+    frame_time_ = time;
+
   shader_.use();
   glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 0.1f, 100.0f);
   shader_.set_uniform("projection", projection);
 
-  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  if (options_.wireframe)
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+  if (options_.strobe && (frame_ % 8 < 4))
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  else if (options_.strobe)
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
   {
     glm::mat4 model;
     glm::mat4 view;
     model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-    model = glm::rotate(model, time * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+    model = glm::rotate(model, frame_time_ * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
     view = glm::translate(view, glm::vec3(0.5f, 0.0f, -3.0f));
     shader_.set_uniform("color", 0.9f, 0.0f, 0.9f, 1.0f);
     shader_.set_uniform("model", model);
@@ -35,12 +46,13 @@ void apeiron::World::render(float time)
     glm::mat4 model;
     glm::mat4 view;
     model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-    model = glm::rotate(model, time * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+    model = glm::rotate(model, frame_time_ * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
     view = glm::translate(view, glm::vec3(-0.5f, 0.0f, -3.0f));
     shader_.set_uniform("color", 0.2f, 0.905f, 0.968f, 1.0f);
     shader_.set_uniform("model", model);
     shader_.set_uniform("view", view);
     cylinder_.render();
   }
+
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
