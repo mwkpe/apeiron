@@ -9,10 +9,9 @@ struct Options
 {
   bool quit = false;
   bool show_gui = false;
+  bool autorotate = true;
   bool wireframe = true;
   bool strobe = false;
-  bool autorotate = true;
-  float rotation_angle = false;
 };
 
 
