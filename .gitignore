@@ -36,3 +36,6 @@ imgui/
 
 # Build directories
 cmake-build*/
+
+# IDE
+.idea/
