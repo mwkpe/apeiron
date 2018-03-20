@@ -8,10 +8,12 @@ namespace apeiron {
 struct Options
 {
   bool quit = false;
-  bool show_gui = false;
+  bool show_gui = true;
   bool autorotate = true;
   bool wireframe = true;
   bool strobe = false;
+  float velocity = 2.0f;
+  float sensitivity = 0.05f;
 };
 
 
