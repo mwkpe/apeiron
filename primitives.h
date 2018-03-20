@@ -8,11 +8,17 @@
 namespace apeiron::primitives {
 
 
-class Cube
+class Cube final
 {
 public:
   Cube();
   ~Cube();
+  // OpenGL delete calls in destructor
+  Cube(const Cube&) = delete;
+  Cube(Cube&&) = delete;
+  Cube& operator=(const Cube&) = delete;
+  Cube& operator=(Cube&&) = delete;
+
   void render() const;
 
 private:
@@ -22,11 +28,17 @@ private:
 };
 
 
-class Cylinder
+class Cylinder final
 {
 public:
   Cylinder(int points);
   ~Cylinder();
+  // OpenGL delete calls in destructor
+  Cylinder(const Cylinder&) = delete;
+  Cylinder(Cylinder&&) = delete;
+  Cylinder& operator=(const Cylinder&) = delete;
+  Cylinder& operator=(Cylinder&&) = delete;
+
   void construct(int points);
   void render() const;
   int points() const { return points_; }
