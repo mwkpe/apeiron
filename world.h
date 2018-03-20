@@ -4,8 +4,10 @@
 
 #include <cstdint>
 #include "options.h"
+#include "input.h"
 #include "shader.h"
 #include "primitives.h"
+#include "camera.h"
 
 
 namespace apeiron {
@@ -14,15 +16,17 @@ namespace apeiron {
 class World
 {
 public:
-  World(const Options& options) : options_{options}, cylinder_{8} {}
+  World(const Options* options) : options_{options}, cylinder_{32} {}
   void init();
+  void update(float delta_time, const Input* input = nullptr);
   void render(float time);
 
 private:
-  const Options& options_;
+  const Options* options_;
   int frame_ = 0;
   float frame_time_ = 0;
   Shader shader_;
+  Camera camera_;
   primitives::Cylinder cylinder_;
   primitives::Cube cube_;
 };
