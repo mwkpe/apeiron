@@ -118,15 +118,11 @@ void apeiron::primitives::Cube::render() const
 }
 
 
-apeiron::primitives::Cylinder::Cylinder(int points)
+apeiron::primitives::Cylinder::Cylinder(int points) : points_{points}
 {
-  auto vertices = build_cylinder_vertices(points);
-  vertex_count_ = vertices.size() / 3;
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
-  glBindVertexArray(vao_);
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+  construct(points_);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, static_cast<void*>(0));
   glEnableVertexAttribArray(0);
 }
@@ -136,6 +132,17 @@ apeiron::primitives::Cylinder::~Cylinder()
 {
   glDeleteBuffers(1, &vbo_);
   glDeleteVertexArrays(1, &vao_);
+}
+
+
+void apeiron::primitives::Cylinder::construct(int points)
+{
+  points_ = points;
+  auto vertices = build_cylinder_vertices(points_);
+  vertex_count_ = vertices.size() / 3;
+  glBindVertexArray(vao_);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 }
 
 
