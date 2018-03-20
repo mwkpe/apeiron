@@ -3,8 +3,33 @@
 #include "GL/glew.h"
 #include "options.h"
 #include "error.h"
+#include "input.h"
 #include "gui.h"
 #include "world.h"
+
+
+namespace {
+
+
+apeiron::Input get_input_state()
+{
+  apeiron::Input input;
+  const std::uint8_t* kb_state = SDL_GetKeyboardState(nullptr);
+
+  input.forward = kb_state[SDL_SCANCODE_UP] || kb_state[SDL_SCANCODE_W];
+  input.backward = kb_state[SDL_SCANCODE_DOWN] || kb_state[SDL_SCANCODE_S];
+  input.left = kb_state[SDL_SCANCODE_LEFT] || kb_state[SDL_SCANCODE_A];
+  input.right = kb_state[SDL_SCANCODE_RIGHT] || kb_state[SDL_SCANCODE_D];
+
+  SDL_GetMouseState(&input.mouse_x_abs, &input.mouse_y_abs);
+  SDL_GetRelativeMouseState(&input.mouse_x_rel, &input.mouse_y_rel);
+  input.mouse_y_rel = -input.mouse_y_rel;  // Make mouse up correspond to camera pitch up
+
+  return input;
+}
+
+
+}  // namespace
 
 
 int main(int argc, char *argv[])
@@ -30,8 +55,8 @@ int main(int argc, char *argv[])
   SDL_GL_SetSwapInterval(1);
 
   apeiron::Options options;
-  apeiron::World world(options);
-  apeiron::Gui gui(window, options);
+  apeiron::World world(&options);
+  apeiron::Gui gui(window, &options);
   try {
     world.init();
     gui.init();
@@ -51,6 +76,15 @@ int main(int argc, char *argv[])
           switch (event.key.keysym.sym) {
             case SDLK_F1:
               options.show_gui = !options.show_gui;
+              if (options.show_gui) {
+                SDL_CaptureMouse(SDL_FALSE);
+                SDL_SetRelativeMouseMode(SDL_FALSE);
+              }
+              else {
+                SDL_GetRelativeMouseState(nullptr, nullptr);  // Prevent erroneous movement
+                SDL_CaptureMouse(SDL_TRUE);
+                SDL_SetRelativeMouseMode(SDL_TRUE);
+              }
               break;
             case SDLK_F2:
               options.wireframe = !options.wireframe;
@@ -58,6 +92,16 @@ int main(int argc, char *argv[])
           }
         } break;
       }
+    }
+
+    float delta_time = 0.016f;
+
+    if (!options.show_gui) {
+      auto input = get_input_state();
+      world.update(delta_time, &input);
+    }
+    else {  // imgui handles input
+      world.update(delta_time);
     }
 
     glEnable(GL_DEPTH_TEST);
