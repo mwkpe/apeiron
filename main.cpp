@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
   auto frame_timer = [&options, last_ticks = SDL_GetTicks()]() mutable {
     auto current_ticks = SDL_GetTicks();
     auto elapsed = current_ticks - last_ticks;
-    if (auto target = 1000 / options.max_fps; options.limit_fps && elapsed < target) {
+    if (auto target = 1000u / options.max_fps; options.limit_fps && elapsed < target) {
       SDL_Delay(target - elapsed);
       current_ticks = SDL_GetTicks();
       elapsed = current_ticks - last_ticks;
