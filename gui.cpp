@@ -52,7 +52,7 @@ void set_style(ImGuiStyle& style)
   style.Colors[ImGuiCol_ResizeGrip] = ImVec4{darkgrey.r, darkgrey.g, darkgrey.b, darkgrey.a};
   style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4{turquoise.r, turquoise.g, turquoise.b, turquoise.a};
   style.Colors[ImGuiCol_ResizeGripActive] = ImVec4{fuchsia.r, fuchsia.g, fuchsia.b, fuchsia.a};
-  style.Colors[ImGuiCol_SliderGrab] = ImVec4{fuchsia.r, fuchsia.g, fuchsia.b, fuchsia.a};
+  style.Colors[ImGuiCol_SliderGrab] = ImVec4{lightgrey.r, lightgrey.g, lightgrey.b, lightgrey.a};
   style.Colors[ImGuiCol_SliderGrabActive] = ImVec4{turquoise.r, turquoise.g, turquoise.b, turquoise.a};
   style.Colors[ImGuiCol_Button] = ImVec4{darkgrey.r, darkgrey.g, darkgrey.b, darkgrey.a};
   style.Colors[ImGuiCol_ButtonHovered] = ImVec4{grey.r, grey.g, grey.b, grey.a};
@@ -89,11 +89,14 @@ void apeiron::Gui::render(float time)
     ImGui::Text("Time: %.2f", time);
     ImGui::Text("Framerate: %.1f fps", io.Framerate);
     ImGui::Text("Frametime: %.3f ms", 1000.0f / io.Framerate);
-    ImGui::Checkbox("Autorotate", &options_.autorotate);
-    ImGui::Checkbox("Wireframe", &options_.wireframe);
-    ImGui::Checkbox("Strobe", &options_.strobe);
+    ImGui::Checkbox("Autorotate", &options_->autorotate);
+    ImGui::Checkbox("Wireframe", &options_->wireframe);
+    ImGui::Checkbox("Strobe", &options_->strobe);
+    ImGui::SliderFloat("Velocity", &options_->velocity, 0.0f, 5.0f);
+    ImGui::SliderFloat("Sensitivity", &options_->sensitivity, 0.0f, 0.1f);
+
     if (ImGui::Button("Quit"))
-      options_.quit = true;
+      options_->quit = true;
     ImGui::End();
   }
 
