@@ -1,6 +1,5 @@
 #include "camera.h"
 
-
 #include <algorithm>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -37,6 +36,7 @@ void apeiron::Camera::orient(int delta_x, int delta_y, float sensitivity)
 {
   yaw_ += delta_x * sensitivity;
   pitch_ += delta_y * sensitivity;
+  yaw_ = yaw_ > 360.0f ? yaw_ - 360.0f : yaw_ < -360.0f ? yaw_ + 360.0f : yaw_;
   pitch_ = std::clamp(pitch_, -89.0f, 89.0f);
   front_.x = std::cos(glm::radians(yaw_)) * std::cos(glm::radians(pitch_));
   front_.y = std::sin(glm::radians(pitch_));
