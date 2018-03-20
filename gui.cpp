@@ -4,18 +4,10 @@
 #include "GL/glew.h"
 #include "imgui/imgui.h"
 #include "imgui/examples/sdl_opengl3_example/imgui_impl_sdl_gl3.h"
+#include "color.h"
 
 
 namespace {
-
-
-struct Color
-{
-  float r;
-  float g;
-  float b;
-  float a;
-};
 
 
 void set_style(ImGuiStyle& style)
@@ -32,32 +24,43 @@ void set_style(ImGuiStyle& style)
   style.GrabMinSize = 5.0f;
   style.GrabRounding = 5.0f;
 
-  Color blackglass{0.1f, 0.1f, 0.1f, 0.85f};
-  Color fuchsia{0.9f, 0.0f, 0.9f, 1.0f};
-  Color turquoise{0.2f, 0.905f, 0.968f, 1.0f};
-  Color darkgrey{0.2f, 0.2f, 0.2f, 0.8f};
-  Color grey{0.25f, 0.25f, 0.25f, 0.8f};
-  Color lightgrey{0.3f, 0.3f, 0.3f, 0.8f};
+  ImVec4 almostblack{0.03f, 0.03f, 0.03f, 1.0f};
+  ImVec4 blackglass{0.1f, 0.1f, 0.1f, 0.85f};
+  ImVec4 fuchsia{0.9f, 0.0f, 0.9f, 1.0f};
+  ImVec4 orange{0.996, 0.647, 0.0f, 1.0f};
+  ImVec4 turquoise{0.2f, 0.905f, 0.968f, 1.0f};
+  ImVec4 darkgrey{0.2f, 0.2f, 0.2f, 0.8f};
+  ImVec4 grey{0.25f, 0.25f, 0.25f, 0.8f};
+  ImVec4 lightgrey{0.4f, 0.4f, 0.4f, 0.8f};
 
-  style.Colors[ImGuiCol_WindowBg] = ImVec4{blackglass.r, blackglass.g, blackglass.b, blackglass.a};
-  style.Colors[ImGuiCol_Border] = ImVec4{fuchsia.r, fuchsia.g, fuchsia.b, fuchsia.a};
-  style.Colors[ImGuiCol_FrameBg] = ImVec4{darkgrey.r, darkgrey.g, darkgrey.b, darkgrey.a};
-  style.Colors[ImGuiCol_FrameBgHovered] = ImVec4{grey.r, grey.g, grey.b, grey.a};
-  style.Colors[ImGuiCol_FrameBgActive] = ImVec4{grey.r, grey.g, grey.b, grey.a};
-  style.Colors[ImGuiCol_Text] = ImVec4{fuchsia.r, fuchsia.g, fuchsia.b, fuchsia.a};
-  style.Colors[ImGuiCol_TextDisabled] = ImVec4{grey.r, grey.g, grey.b, grey.a};
-  style.Colors[ImGuiCol_TitleBg] = ImVec4{blackglass.r, blackglass.g, blackglass.b, blackglass.a};
-  style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4{blackglass.r, blackglass.g, blackglass.b, blackglass.a};
-  style.Colors[ImGuiCol_TitleBgActive] = ImVec4{grey.r, grey.g, grey.b, grey.a};
-  style.Colors[ImGuiCol_ResizeGrip] = ImVec4{darkgrey.r, darkgrey.g, darkgrey.b, darkgrey.a};
-  style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4{turquoise.r, turquoise.g, turquoise.b, turquoise.a};
-  style.Colors[ImGuiCol_ResizeGripActive] = ImVec4{fuchsia.r, fuchsia.g, fuchsia.b, fuchsia.a};
-  style.Colors[ImGuiCol_SliderGrab] = ImVec4{lightgrey.r, lightgrey.g, lightgrey.b, lightgrey.a};
-  style.Colors[ImGuiCol_SliderGrabActive] = ImVec4{turquoise.r, turquoise.g, turquoise.b, turquoise.a};
-  style.Colors[ImGuiCol_Button] = ImVec4{darkgrey.r, darkgrey.g, darkgrey.b, darkgrey.a};
-  style.Colors[ImGuiCol_ButtonHovered] = ImVec4{grey.r, grey.g, grey.b, grey.a};
-  style.Colors[ImGuiCol_ButtonActive] = ImVec4{lightgrey.r, lightgrey.g, lightgrey.b, lightgrey.a};
-  style.Colors[ImGuiCol_CheckMark] = ImVec4{fuchsia.r, fuchsia.g, fuchsia.b, fuchsia.a};
+  style.Colors[ImGuiCol_WindowBg] = blackglass;
+  style.Colors[ImGuiCol_Border] = orange;
+  style.Colors[ImGuiCol_FrameBg] = darkgrey;
+  style.Colors[ImGuiCol_FrameBgHovered] = grey;
+  style.Colors[ImGuiCol_FrameBgActive] = grey;
+  style.Colors[ImGuiCol_Text] = orange;
+  style.Colors[ImGuiCol_TextDisabled] = grey;
+  style.Colors[ImGuiCol_TitleBg] = blackglass;
+  style.Colors[ImGuiCol_TitleBgCollapsed] = blackglass;
+  style.Colors[ImGuiCol_TitleBgActive] = grey;
+  style.Colors[ImGuiCol_ResizeGrip] = almostblack;
+  style.Colors[ImGuiCol_ResizeGripHovered] = lightgrey;
+  style.Colors[ImGuiCol_ResizeGripActive] = orange;
+  style.Colors[ImGuiCol_SliderGrab] = almostblack;
+  style.Colors[ImGuiCol_SliderGrabActive] = lightgrey;
+  style.Colors[ImGuiCol_Button] = darkgrey;
+  style.Colors[ImGuiCol_ButtonHovered] = grey;
+  style.Colors[ImGuiCol_ButtonActive] = lightgrey;
+  style.Colors[ImGuiCol_CheckMark] = orange;
+}
+
+
+void set_main_color(ImGuiStyle& style, ImVec4 color)
+{
+  style.Colors[ImGuiCol_Border] = color;
+  style.Colors[ImGuiCol_Text] = color;
+  style.Colors[ImGuiCol_CheckMark] = color;
+  style.Colors[ImGuiCol_ResizeGripActive] = color;
 }
 
 
@@ -70,6 +73,8 @@ void apeiron::Gui::init()
   ImGui_ImplSdlGL3_Init(window_);
   ImGui::StyleColorsDark();
   set_style(ImGui::GetStyle());
+  const auto& color = options_->main_color;
+  set_main_color(ImGui::GetStyle(), ImVec4{color.r, color.g, color.b, color.a});
 }
 
 
@@ -91,12 +96,26 @@ void apeiron::Gui::render(float time)
     ImGui::Text("Frametime: %.3f ms", 1000.0f / io.Framerate);
     ImGui::Checkbox("Limit framerate", &options_->limit_fps);
     ImGui::SliderInt("Max FPS", &options_->max_fps, 30, 240);
+    ImGui::SliderInt("Cyliner detail", &options_->cylinder_points, 4, 64);
     ImGui::Checkbox("Autorotate", &options_->autorotate);
     ImGui::Checkbox("Wireframe (F2)", &options_->wireframe);
     ImGui::Checkbox("Strobe", &options_->strobe);
     ImGui::SliderFloat("Velocity", &options_->velocity, 0.0f, 5.0f);
     ImGui::SliderFloat("Sensitivity", &options_->sensitivity, 0.0f, 0.1f);
-
+    if (ImGui::Button("Orange")) {
+      set_main_color(ImGui::GetStyle(), ImVec4{0.996, 0.647, 0.0f, 1.0f});
+      options_->main_color = Color{0.996, 0.647, 0.0f, 1.0f};
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Pink")) {
+      set_main_color(ImGui::GetStyle(), ImVec4{0.988f, 0.176f, 0.584f, 1.0f});
+      options_->main_color = Color{0.988f, 0.176f, 0.584f, 1.0f};
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Blue")) {
+      set_main_color(ImGui::GetStyle(), ImVec4{0.2f, 0.905f, 0.968f, 1.0f});
+      options_->main_color = Color{0.2f, 0.905f, 0.968f, 1.0f};
+    }
     if (ImGui::Button("Quit"))
       options_->quit = true;
     ImGui::End();
