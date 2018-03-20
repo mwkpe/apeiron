@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.9)
 project(apeiron)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "-O3 -Wall")
 
 include_directories(C:/libraries/SDL2/x86_64-w64-mingw32/include
     C:/libraries/glew/include
