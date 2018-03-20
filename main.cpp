@@ -104,6 +104,9 @@ int main(int argc, char *argv[])
             case SDLK_F2:
               options.wireframe = !options.wireframe;
               break;
+            case SDLK_F3:
+              world.reset();
+              break;
           }
         } break;
       }
