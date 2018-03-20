@@ -10,7 +10,7 @@
 namespace apeiron {
 
 
-class Shader
+class Shader final
 {
 public:
   void load(std::string_view vertex_shader_file, std::string_view fragment_shader_file);

@@ -9,7 +9,7 @@
 namespace apeiron {
 
 
-class Gui
+class Gui final
 {
 public:
   Gui(SDL_Window* window, Options* options) : window_{window}, options_{options} {}

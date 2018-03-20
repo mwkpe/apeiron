@@ -8,7 +8,7 @@
 namespace apeiron {
 
 
-class Camera
+class Camera final
 {
 public:
   enum class Direction { Forward, Backward, Left, Right };

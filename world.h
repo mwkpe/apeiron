@@ -13,7 +13,7 @@
 namespace apeiron {
 
 
-class World
+class World final
 {
 public:
   World(const Options* options) : options_{options}, cylinder_{options_->cylinder_points} {}
