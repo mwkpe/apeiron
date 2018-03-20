@@ -24,8 +24,8 @@ private:
   glm::vec3 right_;
   glm::vec3 up_;
   glm::vec3 world_up_;
-  float pitch_ = 0.0f;
-  float yaw_ = -90.0f;
+  float pitch_ = -55.0f;
+  float yaw_ = -100.0f;
 };
 
 
