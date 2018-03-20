@@ -85,14 +85,14 @@ void apeiron::Gui::render(float time)
 
   ImGui_ImplSdlGL3_NewFrame(window_);
   {
-    ImGui::Begin("Debug view");
+    ImGui::Begin("Debug view (F1)");
     ImGui::Text("Time: %.2f", time);
-    ImGui::Text("Framerate: %.1f fps", io.Framerate);
+    ImGui::Text("Framerate: %.0f fps", io.Framerate);
     ImGui::Text("Frametime: %.3f ms", 1000.0f / io.Framerate);
     ImGui::Checkbox("Limit framerate", &options_->limit_fps);
     ImGui::SliderInt("Max FPS", &options_->max_fps, 30, 240);
     ImGui::Checkbox("Autorotate", &options_->autorotate);
-    ImGui::Checkbox("Wireframe", &options_->wireframe);
+    ImGui::Checkbox("Wireframe (F2)", &options_->wireframe);
     ImGui::Checkbox("Strobe", &options_->strobe);
     ImGui::SliderFloat("Velocity", &options_->velocity, 0.0f, 5.0f);
     ImGui::SliderFloat("Sensitivity", &options_->sensitivity, 0.0f, 0.1f);
