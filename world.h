@@ -16,8 +16,9 @@ namespace apeiron {
 class World
 {
 public:
-  World(const Options* options) : options_{options}, cylinder_{32} {}
+  World(const Options* options) : options_{options}, cylinder_{options_->cylinder_points} {}
   void init();
+  void reset();
   void update(float delta_time, const Input* input = nullptr);
   void render(float time);
 

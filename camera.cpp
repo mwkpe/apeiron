@@ -6,9 +6,17 @@
 
 apeiron::Camera::Camera()
 {
+  reset();
+}
+
+
+void apeiron::Camera::reset()
+{
   position_ = glm::vec3(0.0f, 3.5f, 3.0f);
   front_ = glm::vec3(0.0f, 0.0f, -1.0f);
   world_up_ = glm::vec3(0.0f, 1.0f, 0.0f);
+  pitch_ = -55.0f;
+  yaw_ = -100.0f;
   orient(0, 0, 0);  // Apply default pitch and yaw
 }
 

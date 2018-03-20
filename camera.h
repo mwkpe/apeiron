@@ -14,6 +14,7 @@ public:
   enum class Direction { Forward, Backward, Left, Right };
 
   Camera();
+  void reset();
   void move(Direction direction, float distances);
   void orient(int delta_x, int delta_y, float sensitivity);
   glm::mat4 view() const;
@@ -24,8 +25,8 @@ private:
   glm::vec3 right_;
   glm::vec3 up_;
   glm::vec3 world_up_;
-  float pitch_ = -55.0f;
-  float yaw_ = -100.0f;
+  float pitch_ = 0.0f;
+  float yaw_ = -90.0f;
 };
 
 
