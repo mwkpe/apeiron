@@ -4,4 +4,4 @@ Requires [SDL2](https://www.libsdl.org/), [GLEW](https://github.com/nigels-com/g
 
 Status
 ---
-WIP and relearning OpenGL
+WIP and [relearning OpenGL](https://learnopengl.com/)
