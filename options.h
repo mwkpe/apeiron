@@ -12,8 +12,10 @@ struct Options
   bool autorotate = true;
   bool wireframe = true;
   bool strobe = false;
+  bool limit_fps = true;
+  int max_fps = 120;
   float velocity = 2.0f;
-  float sensitivity = 0.05f;
+  float sensitivity = 0.02f;
 };
 
 
