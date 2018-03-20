@@ -54,11 +54,11 @@ void apeiron::World::render(float time)
   {
     glm::mat4 model;
     float height_scale = 0.1f;
-    float width_scale = 2.0f;
+    float width_scale = 3.0f;
     model = glm::scale(model, glm::vec3(width_scale, height_scale, width_scale));
     model = glm::translate(model, glm::vec3(0.0f, -0.5f/height_scale, 0.0f));
     shader_.set_uniform("model", model);
-    shader_.set_uniform("color", 0.4f, 1.0f, 0.5f, 1.0f);
+    shader_.set_uniform("color", 0.2f, 0.2f, 0.2f, 1.0f);
     cube_.render();
   }
 
