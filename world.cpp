@@ -12,6 +12,12 @@ void apeiron::World::init()
 }
 
 
+void apeiron::World::reset()
+{
+  camera_.reset();
+}
+
+
 void apeiron::World::update(float delta_time, const Input* input)
 {
   if (input) {
@@ -26,6 +32,10 @@ void apeiron::World::update(float delta_time, const Input* input)
       camera_.move(Camera::Direction::Right, distance);
 
     camera_.orient(input->mouse_x_rel, input->mouse_y_rel, options_->sensitivity);
+  }
+
+  if (cylinder_.points() != options_->cylinder_points) {
+    cylinder_.construct(options_->cylinder_points);
   }
 }
 
@@ -68,7 +78,8 @@ void apeiron::World::render(float time)
     model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
     model = glm::rotate(model, frame_time_ * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
     shader_.set_uniform("model", model);
-    shader_.set_uniform("color", 0.9f, 0.0f, 0.9f, 1.0f);
+    const auto& color = options_->main_color;
+    shader_.set_uniform("color", color.r, color.g, color.b, color.a);
     cube_.render();
   }
 
@@ -78,7 +89,8 @@ void apeiron::World::render(float time)
     model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
     model = glm::rotate(model, frame_time_ * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
     shader_.set_uniform("model", model);
-    shader_.set_uniform("color", 0.2f, 0.905f, 0.968f, 1.0f);
+    const auto& color = options_->main_color;
+    shader_.set_uniform("color", color.r, color.g, color.b, color.a);
     cylinder_.render();
   }
 
