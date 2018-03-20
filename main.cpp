@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-  SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 16);
+  SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
   auto* window = SDL_CreateWindow("Apeiron", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
       1280, 720, SDL_WINDOW_OPENGL);
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  SDL_GL_SetSwapInterval(1);
+  SDL_GL_SetSwapInterval(0);
 
   apeiron::Options options;
   apeiron::World world(&options);
@@ -66,7 +66,22 @@ int main(int argc, char *argv[])
     return 1;
   }
 
+  auto frame_timer = [&options, last_ticks = SDL_GetTicks()]() mutable {
+    auto current_ticks = SDL_GetTicks();
+    auto elapsed = current_ticks - last_ticks;
+    if (auto target = 1000 / options.max_fps; options.limit_fps && elapsed < target) {
+      SDL_Delay(target - elapsed);
+      current_ticks = SDL_GetTicks();
+      elapsed = current_ticks - last_ticks;
+    }
+    last_ticks = current_ticks;
+    return elapsed;
+  };
+
   while (!options.quit) {
+    auto elapsed = frame_timer();  // May also delay and hence limits fps
+    float delta_time = elapsed / 1000.0f;
+
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
       gui.process(&event);
@@ -93,8 +108,6 @@ int main(int argc, char *argv[])
         } break;
       }
     }
-
-    float delta_time = 0.016f;
 
     if (!options.show_gui) {
       auto input = get_input_state();

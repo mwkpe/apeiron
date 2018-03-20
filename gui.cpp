@@ -89,6 +89,8 @@ void apeiron::Gui::render(float time)
     ImGui::Text("Time: %.2f", time);
     ImGui::Text("Framerate: %.1f fps", io.Framerate);
     ImGui::Text("Frametime: %.3f ms", 1000.0f / io.Framerate);
+    ImGui::Checkbox("Limit framerate", &options_->limit_fps);
+    ImGui::SliderInt("Max FPS", &options_->max_fps, 30, 240);
     ImGui::Checkbox("Autorotate", &options_->autorotate);
     ImGui::Checkbox("Wireframe", &options_->wireframe);
     ImGui::Checkbox("Strobe", &options_->strobe);
