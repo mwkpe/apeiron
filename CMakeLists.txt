@@ -4,7 +4,8 @@ project(apeiron)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-O3 -Wall")
 
-include_directories(C:/libraries/SDL2/x86_64-w64-mingw32/include
+include_directories(C:/libraries
+    C:/libraries/SDL2/x86_64-w64-mingw32/include
     C:/libraries/glew/include
     C:/libraries/glm)
 link_directories(C:/libraries/SDL2/x86_64-w64-mingw32/lib
@@ -13,6 +14,6 @@ link_directories(C:/libraries/SDL2/x86_64-w64-mingw32/lib
 add_executable(apeiron main.cpp world.cpp world.h shader.cpp shader.h error.h  gui.cpp gui.h
   imgui/imgui.cpp imgui/imgui.h imgui/imgui_draw.cpp imgui/imgui_internal.h
   imgui/examples/sdl_opengl3_example/imgui_impl_sdl_gl3.cpp
-  imgui/examples/sdl_opengl3_example/imgui_impl_sdl_gl3.h primitives.h primitives.cpp options.h camera.cpp camera.h input.h color.h)
+  imgui/examples/sdl_opengl3_example/imgui_impl_sdl_gl3.h primitives.h primitives.cpp options.h camera.cpp camera.h input.h color.h model_loader.cpp model_loader.h model.cpp model.h)
 
 target_link_libraries(apeiron -lmingw32 -lglew32 -lglu32 -lopengl32 -lSDL2main -lSDL2)
