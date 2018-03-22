@@ -68,10 +68,10 @@ void apeiron::World::render(float time)
     shader_.set_uniform("model", model);
     const auto& color = options_->main_color;
     shader_.set_uniform("color", color.r, color.g, color.b, color.a);
-    if (!options_->pirate_mode)
-      car_.render();
-    else
+    if (options_->pirate_mode)
       pirate_ship_.render();
+    else
+      car_.render();
   }
 
   {
