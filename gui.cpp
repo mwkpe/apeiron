@@ -96,11 +96,11 @@ void apeiron::Gui::render(float time)
     ImGui::Text("Frametime: %.3f ms", 1000.0f / io.Framerate);
     ImGui::Checkbox("Limit framerate", &options_->limit_fps);
     ImGui::SliderInt("Max FPS", &options_->max_fps, 30, 240);
-    ImGui::SliderInt("Cyliner detail", &options_->cylinder_points, 4, 64);
+    ImGui::SliderInt("Cyliner detail", &options_->cylinder_points, 1, 64);
     ImGui::Checkbox("Autorotate", &options_->autorotate);
     ImGui::Checkbox("Wireframe (F2)", &options_->wireframe);
     ImGui::Checkbox("Strobe", &options_->strobe);
-    ImGui::SliderFloat("Velocity", &options_->velocity, 0.0f, 5.0f);
+    ImGui::SliderFloat("Velocity", &options_->velocity, 0.0f, 20.0f);
     ImGui::SliderFloat("Sensitivity", &options_->sensitivity, 0.0f, 0.1f);
     if (ImGui::Button("Orange")) {
       set_main_color(ImGui::GetStyle(), ImVec4{0.996, 0.647, 0.0f, 1.0f});

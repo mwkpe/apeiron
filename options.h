@@ -18,7 +18,7 @@ struct Options
   bool limit_fps = true;
   int cylinder_points = 8;
   int max_fps = 120;
-  float velocity = 2.0f;
+  float velocity = 10.0f;
   float sensitivity = 0.02f;
   Color main_color = Color{0.2f, 0.905f, 0.968f, 1.0f};
 };
