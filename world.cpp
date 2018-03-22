@@ -9,6 +9,7 @@
 void apeiron::World::init()
 {
   shader_.load("shader/mvp_position.vs", "shader/uniform_color.fs");
+  car_.load("assets/camaro.obj");
 }
 
 
@@ -63,19 +64,15 @@ void apeiron::World::render(float time)
 
   {
     glm::mat4 model;
-    float height_scale = 0.1f;
-    float width_scale = 3.0f;
-    model = glm::scale(model, glm::vec3(width_scale, height_scale, width_scale));
-    model = glm::translate(model, glm::vec3(0.0f, -0.5f/height_scale, 0.0f));
     shader_.set_uniform("model", model);
-    shader_.set_uniform("color", 0.2f, 0.2f, 0.2f, 1.0f);
-    cube_.render();
+    const auto& color = options_->main_color;
+    shader_.set_uniform("color", color.r, color.g, color.b, color.a);
+    car_.render();
   }
 
   {
     glm::mat4 model;
-    model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-    model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::translate(model, glm::vec3(0.0f, 1.0f, -10.0f));
     model = glm::rotate(model, frame_time_ * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
     shader_.set_uniform("model", model);
     const auto& color = options_->main_color;
@@ -85,13 +82,26 @@ void apeiron::World::render(float time)
 
   {
     glm::mat4 model;
-    model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-    model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+    model = glm::translate(model, glm::vec3(0.0f, 1.0f, -5.0f));
     model = glm::rotate(model, frame_time_ * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
     shader_.set_uniform("model", model);
     const auto& color = options_->main_color;
     shader_.set_uniform("color", color.r, color.g, color.b, color.a);
     cylinder_.render();
+  }
+
+  {
+    glm::mat4 model;
+    float height_scale = 0.1f;
+    float width_scale = 3.6f;
+    float length_scale = 100.0f;
+    model = glm::scale(model, glm::vec3(width_scale, height_scale, length_scale));
+    model = glm::translate(model, glm::vec3(0.0f, -0.5f*height_scale, -0.2f));
+    shader_.set_uniform("model", model);
+    shader_.set_uniform("color", 0.2f, 0.2f, 0.2f, 1.0f);
+    // Always fill ground
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    cube_.render();
   }
 
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

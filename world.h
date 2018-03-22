@@ -7,6 +7,7 @@
 #include "input.h"
 #include "shader.h"
 #include "primitives.h"
+#include "model.h"
 #include "camera.h"
 
 
@@ -30,6 +31,7 @@ private:
   Camera camera_;
   primitives::Cylinder cylinder_;
   primitives::Cube cube_;
+  Model car_;
 };
 
 
