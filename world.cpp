@@ -47,7 +47,7 @@ void apeiron::World::render(float time)
   if (options_->autorotate)
     frame_time_ = time;
 
-  glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 0.1f, 100.0f);
+  glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 0.1f, 1000.0f);
   glm::mat4 view = camera_.view();
 
   shader_.use();
