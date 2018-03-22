@@ -100,6 +100,7 @@ void apeiron::Gui::render(float time)
     ImGui::Checkbox("Autorotate", &options_->autorotate);
     ImGui::Checkbox("Wireframe (F2)", &options_->wireframe);
     ImGui::Checkbox("Strobe", &options_->strobe);
+    ImGui::Checkbox("Arr!", &options_->pirate_mode);
     ImGui::SliderFloat("Velocity", &options_->velocity, 0.0f, 20.0f);
     ImGui::SliderFloat("Sensitivity", &options_->sensitivity, 0.0f, 0.1f);
     if (ImGui::Button("Orange")) {

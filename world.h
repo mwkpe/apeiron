@@ -32,6 +32,7 @@ private:
   primitives::Cylinder cylinder_;
   primitives::Cube cube_;
   Model car_;
+  Model pirate_ship_;
 };
 
 
