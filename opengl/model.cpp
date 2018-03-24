@@ -3,20 +3,19 @@
 
 #include <vector>
 #include "GL/glew.h"
-#include "error.h"
-#include "model_loader.h"
+#include "engine/model_loader.h"
 
 
-apeiron::Model::~Model()
+apeiron::opengl::Model::~Model()
 {
   glDeleteBuffers(1, &vbo_);
   glDeleteVertexArrays(1, &vao_);
 }
 
 
-void apeiron::Model::load(std::string_view filename)
+void apeiron::opengl::Model::load(std::string_view filename)
 {
-  auto vertices = load_vertices(filename);
+  auto vertices = engine::load_vertices(filename);
   vertex_count_ = vertices.size() / 3;
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
@@ -28,7 +27,7 @@ void apeiron::Model::load(std::string_view filename)
 }
 
 
-void apeiron::Model::render() const
+void apeiron::opengl::Model::render() const
 {
   glBindVertexArray(vao_);
   glDrawArrays(GL_TRIANGLES, 0, vertex_count_);

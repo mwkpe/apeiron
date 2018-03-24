@@ -1,16 +1,17 @@
 #include "camera.h"
 
+
 #include <algorithm>
 #include <glm/gtc/matrix_transform.hpp>
 
 
-apeiron::Camera::Camera()
+apeiron::engine::Camera::Camera()
 {
   reset();
 }
 
 
-void apeiron::Camera::reset()
+void apeiron::engine::Camera::reset()
 {
   position_ = glm::vec3(7.0f, 11.0f, 8.0f);
   front_ = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -21,7 +22,7 @@ void apeiron::Camera::reset()
 }
 
 
-void apeiron::Camera::move(Direction direction, float distance)
+void apeiron::engine::Camera::move(Direction direction, float distance)
 {
   switch (direction) {
     case Direction::Forward:
@@ -40,7 +41,7 @@ void apeiron::Camera::move(Direction direction, float distance)
 }
 
 
-void apeiron::Camera::orient(int delta_x, int delta_y, float sensitivity)
+void apeiron::engine::Camera::orient(int delta_x, int delta_y, float sensitivity)
 {
   yaw_ += delta_x * sensitivity;
   pitch_ += delta_y * sensitivity;
@@ -55,7 +56,7 @@ void apeiron::Camera::orient(int delta_x, int delta_y, float sensitivity)
 }
 
 
-glm::mat4 apeiron::Camera::view() const
+glm::mat4 apeiron::engine::Camera::view() const
 {
   return glm::lookAt(position_, position_ + front_, up_);
 }

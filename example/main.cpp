@@ -1,19 +1,19 @@
 #include <iostream>
 #include "SDL2/SDL.h"
 #include "GL/glew.h"
-#include "options.h"
-#include "error.h"
-#include "input.h"
-#include "gui.h"
-#include "world.h"
+#include "engine/error.h"
+#include "engine/input.h"
+#include "example/options.h"
+#include "example/menu.h"
+#include "example/world.h"
 
 
 namespace {
 
 
-apeiron::Input get_input_state()
+apeiron::engine::Input get_input_state()
 {
-  apeiron::Input input;
+  apeiron::engine::Input input;
   const std::uint8_t* kb_state = SDL_GetKeyboardState(nullptr);
 
   input.forward = kb_state[SDL_SCANCODE_UP] || kb_state[SDL_SCANCODE_W];
@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-  SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+  SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 1);
 
   auto* window = SDL_CreateWindow("Apeiron", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
       1280, 720, SDL_WINDOW_OPENGL);
@@ -54,14 +54,15 @@ int main(int argc, char* argv[])
 
   SDL_GL_SetSwapInterval(0);
 
-  apeiron::Options options;
-  apeiron::World world(&options);
-  apeiron::Gui gui(window, &options);
+  apeiron::example::Options options;
+  apeiron::example::World world(&options);
+  apeiron::example::Menu menu(window);
   try {
     world.init();
-    gui.init();
+    menu.init();
+    menu.setup(&options);
   }
-  catch (const apeiron::Error& e) {
+  catch (const apeiron::engine::Error& e) {
     std::cerr << e.what() << std::endl;
     return 1;
   }
@@ -84,7 +85,7 @@ int main(int argc, char* argv[])
 
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-      gui.process(&event);
+      menu.process(&event);
       options.quit = event.type == SDL_QUIT;
       switch (event.type) {
         case SDL_KEYDOWN: {
@@ -126,8 +127,10 @@ int main(int argc, char* argv[])
 
     auto time = SDL_GetTicks() / 1000.0f;
     world.render(time);
-    if (options.show_gui)
-      gui.render(time);
+    if (options.show_gui) {
+      menu.build(&options, time);
+      menu.render();
+    }
 
     SDL_GL_SwapWindow(window);
   }

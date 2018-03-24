@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include "GL/glew.h"
-#include "error.h"
+#include "engine/error.h"
 
 
 namespace {
@@ -18,7 +18,7 @@ std::string read_file(std::string_view file)
     return ss.str();
   }
   else {
-    throw apeiron::Error{std::string{"Could not open shader file: "} + std::string{file}};
+    throw apeiron::engine::Error{std::string{"Could not open shader file: "} + std::string{file}};
   }
 }
 
@@ -34,7 +34,7 @@ GLuint create_shader(GLenum type, const std::string& source)
   if (!success) {
     char log[512];
     glGetShaderInfoLog(id, 512, nullptr, log);
-    throw apeiron::Error{log};
+    throw apeiron::engine::Error{log};
   }
   return id;
 }
@@ -51,7 +51,7 @@ GLuint create_program(GLuint vertex_shader, GLuint fragment_shader)
   if (!success) {
     char log[512];
     glGetProgramInfoLog(id, 512, nullptr, log);
-    throw apeiron::Error{log};
+    throw apeiron::engine::Error{log};
   }
   glDeleteShader(vertex_shader);
   glDeleteShader(fragment_shader);
@@ -62,7 +62,7 @@ GLuint create_program(GLuint vertex_shader, GLuint fragment_shader)
 }  // namespace
 
 
-void apeiron::Shader::load(std::string_view vertex_shader_file, std::string_view fragment_shader_file)
+void apeiron::opengl::Shader::load(std::string_view vertex_shader_file, std::string_view fragment_shader_file)
 {
   auto vs_source = read_file(vertex_shader_file);
   auto fs_source = read_file(fragment_shader_file);
@@ -72,19 +72,25 @@ void apeiron::Shader::load(std::string_view vertex_shader_file, std::string_view
 }
 
 
-void apeiron::Shader::use() const
+void apeiron::opengl::Shader::use() const
 {
   glUseProgram(id_);
 }
 
 
-void apeiron::Shader::set_uniform(const char* name, float x, float y, float z, float w) const
+void apeiron::opengl::Shader::set_uniform(const char* name, float x, float y, float z, float w) const
 {
   glUniform4f(glGetUniformLocation(id_, name), x, y, z, w);
 }
 
 
-void apeiron::Shader::set_uniform(const char* name, const glm::mat4& mat) const
+void apeiron::opengl::Shader::set_uniform(const char* name, const glm::mat4& mat) const
 {
   glUniformMatrix4fv(glGetUniformLocation(id_, name), 1, GL_FALSE, &mat[0][0]);
+}
+
+
+void apeiron::opengl::Shader::set_uniform(const char* name, const engine::Color& color) const
+{
+  glUniform4f(glGetUniformLocation(id_, name), color.r, color.g, color.b, color.a);
 }

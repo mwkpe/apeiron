@@ -1,12 +1,12 @@
-#ifndef APEIRON_ERROR_H
-#define APEIRON_ERROR_H
+#ifndef APEIRON_ENGINE_ERROR_H
+#define APEIRON_ENGINE_ERROR_H
 
 
 #include <stdexcept>
 #include <string>
 
 
-namespace apeiron {
+namespace apeiron::engine {
 
 
 class Error : public std::runtime_error
@@ -17,7 +17,7 @@ public:
 };
 
 
-}  // namespace apeiron
+}  // namespace apeiron::engine
 
 
-#endif  // APEIRON_ERROR_H
+#endif  // APEIRON_ENGINE_ERROR_H

@@ -1,11 +1,11 @@
-#ifndef APEIRON_CAMERA_H
-#define APEIRON_CAMERA_H
+#ifndef APEIRON_ENGINE_CAMERA_H
+#define APEIRON_ENGINE_CAMERA_H
 
 
 #include <glm/glm.hpp>
 
 
-namespace apeiron {
+namespace apeiron::engine {
 
 
 class Camera final
@@ -30,7 +30,7 @@ private:
 };
 
 
-}  // namespace apeiron
+}  // namespace apeiron::engine
 
 
-#endif  // APEIRON_CAMERA_H
+#endif  // APEIRON_ENGINE_CAMERA_H

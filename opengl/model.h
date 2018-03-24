@@ -1,12 +1,12 @@
-#ifndef APEIRON_MODEL_H
-#define APEIRON_MODEL_H
+#ifndef APEIRON_OPENGL_MODEL_H
+#define APEIRON_OPENGL_MODEL_H
 
 
 #include <cstdint>
 #include <string_view>
 
 
-namespace apeiron {
+namespace apeiron::opengl {
 
 
 class Model final
@@ -30,7 +30,7 @@ private:
 };
 
 
-}  // namespace apeiron
+}  // namespace apeiron::opengl
 
 
-#endif  // APEIRON_MODEL_H
+#endif  // APEIRON_OPENGL_MODEL_H

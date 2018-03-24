@@ -1,11 +1,11 @@
-#ifndef APEIRON_OPTIONS_H
-#define APEIRON_OPTIONS_H
+#ifndef APEIRON_EXAMPLE_OPTIONS_H
+#define APEIRON_EXAMPLE_OPTIONS_H
 
 
-#include "color.h"
+#include "engine/color.h"
 
 
-namespace apeiron {
+namespace apeiron::example {
 
 
 struct Options
@@ -21,11 +21,11 @@ struct Options
   int max_fps = 120;
   float velocity = 10.0f;
   float sensitivity = 0.02f;
-  Color main_color = Color{0.2f, 0.905f, 0.968f, 1.0f};
+  engine::Color main_color = engine::Color{0.2f, 0.905f, 0.968f, 1.0f};
 };
 
 
-}  // namespace apeiron
+}  // namespace apeiron::example
 
 
-#endif  //APEIRON_OPTIONS_H
+#endif  // APEIRON_EXAMPLE_OPTIONS_H

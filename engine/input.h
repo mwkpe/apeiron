@@ -1,8 +1,8 @@
-#ifndef APEIRON_INPUT_H
-#define APEIRON_INPUT_H
+#ifndef APEIRON_ENGINE_INPUT_H
+#define APEIRON_ENGINE_INPUT_H
 
 
-namespace apeiron {
+namespace apeiron::engine {
 
 
 struct Input
@@ -18,7 +18,7 @@ struct Input
 };
 
 
-}  // namespace apeiron
+}  // namespace apeiron::engine
 
 
-#endif  // APEIRON_INPUT_H
+#endif  // APEIRON_ENGINE_INPUT_H

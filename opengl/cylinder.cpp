@@ -1,4 +1,4 @@
-#include "primitives.h"
+#include "cylinder.h"
 
 
 #include <vector>
@@ -11,51 +11,6 @@ namespace {
 
 constexpr float pi = 3.14159f;
 constexpr float tau = 2.0f * pi;
-
-
-float cube_vertices[] = {
-  -0.5f, -0.5f, -0.5f,
-   0.5f, -0.5f, -0.5f,
-   0.5f,  0.5f, -0.5f,
-   0.5f,  0.5f, -0.5f,
-  -0.5f,  0.5f, -0.5f,
-  -0.5f, -0.5f, -0.5f,
-
-  -0.5f, -0.5f,  0.5f,
-   0.5f, -0.5f,  0.5f,
-   0.5f,  0.5f,  0.5f,
-   0.5f,  0.5f,  0.5f,
-  -0.5f,  0.5f,  0.5f,
-  -0.5f, -0.5f,  0.5f,
-
-  -0.5f,  0.5f,  0.5f,
-  -0.5f,  0.5f, -0.5f,
-  -0.5f, -0.5f, -0.5f,
-  -0.5f, -0.5f, -0.5f,
-  -0.5f, -0.5f,  0.5f,
-  -0.5f,  0.5f,  0.5f,
-
-   0.5f,  0.5f,  0.5f,
-   0.5f,  0.5f, -0.5f,
-   0.5f, -0.5f, -0.5f,
-   0.5f, -0.5f, -0.5f,
-   0.5f, -0.5f,  0.5f,
-   0.5f,  0.5f,  0.5f,
-
-  -0.5f, -0.5f, -0.5f,
-   0.5f, -0.5f, -0.5f,
-   0.5f, -0.5f,  0.5f,
-   0.5f, -0.5f,  0.5f,
-  -0.5f, -0.5f,  0.5f,
-  -0.5f, -0.5f, -0.5f,
-
-  -0.5f,  0.5f, -0.5f,
-   0.5f,  0.5f, -0.5f,
-   0.5f,  0.5f,  0.5f,
-   0.5f,  0.5f,  0.5f,
-  -0.5f,  0.5f,  0.5f,
-  -0.5f,  0.5f, -0.5f
-};
 
 
 std::vector<float> build_cylinder_vertices(int points, float radius = 0.5f, float height = 1.0f)
@@ -92,33 +47,7 @@ std::vector<float> build_cylinder_vertices(int points, float radius = 0.5f, floa
 }  // namespace
 
 
-apeiron::primitives::Cube::Cube() : vertex_count_{sizeof(cube_vertices) / 3}
-{
-  glGenVertexArrays(1, &vao_);
-  glGenBuffers(1, &vbo_);
-  glBindVertexArray(vao_);
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(cube_vertices), cube_vertices, GL_STATIC_DRAW);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, static_cast<void*>(0));
-  glEnableVertexAttribArray(0);
-}
-
-
-apeiron::primitives::Cube::~Cube()
-{
-  glDeleteBuffers(1, &vbo_);
-  glDeleteVertexArrays(1, &vao_);
-}
-
-
-void apeiron::primitives::Cube::render() const
-{
-  glBindVertexArray(vao_);
-  glDrawArrays(GL_TRIANGLES, 0, vertex_count_);
-}
-
-
-apeiron::primitives::Cylinder::Cylinder(int points) : points_{points}
+apeiron::opengl::Cylinder::Cylinder(int points) : points_{points}
 {
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
@@ -128,14 +57,14 @@ apeiron::primitives::Cylinder::Cylinder(int points) : points_{points}
 }
 
 
-apeiron::primitives::Cylinder::~Cylinder()
+apeiron::opengl::Cylinder::~Cylinder()
 {
   glDeleteBuffers(1, &vbo_);
   glDeleteVertexArrays(1, &vao_);
 }
 
 
-void apeiron::primitives::Cylinder::construct(int points)
+void apeiron::opengl::Cylinder::construct(int points)
 {
   points_ = points;
   auto vertices = build_cylinder_vertices(points_);
@@ -146,7 +75,7 @@ void apeiron::primitives::Cylinder::construct(int points)
 }
 
 
-void apeiron::primitives::Cylinder::render() const
+void apeiron::opengl::Cylinder::render() const
 {
   glBindVertexArray(vao_);
   auto wall_vertices = vertex_count_ / 2;

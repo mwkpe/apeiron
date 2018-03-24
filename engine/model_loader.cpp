@@ -3,17 +3,17 @@
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tiny_obj_loader.h"
-#include "error.h"
+#include "engine/error.h"
 
 
-std::vector<float> apeiron::load_vertices(std::string_view filename)
+std::vector<float> apeiron::engine::load_vertices(std::string_view filename)
 {
   tinyobj::attrib_t attrib;
   std::vector<tinyobj::shape_t> shapes;
   std::vector<tinyobj::material_t> materials;
   std::string error;
   if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &error, std::string{filename}.c_str())) {
-    throw Error{error};
+    throw engine::Error{error};
   }
 
   std::vector<float> vertices;
