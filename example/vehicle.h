@@ -13,7 +13,6 @@ class Vehicle final : public engine::Entity
 {
 public:
   void load_model(std::string_view filename);
-  void render() const override;
 
 private:
   opengl::Model model_;
