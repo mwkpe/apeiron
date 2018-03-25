@@ -18,6 +18,7 @@ struct Options
   bool limit_fps = true;
   bool pirate_mode = false;
   int cylinder_points = 8;
+  float cylinder_revs = 0.2f;
   int max_fps = 120;
   float velocity = 10.0f;
   float sensitivity = 0.02f;

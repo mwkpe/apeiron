@@ -24,7 +24,7 @@ void set_style(ImGuiStyle& style)
   style.GrabRounding = 5.0f;
 
   ImVec4 almostblack{0.03f, 0.03f, 0.03f, 1.0f};
-  ImVec4 blackglass{0.1f, 0.1f, 0.1f, 0.95f};
+  ImVec4 blackglass{0.1f, 0.1f, 0.1f, 0.75f};
   ImVec4 fuchsia{0.9f, 0.0f, 0.9f, 1.0f};
   ImVec4 orange{0.996, 0.647, 0.0f, 1.0f};
   ImVec4 turquoise{0.2f, 0.905f, 0.968f, 1.0f};
@@ -87,13 +87,17 @@ void apeiron::example::Menu::build(example::Options* options, float time)
     ImGui::Text("Frametime: %.3f ms", 1000.0f / io.Framerate);
     ImGui::Checkbox("Limit framerate", &options->limit_fps);
     ImGui::SliderInt("Max FPS", &options->max_fps, 30, 240);
+    ImGui::Text("World");
     ImGui::SliderInt("Cyliner detail", &options->cylinder_points, 1, 64);
+    ImGui::SliderFloat("Cyliner rev/s", &options->cylinder_revs, 0.1f, 1.0f);
     ImGui::Checkbox("Autorotate", &options->autorotate);
     ImGui::Checkbox("Wireframe (F2)", &options->wireframe);
     ImGui::Checkbox("Strobe", &options->strobe);
     ImGui::Checkbox("Arr!", &options->pirate_mode);
-    ImGui::SliderFloat("Velocity", &options->velocity, 0.0f, 20.0f);
+    ImGui::Text("Camera");
+    ImGui::SliderFloat("Velocity (m/s)", &options->velocity, 0.0f, 20.0f);
     ImGui::SliderFloat("Sensitivity", &options->sensitivity, 0.0f, 0.1f);
+    ImGui::Text("Color");
     if (ImGui::Button("Orange")) {
       set_main_color(ImGui::GetStyle(), ImVec4{0.996, 0.647, 0.0f, 1.0f});
       options->main_color = engine::Color{0.996, 0.647, 0.0f, 1.0f};
@@ -107,6 +111,11 @@ void apeiron::example::Menu::build(example::Options* options, float time)
     if (ImGui::Button("Blue")) {
       set_main_color(ImGui::GetStyle(), ImVec4{0.2f, 0.905f, 0.968f, 1.0f});
       options->main_color = engine::Color{0.2f, 0.905f, 0.968f, 1.0f};
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Green")) {
+      set_main_color(ImGui::GetStyle(), ImVec4{0.0f, 1.0f, 0.25f, 1.0f});
+      options->main_color = engine::Color{0.0f, 1.0f, 0.25f, 1.0f};
     }
     if (ImGui::Button("Quit"))
       options->quit = true;
