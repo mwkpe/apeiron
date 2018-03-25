@@ -67,10 +67,10 @@ int main(int argc, char* argv[])
     return 1;
   }
 
-  auto frame_timer = [&options, last_ticks = SDL_GetTicks()]() mutable {
+  auto frame_timer = [&options, last_ticks = SDL_GetTicks()](bool benchmarking) mutable {
     auto current_ticks = SDL_GetTicks();
     auto elapsed = current_ticks - last_ticks;
-    if (auto target = 1000u / options.max_fps; options.limit_fps && elapsed < target) {
+    if (auto target = 1000u / options.max_fps; !benchmarking && options.limit_fps && elapsed < target) {
       SDL_Delay(target - elapsed);
       current_ticks = SDL_GetTicks();
       elapsed = current_ticks - last_ticks;
@@ -79,9 +79,14 @@ int main(int argc, char* argv[])
     return elapsed;
   };
 
+  bool benchmarking = false;
+  float benchmark_start_time = 0;
+  int benchmark_total_frames = 0;
+
   while (!options.quit) {
-    auto elapsed = frame_timer();  // May also delay and hence limits fps
+    auto elapsed = frame_timer(benchmarking);  // May also delay and hence limits fps
     float delta_time = elapsed / 1000.0f;
+    auto time = SDL_GetTicks() / 1000.0f;
 
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -108,6 +113,14 @@ int main(int argc, char* argv[])
             case SDLK_F3:
               world.reset();
               break;
+            case SDLK_F6:
+              if (!benchmarking) {
+                benchmarking = true;
+                benchmark_start_time = time;
+                benchmark_total_frames = 0;
+                std::cout << "Benchmark startet..." << std::endl;
+              }
+              break;
           }
         } break;
       }
@@ -115,17 +128,19 @@ int main(int argc, char* argv[])
 
     if (!options.show_gui) {
       auto input = get_input_state();
-      world.update(delta_time, &input);
+      world.update(time, delta_time, &input);
     }
     else {  // imgui handles input
-      world.update(delta_time);
+      world.update(time, delta_time);
     }
 
     glEnable(GL_DEPTH_TEST);
+    glCullFace(GL_BACK);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    auto time = SDL_GetTicks() / 1000.0f;
     world.render(time);
     if (options.show_gui) {
       menu.build(&options, time);
@@ -133,6 +148,14 @@ int main(int argc, char* argv[])
     }
 
     SDL_GL_SwapWindow(window);
+
+    if (benchmarking) {
+      benchmark_total_frames++;
+      if (time > benchmark_start_time + 10.0f) {
+        benchmarking = false;
+        std::cout << "Benchmark result: " << benchmark_total_frames / 10 << " fps" << std::endl;
+      }
+    }
   }
 
   SDL_GL_DeleteContext(context);
