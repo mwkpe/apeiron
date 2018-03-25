@@ -118,7 +118,7 @@ int main(int argc, char* argv[])
                 benchmarking = true;
                 benchmark_start_time = time;
                 benchmark_total_frames = 0;
-                std::cout << "Benchmark startet..." << std::endl;
+                std::cout << "Benchmark started... (takes 10s)" << std::endl;
               }
               break;
           }
