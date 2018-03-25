@@ -12,7 +12,7 @@ class Shape
 {
 public:
   Shape() = default;
-  virtual ~Shape() {};
+  virtual ~Shape();
   // OpenGL delete calls in destructor
   Shape(const Shape&) = delete;
   Shape(Shape&&) = delete;
