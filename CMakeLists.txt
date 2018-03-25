@@ -15,7 +15,7 @@ link_directories(C:/libraries/SDL2/x86_64-w64-mingw32/lib
 add_executable(apeiron
   opengl/shader.cpp opengl/shader.h
   opengl/renderer.cpp opengl/renderer.h
-  opengl/shape.h
+  opengl/shape.cpp opengl/shape.h
   opengl/cube.cpp opengl/cube.h
   opengl/cylinder.cpp opengl/cylinder.h
   opengl/model.cpp opengl/model.h
@@ -31,6 +31,8 @@ add_executable(apeiron
   example/menu.h example/menu.cpp
   example/world.cpp example/world.h
   example/vehicle.cpp example/vehicle.h
+  example/cylinder.h
+  example/poneglyph.h
   imgui/imgui.cpp imgui/imgui.h imgui/imgui_draw.cpp imgui/imgui_internal.h
   imgui/examples/sdl_opengl3_example/imgui_impl_sdl_gl3.cpp
   imgui/examples/sdl_opengl3_example/imgui_impl_sdl_gl3.h)
