@@ -53,6 +53,7 @@ void apeiron::opengl::Renderer::set_wireframe(bool wireframe)
 void apeiron::opengl::Renderer::render(const engine::Entity& entity, const engine::Color& color)
 {
   glm::mat4 model;
+  model = glm::scale(model, entity.scale());
   model = glm::translate(model, entity.position());
   model = apply_rotation(model, entity.rotation());
   color_shader_.use();
