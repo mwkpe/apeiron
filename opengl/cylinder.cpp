@@ -57,13 +57,6 @@ apeiron::opengl::Cylinder::Cylinder(int points) : points_{points}
 }
 
 
-apeiron::opengl::Cylinder::~Cylinder()
-{
-  glDeleteBuffers(1, &vbo_);
-  glDeleteVertexArrays(1, &vao_);
-}
-
-
 void apeiron::opengl::Cylinder::construct(int points)
 {
   points_ = points;
