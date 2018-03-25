@@ -12,7 +12,6 @@ class Cube final : public Shape
 {
 public:
   Cube();
-  ~Cube();
   void render() const override;
 };
 

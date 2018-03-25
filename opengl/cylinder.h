@@ -12,7 +12,6 @@ class Cylinder final : public Shape
 {
 public:
   Cylinder(int points);
-  ~Cylinder();
   void render() const override;
   void construct(int points);
   int points() const { return points_; }

@@ -68,13 +68,6 @@ apeiron::opengl::Cube::Cube()
 }
 
 
-apeiron::opengl::Cube::~Cube()
-{
-  glDeleteBuffers(1, &vbo_);
-  glDeleteVertexArrays(1, &vao_);
-}
-
-
 void apeiron::opengl::Cube::render() const
 {
   glBindVertexArray(vao_);

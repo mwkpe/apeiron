@@ -6,13 +6,6 @@
 #include "engine/model_loader.h"
 
 
-apeiron::opengl::Model::~Model()
-{
-  glDeleteBuffers(1, &vbo_);
-  glDeleteVertexArrays(1, &vao_);
-}
-
-
 void apeiron::opengl::Model::load(std::string_view filename)
 {
   auto vertices = engine::load_vertices(filename);
