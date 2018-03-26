@@ -14,7 +14,6 @@ struct Options
   bool show_gui = true;
   bool autorotate = true;
   bool wireframe = true;
-  bool strobe = false;
   bool limit_fps = true;
   bool pirate_mode = false;
   int cylinder_points = 8;
