@@ -34,27 +34,35 @@ apeiron::engine::Input get_input_state()
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
+  apeiron::example::Options options;
+  try {
+    options = apeiron::example::load_configuration("config.json");
+  }
+  catch (const apeiron::engine::Error& e) {
+    std::cout << e.what() << std::endl;
+  }
+
   SDL_Init(SDL_INIT_VIDEO);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-  SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+  SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, options.msaa_samples);
 
-  auto* window = SDL_CreateWindow("Apeiron", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-      1280, 720, SDL_WINDOW_OPENGL);
+  auto* window = SDL_CreateWindow("apeiron", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+      options.window_width, options.window_height, SDL_WINDOW_OPENGL);
   auto context = SDL_GL_CreateContext(window);
 
   glewExperimental = GL_TRUE;
   if (GLenum status = glewInit(); status != GLEW_OK) {
     std::cerr << reinterpret_cast<const char*>(glewGetErrorString(status));
+    std::cin.ignore();  // Keep console open
     return 1;
   }
 
   SDL_GL_SetSwapInterval(0);
 
-  apeiron::example::Options options;
   apeiron::example::World world(&options);
   apeiron::example::Menu menu(window);
   try {
@@ -64,6 +72,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
   }
   catch (const apeiron::engine::Error& e) {
     std::cerr << e.what() << std::endl;
+    std::cin.ignore();  // Keep console open
     return 1;
   }
 
@@ -161,6 +170,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
   SDL_GL_DeleteContext(context);
   SDL_DestroyWindow(window);
   SDL_Quit();
+
+  apeiron::example::save_configuration(options, "config.json");
 
   return 0;
 }
