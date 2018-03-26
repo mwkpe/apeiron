@@ -15,17 +15,19 @@ void apeiron::example::World::init()
   ground_.set_position(0.0f, -0.5f, 0.0f);
   cylinder_.set_position(0.0f, 1.0f, -10.0f);
 
-  std::mt19937 rng;
-  rng.seed(std::random_device{}());
-  std::uniform_int_distribution<std::mt19937::result_type> dist(0, 10000);
-  auto rotation = [&rng, &dist]{ return static_cast<float>(dist(rng)) / 5000.0f - 1.0f; };
-  auto position = [&rng, &dist]{ return static_cast<float>(dist(rng)) / 100.0f - 50.0f; };
+  std::mt19937 rng{0x299df83d};
+  std::uniform_real_distribution<float> dist(0.0f, 100.0f);
+  auto rotation = [&rng, &dist](float factor = 1.0f){ return (dist(rng) / 50.0f - 1.0f) * factor; };
+  auto position = [&rng, &dist]{ return dist(rng) - 50.0f; };
 
-  for (int i=0; i<200; ++i) {
+  for (int i=0; i<300; ++i) {
     switch (i % 3) {
-      case 0: poneglyphs_.emplace_back(&cube_, 0.0f, rotation(), rotation()); break;
-      case 1: poneglyphs_.emplace_back(&cube_, rotation(), 0.0f, rotation()); break;
-      case 2: poneglyphs_.emplace_back(&cube_, rotation(), rotation(), 0.0f); break;
+      case 0: poneglyphs_.emplace_back(&cube_, 0.0f, rotation(0.2f), rotation());
+        break;
+      case 1: poneglyphs_.emplace_back(&cube_, rotation(), 0.0f, rotation(0.2f));
+        break;
+      case 2: poneglyphs_.emplace_back(&cube_, rotation(0.2f), rotation(), 0.0f);
+        break;
     }
     poneglyphs_.back().set_position(position(), position(), position());
   }
@@ -70,20 +72,14 @@ void apeiron::example::World::update(float time, float delta_time, const engine:
 }
 
 
-void apeiron::example::World::render(float time)
+void apeiron::example::World::render()
 {
   frame_++;
   auto color = options_->main_color;
 
   renderer_.set_projection(glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 0.1f, 1000.0f));
   renderer_.set_view(camera_.view());
-
   renderer_.set_wireframe(options_->wireframe);
-
-  if (options_->strobe && (frame_ % 8 < 4))
-    renderer_.set_wireframe(true);
-  else if (options_->strobe)
-    renderer_.set_wireframe(false);
 
   if (options_->pirate_mode) {
     renderer_.render(pirate_ship_, color);
@@ -94,9 +90,7 @@ void apeiron::example::World::render(float time)
   else {
     renderer_.render(car_, color);
   }
-
   renderer_.render(cylinder_, color);
-
   renderer_.set_wireframe(false);
   renderer_.render(ground_, engine::Color{0.2f, 0.2f, 0.2f, 1.0f});
 }
