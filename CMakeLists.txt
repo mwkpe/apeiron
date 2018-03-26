@@ -30,7 +30,7 @@ add_executable(apeiron
     engine/camera.cpp engine/camera.h
     engine/model_loader.cpp engine/model_loader.h
     example/main.cpp
-    example/options.h
+    example/options.cpp example/options.h
     example/menu.h example/menu.cpp
     example/world.cpp example/world.h
     example/vehicle.cpp example/vehicle.h
