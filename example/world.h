@@ -25,7 +25,7 @@ public:
   void init();
   void reset();
   void update(float time, float delta_time, const engine::Input* input = nullptr);
-  void render(float time);
+  void render();
 
 private:
   const Options* options_;
