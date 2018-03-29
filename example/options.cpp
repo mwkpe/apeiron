@@ -49,8 +49,7 @@ void apeiron::example::save_configuration(const Options& options, std::string_vi
   j["msaa_samples"] = options.msaa_samples;
   j["max_fps"] = options.max_fps;
 
-  std::ofstream fs{std::string{filename}};
-  if (fs.is_open()) {
+  if (std::ofstream fs{std::string{filename}, std::ios::binary}; fs.is_open()) {
     fs << j.dump(2);
   }
 }
