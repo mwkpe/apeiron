@@ -78,6 +78,18 @@ void apeiron::opengl::Shader::use() const
 }
 
 
+void apeiron::opengl::Shader::set_uniform(const char* name, bool value) const
+{
+  glUniform1i(glGetUniformLocation(id_, name), static_cast<int>(value));
+}
+
+
+void apeiron::opengl::Shader::set_uniform(const char* name, int value) const
+{
+  glUniform1i(glGetUniformLocation(id_, name), value);
+}
+
+
 void apeiron::opengl::Shader::set_uniform(const char* name, float x, float y, float z, float w) const
 {
   glUniform4f(glGetUniformLocation(id_, name), x, y, z, w);
