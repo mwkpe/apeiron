@@ -6,7 +6,7 @@
 #include "engine/error.h"
 
 
-std::vector<float> apeiron::engine::load_vertices(std::string_view filename)
+std::tuple<std::vector<float>, int> apeiron::engine::load_vertices(std::string_view filename)
 {
   tinyobj::attrib_t attrib;
   std::vector<tinyobj::shape_t> shapes;
@@ -23,16 +23,20 @@ std::vector<float> apeiron::engine::load_vertices(std::string_view filename)
       auto fv = shapes[s].mesh.num_face_vertices[f];
       for (std::size_t v=0; v<fv; ++v) {
         tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
-        tinyobj::real_t vx = attrib.vertices[3*idx.vertex_index+0];
-        tinyobj::real_t vy = attrib.vertices[3*idx.vertex_index+1];
-        tinyobj::real_t vz = attrib.vertices[3*idx.vertex_index+2];
-        vertices.push_back(vx);
-        vertices.push_back(vy);
-        vertices.push_back(vz);
+        tinyobj::real_t x = attrib.vertices[3*idx.vertex_index+0];
+        tinyobj::real_t y = attrib.vertices[3*idx.vertex_index+1];
+        tinyobj::real_t z = attrib.vertices[3*idx.vertex_index+2];
+        tinyobj::real_t s = attrib.texcoords[2*idx.texcoord_index+0];
+        tinyobj::real_t t = attrib.texcoords[2*idx.texcoord_index+1];
+        vertices.push_back(x);
+        vertices.push_back(y);
+        vertices.push_back(z);
+        vertices.push_back(s);
+        vertices.push_back(t);
       }
       index_offset += fv;
     }
   }
 
-  return vertices;
+  return {vertices, 5};
 }

@@ -4,12 +4,13 @@
 
 #include <string_view>
 #include <vector>
+#include <tuple>
 
 
 namespace apeiron::engine {
 
 
-std::vector<float> load_vertices(std::string_view filename);
+std::tuple<std::vector<float>, int> load_vertices(std::string_view filename);
 
 
 }  // namespace apeiron::engine
