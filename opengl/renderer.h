@@ -16,13 +16,16 @@ class Renderer final
 {
 public:
   void init();
+  void use_texture_shading();
+  void use_color_shading();
   void set_projection(glm::mat4 projection);
   void set_view(glm::mat4 view);
   void set_wireframe(bool wireframe);
+  void render(const engine::Entity& entity);
   void render(const engine::Entity& entity, const engine::Color& color);
 
 private:
-  Shader color_shader_;
+  Shader shader_;
 };
 
 

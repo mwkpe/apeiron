@@ -23,21 +23,34 @@ glm::mat4 apply_rotation(glm::mat4 model, const glm::vec3& rotation)
 
 void apeiron::opengl::Renderer::init()
 {
-  color_shader_.load("shader/mvp_position.vs", "shader/uniform_color.fs");
+  shader_.load("shader/vertex.vs", "shader/fragment.fs");
+  shader_.use();
+  shader_.set_uniform("texture2d", 0);
+  shader_.set_uniform("draw_texture", false);
+}
+
+
+void apeiron::opengl::Renderer::use_texture_shading()
+{
+  shader_.set_uniform("draw_texture", true);
+}
+
+
+void apeiron::opengl::Renderer::use_color_shading()
+{
+  shader_.set_uniform("draw_texture", false);
 }
 
 
 void apeiron::opengl::Renderer::set_projection(glm::mat4 projection)
 {
-  color_shader_.use();
-  color_shader_.set_uniform("projection", projection);
+  shader_.set_uniform("projection", projection);
 }
 
 
 void apeiron::opengl::Renderer::set_view(glm::mat4 view)
 {
-  color_shader_.use();
-  color_shader_.set_uniform("view", view);
+  shader_.set_uniform("view", view);
 }
 
 
@@ -56,8 +69,18 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity, const engin
   model = glm::scale(model, entity.scale());
   model = glm::translate(model, entity.position());
   model = apply_rotation(model, entity.rotation());
-  color_shader_.use();
-  color_shader_.set_uniform("model", model);
-  color_shader_.set_uniform("color", color);
+  shader_.set_uniform("model", model);
+  shader_.set_uniform("color", color);
+  entity.render();
+}
+
+
+void apeiron::opengl::Renderer::render(const engine::Entity& entity)
+{
+  glm::mat4 model;
+  model = glm::scale(model, entity.scale());
+  model = glm::translate(model, entity.position());
+  model = apply_rotation(model, entity.rotation());
+  shader_.set_uniform("model", model);
   entity.render();
 }
