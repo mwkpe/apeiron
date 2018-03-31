@@ -8,11 +8,10 @@
 void apeiron::example::World::init()
 {
   renderer_.init();
+  akari_.load("assets/akari.png");
   car_.load_model("assets/camaro.obj");
   pirate_ship_.load_model("assets/pirate_ship.obj");
-
-  ground_.set_scale(3.6f, 0.1f, 100.0f);
-  ground_.set_position(0.0f, -0.5f, 0.0f);
+  pirate_ship_.load_texture("assets/palitra.png");
   cylinder_.set_position(0.0f, 1.0f, -10.0f);
 
   std::mt19937 rng{0x299df83d};
@@ -76,22 +75,24 @@ void apeiron::example::World::render()
 {
   frame_++;
   auto color = options_->main_color;
-
   auto aspect_ratio = static_cast<float>(options_->window_width) / options_->window_height;
+
   renderer_.set_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 1000.0f));
   renderer_.set_view(camera_.view());
   renderer_.set_wireframe(options_->wireframe);
 
   if (options_->pirate_mode) {
-    renderer_.render(pirate_ship_, color);
+    renderer_.use_texture_shading();
+    renderer_.render(pirate_ship_);
+    akari_.bind();
     for (const auto& p : poneglyphs_) {
-      renderer_.render(p, color);
+      renderer_.render(p);
     }
   }
   else {
+    renderer_.use_color_shading();
     renderer_.render(car_, color);
   }
+  renderer_.use_color_shading();
   renderer_.render(cylinder_, color);
-  renderer_.set_wireframe(false);
-  renderer_.render(ground_, engine::Color{0.2f, 0.2f, 0.2f, 1.0f});
 }

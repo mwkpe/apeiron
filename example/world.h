@@ -9,6 +9,7 @@
 #include "engine/camera.h"
 #include "opengl/cube.h"
 #include "opengl/renderer.h"
+#include "opengl/texture.h"
 #include "example/vehicle.h"
 #include "example/cylinder.h"
 #include "example/poneglyph.h"
@@ -20,7 +21,7 @@ namespace apeiron::example {
 class World final
 {
 public:
-  World(const Options* options) : options_{options}, ground_{&cube_},
+  World(const Options* options) : options_{options},
       cylinder_{options_->cylinder_points, 0.0f, 0.0f, 1.0f} {}
   void init();
   void reset();
@@ -30,9 +31,9 @@ public:
 private:
   const Options* options_;
   opengl::Renderer renderer_;
+  opengl::Texture akari_;
   opengl::Cube cube_;
   engine::Camera camera_;
-  engine::Entity ground_;
   Vehicle car_;
   Vehicle pirate_ship_;
   Cylinder cylinder_;

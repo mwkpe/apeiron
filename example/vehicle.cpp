@@ -4,5 +4,10 @@
 void apeiron::example::Vehicle::load_model(std::string_view filename)
 {
   model_.load(filename);
-  shape_ = static_cast<const opengl::Shape*>(&model_);
+}
+
+
+void apeiron::example::Vehicle::load_texture(std::string_view filename)
+{
+  texture_.load(filename);
 }
