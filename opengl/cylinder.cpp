@@ -52,7 +52,7 @@ apeiron::opengl::Cylinder::Cylinder(int points) : points_{points}
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   construct(points_);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, static_cast<void*>(0));
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void*>(0));
   glEnableVertexAttribArray(0);
 }
 
