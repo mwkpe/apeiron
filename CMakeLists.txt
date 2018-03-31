@@ -19,6 +19,7 @@ add_executable(apeiron
     opengl/shader.cpp opengl/shader.h
     opengl/renderer.cpp opengl/renderer.h
     opengl/shape.cpp opengl/shape.h
+    opengl/texture.cpp opengl/texture.h
     opengl/cube.cpp opengl/cube.h
     opengl/cylinder.cpp opengl/cylinder.h
     opengl/model.cpp opengl/model.h
@@ -28,6 +29,7 @@ add_executable(apeiron
     engine/color.h
     engine/entity.h
     engine/camera.cpp engine/camera.h
+    engine/image_loader.cpp engine/image_loader.h
     engine/model_loader.cpp engine/model_loader.h
     example/main.cpp
     example/options.cpp example/options.h
