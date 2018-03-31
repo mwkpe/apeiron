@@ -143,9 +143,10 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       world.update(time, delta_time);
     }
 
-    glEnable(GL_DEPTH_TEST);
     glCullFace(GL_BACK);
+    glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
+    //glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
