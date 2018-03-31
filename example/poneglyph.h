@@ -14,10 +14,12 @@ class Poneglyph final : public engine::Entity
 {
 public:
   Poneglyph(const opengl::Cube* cube, float xrot, float yrot, float zrot)
-      : Entity{cube}, rotation_magnitudes_{xrot, yrot, zrot} {}
+      : cube_{cube}, rotation_magnitudes_{xrot, yrot, zrot} {}
   glm::vec3 rotation_magnitudes() const { return rotation_magnitudes_; }
+  void render() const override { cube_->render(); }
 
 private:
+  const opengl::Cube* cube_;
   glm::vec3 rotation_magnitudes_;
 };
 

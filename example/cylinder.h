@@ -14,10 +14,11 @@ class Cylinder final : public engine::Entity
 {
 public:
   Cylinder(int points, float xrot, float yrot, float zrot)
-      : Entity{&cylinder_}, cylinder_{points}, rotation_magnitudes_{xrot, yrot, zrot} {}
+      : cylinder_{points}, rotation_magnitudes_{xrot, yrot, zrot} {}
   glm::vec3 rotation_magnitudes() const { return rotation_magnitudes_; }
   int points() const { return cylinder_.points(); }
   void rebuild(int points) { cylinder_.construct(points); }
+  void render() const override { cylinder_.render(); }
 
 private:
   opengl::Cylinder cylinder_;
