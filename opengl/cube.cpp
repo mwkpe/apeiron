@@ -57,14 +57,14 @@ float cube_vertices[] = {
 
 apeiron::opengl::Cube::Cube()
 {
-  int elements_per_vertex = 5;
+  const int elements_per_vertex = 5;
   vertex_count_ = sizeof(cube_vertices) / elements_per_vertex;
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   glBindVertexArray(vao_);
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
   glBufferData(GL_ARRAY_BUFFER, sizeof(cube_vertices), cube_vertices, GL_STATIC_DRAW);
-  int stride = elements_per_vertex * sizeof(float);
+  const int stride = elements_per_vertex * sizeof(float);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(0));
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(3 * sizeof(float)));

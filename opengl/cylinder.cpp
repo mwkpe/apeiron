@@ -60,7 +60,7 @@ apeiron::opengl::Cylinder::Cylinder(int points) : points_{points}
 void apeiron::opengl::Cylinder::construct(int points)
 {
   points_ = points;
-  auto vertices = build_cylinder_vertices(points_);
+  const auto vertices = build_cylinder_vertices(points_);
   vertex_count_ = vertices.size() / 3;
   glBindVertexArray(vao_);
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
@@ -71,8 +71,8 @@ void apeiron::opengl::Cylinder::construct(int points)
 void apeiron::opengl::Cylinder::render() const
 {
   glBindVertexArray(vao_);
-  auto wall_vertices = vertex_count_ / 2;
-  auto circle_vertices = wall_vertices / 2;
+  const int wall_vertices = vertex_count_ / 2;
+  const int circle_vertices = wall_vertices / 2;
   glDrawArrays(GL_TRIANGLE_STRIP, 0, wall_vertices);  // Walls
   glDrawArrays(GL_TRIANGLE_FAN, wall_vertices, circle_vertices);  // Bottom circle
   glDrawArrays(GL_TRIANGLE_FAN, wall_vertices + circle_vertices, circle_vertices);  // Top circle
