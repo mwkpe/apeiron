@@ -31,6 +31,7 @@ add_executable(apeiron
     engine/camera.cpp engine/camera.h
     engine/image_loader.cpp engine/image_loader.h
     engine/model_loader.cpp engine/model_loader.h
+    engine/model_flags.h
     example/main.cpp
     example/options.cpp example/options.h
     example/menu.h example/menu.cpp
