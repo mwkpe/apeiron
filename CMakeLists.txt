@@ -20,6 +20,7 @@ add_executable(apeiron
     opengl/renderer.cpp opengl/renderer.h
     opengl/shape.cpp opengl/shape.h
     opengl/texture.cpp opengl/texture.h
+    opengl/grid.cpp opengl/grid.h
     opengl/cube.cpp opengl/cube.h
     opengl/cylinder.cpp opengl/cylinder.h
     opengl/model.cpp opengl/model.h
@@ -37,6 +38,7 @@ add_executable(apeiron
     example/menu.h example/menu.cpp
     example/world.cpp example/world.h
     example/vehicle.cpp example/vehicle.h
+    example/ground.h
     example/cylinder.h
     example/poneglyph.h
     imgui/imgui.cpp imgui/imgui.h imgui/imgui_draw.cpp imgui/imgui_internal.h
