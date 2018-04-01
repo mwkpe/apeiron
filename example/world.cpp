@@ -16,9 +16,9 @@ void apeiron::example::World::init()
   car_.load_texture("assets/bmw.png");
   pirate_ship_.load_model("assets/schooner.obj", mf::vertices | mf::tex_coords);
   pirate_ship_.load_texture("assets/palitra.png");
-  cylinder_.set_position(0.0f, 1.0f, -10.0f);
+  cylinder_.set_position(0.0f, 0.5f, -options_->cylinder_distance);
 
-  std::mt19937 rng{0x299df83d};
+  std::mt19937 rng{0x299df84d};
   std::uniform_real_distribution<float> dist(0.0f, 100.0f);
   auto rotation = [&rng, &dist](float factor = 1.0f){ return (dist(rng) / 50.0f - 1.0f) * factor; };
   auto position = [&rng, &dist]{ return dist(rng) - 50.0f; };
@@ -63,6 +63,7 @@ void apeiron::example::World::update(float time, float delta_time, const engine:
     camera_.orient(input->mouse_x_rel, input->mouse_y_rel, options_->sensitivity);
   }
 
+  cylinder_.set_position(0.0f, 0.5f, -options_->cylinder_distance);
   cylinder_.set_rotation(frame_time_ * glm::radians(360.0f * options_->cylinder_revs) *
       cylinder_.rotation_magnitudes());
   if (cylinder_.points() != options_->cylinder_points) {
@@ -81,9 +82,12 @@ void apeiron::example::World::render()
   auto color = options_->main_color;
   auto aspect_ratio = static_cast<float>(options_->window_width) / options_->window_height;
 
-  renderer_.set_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 1000.0f));
+  renderer_.set_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.5f, 500.0f));
   renderer_.set_view(camera_.view());
   renderer_.set_wireframe(options_->wireframe);
+
+  renderer_.use_vertex_color_shading();
+  renderer_.render(ground_);
 
   if (options_->pirate_mode) {
     renderer_.use_texture_shading();

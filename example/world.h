@@ -10,6 +10,7 @@
 #include "opengl/cube.h"
 #include "opengl/renderer.h"
 #include "opengl/texture.h"
+#include "example/ground.h"
 #include "example/vehicle.h"
 #include "example/cylinder.h"
 #include "example/poneglyph.h"
@@ -22,7 +23,9 @@ class World final
 {
 public:
   World(const Options* options) : options_{options},
+      ground_{{20.0f, 0.0f, 200.0f}, {2.0f, 0.0f, 2.0f}, 0.01f},
       cylinder_{options_->cylinder_points, 0.0f, 0.0f, 1.0f} {}
+
   void init();
   void reset();
   void update(float time, float delta_time, const engine::Input* input = nullptr);
@@ -34,6 +37,7 @@ private:
   opengl::Texture akari_;
   opengl::Cube cube_;
   engine::Camera camera_;
+  Ground ground_;
   Vehicle car_;
   Vehicle pirate_ship_;
   Cylinder cylinder_;
