@@ -26,19 +26,25 @@ void apeiron::opengl::Renderer::init()
   shader_.load("shader/vertex.vs", "shader/fragment.fs");
   shader_.use();
   shader_.set_uniform("texture2d", 0);
-  shader_.set_uniform("draw_texture", false);
+  shader_.set_uniform("color_mode", 0xFF);
 }
 
 
 void apeiron::opengl::Renderer::use_texture_shading()
 {
-  shader_.set_uniform("draw_texture", true);
+  shader_.set_uniform("color_mode", 0);
+}
+
+
+void apeiron::opengl::Renderer::use_vertex_color_shading()
+{
+  shader_.set_uniform("color_mode", 1);
 }
 
 
 void apeiron::opengl::Renderer::use_color_shading()
 {
-  shader_.set_uniform("draw_texture", false);
+  shader_.set_uniform("color_mode", 2);
 }
 
 

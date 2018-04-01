@@ -17,6 +17,7 @@ class Renderer final
 public:
   void init();
   void use_texture_shading();
+  void use_vertex_color_shading();
   void use_color_shading();
   void set_projection(glm::mat4 projection);
   void set_view(glm::mat4 view);
