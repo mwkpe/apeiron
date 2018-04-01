@@ -84,6 +84,7 @@ void apeiron::example::Menu::build(example::Options* options, float time)
     ImGui::SliderInt("Max FPS", &options->max_fps, 30, 240);
     ImGui::Text("World");
     ImGui::SliderInt("Cyliner detail", &options->cylinder_points, 1, 64);
+    ImGui::SliderFloat("Cyliner distance (m)", &options->cylinder_distance, 0.0f, 100.0f);
     ImGui::SliderFloat("Cyliner rev/s", &options->cylinder_revs, 0.1f, 1.0f);
     ImGui::Checkbox("Autorotate", &options->autorotate);
     ImGui::Checkbox("Wireframe (F2)", &options->wireframe);
