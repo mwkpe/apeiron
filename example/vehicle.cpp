@@ -1,9 +1,9 @@
 #include "vehicle.h"
 
 
-void apeiron::example::Vehicle::load_model(std::string_view filename)
+void apeiron::example::Vehicle::load_model(std::string_view filename, int flags)
 {
-  model_.load(filename);
+  model_.load(filename, flags);
 }
 
 

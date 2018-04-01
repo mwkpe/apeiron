@@ -10,7 +10,7 @@
 namespace apeiron::engine {
 
 
-std::tuple<std::vector<float>, int> load_vertices(std::string_view filename);
+std::tuple<std::vector<float>, int> load_model(std::string_view filename, int flags);
 
 
 }  // namespace apeiron::engine

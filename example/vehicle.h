@@ -13,7 +13,7 @@ namespace apeiron::example {
 class Vehicle final : public engine::Entity
 {
 public:
-  void load_model(std::string_view filename);
+  void load_model(std::string_view filename, int flags);
   void load_texture(std::string_view filename);
   void render() const override { texture_.bind(); model_.render(); }
 

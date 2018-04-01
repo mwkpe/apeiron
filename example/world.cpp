@@ -3,14 +3,18 @@
 
 #include <random>
 #include <glm/gtc/matrix_transform.hpp>
+#include "engine/model_flags.h"
 
 
 void apeiron::example::World::init()
 {
+  namespace mf = engine::model_flags;
+
   renderer_.init();
   akari_.load("assets/akari.png");
-  car_.load_model("assets/camaro.obj");
-  pirate_ship_.load_model("assets/pirate_ship.obj");
+  car_.load_model("assets/bmw.obj", mf::vertices | mf::tex_coords);
+  car_.load_texture("assets/bmw.png");
+  pirate_ship_.load_model("assets/schooner.obj", mf::vertices | mf::tex_coords);
   pirate_ship_.load_texture("assets/palitra.png");
   cylinder_.set_position(0.0f, 1.0f, -10.0f);
 
@@ -90,8 +94,8 @@ void apeiron::example::World::render()
     }
   }
   else {
-    renderer_.use_color_shading();
-    renderer_.render(car_, color);
+    renderer_.use_texture_shading();
+    renderer_.render(car_);
   }
   renderer_.use_color_shading();
   renderer_.render(cylinder_, color);
