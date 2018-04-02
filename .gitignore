@@ -31,8 +31,8 @@
 *.out
 *.app
 
-# Header libraries
-imgui/
+# Libraries
+external/
 
 # Build directories
 cmake-build*/
