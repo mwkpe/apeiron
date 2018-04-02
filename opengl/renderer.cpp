@@ -48,13 +48,13 @@ void apeiron::opengl::Renderer::use_color_shading()
 }
 
 
-void apeiron::opengl::Renderer::set_projection(glm::mat4 projection)
+void apeiron::opengl::Renderer::set_projection(const glm::mat4& projection)
 {
   shader_.set_uniform("projection", projection);
 }
 
 
-void apeiron::opengl::Renderer::set_view(glm::mat4 view)
+void apeiron::opengl::Renderer::set_view(const glm::mat4& view)
 {
   shader_.set_uniform("view", view);
 }
@@ -66,6 +66,24 @@ void apeiron::opengl::Renderer::set_wireframe(bool wireframe)
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   else
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+
+void apeiron::opengl::Renderer::set_lighting(bool lighting)
+{
+  shader_.set_uniform("light_mode", lighting ? 1 : 0);
+}
+
+
+void apeiron::opengl::Renderer::set_light_position(const glm::vec3& position)
+{
+  shader_.set_uniform("light_position", position);
+}
+
+
+void apeiron::opengl::Renderer::set_light_color(const glm::vec3& color)
+{
+  shader_.set_uniform("light_color", color);
 }
 
 

@@ -19,9 +19,12 @@ public:
   void use_texture_shading();
   void use_vertex_color_shading();
   void use_color_shading();
-  void set_projection(glm::mat4 projection);
-  void set_view(glm::mat4 view);
+  void set_projection(const glm::mat4& projection);
+  void set_view(const glm::mat4& view);
   void set_wireframe(bool wireframe);
+  void set_lighting(bool lighting);
+  void set_light_position(const glm::vec3& position);
+  void set_light_color(const glm::vec3& color);
   void render(const engine::Entity& entity);
   void render(const engine::Entity& entity, const engine::Color& color);
 

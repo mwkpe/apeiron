@@ -12,10 +12,16 @@ void apeiron::example::World::init()
 
   renderer_.init();
   akari_.load("assets/akari.png");
-  car_.load_model("assets/bmw.obj", mf::vertices | mf::tex_coords);
+  bulb_.load("assets/bulb.obj", mf::vertices);
+  car_.load_model("assets/bmw.obj", mf::vertices | mf::normals | mf::tex_coords);
   car_.load_texture("assets/bmw.png");
   pirate_ship_.load_model("assets/schooner.obj", mf::vertices | mf::tex_coords);
   pirate_ship_.load_texture("assets/palitra.png");
+  light_.set_position(0.0f, 7.5f, -options_->light_distance);
+  light_.set_color(1.0f, 1.0f, 1.0f);
+  renderer_.set_light_position(light_.position());
+  renderer_.set_light_color(light_.color());
+  car_.set_position(0.0f, 0.0f, 4.13102f / 2.0f);
   cylinder_.set_position(0.0f, 0.5f, -options_->cylinder_distance);
 
   std::mt19937 rng{0x299df84d};
@@ -63,6 +69,12 @@ void apeiron::example::World::update(float time, float delta_time, const engine:
     camera_.orient(input->mouse_x_rel, input->mouse_y_rel, options_->sensitivity);
   }
 
+  const auto& mc = options_->main_color;
+  light_.set_color(mc.r, mc.g, mc.b);
+  light_.set_position(0.0f, 7.5f, -options_->light_distance);
+  renderer_.set_light_color(light_.color());
+  renderer_.set_light_position(light_.position());
+
   cylinder_.set_position(0.0f, 0.5f, -options_->cylinder_distance);
   cylinder_.set_rotation(frame_time_ * glm::radians(360.0f * options_->cylinder_revs) *
       cylinder_.rotation_magnitudes());
@@ -85,6 +97,7 @@ void apeiron::example::World::render()
   renderer_.set_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.5f, 500.0f));
   renderer_.set_view(camera_.view());
   renderer_.set_wireframe(options_->wireframe);
+  renderer_.set_lighting(options_->lighting);
 
   renderer_.use_vertex_color_shading();
   renderer_.render(ground_);
@@ -103,4 +116,12 @@ void apeiron::example::World::render()
   }
   renderer_.use_color_shading();
   renderer_.render(cylinder_, color);
+  if (options_->lighting)
+    renderer_.set_lighting(false);
+  engine::Color c{0.3f, 0.3f, 0.3f, 1.0f};
+  if (options_->lighting) {
+    auto lc = light_.color();
+    c = engine::Color{lc.r, lc.g, lc.b, 1.0f};
+  }
+  renderer_.render(light_, {c.r, c.g, c.b, 1.0f});
 }
