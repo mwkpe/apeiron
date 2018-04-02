@@ -87,18 +87,6 @@ void apeiron::opengl::Renderer::set_light_color(const glm::vec3& color)
 }
 
 
-void apeiron::opengl::Renderer::render(const engine::Entity& entity, const engine::Color& color)
-{
-  glm::mat4 model;
-  model = glm::scale(model, entity.scale());
-  model = glm::translate(model, entity.position());
-  model = apply_rotation(model, entity.rotation());
-  shader_.set_uniform("model", model);
-  shader_.set_uniform("color", color);
-  entity.render();
-}
-
-
 void apeiron::opengl::Renderer::render(const engine::Entity& entity)
 {
   glm::mat4 model;
@@ -106,5 +94,17 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity)
   model = glm::translate(model, entity.position());
   model = apply_rotation(model, entity.rotation());
   shader_.set_uniform("model", model);
+  entity.render();
+}
+
+
+void apeiron::opengl::Renderer::render(const engine::Entity& entity, const glm::vec4& color)
+{
+  glm::mat4 model;
+  model = glm::scale(model, entity.scale());
+  model = glm::translate(model, entity.position());
+  model = apply_rotation(model, entity.rotation());
+  shader_.set_uniform("model", model);
+  shader_.set_uniform("color", color);
   entity.render();
 }

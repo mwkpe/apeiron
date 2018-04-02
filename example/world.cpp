@@ -127,6 +127,6 @@ void apeiron::example::World::render()
     if (options_->lighting)
       renderer_.set_lighting(false);
     auto lc = light_.color();
-    renderer_.render(light_, engine::Color{lc.r, lc.g, lc.b, 1.0f});
+    renderer_.render(light_, {lc.r, lc.g, lc.b, 1.0f});
   }
 }

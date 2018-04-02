@@ -3,7 +3,7 @@
 
 
 #include <string_view>
-#include "engine/color.h"
+#include <glm/glm.hpp>
 
 
 namespace apeiron::example {
@@ -29,7 +29,7 @@ struct Options
   float cylinder_revs = 0.2f;
   float velocity = 10.0f;
   float sensitivity = 0.02f;
-  engine::Color main_color = engine::Color{0.9f, 0.9f, 0.9f, 1.0f};
+  glm::vec4 main_color = {1.0f, 1.0f, 1.0f, 1.0f};
 };
 
 

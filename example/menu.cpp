@@ -2,8 +2,8 @@
 
 
 #include "GL/glew.h"
+#include <glm/glm.hpp>
 #include "imgui/imgui.h"
-#include "engine/color.h"
 
 
 namespace {
@@ -98,27 +98,27 @@ void apeiron::example::Menu::build(example::Options* options, float time)
     ImGui::Text("Color");
     if (ImGui::Button("White")) {
       set_main_color(ImGui::GetStyle(), ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
-      options->main_color = engine::Color{1.0f, 1.0f, 1.0f, 1.0f};
+      options->main_color = glm::vec4{1.0f, 1.0f, 1.0f, 1.0f};
     }
     ImGui::SameLine();
     if (ImGui::Button("Orange")) {
       set_main_color(ImGui::GetStyle(), ImVec4{0.996, 0.647, 0.0f, 1.0f});
-      options->main_color = engine::Color{0.996, 0.647, 0.0f, 1.0f};
+      options->main_color = glm::vec4{0.996, 0.647, 0.0f, 1.0f};
     }
     ImGui::SameLine();
     if (ImGui::Button("Pink")) {
       set_main_color(ImGui::GetStyle(), ImVec4{0.988f, 0.176f, 0.584f, 1.0f});
-      options->main_color = engine::Color{0.988f, 0.176f, 0.584f, 1.0f};
+      options->main_color = glm::vec4{0.988f, 0.176f, 0.584f, 1.0f};
     }
     ImGui::SameLine();
     if (ImGui::Button("Blue")) {
       set_main_color(ImGui::GetStyle(), ImVec4{0.2f, 0.905f, 0.968f, 1.0f});
-      options->main_color = engine::Color{0.2f, 0.905f, 0.968f, 1.0f};
+      options->main_color = glm::vec4{0.2f, 0.905f, 0.968f, 1.0f};
     }
     ImGui::SameLine();
     if (ImGui::Button("Green")) {
       set_main_color(ImGui::GetStyle(), ImVec4{0.0f, 1.0f, 0.25f, 1.0f});
-      options->main_color = engine::Color{0.0f, 1.0f, 0.25f, 1.0f};
+      options->main_color = glm::vec4{0.0f, 1.0f, 0.25f, 1.0f};
     }
     if (ImGui::Button("Quit"))
       options->quit = true;

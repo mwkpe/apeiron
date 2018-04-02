@@ -96,13 +96,13 @@ void apeiron::opengl::Shader::set_uniform(const char* name, const glm::vec3& vec
 }
 
 
-void apeiron::opengl::Shader::set_uniform(const char* name, const glm::mat4& mat) const
+void apeiron::opengl::Shader::set_uniform(const char* name, const glm::vec4& vec) const
 {
-  glUniformMatrix4fv(glGetUniformLocation(id_, name), 1, GL_FALSE, &mat[0][0]);
+  glUniform4fv(glGetUniformLocation(id_, name), 1, &vec[0]);
 }
 
 
-void apeiron::opengl::Shader::set_uniform(const char* name, const engine::Color& color) const
+void apeiron::opengl::Shader::set_uniform(const char* name, const glm::mat4& mat) const
 {
-  glUniform4f(glGetUniformLocation(id_, name), color.r, color.g, color.b, color.a);
+  glUniformMatrix4fv(glGetUniformLocation(id_, name), 1, GL_FALSE, &mat[0][0]);
 }

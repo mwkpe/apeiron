@@ -5,7 +5,6 @@
 #include <cstdint>
 #include <string_view>
 #include <glm/glm.hpp>
-#include "engine/color.h"
 
 
 namespace apeiron::opengl {
@@ -19,8 +18,8 @@ public:
   void set_uniform(const char* name, bool value) const;
   void set_uniform(const char* name, int value) const;
   void set_uniform(const char* name, const glm::vec3& vec) const;
+  void set_uniform(const char* name, const glm::vec4& vec) const;
   void set_uniform(const char* name, const glm::mat4& mat) const;
-  void set_uniform(const char* name, const engine::Color& color) const;
 
 private:
   std::uint32_t id_ = -1;

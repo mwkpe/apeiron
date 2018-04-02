@@ -5,7 +5,6 @@
 #include <glm/glm.hpp>
 #include "opengl/shader.h"
 #include "opengl/shape.h"
-#include "engine/color.h"
 #include "engine/entity.h"
 
 
@@ -26,7 +25,7 @@ public:
   void set_light_position(const glm::vec3& position);
   void set_light_color(const glm::vec3& color);
   void render(const engine::Entity& entity);
-  void render(const engine::Entity& entity, const engine::Color& color);
+  void render(const engine::Entity& entity, const glm::vec4& color);
 
 private:
   Shader shader_;
