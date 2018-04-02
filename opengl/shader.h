@@ -18,7 +18,7 @@ public:
   void use() const;
   void set_uniform(const char* name, bool value) const;
   void set_uniform(const char* name, int value) const;
-  void set_uniform(const char* name, float x, float y, float z, float w) const;
+  void set_uniform(const char* name, const glm::vec3& vec) const;
   void set_uniform(const char* name, const glm::mat4& mat) const;
   void set_uniform(const char* name, const engine::Color& color) const;
 

@@ -90,9 +90,9 @@ void apeiron::opengl::Shader::set_uniform(const char* name, int value) const
 }
 
 
-void apeiron::opengl::Shader::set_uniform(const char* name, float x, float y, float z, float w) const
+void apeiron::opengl::Shader::set_uniform(const char* name, const glm::vec3& vec) const
 {
-  glUniform4f(glGetUniformLocation(id_, name), x, y, z, w);
+  glUniform3fv(glGetUniformLocation(id_, name), 1, &vec[0]);
 }
 
 
