@@ -97,7 +97,6 @@ void apeiron::example::World::render()
   renderer_.set_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.5f, 500.0f));
   renderer_.set_view(camera_.view());
   renderer_.set_wireframe(options_->wireframe);
-  renderer_.set_lighting(options_->lighting);
 
   renderer_.use_vertex_color_shading();
   renderer_.render(ground_);
@@ -111,8 +110,10 @@ void apeiron::example::World::render()
     }
   }
   else {
+    renderer_.set_lighting(options_->lighting);
     renderer_.use_texture_shading();
     renderer_.render(car_);
+    renderer_.set_lighting(false);
   }
   renderer_.use_color_shading();
   renderer_.render(cylinder_, color);
