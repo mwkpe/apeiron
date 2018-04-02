@@ -97,8 +97,8 @@ void apeiron::example::Menu::build(example::Options* options, float time)
     ImGui::SliderFloat("Sensitivity", &options->sensitivity, 0.0f, 0.1f);
     ImGui::Text("Color");
     if (ImGui::Button("White")) {
-      set_main_color(ImGui::GetStyle(), ImVec4{0.9f, 0.9f, 0.9f, 1.0f});
-      options->main_color = engine::Color{0.9f, 0.9f, 0.9f, 1.0f};
+      set_main_color(ImGui::GetStyle(), ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
+      options->main_color = engine::Color{1.0f, 1.0f, 1.0f, 1.0f};
     }
     ImGui::SameLine();
     if (ImGui::Button("Orange")) {
