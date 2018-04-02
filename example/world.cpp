@@ -99,7 +99,7 @@ void apeiron::example::World::render()
   auto color = options_->main_color;
   auto aspect_ratio = static_cast<float>(options_->window_width) / options_->window_height;
 
-  renderer_.set_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.5f, 500.0f));
+  renderer_.set_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 1.5f, 500.0f));
   renderer_.set_view(camera_.view());
   renderer_.set_wireframe(options_->wireframe);
 
