@@ -83,6 +83,8 @@ void apeiron::example::Menu::build(example::Options* options, float time)
     ImGui::Checkbox("Limit framerate", &options->limit_fps);
     ImGui::SliderInt("Max FPS", &options->max_fps, 30, 240);
     ImGui::Text("World");
+    ImGui::Checkbox("Lighting", &options->lighting);
+    ImGui::SliderFloat("Light distance (m)", &options->light_distance, -25.0f, 25.0f);
     ImGui::SliderInt("Cyliner detail", &options->cylinder_points, 1, 64);
     ImGui::SliderFloat("Cyliner distance (m)", &options->cylinder_distance, 0.0f, 100.0f);
     ImGui::SliderFloat("Cyliner rev/s", &options->cylinder_revs, 0.1f, 1.0f);
@@ -93,6 +95,11 @@ void apeiron::example::Menu::build(example::Options* options, float time)
     ImGui::SliderFloat("Velocity (m/s)", &options->velocity, 0.0f, 20.0f);
     ImGui::SliderFloat("Sensitivity", &options->sensitivity, 0.0f, 0.1f);
     ImGui::Text("Color");
+    if (ImGui::Button("White")) {
+      set_main_color(ImGui::GetStyle(), ImVec4{0.9f, 0.9f, 0.9f, 1.0f});
+      options->main_color = engine::Color{0.9f, 0.9f, 0.9f, 1.0f};
+    }
+    ImGui::SameLine();
     if (ImGui::Button("Orange")) {
       set_main_color(ImGui::GetStyle(), ImVec4{0.996, 0.647, 0.0f, 1.0f});
       options->main_color = engine::Color{0.996, 0.647, 0.0f, 1.0f};
