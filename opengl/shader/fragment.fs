@@ -16,7 +16,7 @@ in vec3 vertex_color;
 void main()
 {
   vec4 object_color;
-  float ambient = 0.1;
+  float ambient = 0.2;
 
   switch (color_mode) {
     case 0:
