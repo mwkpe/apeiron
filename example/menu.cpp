@@ -86,9 +86,9 @@ void apeiron::example::Menu::build(example::Options* options, float time)
     ImGui::Checkbox("Lighting", &options->lighting);
     ImGui::Checkbox("Show Light Position", &options->show_light);
     ImGui::SliderFloat("Light distance (m)", &options->light_distance, -25.0f, 25.0f);
-    ImGui::SliderInt("Cyliner detail", &options->cylinder_points, 1, 64);
-    ImGui::SliderFloat("Cyliner distance (m)", &options->cylinder_distance, 0.0f, 100.0f);
-    ImGui::SliderFloat("Cyliner rev/s", &options->cylinder_revs, 0.1f, 1.0f);
+    ImGui::SliderInt("Cylinder detail", &options->cylinder_points, 1, 64);
+    ImGui::SliderFloat("Cylinder distance (m)", &options->cylinder_distance, 0.0f, 100.0f);
+    ImGui::SliderFloat("Cylinder rev/s", &options->cylinder_revs, 0.1f, 1.0f);
     ImGui::Checkbox("Autorotate", &options->autorotate);
     ImGui::Checkbox("Wireframe (F2)", &options->wireframe);
     ImGui::Checkbox("Arr!", &options->pirate_mode);
