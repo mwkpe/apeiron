@@ -38,6 +38,7 @@ add_executable(apeiron
     example/menu.h example/menu.cpp
     example/world.cpp example/world.h
     example/vehicle.cpp example/vehicle.h
+    example/light.h
     example/ground.h
     example/cylinder.h
     example/poneglyph.h
