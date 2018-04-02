@@ -16,6 +16,7 @@ struct Options
   bool autorotate = true;
   bool wireframe = false;
   bool lighting = false;
+  bool show_light = true;
   bool limit_fps = true;
   bool pirate_mode = false;
   int window_width = 1280;
@@ -23,7 +24,7 @@ struct Options
   int msaa_samples = 4;
   int cylinder_points = 8;
   int max_fps = 90;
-  float light_distance = 2.5f;
+  float light_distance = -5.0f;
   float cylinder_distance = 25.0f;
   float cylinder_revs = 0.2f;
   float velocity = 10.0f;
