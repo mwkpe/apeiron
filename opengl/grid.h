@@ -2,7 +2,7 @@
 #define APEIRON_OPENGL_GRID_H
 
 
-#include <tuple>
+#include <glm/glm.hpp>
 #include "opengl/shape.h"
 
 
@@ -12,8 +12,14 @@ namespace apeiron::opengl {
 class Grid final : public Shape
 {
 public:
-  Grid(std::tuple<float, float, float> size, std::tuple<float, float, float> spacing, float precision);
+  Grid(const glm::vec3& size, const glm::vec3& spacing, float precision);
+  glm::vec3 size() const { return size_; }
+  glm::vec3 spacing() const { return spacing_; }
   void render() const override;
+
+private:
+  glm::vec3 size_;
+  glm::vec3 spacing_;
 };
 
 

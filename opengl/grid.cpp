@@ -9,21 +9,18 @@
 namespace {
 
 
-std::vector<float> build_grid(std::tuple<float, float, float> size,
-    std::tuple<float, float, float> spacing, float precision)
+std::vector<float> build_grid(const glm::vec3& size, const glm::vec3& spacing, float precision)
 {
   std::vector<float> vertex_data;
-  auto [x, y, z] = size;
-  auto [x_gap, y_gap, z_gap] = spacing;
 
-  float x_first = -x / 2.0f;
-  float x_last = x / 2.0f;
-  float z_first = -z / 2.0f;
-  float z_last = z / 2.0f;
+  float x_first = -size.x / 2.0f;
+  float x_last = size.x / 2.0f;
+  float z_first = -size.z / 2.0f;
+  float z_last = size.z / 2.0f;
 
-  for (float pos = x_first; std::abs(pos - x_gap - x_last) > precision; pos += x_gap) {
+  for (float pos = x_first; std::abs(pos - spacing.x - x_last) > precision; pos += spacing.x) {
     vertex_data.push_back(pos);
-    vertex_data.push_back(y);
+    vertex_data.push_back(0);
     vertex_data.push_back(z_first);
     if (std::abs(pos) < precision) {
       vertex_data.push_back(0.956f);
@@ -36,7 +33,7 @@ std::vector<float> build_grid(std::tuple<float, float, float> size,
       vertex_data.push_back(0.25f);
     }
     vertex_data.push_back(pos);
-    vertex_data.push_back(y);
+    vertex_data.push_back(0);
     vertex_data.push_back(z_last);
     if (std::abs(pos) < precision) {
       vertex_data.push_back(0.956f);
@@ -50,9 +47,9 @@ std::vector<float> build_grid(std::tuple<float, float, float> size,
     }
   }
 
-  for (float pos = z_first; std::abs(pos - z_gap - z_last) > precision; pos += z_gap) {
+  for (float pos = z_first; std::abs(pos - spacing.z - z_last) > precision; pos += spacing.z) {
     vertex_data.push_back(x_first);
-    vertex_data.push_back(y);
+    vertex_data.push_back(0);
     vertex_data.push_back(pos);
     if (std::abs(pos) < precision) {
       vertex_data.push_back(0.129f);
@@ -65,7 +62,7 @@ std::vector<float> build_grid(std::tuple<float, float, float> size,
       vertex_data.push_back(0.25f);
     }
     vertex_data.push_back(x_last);
-    vertex_data.push_back(y);
+    vertex_data.push_back(0);
     vertex_data.push_back(pos);
     if (std::abs(pos) < precision) {
       vertex_data.push_back(0.129f);
@@ -86,8 +83,8 @@ std::vector<float> build_grid(std::tuple<float, float, float> size,
 }  // namespace
 
 
-apeiron::opengl::Grid::Grid(std::tuple<float, float, float> size,
-    std::tuple<float, float, float> spacing, float precision)
+apeiron::opengl::Grid::Grid(const glm::vec3& size, const glm::vec3& spacing, float precision)
+    : size_{size}, spacing_{spacing}
 {
   const auto vertex_data = build_grid(size, spacing, precision);
   const int elements_per_vertex = 6;
