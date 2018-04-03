@@ -22,7 +22,7 @@ public:
   void set_uniform(const char* name, const glm::mat4& mat) const;
 
 private:
-  std::uint32_t id_ = -1;
+  std::uint32_t id_ = 0;
 };
 
 

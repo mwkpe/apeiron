@@ -11,7 +11,7 @@ namespace apeiron::opengl {
 class Gui
 {
 public:
-  Gui(SDL_Window* window) : window_{window} {}
+  explicit Gui(SDL_Window* window) : window_{window} {}
   void init();
   void process(SDL_Event* event);
   void create_frame();

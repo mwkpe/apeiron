@@ -12,7 +12,7 @@ namespace apeiron::example {
 class Menu final : public opengl::Gui
 {
 public:
-  Menu(SDL_Window* window) : opengl::Gui{window} {}
+  explicit Menu(SDL_Window* window) : opengl::Gui{window} {}
   void setup(example::Options* options);
   void build(example::Options* options, float time);
 };

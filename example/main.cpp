@@ -130,8 +130,10 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
                 std::cout << "Benchmark started... (takes 10s)" << std::endl;
               }
               break;
+            default:;
           }
         } break;
+        default:;
       }
     }
 

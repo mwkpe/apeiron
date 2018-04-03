@@ -7,7 +7,7 @@
 #include "engine/model_loader.h"
 
 
-void apeiron::opengl::Model::load(std::string_view filename, int flags)
+void apeiron::opengl::Model::load(std::string_view filename, std::uint32_t flags)
 {
   namespace mf = engine::model_flags;
 
@@ -38,7 +38,6 @@ void apeiron::opengl::Model::load(std::string_view filename, int flags)
   if (flags & mf::colors) {
     glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
     glEnableVertexAttribArray(3);
-    offset += 3 * sizeof(float);
   }
 }
 

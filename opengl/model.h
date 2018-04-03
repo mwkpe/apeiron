@@ -13,7 +13,7 @@ namespace apeiron::opengl {
 class Model final : public Shape
 {
 public:
-  void load(std::string_view filename, int flags);
+  void load(std::string_view filename, std::uint32_t flags);
   void render() const override;
 };
 
