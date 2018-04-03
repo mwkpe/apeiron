@@ -15,7 +15,7 @@ namespace apeiron::example {
 class Vehicle final : public engine::Entity
 {
 public:
-  explicit Vehicle(glm::vec3 size) : Entity{size}, bounding_box_{size, true, 2.0f} {}
+  explicit Vehicle(const glm::vec3& size) : Entity{size}, bounding_box_{size, true, 2.0f} {}
   void load_model(std::string_view filename, std::uint32_t flags);
   void load_texture(std::string_view filename);
   void render() const override { texture_.bind(); model_.render();  }
