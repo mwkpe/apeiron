@@ -24,7 +24,9 @@ public:
 protected:
   std::uint32_t vao_ = 0;
   std::uint32_t vbo_ = 0;
+  std::uint32_t ebo_ = 0;
   std::uint32_t vertex_count_ = 0;
+  std::uint32_t element_count_ = 0;
 };
 
 
