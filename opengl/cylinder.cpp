@@ -13,7 +13,7 @@ constexpr float pi = 3.14159f;
 constexpr float tau = 2.0f * pi;
 
 
-std::vector<float> build_cylinder_vertices(int points, float radius = 0.5f, float height = 1.0f)
+std::vector<float> build_vertices(int points, float radius = 0.5f, float height = 1.0f)
 {
   int wall_vertices = (points + 1) * 2 * 3;
   int circle_vertices = wall_vertices / 2;
@@ -60,7 +60,7 @@ apeiron::opengl::Cylinder::Cylinder(int points) : points_{points}
 void apeiron::opengl::Cylinder::construct(int points)
 {
   points_ = points;
-  const auto vertices = build_cylinder_vertices(points_);
+  const auto vertices = build_vertices(points_);
   vertex_count_ = vertices.size() / 3;
   glBindVertexArray(vao_);
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
