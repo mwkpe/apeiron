@@ -25,6 +25,7 @@ add_executable(apeiron
     opengl/shape.cpp opengl/shape.h
     opengl/texture.cpp opengl/texture.h
     opengl/grid.cpp opengl/grid.h
+    opengl/line_array.cpp opengl/line_array.h
     opengl/cuboid.cpp opengl/cuboid.h
     opengl/cylinder.cpp opengl/cylinder.h
     opengl/model.cpp opengl/model.h
