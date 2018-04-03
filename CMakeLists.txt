@@ -25,13 +25,12 @@ add_executable(apeiron
     opengl/shape.cpp opengl/shape.h
     opengl/texture.cpp opengl/texture.h
     opengl/grid.cpp opengl/grid.h
-    opengl/cube.cpp opengl/cube.h
+    opengl/cuboid.cpp opengl/cuboid.h
     opengl/cylinder.cpp opengl/cylinder.h
     opengl/model.cpp opengl/model.h
     opengl/gui.cpp opengl/gui.h
     engine/error.h
     engine/input.h
-    engine/color.h
     engine/entity.h
     engine/camera.cpp engine/camera.h
     engine/image_loader.cpp engine/image_loader.h
