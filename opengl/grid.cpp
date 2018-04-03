@@ -1,6 +1,7 @@
 #include "grid.h"
 
 
+#include <tuple>
 #include <vector>
 #include <cmath>
 #include "GL/glew.h"
@@ -9,9 +10,10 @@
 namespace {
 
 
-std::vector<float> build_grid(const glm::vec3& size, const glm::vec3& spacing, float precision)
+std::tuple<std::vector<float>, int> build_vertices(const glm::vec3& size, const glm::vec3& spacing,
+    float precision, glm::vec3 color)
 {
-  std::vector<float> vertex_data;
+  std::vector<float> vertices;
 
   float x_first = -size.x / 2.0f;
   float x_last = size.x / 2.0f;
@@ -19,82 +21,54 @@ std::vector<float> build_grid(const glm::vec3& size, const glm::vec3& spacing, f
   float z_last = size.z / 2.0f;
 
   for (float pos = x_first; std::abs(pos - spacing.x - x_last) > precision; pos += spacing.x) {
-    vertex_data.push_back(pos);
-    vertex_data.push_back(0);
-    vertex_data.push_back(z_first);
-    if (std::abs(pos) < precision) {
-      vertex_data.push_back(0.956f);
-      vertex_data.push_back(0.262f);
-      vertex_data.push_back(0.211f);
-    }
-    else {
-      vertex_data.push_back(0.25f);
-      vertex_data.push_back(0.25f);
-      vertex_data.push_back(0.25f);
-    }
-    vertex_data.push_back(pos);
-    vertex_data.push_back(0);
-    vertex_data.push_back(z_last);
-    if (std::abs(pos) < precision) {
-      vertex_data.push_back(0.956f);
-      vertex_data.push_back(0.262f);
-      vertex_data.push_back(0.211f);
-    }
-    else {
-      vertex_data.push_back(0.25f);
-      vertex_data.push_back(0.25f);
-      vertex_data.push_back(0.25f);
-    }
+    vertices.push_back(pos);
+    vertices.push_back(0);
+    vertices.push_back(z_first);
+    vertices.push_back(color.r);
+    vertices.push_back(color.g);
+    vertices.push_back(color.b);
+    vertices.push_back(pos);
+    vertices.push_back(0);
+    vertices.push_back(z_last);
+    vertices.push_back(color.r);
+    vertices.push_back(color.g);
+    vertices.push_back(color.b);
   }
 
   for (float pos = z_first; std::abs(pos - spacing.z - z_last) > precision; pos += spacing.z) {
-    vertex_data.push_back(x_first);
-    vertex_data.push_back(0);
-    vertex_data.push_back(pos);
-    if (std::abs(pos) < precision) {
-      vertex_data.push_back(0.129f);
-      vertex_data.push_back(0.588f);
-      vertex_data.push_back(0.952f);
-    }
-    else {
-      vertex_data.push_back(0.25f);
-      vertex_data.push_back(0.25f);
-      vertex_data.push_back(0.25f);
-    }
-    vertex_data.push_back(x_last);
-    vertex_data.push_back(0);
-    vertex_data.push_back(pos);
-    if (std::abs(pos) < precision) {
-      vertex_data.push_back(0.129f);
-      vertex_data.push_back(0.588f);
-      vertex_data.push_back(0.952f);
-    }
-    else {
-      vertex_data.push_back(0.25f);
-      vertex_data.push_back(0.25f);
-      vertex_data.push_back(0.25f);
-    }
+    vertices.push_back(x_first);
+    vertices.push_back(0);
+    vertices.push_back(pos);
+    vertices.push_back(color.r);
+    vertices.push_back(color.g);
+    vertices.push_back(color.b);
+    vertices.push_back(x_last);
+    vertices.push_back(0);
+    vertices.push_back(pos);
+    vertices.push_back(color.r);
+    vertices.push_back(color.g);
+    vertices.push_back(color.b);
   }
 
-  return vertex_data;
+  return {std::move(vertices), 6};  // Values per vertex
 }
 
 
 }  // namespace
 
 
-apeiron::opengl::Grid::Grid(const glm::vec3& size, const glm::vec3& spacing, float precision)
-    : size_{size}, spacing_{spacing}
+apeiron::opengl::Grid::Grid(const glm::vec3& size, const glm::vec3& spacing, float precision,
+      const glm::vec3& color, float line_width)
+    : size_{size}, spacing_{spacing}, line_width_{line_width}
 {
-  const auto vertex_data = build_grid(size, spacing, precision);
-  const int elements_per_vertex = 6;
-  vertex_count_ = vertex_data.size() / elements_per_vertex;
+  const auto [vertices, values_per_vertex] = build_vertices(size, spacing, precision, color);
+  vertex_count_ = vertices.size() / values_per_vertex;
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   glBindVertexArray(vao_);
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertex_data.size() * sizeof(float), vertex_data.data(), GL_STATIC_DRAW);
-  const int stride = elements_per_vertex * sizeof(float);
+  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+  const int stride = values_per_vertex * sizeof(float);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(0));
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(3 * sizeof(float)));
@@ -105,5 +79,9 @@ apeiron::opengl::Grid::Grid(const glm::vec3& size, const glm::vec3& spacing, flo
 void apeiron::opengl::Grid::render() const
 {
   glBindVertexArray(vao_);
+  float global_width;
+  glGetFloatv(GL_LINE_WIDTH, &global_width);
+  glLineWidth(line_width_);
   glDrawArrays(GL_LINES, 0, vertex_count_);
+  glLineWidth(global_width);
 }

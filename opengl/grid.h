@@ -12,7 +12,8 @@ namespace apeiron::opengl {
 class Grid final : public Shape
 {
 public:
-  Grid(const glm::vec3& size, const glm::vec3& spacing, float precision);
+  Grid(const glm::vec3& size, const glm::vec3& spacing, float precision,
+      const glm::vec3& color, float line_width = 1.0f);
   glm::vec3 size() const { return size_; }
   glm::vec3 spacing() const { return spacing_; }
   void render() const override;
@@ -20,6 +21,7 @@ public:
 private:
   glm::vec3 size_;
   glm::vec3 spacing_;
+  float line_width_;
 };
 
 
