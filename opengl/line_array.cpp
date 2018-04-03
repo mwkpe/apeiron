@@ -10,7 +10,7 @@ apeiron::opengl::Line_array::Line_array(std::vector<float>&& vertices, bool vert
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   glBindVertexArray(vao_);
-  const int values_per_vertex = vertex_color ? 5 : 2;
+  const int values_per_vertex = vertex_color ? 6 : 3;
   vertex_count_ = vertices.size() / values_per_vertex;
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
   glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
