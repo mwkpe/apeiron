@@ -21,7 +21,8 @@ void apeiron::example::World::init()
   light_.set_color(1.0f, 1.0f, 1.0f);
   renderer_.set_light_position(light_.position());
   renderer_.set_light_color(light_.color());
-  car_.set_position(0.0f, 0.0f, 4.13102f / 2.0f);
+  car_.set_position(0.0f, 0.0f, 4.13102f / 2.0f + 0.1f);  // Recede to prevent z-fighting
+  car_.set_center(0.0f, 1.271f / 2.0f, 0.0f);  // Offset model origin to center
   cylinder_.set_position(0.0f, 0.5f, -options_->cylinder_distance);
 
   std::mt19937 rng{0x299df84d};
@@ -37,6 +38,7 @@ void apeiron::example::World::init()
         break;
       case 2: poneglyphs_.emplace_back(&cube_, rotation(0.2f), rotation(), 0.0f);
         break;
+      default:;
     }
     poneglyphs_.back().set_position(position(), position(), position());
   }
@@ -119,6 +121,8 @@ void apeiron::example::World::render()
     renderer_.use_texture_shading();
     renderer_.render(car_);
     renderer_.set_lighting(false);
+    renderer_.use_color_shading();
+    renderer_.render_bounds(car_, glm::vec4{0.611f, 0.152f, 0.690f, 1.0f});
   }
   renderer_.use_color_shading();
   renderer_.render(cylinder_, color);
