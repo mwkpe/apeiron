@@ -27,4 +27,4 @@ private:
 }  // namespace apeiron::example
 
 
-#endif // APEIRON_EXAMPLE_PONEGLYPH_H
+#endif  // APEIRON_EXAMPLE_PONEGLYPH_H
