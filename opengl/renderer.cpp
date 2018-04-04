@@ -90,8 +90,8 @@ void apeiron::opengl::Renderer::set_light_color(const glm::vec3& color)
 void apeiron::opengl::Renderer::render(const engine::Entity& entity)
 {
   glm::mat4 model;
-  model = glm::scale(model, entity.scale());
   model = glm::translate(model, entity.position());
+  model = glm::scale(model, entity.scale());
   model = apply_rotation(model, entity.rotation());
   shader_.set_uniform("model", model);
   entity.render();
@@ -101,8 +101,8 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity)
 void apeiron::opengl::Renderer::render(const engine::Entity& entity, const glm::vec4& color)
 {
   glm::mat4 model;
-  model = glm::scale(model, entity.scale());
   model = glm::translate(model, entity.position());
+  model = glm::scale(model, entity.scale());
   model = apply_rotation(model, entity.rotation());
   shader_.set_uniform("model", model);
   shader_.set_uniform("color", color);
@@ -113,8 +113,8 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity, const glm::
 void apeiron::opengl::Renderer::render_bounds(const engine::Entity& entity, const glm::vec4& color)
 {
   glm::mat4 model;
-  model = glm::scale(model, entity.scale());
   model = glm::translate(model, entity.position() + entity.center());
+  model = glm::scale(model, entity.scale());
   model = apply_rotation(model, entity.rotation());
   shader_.set_uniform("model", model);
   shader_.set_uniform("color", color);
