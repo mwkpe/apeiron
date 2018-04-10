@@ -13,11 +13,17 @@ apeiron::engine::Camera::Camera()
 
 void apeiron::engine::Camera::reset()
 {
-  position_ = glm::vec3(10.0f, 20.0f, 10.0f);
-  front_ = glm::vec3(0.0f, 0.0f, -1.0f);
-  world_up_ = glm::vec3(0.0f, 1.0f, 0.0f);
-  pitch_ = -45.0f;
-  yaw_ = -135.0f;
+  set(glm::vec3{10.0f, 20.0f, 10.0f}, -45.0f, -135.0f);
+}
+
+
+void apeiron::engine::Camera::set(glm::vec3 position, float pitch, float yaw)
+{
+  position_ = position;
+  front_ = glm::vec3{0.0f, 0.0f, -1.0f};
+  world_up_ = glm::vec3{0.0f, 1.0f, 0.0f};
+  pitch_ = pitch;
+  yaw_ = yaw;
   orient(0, 0, 0);  // Apply default pitch and yaw
 }
 

@@ -15,6 +15,7 @@ public:
 
   Camera();
   void reset();
+  void set(glm::vec3 position, float pitch, float yaw);
   void move(Direction direction, float distances);
   void orient(int delta_x, int delta_y, float sensitivity);
   glm::mat4 view() const;
