@@ -9,6 +9,7 @@
 #include "opengl/texture.h"
 #include "opengl/model.h"
 #include "engine/camera.h"
+#include "engine/text.h"
 #include "opengl/cuboid.h"
 #include "opengl/renderer.h"
 #include "example/ground.h"
@@ -25,6 +26,7 @@ class World final
 {
 public:
   explicit World(const Options* options) : options_{options},
+      charset_{16, 8, 32},
       cube_{{1.0f, 1.0f, 1.0f}, true, 2.0f},
       ground_{{30.0f, 0.0f, 200.0f}, {2.5f, 0.0f, 2.5f}, 0.01f, {0.25f, 0.25f, 0.25f}, 1.0f},
       light_{&bulb_},
@@ -39,10 +41,12 @@ public:
 private:
   const Options* options_;
   opengl::Renderer renderer_;
+  opengl::Charset charset_;
   opengl::Texture akari_;
   opengl::Model bulb_;
   opengl::Cuboid cube_;
   engine::Camera camera_;
+  engine::Text text_;
   Ground ground_;
   Light light_;
   Vehicle car_;

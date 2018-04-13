@@ -11,6 +11,7 @@ void apeiron::example::World::init()
   namespace mf = engine::model_flags;
 
   renderer_.init();
+  charset_.load("assets/bitmap_fonts/roboto_mono_128.bmp");
   akari_.load("assets/akari.png");
   bulb_.load("assets/bulb.obj", mf::vertices);
   car_.load_model("assets/bmw.obj", mf::vertices | mf::normals | mf::tex_coords);
@@ -42,6 +43,11 @@ void apeiron::example::World::init()
     }
     poneglyphs_.back().set_position(position(), position(), position());
   }
+
+  text_.set_text(" !\"#$%&'()*+,-./0123456789:;<=>?");
+  text_.set_position(2.0f, 0.1f, 0.0f);
+  text_.set_rotation(glm::radians(-90.0f), 0.0f, 0.0f);
+  text_.set_size(1.0f);
 }
 
 
@@ -133,4 +139,7 @@ void apeiron::example::World::render()
     auto lc = light_.color();
     renderer_.render(light_, {lc.r, lc.g, lc.b, 1.0f});
   }
+
+  charset_.bind();
+  renderer_.render(charset_, text_);
 }
