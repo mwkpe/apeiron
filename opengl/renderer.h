@@ -5,7 +5,9 @@
 #include <glm/glm.hpp>
 #include "opengl/shader.h"
 #include "opengl/shape.h"
+#include "opengl/charset.h"
 #include "engine/entity.h"
+#include "engine/text.h"
 
 
 namespace apeiron::opengl {
@@ -26,6 +28,7 @@ public:
   void set_light_color(const glm::vec3& color);
   void render(const engine::Entity& entity);
   void render(const engine::Entity& entity, const glm::vec4& color);
+  void render(opengl::Charset& charset, engine::Text& text);
   void render_bounds(const engine::Entity& entity, const glm::vec4& color);
 
 private:

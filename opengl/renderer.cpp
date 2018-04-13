@@ -110,6 +110,25 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity, const glm::
 }
 
 
+void apeiron::opengl::Renderer::render(opengl::Charset& charset, engine::Text& text)
+{
+  use_texture_shading();
+  charset.bind();
+
+  float offset = 0.0f;
+  for (char c : text) {
+    glm::mat4 model{1.0f};
+    model = glm::translate(model, text.position() + text.center() + glm::vec3{offset, 0.0f, 0.0f});
+    model = glm::scale(model, text.scale());
+    model = apply_rotation(model, text.rotation());
+    shader_.set_uniform("model", model);
+    charset.set(c);
+    charset.render();
+    offset += charset.character_width() * text.size();
+  }
+}
+
+
 void apeiron::opengl::Renderer::render_bounds(const engine::Entity& entity, const glm::vec4& color)
 {
   glm::mat4 model{1.0f};
