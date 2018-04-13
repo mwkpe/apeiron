@@ -18,13 +18,12 @@ public:
   Texture(Texture&&) = delete;
   Texture& operator=(const Texture&) = delete;
   Texture& operator=(Texture&&) = delete;
-
-  std::uint32_t id() const { return id_; }
   void load(std::string_view filename);
   void bind() const;
+  std::uint32_t id() const { return id_; }
 
 private:
-  std::uint32_t id_;
+  std::uint32_t id_ = 0;
 };
 
 
