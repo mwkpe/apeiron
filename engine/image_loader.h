@@ -11,7 +11,7 @@
 namespace apeiron::engine {
 
 
-std::tuple<std::vector<std::uint8_t>, int, int> load_image(std::string_view filename);
+std::tuple<std::vector<std::uint8_t>, int, int, int> load_image(std::string_view filename);
 
 
 }  // namespace apeiron::engine

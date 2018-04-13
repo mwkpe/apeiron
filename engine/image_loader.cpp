@@ -7,7 +7,7 @@
 #include "engine/error.h"
 
 
-std::tuple<std::vector<std::uint8_t>, int, int> apeiron::engine::load_image(std::string_view filename)
+std::tuple<std::vector<std::uint8_t>, int, int, int> apeiron::engine::load_image(std::string_view filename)
 {
   stbi_set_flip_vertically_on_load(true);
   int width, height, channel_count;
@@ -16,5 +16,5 @@ std::tuple<std::vector<std::uint8_t>, int, int> apeiron::engine::load_image(std:
       stbi_load(std::string{filename}.c_str(), &width, &height, &channel_count, 0), delete_data};
   if (!data)
     throw engine::Error{std::string{"Could not load image: "} + std::string{filename}};
-  return {{data.get(), data.get() + width * height * channel_count}, width, height};
+  return {{data.get(), data.get() + width * height * channel_count}, width, height, channel_count};
 }
