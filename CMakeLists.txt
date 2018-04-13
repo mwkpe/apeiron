@@ -24,8 +24,8 @@ add_executable(apeiron
     opengl/renderer.cpp opengl/renderer.h
     opengl/shape.cpp opengl/shape.h
     opengl/texture.cpp opengl/texture.h
+    opengl/charset.cpp opengl/charset.h
     opengl/grid.cpp opengl/grid.h
-    opengl/line_array.cpp opengl/line_array.h
     opengl/polygon.cpp opengl/polygon.h
     opengl/rectangle.cpp opengl/rectangle.h
     opengl/cuboid.cpp opengl/cuboid.h
@@ -36,6 +36,7 @@ add_executable(apeiron
     engine/input.h
     engine/entity.h
     engine/camera.cpp engine/camera.h
+    engine/text.cpp engine/text.h
     engine/image_loader.cpp engine/image_loader.h
     engine/model_loader.cpp engine/model_loader.h
     engine/model_flags.h
