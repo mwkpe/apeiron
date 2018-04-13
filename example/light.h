@@ -3,6 +3,7 @@
 
 
 #include <glm/glm.hpp>
+#include "engine/entity.h"
 #include "opengl/model.h"
 
 
