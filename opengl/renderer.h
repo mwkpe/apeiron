@@ -28,7 +28,7 @@ public:
   void set_light_color(const glm::vec3& color);
   void render(const engine::Entity& entity);
   void render(const engine::Entity& entity, const glm::vec4& color);
-  void render(opengl::Charset& charset, engine::Text& text);
+  void render(const opengl::Charset& charset, const engine::Text& text);
   void render_bounds(const engine::Entity& entity, const glm::vec4& color);
 
 private:

@@ -19,7 +19,7 @@ public:
   Shape& operator=(const Shape&) = delete;
   Shape& operator=(Shape&&) = delete;
 
-  virtual void render() const = 0;
+  virtual void render() const {};
 
 protected:
   std::uint32_t vao_ = 0;

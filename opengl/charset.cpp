@@ -81,14 +81,9 @@ void apeiron::opengl::Charset::bind() const
 }
 
 
-void apeiron::opengl::Charset::set(char c)
+void apeiron::opengl::Charset::render(char c) const
 {
-  character_index_ = std::min(c - character_offset_, character_count_ - 1);
-}
-
-
-void apeiron::opengl::Charset::render() const
-{
+  auto index = std::min(c - character_offset_, character_count_ - 1);
   glBindVertexArray(vao_);
-  glDrawArrays(GL_TRIANGLES, character_index_ * vertices_per_character_, vertices_per_character_);
+  glDrawArrays(GL_TRIANGLES, index * vertices_per_character_, vertices_per_character_);
 }

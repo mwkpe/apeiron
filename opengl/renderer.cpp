@@ -110,7 +110,7 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity, const glm::
 }
 
 
-void apeiron::opengl::Renderer::render(opengl::Charset& charset, engine::Text& text)
+void apeiron::opengl::Renderer::render(const opengl::Charset& charset, const engine::Text& text)
 {
   use_texture_shading();
   charset.bind();
@@ -122,8 +122,7 @@ void apeiron::opengl::Renderer::render(opengl::Charset& charset, engine::Text& t
     model = glm::scale(model, text.scale());
     model = apply_rotation(model, text.rotation());
     shader_.set_uniform("model", model);
-    charset.set(c);
-    charset.render();
+    charset.render(c);
     offset += charset.character_width() * text.size();
   }
 }

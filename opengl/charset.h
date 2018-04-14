@@ -15,16 +15,14 @@ class Charset final : public Shape
 {
 public:
   explicit Charset(std::uint32_t columns, std::uint32_t rows, std::uint8_t character_offset);
-  void set(char c);
   void load(std::string_view filename);
   void bind() const;
-  void render() const override;
+  void render(char c) const;
   float character_height() const { return character_height_; }
   float character_width() const { return character_width_; }
 
 private:
   std::uint32_t vertices_per_character_ = 6;
-  std::uint32_t character_index_ = 0;
   std::uint32_t character_offset_ = 0;
   std::uint32_t character_count_ = 0;
   float character_width_ = 0;

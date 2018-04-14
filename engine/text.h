@@ -16,7 +16,7 @@ public:
   std::string::const_iterator end() const { return std::cend(text_); }
   void set_text(std::string text) { text_ = std::move(text); }
   void set_size(float size);
-  float size() { return scale().x; }
+  float size() const { return scale().x; }
 
 private:
   std::string text_;
