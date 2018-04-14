@@ -123,7 +123,7 @@ void apeiron::opengl::Renderer::render(const opengl::Charset& charset, const eng
     model = apply_rotation(model, text.rotation());
     shader_.set_uniform("model", model);
     charset.render(c);
-    offset += charset.character_width() * text.size();
+    offset += charset.character_width() * text.size() * text.spacing().x;
   }
 }
 
