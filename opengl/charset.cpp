@@ -22,18 +22,17 @@ struct Vertex
 
 
 std::vector<Vertex> build_vertices(std::uint32_t columns, std::uint32_t rows,
-    float character_height_, float character_width_)
+    std::uint32_t character_count, float character_height_, float character_width_)
 {
-  const std::size_t letter_count = columns * rows;
   std::vector<Vertex> vertices;
-  float w = 1.0f / columns;
-  float h = 1.0f / rows;
-  float x = character_width_ / 2.0f;
-  float y = character_height_ / 2.0f;
+  const float w = 1.0f / columns;
+  const float h = 1.0f / rows;
+  const float x = character_width_ / 2.0f;
+  const float y = character_height_ / 2.0f;
 
-  for (std::size_t i=0; i<letter_count; ++i) {
-    float s = (i % columns) * w;
-    float t = 1.0f - h - (i / columns) * h;
+  for (std::size_t i=0; i<character_count; ++i) {
+    const float s = (i % columns) * w;
+    const float t = 1.0f - h - (i / columns) * h;
     vertices.push_back({-x, -y, 0.0f, s,   t});
     vertices.push_back({ x, -y, 0.0f, s+w, t});
     vertices.push_back({ x,  y, 0.0f, s+w, t+h});
@@ -50,14 +49,14 @@ std::vector<Vertex> build_vertices(std::uint32_t columns, std::uint32_t rows,
 
 
 apeiron::opengl::Charset::Charset(std::uint32_t columns, std::uint32_t rows, std::uint8_t offset)
-    : character_offset_{offset}, character_count_{static_cast<std::uint32_t>(columns * rows)}
+    : character_offset_{offset}, character_count_{columns * rows}
 {
   character_width_ = 0.5f;
   character_height_ = 1.0f;
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   glBindVertexArray(vao_);
-  const auto vertices = build_vertices(columns, rows, character_height_, character_width_);
+  const auto vertices = build_vertices(columns, rows, character_count_, character_height_, character_width_);
   vertex_count_ = static_cast<std::uint32_t>(vertices.size());
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
   glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
@@ -83,7 +82,7 @@ void apeiron::opengl::Charset::bind() const
 
 void apeiron::opengl::Charset::render(char c) const
 {
-  auto index = std::min(c - character_offset_, character_count_ - 1);
+  const auto index = std::min(c - character_offset_, character_count_ - 1);
   glBindVertexArray(vao_);
   glDrawArrays(GL_TRIANGLES, index * vertices_per_character_, vertices_per_character_);
 }
