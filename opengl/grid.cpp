@@ -15,10 +15,10 @@ std::tuple<std::vector<float>, int> build_vertices(const glm::vec3& size, const 
 {
   std::vector<float> vertices;
 
-  float x_first = -size.x / 2.0f;
-  float x_last = size.x / 2.0f;
-  float z_first = -size.z / 2.0f;
-  float z_last = size.z / 2.0f;
+  const float x_first = -size.x / 2.0f;
+  const float x_last = size.x / 2.0f;
+  const float z_first = -size.z / 2.0f;
+  const float z_last = size.z / 2.0f;
 
   for (float pos = x_first; std::abs(pos - spacing.x - x_last) > precision; pos += spacing.x) {
     vertices.push_back(pos);
@@ -58,8 +58,7 @@ std::tuple<std::vector<float>, int> build_vertices(const glm::vec3& size, const 
 
 
 apeiron::opengl::Grid::Grid(const glm::vec3& size, const glm::vec3& spacing, float precision,
-      const glm::vec3& color, float line_width)
-    : size_{size}, spacing_{spacing}, line_width_{line_width}
+    const glm::vec3& color, float line_width) : size_{size}, spacing_{spacing}, line_width_{line_width}
 {
   const auto [vertices, values_per_vertex] = build_vertices(size, spacing, precision, color);
   vertex_count_ = vertices.size() / values_per_vertex;

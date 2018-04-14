@@ -11,9 +11,9 @@ namespace {
 
 std::tuple<std::vector<float>, int> build_vertices(const glm::vec3& size)
 {
-  float x = size.x / 2.0f;
-  float y = size.y / 2.0f;
-  float z = size.z / 2.0f;
+  const float x = size.x / 2.0f;
+  const float y = size.y / 2.0f;
+  const float z = size.z / 2.0f;
 
   return {
     {
@@ -62,9 +62,9 @@ std::tuple<std::vector<float>, int> build_vertices(const glm::vec3& size)
 
 std::tuple<std::vector<float>, std::vector<std::uint16_t>> build_wireframe_vertices(const glm::vec3& size)
 {
-  float x = size.x / 2.0f;
-  float y = size.y / 2.0f;
-  float z = size.z / 2.0f;
+  const float x = size.x / 2.0f;
+  const float y = size.y / 2.0f;
+  const float z = size.z / 2.0f;
 
   return {
     // Vertices
