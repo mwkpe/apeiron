@@ -14,7 +14,7 @@ namespace apeiron::opengl {
 class Charset final : public Shape
 {
 public:
-  explicit Charset(std::uint32_t columns, std::uint32_t rows, std::uint8_t character_offset);
+  Charset(std::uint32_t columns, std::uint32_t rows, std::uint8_t character_offset);
   void load(std::string_view filename);
   void bind() const;
   void render(char c) const;
