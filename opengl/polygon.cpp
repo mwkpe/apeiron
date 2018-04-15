@@ -23,3 +23,10 @@ void apeiron::opengl::Polygon::render() const
   glBindVertexArray(vao_);
   glDrawArrays(GL_TRIANGLES, 0, vertex_count_);
 }
+
+
+void apeiron::opengl::Polygon::render(std::uint32_t start, std::uint32_t count) const
+{
+  glBindVertexArray(vao_);
+  glDrawArrays(GL_TRIANGLES, start, count);
+}

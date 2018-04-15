@@ -15,6 +15,7 @@ class Polygon final : public Shape
 public:
   explicit Polygon(std::vector<float>&& vertices);
   void render() const override;
+  void render(std::uint32_t start, std::uint32_t count) const override;
 };
 
 

@@ -18,8 +18,8 @@ public:
   Shape(Shape&&) = delete;
   Shape& operator=(const Shape&) = delete;
   Shape& operator=(Shape&&) = delete;
-
   virtual void render() const {};
+  virtual void render(std::uint32_t start, std::uint32_t count) const {}
 
 protected:
   std::uint32_t vao_ = 0;
