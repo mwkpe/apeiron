@@ -110,19 +110,6 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity, const glm::
 }
 
 
-void apeiron::opengl::Renderer::render(const engine::Entity& entity, const glm::vec4& color,
-    std::uint32_t start, std::uint32_t count)
-{
-  glm::mat4 model{1.0f};
-  model = glm::translate(model, entity.position());
-  model = glm::scale(model, entity.scale());
-  model = apply_rotation(model, entity.rotation());
-  shader_.set_uniform("model", model);
-  shader_.set_uniform("color", color);
-  entity.render(start, count);
-}
-
-
 void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::Charset& charset)
 {
   use_texture_shading();

@@ -30,7 +30,6 @@ public:
   glm::vec3 rotation() const { return rotation_; }
   glm::vec3 scale() const { return scale_; }
   virtual void render() const {}
-  virtual void render(std::uint32_t start, std::uint32_t count) const {}
   virtual void render_bounds() const {}
 
 protected:
