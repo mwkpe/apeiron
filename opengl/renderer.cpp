@@ -123,7 +123,7 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity, const glm::
 }
 
 
-void apeiron::opengl::Renderer::render(const opengl::Charset& charset, const engine::Text& text)
+void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::Charset& charset)
 {
   use_texture_shading();
   charset.bind();
