@@ -141,5 +141,5 @@ void apeiron::example::World::render()
   }
 
   charset_.bind();
-  renderer_.render(charset_, text_);
+  renderer_.render(text_, charset_);
 }
