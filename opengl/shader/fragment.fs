@@ -2,6 +2,7 @@
 
 uniform int color_mode;
 uniform int light_mode;
+uniform bool colorize;
 uniform sampler2D texture2d;
 uniform vec4 color;
 uniform vec3 light_color;
@@ -30,6 +31,10 @@ void main()
       break;
     default:
       object_color = vec4(1.0, 0.0, 1.0, 1.0);
+  }
+
+  if (colorize) {
+    object_color = object_color * color;
   }
 
   switch (light_mode) {

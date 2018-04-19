@@ -110,6 +110,7 @@ void apeiron::example::World::render()
   renderer_.set_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 1.5f, 500.0f));
   renderer_.set_view(camera_.view());
   renderer_.set_wireframe(options_->wireframe);
+  renderer_.set_colorize(false);
 
   renderer_.use_vertex_color_shading();
   renderer_.render(ground_);
@@ -140,6 +141,5 @@ void apeiron::example::World::render()
     renderer_.render(light_, {lc.r, lc.g, lc.b, 1.0f});
   }
 
-  charset_.bind();
-  renderer_.render(text_, charset_);
+  renderer_.render(text_, charset_, glm::vec4{1.0f, 0.0f, 0.0f, 1.0f});
 }

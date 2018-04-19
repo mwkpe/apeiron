@@ -69,6 +69,12 @@ void apeiron::opengl::Renderer::set_wireframe(bool wireframe)
 }
 
 
+void apeiron::opengl::Renderer::set_colorize(bool colorize)
+{
+  shader_.set_uniform("colorize", colorize);
+}
+
+
 void apeiron::opengl::Renderer::set_lighting(bool lighting)
 {
   shader_.set_uniform("light_mode", lighting ? 1 : 0);
@@ -125,6 +131,29 @@ void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::C
     charset.render(c);
     offset += charset.character_width() * text.size() * text.spacing().x;
   }
+}
+
+
+void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::Charset& charset,
+    const glm::vec4& color)
+{
+  use_texture_shading();
+  set_colorize(true);
+  shader_.set_uniform("color", color);
+  charset.bind();
+
+  float offset = 0.0f;
+  for (char c : text) {
+    glm::mat4 model{1.0f};
+    model = glm::translate(model, text.position() + text.center() + glm::vec3{offset, 0.0f, 0.0f});
+    model = glm::scale(model, text.scale());
+    model = apply_rotation(model, text.rotation());
+    shader_.set_uniform("model", model);
+    charset.render(c);
+    offset += charset.character_width() * text.size() * text.spacing().x;
+  }
+
+  set_colorize(false);
 }
 
 

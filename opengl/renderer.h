@@ -23,12 +23,14 @@ public:
   void set_projection(const glm::mat4& projection);
   void set_view(const glm::mat4& view);
   void set_wireframe(bool wireframe);
+  void set_colorize(bool colorize);
   void set_lighting(bool lighting);
   void set_light_position(const glm::vec3& position);
   void set_light_color(const glm::vec3& color);
   void render(const engine::Entity& entity);
   void render(const engine::Entity& entity, const glm::vec4& color);
   void render(const engine::Text& text, const opengl::Charset& charset);
+  void render(const engine::Text& text, const opengl::Charset& charset, const glm::vec4& color);
   void render_bounds(const engine::Entity& entity, const glm::vec4& color);
 
 private:
