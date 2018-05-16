@@ -4,6 +4,8 @@ Requires [SDL2](https://www.libsdl.org/), [GLEW](https://github.com/nigels-com/g
 
 <img src="external.png" alt="external directory">
 
+Example projects may also require additional libraries, e.g. [JSON](https://github.com/nlohmann/json).
+
 See usage examples [here](https://github.com/mwkpe/apeiron-examples).
 
 Status
