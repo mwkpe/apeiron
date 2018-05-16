@@ -25,6 +25,7 @@ add_executable(apeiron
     opengl/shape.cpp opengl/shape.h
     opengl/texture.cpp opengl/texture.h
     opengl/charset.cpp opengl/charset.h
+    opengl/points.cpp opengl/points.h
     opengl/grid.cpp opengl/grid.h
     opengl/polygon.cpp opengl/polygon.h
     opengl/rectangle.cpp opengl/rectangle.h
