@@ -51,6 +51,7 @@ void apeiron::example::World::init()
   text_.set_position(2.0f, 0.1f, 0.0f);
   text_.set_rotation(glm::radians(-90.0f), 0.0f, 0.0f);
   text_.set_size(1.0f);
+  text_.set_spacing(0.95f, 1.0f);
 }
 
 

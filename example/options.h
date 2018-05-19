@@ -13,7 +13,7 @@ namespace apeiron::example {
 struct Options
 {
   bool quit = false;
-  bool show_gui = true;
+  bool show_menu = true;
   bool wireframe = false;
   bool lighting = true;
   bool show_light = true;
