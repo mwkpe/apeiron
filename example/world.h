@@ -14,9 +14,9 @@
 #include "opengl/renderer.h"
 #include "example/ground.h"
 #include "example/light.h"
-#include "example/vehicle.h"
+#include "example/cube.h"
 #include "example/cylinder.h"
-#include "example/poneglyph.h"
+#include "example/vehicle.h"
 
 
 namespace apeiron::example {
@@ -27,14 +27,12 @@ class World final
 public:
   explicit World(const Options* options) : options_{options},
       charset_{16, 8, 32},
-      cube_{{1.0f, 1.0f, 1.0f}, true, 2.0f},
-      ground_{{30.0f, 0.0f, 200.0f}, {2.5f, 0.0f, 2.5f}, 0.01f, {0.25f, 0.25f, 0.25f}, 1.0f},
+      cube_{{1.0f, 1.0f, 1.0f}},
+      ground_{{50.0f, 0.0f, 50.0f}, {2.5f, 0.0f, 2.5f}, 0.01f, {0.25f, 0.25f, 0.25f}, 1.0f},
       light_{&bulb_},
-      car_{{1.847f, 1.271f, 4.131f}},
-      pirate_ship_{{7.590f, 21.462f, 27.162f}},
-      cylinder_{options_->cylinder_points, 0.0f, 0.0f, 1.0f} {}
+      cylinder_{options_->cylinder_points, 0.0f, 0.0f, 1.0f},
+      car_{{1.847f, 1.271f, 4.131f}} {}
   void init();
-  void reset();
   void update(float time, float delta_time, const engine::Input* input = nullptr);
   void render();
 
@@ -49,10 +47,9 @@ private:
   engine::Text text_;
   Ground ground_;
   Light light_;
-  Vehicle car_;
-  Vehicle pirate_ship_;
   Cylinder cylinder_;
-  std::vector<Poneglyph> poneglyphs_;
+  std::vector<Cube> cubes_;
+  Vehicle car_;
   int frame_ = 0;
   float frame_time_ = 0;
 };

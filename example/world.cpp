@@ -11,20 +11,23 @@ void apeiron::example::World::init()
   namespace mf = engine::model_flags;
 
   renderer_.init();
-  charset_.load("assets/bitmap_fonts/roboto_mono_128.bmp");
-  akari_.load("assets/akari.png");
-  bulb_.load("assets/bulb.obj", mf::vertices);
-  car_.load_model("assets/bmw.obj", mf::vertices | mf::normals | mf::tex_coords);
-  car_.load_texture("assets/bmw.png");
-  pirate_ship_.load_model("assets/schooner.obj", mf::vertices | mf::tex_coords);
-  pirate_ship_.load_texture("assets/palitra.png");
+  auto aspect_ratio = static_cast<float>(options_->window_width) / options_->window_height;
+  renderer_.set_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 1.5f, 500.0f));
+
+  camera_.set({10.0f, 20.0f, 10.0f}, -55.0f, -135.0f);
+
+  charset_.load("assets/roboto_mono.png");
+  akari_.load("assets/private/akari.png");
+  bulb_.load("assets/private/bulb.obj", mf::vertices);
+  car_.load_model("assets/private/bmw.obj", mf::vertices | mf::normals | mf::tex_coords);
+  car_.load_texture("assets/private/bmw.png");
   light_.set_position(0.0f, 7.5f, -options_->light_distance);
   light_.set_color(1.0f, 1.0f, 1.0f);
   renderer_.set_light_position(light_.position());
   renderer_.set_light_color(light_.color());
   car_.set_position(0.0f, 0.0f, 4.13102f / 2.0f + 0.1f);  // Recede to prevent z-fighting
   car_.set_center(0.0f, 1.271f / 2.0f, 0.0f);  // Offset model origin to center
-  cylinder_.set_position(0.0f, 0.5f, -options_->cylinder_distance);
+  cylinder_.set_position(0.0f, 0.5f, -5.0f);
 
   std::mt19937 rng{0x299df84d};
   std::uniform_real_distribution<float> dist(0.0f, 100.0f);
@@ -33,15 +36,15 @@ void apeiron::example::World::init()
 
   for (int i=0; i<300; ++i) {
     switch (i % 3) {
-      case 0: poneglyphs_.emplace_back(&cube_, 0.0f, rotation(0.2f), rotation());
+      case 0: cubes_.emplace_back(&cube_, 0.0f, rotation(0.2f), rotation());
         break;
-      case 1: poneglyphs_.emplace_back(&cube_, rotation(), 0.0f, rotation(0.2f));
+      case 1: cubes_.emplace_back(&cube_, rotation(), 0.0f, rotation(0.2f));
         break;
-      case 2: poneglyphs_.emplace_back(&cube_, rotation(0.2f), rotation(), 0.0f);
+      case 2: cubes_.emplace_back(&cube_, rotation(0.2f), rotation(), 0.0f);
         break;
       default:;
     }
-    poneglyphs_.back().set_position(position(), position(), position());
+    cubes_.back().set_position(position(), position(), position());
   }
 
   text_.set_text(" !\"#$%&'()*+,-./0123456789:;<=>?");
@@ -51,20 +54,14 @@ void apeiron::example::World::init()
 }
 
 
-void apeiron::example::World::reset()
-{
-  camera_.reset();
-}
-
-
 void apeiron::example::World::update(float time, float delta_time, const engine::Input* input)
 {
-  if (options_->autorotate)
+  if (options_->rotate_cubes)
     frame_time_ = time;
 
   if (input) {
     using Direction = engine::Camera::Direction;
-    auto distance = options_->velocity * delta_time;
+    auto distance = options_->camera_speed * delta_time;
     if (input->forward)
       camera_.move(Direction::Forward, distance);
     if (input->backward)
@@ -74,7 +71,7 @@ void apeiron::example::World::update(float time, float delta_time, const engine:
     if (input->right)
       camera_.move(Direction::Right, distance);
 
-    camera_.orient(input->mouse_x_rel, input->mouse_y_rel, options_->sensitivity);
+    camera_.orient(input->mouse_x_rel, input->mouse_y_rel, options_->camera_sensitivity);
   }
 
   if (options_->lighting) {
@@ -88,16 +85,17 @@ void apeiron::example::World::update(float time, float delta_time, const engine:
   renderer_.set_light_color(light_.color());
   renderer_.set_light_position(light_.position());
 
-  cylinder_.set_position(0.0f, 0.5f, -options_->cylinder_distance);
   cylinder_.set_rotation(frame_time_ * glm::radians(360.0f * options_->cylinder_revs) *
       cylinder_.rotation_magnitudes());
   if (cylinder_.points() != options_->cylinder_points) {
     cylinder_.rebuild(options_->cylinder_points);
   }
 
-  for (auto& p : poneglyphs_) {
-    p.set_rotation(frame_time_ * glm::radians(120.0f) * p.rotation_magnitudes());
+  for (auto& c : cubes_) {
+    c.set_rotation(frame_time_ * glm::radians(120.0f) * c.rotation_magnitudes());
   }
+
+  text_.set_text(options_->text);
 }
 
 
@@ -105,9 +103,7 @@ void apeiron::example::World::render()
 {
   frame_++;
   auto color = options_->main_color;
-  auto aspect_ratio = static_cast<float>(options_->window_width) / options_->window_height;
 
-  renderer_.set_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 1.5f, 500.0f));
   renderer_.set_view(camera_.view());
   renderer_.set_wireframe(options_->wireframe);
   renderer_.set_colorize(false);
@@ -115,31 +111,28 @@ void apeiron::example::World::render()
   renderer_.use_vertex_color_shading();
   renderer_.render(ground_);
 
-  if (options_->pirate_mode) {
-    renderer_.use_texture_shading();
-    renderer_.render(pirate_ship_);
-    akari_.bind();
-    for (const auto& p : poneglyphs_) {
-      renderer_.render(p);
-    }
-  }
-  else {
-    renderer_.set_lighting(options_->lighting);
-    renderer_.use_texture_shading();
-    renderer_.render(car_);
-    renderer_.set_lighting(false);
-    renderer_.use_color_shading();
-    renderer_.render_bounds(car_, glm::vec4{0.611f, 0.152f, 0.690f, 1.0f});
-  }
   renderer_.use_color_shading();
   renderer_.render(cylinder_, color);
 
-  if (options_->show_light) {
-    if (options_->lighting)
-      renderer_.set_lighting(false);
-    auto lc = light_.color();
-    renderer_.render(light_, {lc.r, lc.g, lc.b, 1.0f});
+  if (options_->show_cubes) {
+    renderer_.use_texture_shading();
+    akari_.bind();
+    for (const auto& c : cubes_) {
+      renderer_.render(c);
+    }
   }
 
-  renderer_.render(text_, charset_, glm::vec4{1.0f, 0.0f, 0.0f, 1.0f});
+  renderer_.set_lighting(options_->lighting);
+  renderer_.use_texture_shading();
+  renderer_.render(car_);
+  renderer_.set_lighting(false);
+  renderer_.use_color_shading();
+  renderer_.render_bounds(car_, color);
+
+  if (options_->show_light) {
+    renderer_.set_lighting(false);
+    renderer_.render(light_, light_.color());
+  }
+
+  renderer_.render(text_, charset_, color);
 }

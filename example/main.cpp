@@ -119,9 +119,6 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
             case SDLK_F2:
               options.wireframe = !options.wireframe;
               break;
-            case SDLK_F3:
-              world.reset();
-              break;
             case SDLK_F6:
               if (!benchmarking) {
                 benchmarking = true;

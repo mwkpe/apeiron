@@ -1,5 +1,5 @@
-#ifndef APEIRON_EXAMPLE_PONEGLYPH_H
-#define APEIRON_EXAMPLE_PONEGLYPH_H
+#ifndef APEIRON_EXAMPLE_CUBE_H
+#define APEIRON_EXAMPLE_CUBE_H
 
 
 #include <glm/glm.hpp>
@@ -10,10 +10,10 @@
 namespace apeiron::example {
 
 
-class Poneglyph final : public engine::Entity
+class Cube final : public engine::Entity
 {
 public:
-  Poneglyph(const opengl::Cuboid* cuboid, float xrot, float yrot, float zrot)
+  Cube(const opengl::Cuboid* cuboid, float xrot, float yrot, float zrot)
       : cuboid_{cuboid}, rotation_magnitudes_{xrot, yrot, zrot} {}
   glm::vec3 rotation_magnitudes() const { return rotation_magnitudes_; }
   void render() const override { cuboid_->render(); }
@@ -27,4 +27,4 @@ private:
 }  // namespace apeiron::example
 
 
-#endif  // APEIRON_EXAMPLE_PONEGLYPH_H
+#endif  // APEIRON_EXAMPLE_CUBE_H

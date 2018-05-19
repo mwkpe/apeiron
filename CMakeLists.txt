@@ -44,11 +44,11 @@ add_executable(apeiron
     example/main.cpp
     example/options.cpp example/options.h
     example/menu.h example/menu.cpp
-    example/world.cpp example/world.h
-    example/vehicle.cpp example/vehicle.h
     example/light.h
     example/ground.h
+    example/cube.h
     example/cylinder.h
-    example/poneglyph.h)
+    example/vehicle.cpp example/vehicle.h
+    example/world.cpp example/world.h)
 
 target_link_libraries(apeiron -lmingw32 -lglew32 -lglu32 -lopengl32 -lSDL2main -lSDL2)
