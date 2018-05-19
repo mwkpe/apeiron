@@ -41,4 +41,4 @@ cmake-build*/
 .idea/
 
 # Assets
-assets/
+assets/private/
