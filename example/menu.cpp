@@ -1,6 +1,7 @@
 #include "menu.h"
 
 
+#include <cstring>
 #include "GL/glew.h"
 #include <glm/glm.hpp>
 #include "imgui/imgui.h"
