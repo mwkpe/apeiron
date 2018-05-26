@@ -2,7 +2,7 @@
 
 A small framework for basic scene and data visualization using OpenGL
 
-Requires a C++17 compliant compiler, [GLEW](https://github.com/nigels-com/glew), [glm](https://glm.g-truc.net/0.9.8/index.html), [tinyobjloader](https://github.com/syoyo/tinyobjloader), [stb_image.h](https://github.com/nothings/stb) and [dear imgui](https://github.com/ocornut/imgui). The GUI implementation and examples require [SDL2](https://www.libsdl.org/) or must be adapted. Example projects may also require additional libraries, e.g. [JSON](https://github.com/nlohmann/json). These libraries are not part of this repo and must be put into an *external* directory within the root directory.
+Apeiron is using [tinyobjloader](https://github.com/syoyo/tinyobjloader), [stb_image.h](https://github.com/nothings/stb) and [dear imgui](https://github.com/ocornut/imgui), and additionally requires [GLEW](https://github.com/nigels-com/glew), [glm](https://glm.g-truc.net/0.9.8/index.html) and [SDL2](https://www.libsdl.org/) which are not part of this repository and must be added into the external directory. The example project also requires [JSON](https://github.com/nlohmann/json).
 
 See usage examples [here](https://github.com/mwkpe/apeiron-examples).
 
