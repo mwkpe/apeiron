@@ -32,7 +32,10 @@
 *.app
 
 # Libraries
-external/
+external/glew/
+external/glm/
+external/SDL2/
+external/nlohmann/
 
 # Build directories
 cmake-build*/
