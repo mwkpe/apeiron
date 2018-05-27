@@ -12,29 +12,28 @@ void apeiron::example::World::init()
 
   renderer_.init();
   auto aspect_ratio = static_cast<float>(options_->window_width) / options_->window_height;
-  renderer_.set_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 1.5f, 500.0f));
+  renderer_.set_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 500.0f));
 
-  camera_.set({10.0f, 20.0f, 10.0f}, -55.0f, -135.0f);
+  camera_.set({10.0f, 15.0f, 10.0f}, -45.0f, -145.0f);
 
   charset_.load("assets/roboto_mono.png");
-  akari_.load("assets/private/akari.png");
+  akari_.load("assets/private/checkerboard.png");
   bulb_.load("assets/private/bulb.obj", mf::vertices);
-  car_.load_model("assets/private/bmw.obj", mf::vertices | mf::normals | mf::tex_coords);
-  car_.load_texture("assets/private/bmw.png");
+  teapot_.load_model("assets/utah_teapot.obj", mf::vertices | mf::normals);
   light_.set_position(0.0f, 7.5f, -options_->light_distance);
   light_.set_color(1.0f, 1.0f, 1.0f);
   renderer_.set_light_position(light_.position());
   renderer_.set_light_color(light_.color());
-  car_.set_position(0.0f, 0.0f, 4.13102f / 2.0f + 0.1f);  // Recede to prevent z-fighting
-  car_.set_center(0.0f, 1.271f / 2.0f, 0.0f);  // Offset model origin to center
+  teapot_.set_position(0.0f, 0.0f, 4.13102f / 2.0f + 0.1f);  // Recede to prevent z-fighting
+  teapot_.set_center(0.0f, 1.271f / 2.0f, 0.0f);  // Offset model origin to center
   cylinder_.set_position(0.0f, 0.5f, -5.0f);
 
-  std::mt19937 rng{0x299df84d};
-  std::uniform_real_distribution<float> dist(0.0f, 100.0f);
-  auto rotation = [&rng, &dist](float factor = 1.0f){ return (dist(rng) / 50.0f - 1.0f) * factor; };
-  auto position = [&rng, &dist]{ return dist(rng) - 50.0f; };
+  std::mt19937 rng{0x102df64d};
+  std::uniform_real_distribution<float> dist(0.0f, 50.0f);
+  auto rotation = [&rng, &dist](float factor = 1.0f){ return (dist(rng) / 25.0f - 1.0f) * factor; };
+  auto position = [&rng, &dist]{ return dist(rng) - 25.0f; };
 
-  for (int i=0; i<300; ++i) {
+  for (int i=0; i<50; ++i) {
     switch (i % 3) {
       case 0: cubes_.emplace_back(&cube_, 0.0f, rotation(0.2f), rotation());
         break;
@@ -107,6 +106,7 @@ void apeiron::example::World::render()
 
   renderer_.set_view(camera_.view());
   renderer_.set_wireframe(options_->wireframe);
+  renderer_.set_lighting(false);
   renderer_.set_colorize(false);
 
   renderer_.use_vertex_color_shading();
@@ -115,24 +115,24 @@ void apeiron::example::World::render()
   renderer_.use_color_shading();
   renderer_.render(cylinder_, color);
 
+  renderer_.set_lighting(options_->lighting);
+  renderer_.render(teapot_, color);
+
+  renderer_.set_lighting(false);
+  renderer_.use_color_shading();
+  renderer_.render_bounds(teapot_, color);
+
+  if (options_->show_light) {
+    renderer_.set_lighting(false);
+    renderer_.render(light_, light_.color());
+  }
+
   if (options_->show_cubes) {
     renderer_.use_texture_shading();
     akari_.bind();
     for (const auto& c : cubes_) {
       renderer_.render(c);
     }
-  }
-
-  renderer_.set_lighting(options_->lighting);
-  renderer_.use_texture_shading();
-  renderer_.render(car_);
-  renderer_.set_lighting(false);
-  renderer_.use_color_shading();
-  renderer_.render_bounds(car_, color);
-
-  if (options_->show_light) {
-    renderer_.set_lighting(false);
-    renderer_.render(light_, light_.color());
   }
 
   renderer_.render(text_, charset_, color);

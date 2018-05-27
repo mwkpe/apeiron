@@ -69,8 +69,7 @@ add_executable(apeiron
     example/ground.h
     example/cube.h
     example/cylinder.h
-    example/vehicle.cpp
-    example/vehicle.h
+    example/teapot.h
     example/world.cpp
     example/world.h)
 
