@@ -72,6 +72,13 @@ void apeiron::example::World::update(float time, float delta_time, const engine:
       camera_.move(Direction::Right, distance);
 
     camera_.orient(input->mouse_x_rel, input->mouse_y_rel, options_->camera_sensitivity);
+
+    if (input->mouse_left)
+      text_.set_text("mouse left");
+    if (input->mouse_middle)
+      text_.set_text("mouse middle");
+    if (input->mouse_right)
+      text_.set_text("mouse right");
   }
 
   if (options_->lighting) {
@@ -95,7 +102,7 @@ void apeiron::example::World::update(float time, float delta_time, const engine:
     c.set_rotation(frame_time_ * glm::radians(120.0f) * c.rotation_magnitudes());
   }
 
-  text_.set_text(options_->text);
+  //text_.set_text(options_->text);
 }
 
 

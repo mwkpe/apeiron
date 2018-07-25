@@ -5,12 +5,19 @@
 namespace apeiron::engine {
 
 
+// Generic input for convenience
 struct Input
 {
   bool forward = false;
   bool backward = false;
   bool left = false;
   bool right = false;
+  bool action1 = false;
+  bool action2 = false;
+  bool action3 = false;
+  bool mouse_left = false;
+  bool mouse_middle = false;
+  bool mouse_right = false;
   int mouse_x_abs = 0;
   int mouse_x_rel = 0;
   int mouse_y_abs = 0;

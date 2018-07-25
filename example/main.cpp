@@ -21,9 +21,12 @@ apeiron::engine::Input get_input_state()
   input.left = kb_state[SDL_SCANCODE_LEFT] || kb_state[SDL_SCANCODE_A];
   input.right = kb_state[SDL_SCANCODE_RIGHT] || kb_state[SDL_SCANCODE_D];
 
-  SDL_GetMouseState(&input.mouse_x_abs, &input.mouse_y_abs);
+  auto mouse_state = SDL_GetMouseState(&input.mouse_x_abs, &input.mouse_y_abs);
   SDL_GetRelativeMouseState(&input.mouse_x_rel, &input.mouse_y_rel);
   input.mouse_y_rel = -input.mouse_y_rel;  // Make mouse up correspond to camera pitch up
+  input.mouse_left = mouse_state & SDL_BUTTON(SDL_BUTTON_LEFT);
+  input.mouse_middle = mouse_state & SDL_BUTTON(SDL_BUTTON_MIDDLE);
+  input.mouse_right =  mouse_state & SDL_BUTTON(SDL_BUTTON_RIGHT);
 
   return input;
 }
