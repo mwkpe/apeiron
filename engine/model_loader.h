@@ -17,4 +17,4 @@ std::tuple<std::vector<float>, int> load_model(std::string_view filename, std::u
 }  // namespace apeiron::engine
 
 
-#endif  //  APEIRON_ENGINE_MODEL_LOADER_H
+#endif  // APEIRON_ENGINE_MODEL_LOADER_H
