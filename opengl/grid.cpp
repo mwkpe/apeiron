@@ -64,7 +64,6 @@ std::tuple<std::vector<float>, int> build_vertices(const glm::vec2& size, std::s
 apeiron::opengl::Grid::Grid(const glm::vec2& size, std::size_t x_steps, std::size_t y_steps,
     const glm::vec3& color, float line_width) : size_{size}, line_width_{line_width}
 {
-  //const auto [vertices, values_per_vertex] = build_vertices(size, spacing, precision, color);
   const auto [vertices, values_per_vertex] = build_vertices(size, x_steps, y_steps, color);
   vertex_count_ = vertices.size() / values_per_vertex;
   glGenVertexArrays(1, &vao_);
