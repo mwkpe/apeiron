@@ -41,8 +41,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
   try {
     options = apeiron::example::load_configuration("config.json");
   }
-  catch (const apeiron::engine::Error& e) {
-    std::cout << e.what() << std::endl;
+  catch (const apeiron::engine::Warning& w) {
+    std::cout << w.what() << std::endl;
   }
 
   SDL_Init(SDL_INIT_VIDEO);
@@ -56,10 +56,16 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
   auto* window = SDL_CreateWindow("apeiron", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
       options.window_width, options.window_height, SDL_WINDOW_OPENGL);
   auto context = SDL_GL_CreateContext(window);
+  auto quit_sdl = [&]{
+    SDL_GL_DeleteContext(context);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+  };
 
   glewExperimental = GL_TRUE;
   if (GLenum status = glewInit(); status != GLEW_OK) {
     std::cerr << reinterpret_cast<const char*>(glewGetErrorString(status));
+    quit_sdl();
     std::cin.ignore();  // Keep console open
     return 1;
   }
@@ -75,6 +81,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
   }
   catch (const apeiron::engine::Error& e) {
     std::cerr << e.what() << std::endl;
+    quit_sdl();
     std::cin.ignore();  // Keep console open
     return 1;
   }
@@ -153,7 +160,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     glCullFace(GL_BACK);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
-    //glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -175,10 +182,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     }
   }
 
-  SDL_GL_DeleteContext(context);
-  SDL_DestroyWindow(window);
-  SDL_Quit();
-
+  quit_sdl();
   apeiron::example::save_configuration(options, "config.json");
 
   return 0;
