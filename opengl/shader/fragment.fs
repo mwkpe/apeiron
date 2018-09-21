@@ -11,8 +11,8 @@ uniform vec3 light_position;
 out vec4 frag_color;
 in vec3 frag_position;
 in vec3 normal;
-in vec2 tex_coord;
-in vec3 vertex_color;
+in vec2 texcoord;
+in vec4 vertex_color;
 
 void main()
 {
@@ -21,10 +21,10 @@ void main()
 
   switch (color_mode) {
     case 0:
-      object_color = texture(texture2d, tex_coord);
+      object_color = texture(texture2d, texcoord);
       break;
     case 1:
-      object_color = vec4(vertex_color, 1.0);
+      object_color = vertex_color;
       break;
     case 2:
       object_color = color;
