@@ -10,10 +10,8 @@ void apeiron::example::World::init()
 {
   namespace mf = engine::model_flags;
 
-  renderer_.init();
-  auto aspect_ratio = static_cast<float>(options_->window_width) / options_->window_height;
-  renderer_.set_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 500.0f));
-
+  renderer_.init(static_cast<float>(options_->window_width),
+      static_cast<float>(options_->window_height));
   camera_.set({10.0f, 15.0f, 10.0f}, -45.0f, -145.0f);
 
   charset_.load("assets/roboto_mono.png");
@@ -46,11 +44,16 @@ void apeiron::example::World::init()
     cubes_.back().set_position(position(), position(), position());
   }
 
-  text_.set_text(" !\"#$%&'()*+,-./0123456789:;<=>?");
-  text_.set_position(2.0f, 0.1f, 0.0f);
-  text_.set_rotation(glm::radians(-90.0f), 0.0f, 0.0f);
-  text_.set_size(1.0f);
-  text_.set_spacing(0.95f, 1.0f);
+  world_text_.set_text(" !\"#$%&'()*+,-./0123456789:;<=>?");
+  world_text_.set_position(5.0f, 0.1f, 0.0f);
+  world_text_.set_rotation(glm::radians(90.0f), 0.0f, 0.0f);
+  world_text_.set_size(1.0f);
+  world_text_.set_spacing(0.95f, 1.0f);
+
+  screen_text_.set_text(" !\"#$%&'()*+,-./0123456789:;<=>?");
+  screen_text_.set_position(100.0f, 100.0f, 0.0f);
+  screen_text_.set_size(100.0f);
+  screen_text_.set_spacing(0.95f, 1.0f);
 }
 
 
@@ -74,11 +77,11 @@ void apeiron::example::World::update(float time, float delta_time, const engine:
     camera_.orient(input->mouse_x_rel, input->mouse_y_rel, options_->camera_sensitivity);
 
     if (input->mouse_left)
-      text_.set_text("mouse left");
+      screen_text_.set_text("mouse left");
     if (input->mouse_middle)
-      text_.set_text("mouse middle");
+      screen_text_.set_text("mouse middle");
     if (input->mouse_right)
-      text_.set_text("mouse right");
+      screen_text_.set_text("mouse right");
   }
 
   if (options_->lighting) {
@@ -89,8 +92,6 @@ void apeiron::example::World::update(float time, float delta_time, const engine:
     light_.set_color(0.3f, 0.3f, 0.3f);
   }
   light_.set_position(0.0f, 7.5f, -options_->light_distance);
-  renderer_.set_light_color(light_.color());
-  renderer_.set_light_position(light_.position());
 
   cylinder_.set_rotation(frame_time_ * glm::radians(360.0f * options_->cylinder_revs) *
       cylinder_.rotation_magnitudes());
@@ -102,7 +103,8 @@ void apeiron::example::World::update(float time, float delta_time, const engine:
     c.set_rotation(frame_time_ * glm::radians(120.0f) * c.rotation_magnitudes());
   }
 
-  //text_.set_text(options_->text);
+  world_text_.set_text(options_->text);
+  screen_text_.set_text(options_->text);
 }
 
 
@@ -110,6 +112,10 @@ void apeiron::example::World::render()
 {
   frame_++;
   auto color = options_->main_color;
+
+  renderer_.use_world_space();
+  auto aspect_ratio = static_cast<float>(options_->window_width) / options_->window_height;
+  renderer_.set_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 500.0f));
 
   renderer_.set_view(camera_.view());
   renderer_.set_wireframe(options_->wireframe);
@@ -122,7 +128,11 @@ void apeiron::example::World::render()
   renderer_.use_color_shading();
   renderer_.render(cylinder_, color);
 
-  renderer_.set_lighting(options_->lighting);
+  if (options_->lighting) {
+    renderer_.set_light_color(light_.color());
+    renderer_.set_light_position(light_.position());
+    renderer_.set_lighting(true);
+  }
   renderer_.render(teapot_, color);
 
   renderer_.set_lighting(false);
@@ -142,5 +152,10 @@ void apeiron::example::World::render()
     }
   }
 
-  renderer_.render(text_, charset_, color);
+  renderer_.render(world_text_, charset_, color);
+
+  renderer_.use_screen_space();
+  renderer_.set_projection(glm::ortho(-1.0f, 1.0f, 1.0f, -1.0f));
+
+  renderer_.render_screen(screen_text_, charset_, color);
 }

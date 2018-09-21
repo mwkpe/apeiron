@@ -26,7 +26,7 @@ class World final
 {
 public:
   explicit World(const Options* options) : options_{options},
-      charset_{16, 8, 32},
+      charset_{16, 8, 32, 0.5f, 1.0f},
       cube_{{1.0f, 1.0f, 1.0f}},
       ground_{{50.0f, 50.0f}, 20, 20, {0.25f, 0.25f, 0.25f}, 1.0f},
       light_{&bulb_},
@@ -43,7 +43,8 @@ private:
   opengl::Model bulb_;
   opengl::Cuboid cube_;
   engine::Camera camera_;
-  engine::Text text_;
+  engine::Text world_text_;
+  engine::Text screen_text_;
   Ground ground_;
   Light light_;
   Cylinder cylinder_;
