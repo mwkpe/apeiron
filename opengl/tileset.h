@@ -32,9 +32,6 @@ private:
 };
 
 
-using Charset = Tileset;
-
-
 }  // namespace apeiron::opengl
 
 

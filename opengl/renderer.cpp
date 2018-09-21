@@ -141,7 +141,7 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity, const glm::
 }
 
 
-void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::Charset& charset)
+void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::Tileset& charset)
 {
   use_texture_shading();
   charset.bind();
@@ -159,7 +159,7 @@ void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::C
 }
 
 
-void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::Charset& charset,
+void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::Tileset& charset,
     const glm::vec4& color)
 {
   use_texture_shading();
@@ -183,7 +183,7 @@ void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::C
 
 
 void apeiron::opengl::Renderer::render_screen(const engine::Text& text,
-    const opengl::Charset& charset, const glm::vec4& color)
+    const opengl::Tileset& charset, const glm::vec4& color)
 {
   use_texture_shading();
   charset.bind();

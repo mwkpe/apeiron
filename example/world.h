@@ -38,7 +38,7 @@ public:
 private:
   const Options* options_;
   opengl::Renderer renderer_;
-  opengl::Charset charset_;
+  opengl::Tileset charset_;
   opengl::Texture akari_;
   opengl::Model bulb_;
   opengl::Cuboid cube_;
