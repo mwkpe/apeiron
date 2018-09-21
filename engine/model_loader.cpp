@@ -7,7 +7,8 @@
 #include "engine/error.h"
 
 
-std::tuple<std::vector<float>, int> apeiron::engine::load_model(std::string_view filename, std::uint32_t flags)
+std::tuple<std::vector<float>, int> apeiron::engine::load_model(std::string_view filename,
+    std::uint32_t flags)
 {
   tinyobj::attrib_t attrib;
   std::vector<tinyobj::shape_t> shapes;
