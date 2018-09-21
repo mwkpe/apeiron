@@ -17,7 +17,7 @@ public:
   void set_text(std::string text) { text_ = std::move(text); }
   void set_size(float size) { set_scale(size, size, size); }
   void set_spacing(float x, float y) { spacing_ = {x, y}; }
-  float length() const { return text_.size(); }
+  std::size_t length() const { return text_.size(); }
   float size() const { return scale().x; }
   glm::vec2 spacing() const { return spacing_; }
 
