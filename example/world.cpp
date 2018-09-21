@@ -93,8 +93,8 @@ void apeiron::example::World::update(float time, float delta_time, const engine:
   }
   light_.set_position(0.0f, 7.5f, -options_->light_distance);
 
-  //cylinder_.set_rotation(frame_time_ * glm::radians(360.0f * options_->cylinder_revs) *
-  //    cylinder_.rotation_magnitudes());
+  cylinder_.set_rotation(frame_time_ * glm::radians(360.0f * options_->cylinder_revs) *
+      cylinder_.rotation_magnitudes());
   if (cylinder_.points() != options_->cylinder_points) {
     cylinder_.rebuild(options_->cylinder_points);
   }
