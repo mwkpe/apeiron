@@ -24,11 +24,14 @@ public:
   void set_rotation(glm::vec3 rotation) { rotation_ = rotation; };
   void set_scale(float x, float y, float z) { scale_ = glm::vec3{x, y, z}; };
   void set_scale(glm::vec3 scale) { scale_ = scale; };
+  void set_color(float r, float g, float b, float a) { color_ = glm::vec4{r, g, b, a}; };
+  void set_color(glm::vec4 color) { color_ = color; };
   glm::vec3 center() const { return center_; }
   glm::vec3 size() const { return size_; }
   glm::vec3 position() const { return position_; }
   glm::vec3 rotation() const { return rotation_; }
   glm::vec3 scale() const { return scale_; }
+  glm::vec4 color() const { return color_; }
   virtual void render() const {}
   virtual void render_bounds() const {}
 
@@ -38,6 +41,7 @@ protected:
   glm::vec3 rotation_ = glm::vec3{0.0f, 0.0f, 0.0f};
   glm::vec3 scale_ = glm::vec3{1.0f, 1.0f, 1.0f};
   glm::vec3 center_ = glm::vec3{0.0f, 0.0f, 0.0f};
+  glm::vec4 color_ = glm::vec4{1.0f, 0.0f, 1.0f, 1.0f};
 };
 
 
