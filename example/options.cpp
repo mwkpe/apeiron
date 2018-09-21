@@ -16,7 +16,7 @@ auto apeiron::example::load_configuration(std::string_view filename) -> Options
 {
   std::ifstream fs{std::string{filename}};
   if (!fs.is_open())
-    throw engine::Error{std::string{"Could not open config file: "} + std::string{filename}};
+    throw engine::Warning{std::string{"Could not open config file: "} + std::string{filename}};
 
   std::stringstream ss;
   ss << fs.rdbuf();
@@ -26,7 +26,7 @@ auto apeiron::example::load_configuration(std::string_view filename) -> Options
   try {
     j = json::parse(ss.str());
     if (j.is_null())
-      throw engine::Error{std::string{"Config file empty"}};
+      throw engine::Warning{std::string{"Config file empty"}};
 
     Options options;  // Contains default values
     options.window_width = j.value("window_width", options.window_width);
@@ -36,7 +36,7 @@ auto apeiron::example::load_configuration(std::string_view filename) -> Options
     return options;
   }
   catch (const json::exception& e) {
-    throw engine::Error{std::string{"Config file parse error: "} + e.what()};
+    throw engine::Warning{std::string{"Config file parse error: "} + e.what()};
   }
 }
 
