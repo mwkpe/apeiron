@@ -12,6 +12,7 @@
 #include "engine/text.h"
 #include "opengl/cuboid.h"
 #include "opengl/renderer.h"
+#include "example/axes.h"
 #include "example/ground.h"
 #include "example/light.h"
 #include "example/cube.h"
@@ -28,6 +29,7 @@ public:
   explicit World(const Options* options) : options_{options},
       charset_{16, 8, 32, 0.5f, 1.0f},
       cube_{{1.0f, 1.0f, 1.0f}},
+      axes_{16, 0.015f, 10.0f},
       ground_{{50.0f, 50.0f}, 20, 20, {0.25f, 0.25f, 0.25f}, 1.0f},
       light_{&bulb_},
       cylinder_{options_->cylinder_points, 0.0f, 0.0f, 1.0f} {}
@@ -45,6 +47,7 @@ private:
   engine::Camera camera_;
   engine::Text world_text_;
   engine::Text screen_text_;
+  Axes axes_;
   Ground ground_;
   Light light_;
   Cylinder cylinder_;

@@ -67,9 +67,12 @@ add_executable(apeiron
     example/main.cpp
     example/options.cpp
     example/options.h
-    example/menu.h
     example/menu.cpp
+    example/menu.h
     example/light.h
+    example/axis.h
+    example/axes.cpp
+    example/axes.h
     example/ground.h
     example/cube.h
     example/cylinder.h
