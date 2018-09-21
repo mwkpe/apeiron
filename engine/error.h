@@ -17,6 +17,14 @@ public:
 };
 
 
+class Warning : public std::runtime_error
+{
+public:
+  explicit Warning(const std::string& s) : std::runtime_error{s} {}
+  explicit Warning(const char* s) : std::runtime_error{s} {}
+};
+
+
 }  // namespace apeiron::engine
 
 
