@@ -62,7 +62,8 @@ GLuint create_program(GLuint vertex_shader, GLuint fragment_shader)
 }  // namespace
 
 
-void apeiron::opengl::Shader::load(std::string_view vertex_shader_file, std::string_view fragment_shader_file)
+void apeiron::opengl::Shader::load(std::string_view vertex_shader_file,
+    std::string_view fragment_shader_file)
 {
   auto vs_source = read_file(vertex_shader_file);
   auto fs_source = read_file(fragment_shader_file);
@@ -87,6 +88,12 @@ void apeiron::opengl::Shader::set_uniform(const char* name, bool value) const
 void apeiron::opengl::Shader::set_uniform(const char* name, int value) const
 {
   glUniform1i(glGetUniformLocation(id_, name), value);
+}
+
+
+void apeiron::opengl::Shader::set_uniform(const char* name, const glm::vec2& vec) const
+{
+  glUniform2fv(glGetUniformLocation(id_, name), 1, &vec[0]);
 }
 
 
