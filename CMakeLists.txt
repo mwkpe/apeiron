@@ -41,8 +41,8 @@ add_executable(apeiron
     opengl/points.h
     opengl/grid.cpp
     opengl/grid.h
-    opengl/polygon.cpp
-    opengl/polygon.h
+    opengl/triangles.cpp
+    opengl/triangles.h
     opengl/rectangle.cpp
     opengl/rectangle.h
     opengl/cuboid.cpp
@@ -58,7 +58,6 @@ add_executable(apeiron
     engine/entity.h
     engine/camera.cpp
     engine/camera.h
-    engine/text.cpp
     engine/text.h
     engine/image_loader.cpp
     engine/image_loader.h
