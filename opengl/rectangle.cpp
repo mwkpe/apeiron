@@ -17,13 +17,12 @@ std::vector<apeiron::engine::Vertex_normal_texcoords> build_vertices(float w, fl
 
   return {
     {
-      // x, y, z, nx, ny, nz, s, t
-      {-w, -h, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f},
-      { w, -h, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f},
-      { w,  h, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f},
-      { w,  h, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f},
-      {-w,  h, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f},
-      {-w, -h, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f}
+      { w,  h, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f},
+      { w, -h, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f},
+      {-w,  h, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f},
+      {-w, -h, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f},
+      {-w,  h, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f},
+      { w, -h, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f}
     }
   };
 }
@@ -32,13 +31,13 @@ std::vector<apeiron::engine::Vertex_normal_texcoords> build_vertices(float w, fl
 }  // namespace
 
 
-apeiron::opengl::Rectangle::Rectangle(float w, float h)
+apeiron::opengl::Rectangle::Rectangle(float width, float height)
 {
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   glBindVertexArray(vao_);
 
-  const auto vertices = build_vertices(w, h);
+  const auto vertices = build_vertices(width, height);
   vertex_count_ = vertices.size();
   const int stride = sizeof(engine::Vertex_normal_texcoords);
 

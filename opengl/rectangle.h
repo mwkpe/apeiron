@@ -12,7 +12,7 @@ namespace apeiron::opengl {
 class Rectangle final : public Shape
 {
 public:
-  Rectangle(float w, float h);
+  Rectangle(float width, float height);
   void render() const override;
 };
 

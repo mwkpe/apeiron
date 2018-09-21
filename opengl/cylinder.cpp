@@ -24,8 +24,8 @@ std::vector<float> build_vertices(int points, float radius = 0.5f, float height 
 
   for (int i=0; i<=points; ++i) {
     const float angle = static_cast<float>(i) / points * tau;
-    const float x = radius * std::cos(-angle);
-    const float y = radius * std::sin(-angle);
+    const float x = radius * std::cos(angle);
+    const float y = radius * std::sin(angle);
     cylinder[wall_index++] = x;
     cylinder[wall_index++] = y;
     cylinder[wall_index++] = -height / 2.0f;
@@ -35,8 +35,8 @@ std::vector<float> build_vertices(int points, float radius = 0.5f, float height 
     cylinder[bottom_circle_index++] = x;
     cylinder[bottom_circle_index++] = y;
     cylinder[bottom_circle_index++] = -height / 2.0f;
+    cylinder[top_circle_index++] = y;  // Reverse order for back culling
     cylinder[top_circle_index++] = x;
-    cylinder[top_circle_index++] = y;
     cylinder[top_circle_index++] = height / 2.0f;
   }
 
