@@ -11,8 +11,8 @@ namespace apeiron::opengl {
 class Cylinder final : public Shape
 {
 public:
-  explicit Cylinder(int points);
-  void construct(int points);
+  explicit Cylinder(int points, float radius = 0.5f, float height = 1.0f);
+  void construct(int points, float radius = 0.5f, float height = 1.0f);
   int points() const { return points_; }
   void render() const override;
 
