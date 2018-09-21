@@ -12,9 +12,9 @@ class Cylinder final : public Shape
 {
 public:
   explicit Cylinder(int points);
-  void render() const override;
   void construct(int points);
   int points() const { return points_; }
+  void render() const override;
 
 private:
   int points_;

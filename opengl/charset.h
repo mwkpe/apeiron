@@ -14,10 +14,12 @@ namespace apeiron::opengl {
 class Charset final : public Shape
 {
 public:
-  Charset(std::uint32_t columns, std::uint32_t rows, std::uint8_t character_offset);
+  Charset(std::uint32_t columns, std::uint32_t rows, std::uint8_t character_offset,
+      float character_width = 0.5f, float character_height = 1.0f);
   void load(std::string_view filename);
   void bind() const;
   void render(char c) const;
+  void render(int i) const;
   float character_height() const { return character_height_; }
   float character_width() const { return character_width_; }
 

@@ -34,7 +34,7 @@ std::tuple<std::vector<float>, int> apeiron::engine::load_model(std::string_view
           vertices.push_back(attrib.normals[3*idx.normal_index+1]);
           vertices.push_back(attrib.normals[3*idx.normal_index+2]);
         }
-        if (flags & model_flags::tex_coords) {
+        if (flags & model_flags::texcoords) {
           vertices.push_back(attrib.texcoords[2*idx.texcoord_index+0]);
           vertices.push_back(attrib.texcoords[2*idx.texcoord_index+1]);
         }
@@ -42,6 +42,7 @@ std::tuple<std::vector<float>, int> apeiron::engine::load_model(std::string_view
           vertices.push_back(attrib.colors[3*idx.vertex_index+0]);
           vertices.push_back(attrib.colors[3*idx.vertex_index+1]);
           vertices.push_back(attrib.colors[3*idx.vertex_index+2]);
+          vertices.push_back(1.0f);
         }
       }
       index_offset += fv;
@@ -53,10 +54,10 @@ std::tuple<std::vector<float>, int> apeiron::engine::load_model(std::string_view
     elements_per_vertex += 3;
   if (flags & model_flags::normals)
     elements_per_vertex += 3;
-  if (flags & model_flags::tex_coords)
+  if (flags & model_flags::texcoords)
     elements_per_vertex += 2;
   if (flags & model_flags::colors)
-    elements_per_vertex += 3;
+    elements_per_vertex += 4;
 
   return {vertices, elements_per_vertex};
 }

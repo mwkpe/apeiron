@@ -8,7 +8,7 @@
 namespace apeiron::engine::model_flags {
 
 
-enum : std::uint32_t { vertices = 0x1, normals = 0x2, tex_coords = 0x4, colors = 0x8 };
+enum : std::uint32_t { vertices = 0x1, normals = 0x2, texcoords = 0x4, colors = 0x8 };
 
 
 }  // namespace apeiron::engine::model_flags

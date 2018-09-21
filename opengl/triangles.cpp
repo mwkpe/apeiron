@@ -1,11 +1,11 @@
-#include "points.h"
+#include "triangles.h"
 
 
 #include <cstddef>
 #include "GL/glew.h"
 
 
-void apeiron::opengl::Points::init(std::vector<engine::Vertex_simple>&& vertices)
+apeiron::opengl::Triangles::Triangles(std::vector<engine::Vertex_simple>&& vertices)
 {
   vertex_count_ = vertices.size();
 
@@ -23,7 +23,7 @@ void apeiron::opengl::Points::init(std::vector<engine::Vertex_simple>&& vertices
 }
 
 
-void apeiron::opengl::Points::init(std::vector<engine::Vertex_color>&& vertices)
+apeiron::opengl::Triangles::Triangles(std::vector<engine::Vertex_color>&& vertices)
 {
   vertex_count_ = vertices.size();
 
@@ -31,37 +31,31 @@ void apeiron::opengl::Points::init(std::vector<engine::Vertex_color>&& vertices)
   glGenBuffers(1, &vbo_);
   glBindVertexArray(vao_);
 
+  const int stride = sizeof(engine::Vertex_color);
+
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
   glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_color),
       vertices.data(), GL_STATIC_DRAW);
 
   // Position
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void*>(0));
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(0));
   glEnableVertexAttribArray(0);
   // Color
-  glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(engine::Vertex_color),
+  glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, stride,
       reinterpret_cast<void*>(offsetof(engine::Vertex_color, color)));
   glEnableVertexAttribArray(3);
 }
 
 
-void apeiron::opengl::Points::render() const
+void apeiron::opengl::Triangles::render() const
 {
-  float current_size;
-  glGetFloatv(GL_POINT_SIZE, &current_size);
-  glPointSize(point_size_);
   glBindVertexArray(vao_);
-  glDrawArrays(GL_POINTS, 0, vertex_count_);
-  glPointSize(current_size);
+  glDrawArrays(GL_TRIANGLES, 0, vertex_count_);
 }
 
 
-void apeiron::opengl::Points::render(std::uint32_t start, std::uint32_t count) const
+void apeiron::opengl::Triangles::render(std::uint32_t start, std::uint32_t count) const
 {
-  float current_size;
-  glGetFloatv(GL_POINT_SIZE, &current_size);
-  glPointSize(point_size_);
   glBindVertexArray(vao_);
-  glDrawArrays(GL_POINTS, start, count);
-  glPointSize(current_size);
+  glDrawArrays(GL_TRIANGLES, start, count);
 }

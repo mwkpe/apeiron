@@ -30,13 +30,13 @@ void apeiron::opengl::Model::load(std::string_view filename, std::uint32_t flags
     glEnableVertexAttribArray(1);
     offset += 3 * sizeof(float);
   }
-  if (flags & mf::tex_coords) {
+  if (flags & mf::texcoords) {
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
     glEnableVertexAttribArray(2);
     offset += 2 * sizeof(float);
   }
   if (flags & mf::colors) {
-    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
+    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
     glEnableVertexAttribArray(3);
   }
 }

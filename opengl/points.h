@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <glm/glm.hpp>
+#include "engine/vertex.h"
 #include "opengl/shape.h"
 
 
@@ -13,8 +14,8 @@ namespace apeiron::opengl {
 class Points final : public Shape
 {
 public:
-  enum class Format { Xyz, Xyzrgb };
-  void init(std::vector<float>&& vertices, Format format);
+  void init(std::vector<engine::Vertex_simple>&& vertices);
+  void init(std::vector<engine::Vertex_color>&& vertices);
   void set_size(float size) { point_size_ = size; }
   void render() const override;
   void render(std::uint32_t start, std::uint32_t count) const override;

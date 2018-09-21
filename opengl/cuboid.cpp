@@ -3,13 +3,15 @@
 
 #include <tuple>
 #include <vector>
+#include <cstddef>
 #include "GL/glew.h"
+#include "engine/vertex.h"
 
 
 namespace {
 
 
-std::tuple<std::vector<float>, int> build_vertices(const glm::vec3& size)
+std::vector<apeiron::engine::Vertex_normal_texcoords> build_vertices(const glm::vec3& size)
 {
   const float x = size.x / 2.0f;
   const float y = size.y / 2.0f;
@@ -18,49 +20,49 @@ std::tuple<std::vector<float>, int> build_vertices(const glm::vec3& size)
   return {
     {
       // x, y, z, nx, ny, nz, s, t
-      -x, -y, -z,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
-       x, -y, -z,  0.0f,  0.0f, -1.0f, 1.0f, 0.0f,
-       x,  y, -z,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f,
-       x,  y, -z,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f,
-      -x,  y, -z,  0.0f,  0.0f, -1.0f, 0.0f, 1.0f,
-      -x, -y, -z,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
-      -x, -y,  z,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f,
-       x, -y,  z,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f,
-       x,  y,  z,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f,
-       x,  y,  z,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f,
-      -x,  y,  z,  0.0f,  0.0f,  1.0f, 0.0f, 1.0f,
-      -x, -y,  z,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f,
-      -x,  y,  z, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-      -x,  y, -z, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
-      -x, -y, -z, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-      -x, -y, -z, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-      -x, -y,  z, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
-      -x,  y,  z, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-       x,  y,  z,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-       x,  y, -z,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
-       x, -y, -z,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-       x, -y, -z,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-       x, -y,  z,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
-       x,  y,  z,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-      -x, -y, -z,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,
-       x, -y, -z,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f,
-       x, -y,  z,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f,
-       x, -y,  z,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f,
-      -x, -y,  z,  0.0f, -1.0f,  0.0f, 0.0f, 0.0f,
-      -x, -y, -z,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,
-      -x,  y, -z,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,
-       x,  y, -z,  0.0f,  1.0f,  0.0f, 1.0f, 1.0f,
-       x,  y,  z,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f,
-       x,  y,  z,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f,
-      -x,  y,  z,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f,
-      -x,  y, -z,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f
-    },
-    8  // Values per vertex
+      {-x, -y, -z,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f},
+      { x, -y, -z,  0.0f,  0.0f, -1.0f, 1.0f, 0.0f},
+      { x,  y, -z,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f},
+      { x,  y, -z,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f},
+      {-x,  y, -z,  0.0f,  0.0f, -1.0f, 0.0f, 1.0f},
+      {-x, -y, -z,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f},
+      {-x, -y,  z,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f},
+      { x, -y,  z,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f},
+      { x,  y,  z,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f},
+      { x,  y,  z,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f},
+      {-x,  y,  z,  0.0f,  0.0f,  1.0f, 0.0f, 1.0f},
+      {-x, -y,  z,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f},
+      {-x,  y,  z, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f},
+      {-x,  y, -z, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f},
+      {-x, -y, -z, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f},
+      {-x, -y, -z, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f},
+      {-x, -y,  z, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f},
+      {-x,  y,  z, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f},
+      { x,  y,  z,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f},
+      { x,  y, -z,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f},
+      { x, -y, -z,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f},
+      { x, -y, -z,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f},
+      { x, -y,  z,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f},
+      { x,  y,  z,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f},
+      {-x, -y, -z,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f},
+      { x, -y, -z,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f},
+      { x, -y,  z,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f},
+      { x, -y,  z,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f},
+      {-x, -y,  z,  0.0f, -1.0f,  0.0f, 0.0f, 0.0f},
+      {-x, -y, -z,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f},
+      {-x,  y, -z,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f},
+      { x,  y, -z,  0.0f,  1.0f,  0.0f, 1.0f, 1.0f},
+      { x,  y,  z,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f},
+      { x,  y,  z,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f},
+      {-x,  y,  z,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f},
+      {-x,  y, -z,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f}
+    }
   };
 }
 
 
-std::tuple<std::vector<float>, std::vector<std::uint16_t>> build_wireframe_vertices(const glm::vec3& size)
+auto build_wireframe_vertices(const glm::vec3& size)
+    -> std::tuple<std::vector<float>, std::vector<std::uint16_t>>
 {
   const float x = size.x / 2.0f;
   const float y = size.y / 2.0f;
@@ -108,23 +110,33 @@ apeiron::opengl::Cuboid::Cuboid(const glm::vec3& size, bool wireframe, float lin
     const auto [vertices, elements] = build_wireframe_vertices(size);
     element_count_ = elements.size();
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(),
+        GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(std::uint16_t), elements.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(std::uint16_t),
+        elements.data(), GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void*>(0));
     glEnableVertexAttribArray(0);
   }
   else {
-    const auto [vertices, values_per_vertex] = build_vertices(size);
-    vertex_count_ = vertices.size() / values_per_vertex;
+    const auto vertices = build_vertices(size);
+    vertex_count_ = vertices.size();
+    const int stride = sizeof(engine::Vertex_normal_texcoords);
+
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
-    const int stride = values_per_vertex * sizeof(float);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_normal_texcoords),
+        vertices.data(), GL_STATIC_DRAW);
+
+    // Position
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(0));
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(3 * sizeof(float)));
+    // Normal
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride,
+        reinterpret_cast<void*>(offsetof(engine::Vertex_normal_texcoords, normal)));
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(6 * sizeof(float)));
+    // Texture coordinates
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
+        reinterpret_cast<void*>(offsetof(engine::Vertex_normal_texcoords, texcoords)));
     glEnableVertexAttribArray(2);
   }
 }
