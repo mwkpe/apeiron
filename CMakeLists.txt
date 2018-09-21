@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.9)
 project(apeiron)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra")
+set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra")  # -Wconversion
 
 set(LIBRARY_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/external")
 
@@ -35,8 +35,8 @@ add_executable(apeiron
     opengl/shape.h
     opengl/texture.cpp
     opengl/texture.h
-    opengl/charset.cpp
-    opengl/charset.h
+    opengl/tileset.cpp
+    opengl/tileset.h
     opengl/points.cpp
     opengl/points.h
     opengl/grid.cpp
