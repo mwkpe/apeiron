@@ -23,8 +23,9 @@ void apeiron::example::World::init()
   renderer_.set_light_position(light_.position());
   renderer_.set_light_color(light_.color());
   teapot_.set_position(-3.0f, 0.2f, 5.0f);
+  teapot_.set_rotation(0.0f, glm::radians(-45.0f), 0.0f);
   teapot_.set_center(0.0f, 1.271f / 2.0f, 0.0f);  // Offset model origin to center
-  cylinder_.set_position(0.0f, 1.5f, -5.0f);
+  cylinder_.set_position(5.0f, 1.5f, -5.0f);
 
   std::mt19937 rng{0x102df64d};
   std::uniform_real_distribution<float> dist(0.0f, 50.0f);
@@ -45,12 +46,12 @@ void apeiron::example::World::init()
   }
 
   world_text_.set_text(" !\"#$%&'()*+,-./0123456789:;<=>?");
-  world_text_.set_position(1.0f, 0.2f, 1.0f);
+  world_text_.set_position(2.5f, 0.2f, 1.0f);
   world_text_.set_rotation(glm::radians(90.0f), 0.0f, 0.0f);
   world_text_.set_size(1.0f);
   world_text_.set_spacing(0.95f, 1.0f);
 
-  screen_text_.set_text(" !\"#$%&'()*+,-./0123456789:;<=>?");
+  screen_text_.set_text("Hello screen!");
   screen_text_.set_position(100.0f, 100.0f, 0.0f);
   screen_text_.set_size(100.0f);
   screen_text_.set_spacing(0.95f, 1.0f);
@@ -104,7 +105,6 @@ void apeiron::example::World::update(float time, float delta_time, const engine:
   }
 
   world_text_.set_text(options_->text);
-  screen_text_.set_text(options_->text);
 }
 
 
@@ -143,7 +143,9 @@ void apeiron::example::World::render()
 
   if (options_->show_light) {
     renderer_.set_lighting(false);
+    renderer_.set_wireframe(true);
     renderer_.render(light_, light_.color());
+    renderer_.set_wireframe(options_->wireframe);
   }
 
   if (options_->show_cubes) {

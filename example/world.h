@@ -29,8 +29,8 @@ public:
   explicit World(const Options* options) : options_{options},
       charset_{16, 8, 32, 0.5f, 1.0f},
       cube_{{1.0f, 1.0f, 1.0f}},
-      axes_{16, 0.015f, 10.0f},
-      ground_{{50.0f, 50.0f}, 20, 20, {0.25f, 0.25f, 0.25f}, 1.0f},
+      axes_{16, 0.01f, 25.0f},
+      ground_{{50.0f, 50.0f}, 21, 21, {0.25f, 0.25f, 0.25f}, 1.0f},
       light_{&bulb_},
       cylinder_{options_->cylinder_points, 0.0f, 0.0f, 1.0f} {}
   void init();
