@@ -49,12 +49,12 @@ void apeiron::example::World::init()
   world_text_.set_position(2.5f, 0.2f, 1.0f);
   world_text_.set_rotation(glm::radians(90.0f), 0.0f, 0.0f);
   world_text_.set_size(1.0f);
-  world_text_.set_spacing(0.95f, 1.0f);
+  world_text_.set_spacing(0.975f, 1.0f);
 
   screen_text_.set_text("Hello screen!");
   screen_text_.set_position(100.0f, 100.0f, 0.0f);
   screen_text_.set_size(100.0f);
-  screen_text_.set_spacing(0.95f, 1.0f);
+  screen_text_.set_spacing(0.975f, 1.0f);
 }
 
 
