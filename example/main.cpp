@@ -70,7 +70,10 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     return 1;
   }
 
-  SDL_GL_SetSwapInterval(0);
+  if (options.vsync)
+    SDL_GL_SetSwapInterval(1);
+  else
+    SDL_GL_SetSwapInterval(0);
 
   apeiron::example::World world(&options);
   apeiron::example::Menu menu(window);

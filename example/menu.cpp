@@ -81,6 +81,7 @@ void apeiron::example::Menu::build(example::Options* options, float time)
     ImGui::Text("Time: %.2f", time);
     ImGui::Text("Framerate: %.0f fps", io.Framerate);
     ImGui::Text("Frametime: %.3f ms", 1000.0f / io.Framerate);
+    ImGui::Checkbox("Vsync (req. restart)", &options->vsync);
     ImGui::Checkbox("Limit framerate", &options->limit_fps);
     ImGui::SliderInt("Max FPS", &options->max_fps, 30, 240);
     ImGui::Checkbox("Wireframe (F2)", &options->wireframe);

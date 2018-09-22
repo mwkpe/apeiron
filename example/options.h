@@ -17,6 +17,7 @@ struct Options
   bool wireframe = false;
   bool lighting = true;
   bool show_light = true;
+  bool vsync = false;
   bool limit_fps = true;
   bool show_cubes = false;
   bool rotate_cubes = true;
@@ -30,7 +31,7 @@ struct Options
   float camera_speed = 10.0f;
   float camera_sensitivity = 0.02f;
   glm::vec4 main_color = {1.0f, 1.0f, 1.0f, 1.0f};
-  std::string text = "Hello World!";
+  std::string text = "Hello world!";
 };
 
 
