@@ -36,7 +36,8 @@ void apeiron::opengl::Points::init(std::vector<engine::Vertex_color>&& vertices)
       vertices.data(), GL_STATIC_DRAW);
 
   // Position
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void*>(0));
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(engine::Vertex_color),
+      reinterpret_cast<void*>(0));
   glEnableVertexAttribArray(0);
   // Color
   glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(engine::Vertex_color),
