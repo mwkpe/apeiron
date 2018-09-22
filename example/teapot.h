@@ -4,7 +4,6 @@
 
 #include "engine/entity.h"
 #include "opengl/model.h"
-#include "opengl/cuboid.h"
 
 
 namespace apeiron::example {
