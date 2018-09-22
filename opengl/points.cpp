@@ -30,7 +30,6 @@ void apeiron::opengl::Points::init(std::vector<engine::Vertex_color>&& vertices)
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   glBindVertexArray(vao_);
-
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
   glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_color),
       vertices.data(), GL_STATIC_DRAW);
