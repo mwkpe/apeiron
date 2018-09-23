@@ -13,7 +13,7 @@ namespace {
 
 
 auto build_vertices(std::uint32_t columns, std::uint32_t rows, std::uint32_t tile_count,
-    float tile_height, float tile_width)
+    float tile_height, float tile_width, bool flip_y)
 {
   std::vector<apeiron::engine::Vertex_texcoords> vertices;
   const float w = 1.0f / columns;
@@ -24,14 +24,22 @@ auto build_vertices(std::uint32_t columns, std::uint32_t rows, std::uint32_t til
   for (std::size_t i=0; i<tile_count; ++i) {
     const float s = (i % columns) * w;
     const float t = 1.0f - h - (i / columns) * h;
-    // Texture coordinates are horizontally flipped
-    // to revert the flip done when loading the image
-    vertices.push_back({ x,  y, 0.0f, s+w, t});
-    vertices.push_back({ x, -y, 0.0f, s+w, t+h});
-    vertices.push_back({-x,  y, 0.0f, s,   t});
-    vertices.push_back({-x, -y, 0.0f, s,   t+h});
-    vertices.push_back({-x,  y, 0.0f, s,   t});
-    vertices.push_back({ x, -y, 0.0f, s+w, t+h});
+    if (flip_y) {  // E.g. when using top left origin
+      vertices.push_back({ x,  y, 0.0f, s+w, t});
+      vertices.push_back({ x, -y, 0.0f, s+w, t+h});
+      vertices.push_back({-x,  y, 0.0f, s,   t});
+      vertices.push_back({-x, -y, 0.0f, s,   t+h});
+      vertices.push_back({-x,  y, 0.0f, s,   t});
+      vertices.push_back({ x, -y, 0.0f, s+w, t+h});
+    }
+    else {
+      vertices.push_back({-x, -y, 0.0f, s,   t});
+      vertices.push_back({ x, -y, 0.0f, s+w, t});
+      vertices.push_back({-x,  y, 0.0f, s,   t+h});
+      vertices.push_back({ x, -y, 0.0f, s+w, t});
+      vertices.push_back({ x,  y, 0.0f, s+w, t+h});
+      vertices.push_back({-x,  y, 0.0f, s,   t+h});
+    }
   }
 
   return vertices;
@@ -42,7 +50,7 @@ auto build_vertices(std::uint32_t columns, std::uint32_t rows, std::uint32_t til
 
 
 apeiron::opengl::Tileset::Tileset(std::uint32_t columns, std::uint32_t rows,
-    std::uint32_t tile_offset, float tile_width, float tile_height)
+    std::uint32_t tile_offset, float tile_width, float tile_height, bool flip_y)
     : tile_offset_{tile_offset}, tile_count_{columns * rows},
       tile_width_{tile_width}, tile_height_{tile_height}
 {
@@ -51,7 +59,7 @@ apeiron::opengl::Tileset::Tileset(std::uint32_t columns, std::uint32_t rows,
   glBindVertexArray(vao_);
 
   const auto vertices = build_vertices(columns, rows, tile_count_,
-      tile_height_, tile_width_);
+      tile_height_, tile_width_, flip_y);
   vertex_count_ = vertices.size();
   const int stride = sizeof(engine::Vertex_texcoords);
 
