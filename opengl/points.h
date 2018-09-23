@@ -21,7 +21,7 @@ public:
   void render(std::uint32_t start, std::uint32_t count) const override;
 
 private:
-	float point_size_ = 1.0f;
+  float point_size_ = 1.0f;
 };
 
 

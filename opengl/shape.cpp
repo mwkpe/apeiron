@@ -6,16 +6,16 @@
 
 apeiron::opengl::Shape::~Shape()
 {
-	delete_buffers();
+  delete_buffers();
 }
 
 
 void apeiron::opengl::Shape::delete_buffers()
 {
-	if (vbo_)
-  	glDeleteBuffers(1, &vbo_);
+  if (vbo_)
+    glDeleteBuffers(1, &vbo_);
   if (ebo_)
-  	glDeleteBuffers(1, &ebo_);
+    glDeleteBuffers(1, &ebo_);
   if (vao_)
-  	glDeleteVertexArrays(1, &vao_);
+    glDeleteVertexArrays(1, &vao_);
 }
