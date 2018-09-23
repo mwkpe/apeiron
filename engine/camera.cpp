@@ -5,23 +5,19 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 
-apeiron::engine::Camera::Camera()
+apeiron::engine::Camera::Camera(float pitch, float yaw,
+    glm::vec3 position, glm::vec3 front, glm::vec3 world_up)
 {
-  reset();
+  setup(pitch, yaw, position, front, world_up);
 }
 
 
-void apeiron::engine::Camera::reset()
-{
-  set(glm::vec3{10.0f, 20.0f, 10.0f}, -45.0f, -135.0f);
-}
-
-
-void apeiron::engine::Camera::set(glm::vec3 position, float pitch, float yaw)
+void apeiron::engine::Camera::setup(float pitch, float yaw,
+    glm::vec3 position, glm::vec3 front, glm::vec3 world_up)
 {
   position_ = position;
-  front_ = glm::vec3{0.0f, 0.0f, -1.0f};
-  world_up_ = glm::vec3{0.0f, 1.0f, 0.0f};
+  front_ = front;
+  world_up_ = world_up;
   pitch_ = pitch;
   yaw_ = yaw;
   orient(0, 0, 0);  // Apply default pitch and yaw

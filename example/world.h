@@ -29,6 +29,7 @@ public:
   explicit World(const Options* options) : options_{options},
       charset_{16, 8, 32, 0.5f, 1.0f},
       cube_{{1.0f, 1.0f, 1.0f}},
+      camera_{-45.0f, -145.0f, {10.0f, 15.0f, 10.0f}},
       axes_{16, 0.01f, 25.0f},
       ground_{{50.0f, 50.0f}, 21, 21, {0.25f, 0.25f, 0.25f, 1.0f}, 1.0f},
       light_{&bulb_},

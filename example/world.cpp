@@ -8,16 +8,18 @@
 
 void apeiron::example::World::init()
 {
-  namespace mf = engine::model_flags;
-
   renderer_.init(static_cast<float>(options_->window_width),
       static_cast<float>(options_->window_height));
-  camera_.set({10.0f, 15.0f, 10.0f}, -45.0f, -145.0f);
 
   charset_.load("assets/roboto_mono.png");
   akari_.load("assets/private/checkerboard.png");
-  bulb_.load("assets/private/bulb.obj", mf::vertices);
-  teapot_.load_model("assets/utah_teapot.obj", mf::vertices | mf::normals);
+
+  {
+    namespace mf = engine::model_flags;
+    bulb_.load("assets/private/bulb.obj", mf::vertices);
+    teapot_.load_model("assets/utah_teapot.obj", mf::vertices | mf::normals);
+  }
+
   light_.set_position(0.0f, 8.5f, -options_->light_distance);
   light_.set_color(1.0f, 1.0f, 1.0f);
   renderer_.set_light_position(light_.position());
