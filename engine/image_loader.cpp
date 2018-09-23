@@ -7,10 +7,10 @@
 #include "engine/error.h"
 
 
-auto apeiron::engine::load_image(std::string_view filename)
+auto apeiron::engine::load_image(std::string_view filename, bool flip_y)
     -> std::tuple<std::vector<std::uint8_t>, int, int, int>
 {
-  stbi_set_flip_vertically_on_load(true);  // Flipped back via texture coordinates
+  stbi_set_flip_vertically_on_load(flip_y);
   int width, height, channel_count;
   auto delete_data = [](std::uint8_t* data){ stbi_image_free(data); };
   std::unique_ptr<std::uint8_t, decltype(delete_data)> data{
