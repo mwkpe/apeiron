@@ -46,9 +46,9 @@ void apeiron::example::World::init()
     cubes_.back().set_position(position(), position(), position());
   }
 
-  world_text_.set_text(" !\"#$%&'()*+,-./0123456789:;<=>?");
-  world_text_.set_position(2.5f, 0.2f, 1.0f);
-  world_text_.set_rotation(glm::radians(90.0f), 0.0f, 0.0f);
+  world_text_.set_text("Hello world!");
+  world_text_.set_position(2.5f, 2.5f, 0.0f);
+  //world_text_.set_rotation(glm::radians(90.0f), 0.0f, 0.0f);
   world_text_.set_size(1.0f);
   world_text_.set_spacing(0.975f, 1.0f);
 
@@ -161,7 +161,9 @@ void apeiron::example::World::render()
 
   renderer_.use_screen_space();
   renderer_.set_projection(glm::ortho(0.0f, static_cast<float>(options_->window_width),
-      static_cast<float>(options_->window_height), 0.0f));
+      0.0f, static_cast<float>(options_->window_height)));
+  //renderer_.set_projection(glm::ortho(0.0f, static_cast<float>(options_->window_width),
+  //    static_cast<float>(options_->window_height), 0.0f));
 
   renderer_.render_screen(screen_text_, charset_, color);
 }
