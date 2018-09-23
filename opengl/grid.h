@@ -12,8 +12,8 @@ namespace apeiron::opengl {
 class Grid final : public Shape
 {
 public:
-  Grid(const glm::vec2& size, std::size_t x_steps, std::size_t y_steps,
-      const glm::vec4& color, float line_width = 1.0f);
+  Grid(glm::vec2 size, std::size_t x_steps, std::size_t y_steps,
+      glm::vec4 color, float line_width = 1.0f);
   glm::vec2 size() const { return size_; }
   void render() const override;
 

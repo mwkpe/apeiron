@@ -12,7 +12,7 @@ namespace apeiron::opengl {
 class Cuboid final : public Shape
 {
 public:
-  explicit Cuboid(const glm::vec3& size, bool wireframe = false, float line_width = 1.0f);
+  explicit Cuboid(glm::vec3 size, bool wireframe = false, float line_width = 1.0f);
   void render() const override;
 
 private:

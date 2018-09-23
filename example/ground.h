@@ -13,7 +13,7 @@ namespace apeiron::example {
 class Ground final : public engine::Entity
 {
 public:
-  Ground(const glm::vec2& size, std::size_t x_steps, std::size_t y_steps, const glm::vec4& color,
+  Ground(glm::vec2 size, std::size_t x_steps, std::size_t y_steps, glm::vec4 color,
       float line_width = 1.0f) : grid_{size, x_steps, y_steps, color, line_width} {}
   void render() const override { grid_.render(); }
 

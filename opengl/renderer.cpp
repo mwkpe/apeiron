@@ -9,12 +9,11 @@
 namespace {
 
 
-glm::mat4 apply_rotation(glm::mat4 model, const glm::vec3& rotation)
+void apply_rotation(glm::mat4& model, const glm::vec3& rotation)
 {
   model = glm::rotate(model, rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
   model = glm::rotate(model, rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
   model = glm::rotate(model, rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
-  return model;
 }
 
 
@@ -115,7 +114,7 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity)
   glm::mat4 model{1.0f};
   model = glm::translate(model, entity.position());
   model = glm::scale(model, entity.scale());
-  model = apply_rotation(model, entity.rotation());
+  apply_rotation(model, entity.rotation());
   current_shader_->set_uniform("model", model);
   entity.render();
 }
@@ -126,7 +125,7 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity, const glm::
   glm::mat4 model{1.0f};
   model = glm::translate(model, entity.position());
   model = glm::scale(model, entity.scale());
-  model = apply_rotation(model, entity.rotation());
+  apply_rotation(model, entity.rotation());
   current_shader_->set_uniform("model", model);
   current_shader_->set_uniform("color", color);
   entity.render();
@@ -143,7 +142,7 @@ void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::T
     glm::mat4 model{1.0f};
     model = glm::translate(model, text.position() + text.center() + glm::vec3{offset, 0.0f, 0.0f});
     model = glm::scale(model, text.scale());
-    model = apply_rotation(model, text.rotation());
+    apply_rotation(model, text.rotation());
     current_shader_->set_uniform("model", model);
     charset.render(c);
     offset += charset.tile_width() * text.size() * text.spacing().x;
@@ -164,7 +163,7 @@ void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::T
     glm::mat4 model{1.0f};
     model = glm::translate(model, text.position() + text.center() + glm::vec3{offset, 0.0f, 0.0f});
     model = glm::scale(model, text.scale());
-    model = apply_rotation(model, text.rotation());
+    apply_rotation(model, text.rotation());
     current_shader_->set_uniform("model", model);
     charset.render(c);
     offset += charset.tile_width() * text.size() * text.spacing().x;
@@ -200,7 +199,7 @@ void apeiron::opengl::Renderer::render_bounds(const engine::Entity& entity, cons
   glm::mat4 model{1.0f};
   model = glm::translate(model, entity.position() + entity.center());
   model = glm::scale(model, entity.scale());
-  model = apply_rotation(model, entity.rotation());
+  apply_rotation(model, entity.rotation());
   current_shader_->set_uniform("model", model);
   current_shader_->set_uniform("color", color);
   entity.render_bounds();

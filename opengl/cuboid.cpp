@@ -11,7 +11,7 @@
 namespace {
 
 
-std::vector<apeiron::engine::Vertex_normal_texcoords> build_vertices(const glm::vec3& size)
+std::vector<apeiron::engine::Vertex_normal_texcoords> build_vertices(glm::vec3 size)
 {
   const float x = size.x / 2.0f;
   const float y = size.y / 2.0f;
@@ -61,7 +61,7 @@ std::vector<apeiron::engine::Vertex_normal_texcoords> build_vertices(const glm::
 }
 
 
-auto build_wireframe_vertices(const glm::vec3& size)
+auto build_wireframe_vertices(glm::vec3 size)
     -> std::tuple<std::vector<float>, std::vector<std::uint16_t>>
 {
   const float x = size.x / 2.0f;
@@ -98,7 +98,7 @@ auto build_wireframe_vertices(const glm::vec3& size)
 }  // namespace
 
 
-apeiron::opengl::Cuboid::Cuboid(const glm::vec3& size, bool wireframe, float line_width)
+apeiron::opengl::Cuboid::Cuboid(glm::vec3 size, bool wireframe, float line_width)
     : wireframe_{wireframe}, line_width_{line_width}
 {
   glGenVertexArrays(1, &vao_);
