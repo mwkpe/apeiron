@@ -12,7 +12,7 @@ namespace apeiron::engine {
 
 
 auto load_image(std::string_view filename, bool flip_y = true)
-		-> std::tuple<std::vector<std::uint8_t>, int, int, int>;
+    -> std::tuple<std::vector<std::uint8_t>, int, int, int>;
 
 
 }  // namespace apeiron::engine
