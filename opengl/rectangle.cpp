@@ -10,19 +10,19 @@
 namespace {
 
 
-std::vector<apeiron::engine::Vertex_normal_texcoords> build_vertices(float w, float h)
+std::vector<apeiron::engine::Vertex_texcoords> build_vertices(float w, float h)
 {
   w /= 2.0f;
   h /= 2.0f;
 
   return {
     {
-      { w,  h, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f},
-      { w, -h, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f},
-      {-w,  h, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f},
-      {-w, -h, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f},
-      {-w,  h, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f},
-      { w, -h, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f}
+      { w,  h, 0.0f, 1.0f, 0.0f},
+      { w, -h, 0.0f, 1.0f, 1.0f},
+      {-w,  h, 0.0f, 0.0f, 0.0f},
+      {-w, -h, 0.0f, 0.0f, 1.0f},
+      {-w,  h, 0.0f, 0.0f, 0.0f},
+      { w, -h, 0.0f, 1.0f, 1.0f}
     }
   };
 }
@@ -39,22 +39,18 @@ apeiron::opengl::Rectangle::Rectangle(float width, float height)
 
   const auto vertices = build_vertices(width, height);
   vertex_count_ = vertices.size();
-  const int stride = sizeof(engine::Vertex_normal_texcoords);
+  const int stride = sizeof(engine::Vertex_texcoords);
 
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_normal_texcoords),
+  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_texcoords),
       vertices.data(), GL_STATIC_DRAW);
   
   // Position
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(0));
   glEnableVertexAttribArray(0);
-  // Normal
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex_normal_texcoords, normal)));
-  glEnableVertexAttribArray(1);
   // Texture coordinates
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex_normal_texcoords, texcoords)));
+      reinterpret_cast<void*>(offsetof(engine::Vertex_texcoords, texcoords)));
   glEnableVertexAttribArray(2);
 }
 
