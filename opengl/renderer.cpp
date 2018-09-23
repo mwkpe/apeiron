@@ -21,12 +21,10 @@ glm::mat4 apply_rotation(glm::mat4 model, const glm::vec3& rotation)
 }  // namespace
 
 
-void apeiron::opengl::Renderer::init(float screen_width, float screen_height)
+void apeiron::opengl::Renderer::init()
 {
   world_shader_.load("shader/world.vs", "shader/color.fs");
   screen_shader_.load("shader/screen.vs", "shader/color.fs");
-  use_screen_space();
-  set_screen_center(glm::vec2{screen_width * 0.5f, screen_height * 0.5f});
   use_world_space();
 }
 
@@ -64,12 +62,6 @@ void apeiron::opengl::Renderer::use_vertex_color_shading()
 void apeiron::opengl::Renderer::use_color_shading()
 {
   current_shader_->set_uniform("color_mode", 2);
-}
-
-
-void apeiron::opengl::Renderer::set_screen_center(const glm::vec2& screen_center)
-{
-  current_shader_->set_uniform("screen_center", screen_center);
 }
 
 

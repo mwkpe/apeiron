@@ -16,13 +16,12 @@ namespace apeiron::opengl {
 class Renderer final
 {
 public:
-  void init(float screen_width, float screen_height);
+  void init();
   void use_world_space();
   void use_screen_space();
   void use_texture_shading();
   void use_vertex_color_shading();
   void use_color_shading();
-  void set_screen_center(const glm::vec2& screen_center);
   void set_projection(const glm::mat4& projection);
   void set_view(const glm::mat4& view);
   void set_wireframe(bool wireframe);

@@ -8,8 +8,7 @@
 
 void apeiron::example::World::init()
 {
-  renderer_.init(static_cast<float>(options_->window_width),
-      static_cast<float>(options_->window_height));
+  renderer_.init();
 
   charset_.load("assets/roboto_mono.png");
   akari_.load("assets/private/checkerboard.png");
@@ -161,7 +160,8 @@ void apeiron::example::World::render()
   renderer_.render(world_text_, charset_, color);
 
   renderer_.use_screen_space();
-  renderer_.set_projection(glm::ortho(-1.0f, 1.0f, 1.0f, -1.0f));
+  renderer_.set_projection(glm::ortho(0.0f, static_cast<float>(options_->window_width),
+      static_cast<float>(options_->window_height), 0.0f));
 
   renderer_.render_screen(screen_text_, charset_, color);
 }
