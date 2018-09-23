@@ -20,7 +20,7 @@ void apeiron::engine::Camera::setup(float pitch, float yaw,
   world_up_ = world_up;
   pitch_ = pitch;
   yaw_ = yaw;
-  orient(0, 0, 0);  // Apply default pitch and yaw
+  orient(0, 0, 0.0f);  // Apply default pitch and yaw
 }
 
 
