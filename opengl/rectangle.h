@@ -13,6 +13,7 @@ class Rectangle final : public Shape
 {
 public:
   Rectangle(float width, float height);
+  Rectangle(float width, float height, glm::vec4 color);
   void render() const override;
 };
 
