@@ -5,7 +5,7 @@ uniform int light_mode;
 uniform bool colorize;
 uniform sampler2D texture2d;
 uniform vec4 color;
-uniform vec3 light_color;
+uniform vec4 light_color;
 uniform vec3 light_position;
 
 out vec4 frag_color;
@@ -41,7 +41,7 @@ void main()
     case 1:
       vec3 n = normalize(normal);
       vec3 dir = normalize(light_position - frag_position);
-      vec3 diffuse = max(dot(n, dir), 0.0) * light_color;
+      vec3 diffuse = max(dot(n, dir), 0.0) * light_color.rgb;
       frag_color = vec4(object_color.rgb * (ambient + diffuse), object_color.a);
       break;
     default:

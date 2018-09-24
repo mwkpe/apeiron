@@ -103,7 +103,7 @@ void apeiron::opengl::Renderer::set_light_position(const glm::vec3& position)
 }
 
 
-void apeiron::opengl::Renderer::set_light_color(const glm::vec3& color)
+void apeiron::opengl::Renderer::set_light_color(const glm::vec4& color)
 {
   current_shader_->set_uniform("light_color", color);
 }

@@ -28,7 +28,7 @@ public:
   void set_colorize(bool colorize);
   void set_lighting(bool lighting);
   void set_light_position(const glm::vec3& position);
-  void set_light_color(const glm::vec3& color);
+  void set_light_color(const glm::vec4& color);
   void render(const engine::Entity& entity);
   void render(const engine::Entity& entity, const glm::vec4& color);
   void render(const engine::Text& text, const opengl::Tileset& charset);
