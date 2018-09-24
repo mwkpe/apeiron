@@ -6,6 +6,18 @@
 #include "engine/model_flags.h"
 
 
+apeiron::example::World::World(const Options* options)
+    : options_{options}, charset_{16, 8, 32, 0.5f, 1.0f},
+      cube_{{1.0f, 1.0f, 1.0f}},
+      camera_{-45.0f, -145.0f, {10.0f, 15.0f, 10.0f}},
+      axes_{16, 0.01f, 25.0f},
+      ground_{{50.0f, 50.0f}, 21, 21, {0.25f, 0.25f, 0.25f, 1.0f}, 1.0f},
+      light_{&bulb_},
+      cylinder_{options_->cylinder_points, 0.0f, 0.0f, 1.0f}
+{
+}
+
+
 void apeiron::example::World::init()
 {
   renderer_.init();
@@ -16,11 +28,11 @@ void apeiron::example::World::init()
   {
     namespace mf = engine::model_flags;
     bulb_.load("assets/private/bulb.obj", mf::vertices);
-    teapot_.load_model("assets/utah_teapot.obj", mf::vertices | mf::normals);
+    teapot_.load_model();
   }
 
   light_.set_position(0.0f, 8.5f, -options_->light_distance);
-  light_.set_color(1.0f, 1.0f, 1.0f);
+  light_.set_color(1.0f, 1.0f, 1.0f, 1.0f);
   renderer_.set_light_position(light_.position());
   renderer_.set_light_color(light_.color());
   teapot_.set_position(-3.0f, 0.2f, 5.0f);
@@ -88,10 +100,10 @@ void apeiron::example::World::update(float time, float delta_time, const engine:
 
   if (options_->lighting) {
     const auto& mc = options_->main_color;
-    light_.set_color(mc.r, mc.g, mc.b);
+    light_.set_color(mc.r, mc.g, mc.b, 1.0f);
   }
   else {
-    light_.set_color(0.3f, 0.3f, 0.3f);
+    light_.set_color(0.3f, 0.3f, 0.3f, 1.0f);
   }
   light_.set_position(0.0f, 7.5f, -options_->light_distance);
 

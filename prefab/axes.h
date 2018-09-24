@@ -1,12 +1,12 @@
-#ifndef APEIRON_EXAMPLE_AXES_H
-#define APEIRON_EXAMPLE_AXES_H
+#ifndef APEIRON_PREFAB_AXES_H
+#define APEIRON_PREFAB_AXES_H
 
 
 #include "opengl/renderer.h"
-#include "example/axis.h"
+#include "prefab/axis.h"
 
 
-namespace apeiron::example {
+namespace apeiron::prefab {
 
 
 class Axes final
@@ -22,7 +22,7 @@ private:
 };
 
 
-}  // namespace apeiron::example
+}  // namespace apeiron::prefab
 
 
-#endif  // APEIRON_EXAMPLE_AXES_H
+#endif  // APEIRON_PREFAB_AXES_H

@@ -64,19 +64,19 @@ add_executable(apeiron
     engine/model_loader.cpp
     engine/model_loader.h
     engine/model_flags.h
+    prefab/light.h
+    prefab/axis.h
+    prefab/axes.cpp
+    prefab/axes.h
+    prefab/ground.h
+    prefab/teapot.h
     example/main.cpp
     example/options.cpp
     example/options.h
     example/menu.cpp
     example/menu.h
-    example/light.h
-    example/axis.h
-    example/axes.cpp
-    example/axes.h
-    example/ground.h
     example/cube.h
     example/cylinder.h
-    example/teapot.h
     example/world.cpp
     example/world.h)
 

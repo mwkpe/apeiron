@@ -1,12 +1,12 @@
-#ifndef APEIRON_EXAMPLE_AXIS_H
-#define APEIRON_EXAMPLE_AXIS_H
+#ifndef APEIRON_PREFAB_AXIS_H
+#define APEIRON_PREFAB_AXIS_H
 
 
 #include "engine/entity.h"
 #include "opengl/cylinder.h"
 
 
-namespace apeiron::example {
+namespace apeiron::prefab {
 
 
 class Axis final : public engine::Entity
@@ -20,7 +20,7 @@ private:
 };
 
 
-}  // namespace apeiron::example
+}  // namespace apeiron::prefab
 
 
-#endif  // APEIRON_EXAMPLE_AXIS_H
+#endif  // APEIRON_PREFAB_AXIS_H

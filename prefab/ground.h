@@ -1,5 +1,5 @@
-#ifndef APEIRON_EXAMPLE_GROUND_H
-#define APEIRON_EXAMPLE_GROUND_H
+#ifndef APEIRON_PREFAB_GROUND_H
+#define APEIRON_PREFAB_GROUND_H
 
 
 #include <glm/glm.hpp>
@@ -7,7 +7,7 @@
 #include "opengl/grid.h"
 
 
-namespace apeiron::example {
+namespace apeiron::prefab {
 
 
 class Ground final : public engine::Entity
@@ -22,7 +22,7 @@ private:
 };
 
 
-}  // namespace apeiron::example
+}  // namespace apeiron::prefab
 
 
-#endif  // APEIRON_EXAMPLE_GROUND_H
+#endif  // APEIRON_PREFAB_GROUND_H

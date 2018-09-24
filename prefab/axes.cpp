@@ -2,7 +2,7 @@
 
 
 
-apeiron::example::Axes::Axes(int points, float radius, float height)
+apeiron::prefab::Axes::Axes(int points, float radius, float height)
     : x_axis_{points, radius, height}, y_axis_{points, radius, height},
       z_axis_{points, radius, height}
 {
@@ -14,7 +14,7 @@ apeiron::example::Axes::Axes(int points, float radius, float height)
 }
 
 
-void apeiron::example::Axes::render(opengl::Renderer& renderer) const
+void apeiron::prefab::Axes::render(opengl::Renderer& renderer) const
 {
   renderer.use_color_shading();
   renderer.render(x_axis_, {1.0f, 0.0f, 0.0f, 1.0f});

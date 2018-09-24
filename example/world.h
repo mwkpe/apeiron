@@ -5,19 +5,19 @@
 #include <cstdint>
 #include <vector>
 #include "options.h"
-#include "engine/input.h"
+#include "opengl/renderer.h"
 #include "opengl/texture.h"
+#include "opengl/cuboid.h"
 #include "opengl/model.h"
+#include "engine/input.h"
 #include "engine/camera.h"
 #include "engine/text.h"
-#include "opengl/cuboid.h"
-#include "opengl/renderer.h"
-#include "example/axes.h"
-#include "example/ground.h"
-#include "example/light.h"
+#include "prefab/axes.h"
+#include "prefab/ground.h"
+#include "prefab/light.h"
+#include "prefab/teapot.h"
 #include "example/cube.h"
 #include "example/cylinder.h"
-#include "example/teapot.h"
 
 
 namespace apeiron::example {
@@ -26,14 +26,7 @@ namespace apeiron::example {
 class World final
 {
 public:
-  explicit World(const Options* options) : options_{options},
-      charset_{16, 8, 32, 0.5f, 1.0f},
-      cube_{{1.0f, 1.0f, 1.0f}},
-      camera_{-45.0f, -145.0f, {10.0f, 15.0f, 10.0f}},
-      axes_{16, 0.01f, 25.0f},
-      ground_{{50.0f, 50.0f}, 21, 21, {0.25f, 0.25f, 0.25f, 1.0f}, 1.0f},
-      light_{&bulb_},
-      cylinder_{options_->cylinder_points, 0.0f, 0.0f, 1.0f} {}
+  explicit World(const Options* options);
   void init();
   void update(float time, float delta_time, const engine::Input* input = nullptr);
   void render();
@@ -48,12 +41,12 @@ private:
   engine::Camera camera_;
   engine::Text world_text_;
   engine::Text screen_text_;
-  Axes axes_;
-  Ground ground_;
-  Light light_;
+  prefab::Axes axes_;
+  prefab::Ground ground_;
+  prefab::Light light_;
+  prefab::Teapot teapot_;
   Cylinder cylinder_;
   std::vector<Cube> cubes_;
-  Teapot teapot_;
   int frame_ = 0;
   float frame_time_ = 0;
 };
