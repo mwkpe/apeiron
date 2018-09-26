@@ -180,7 +180,6 @@ void apeiron::opengl::Renderer::render_screen(const engine::Text& text,
   charset.bind();
   set_colorize(true);
   current_shader_->set_uniform("color", color);
-  // Flip y for quick fix
   current_shader_->set_uniform("scale", glm::vec3{text.size(), text.size(), 1.0f});
 
   float offset = 0.0f;
