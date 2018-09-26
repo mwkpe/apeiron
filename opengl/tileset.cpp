@@ -77,7 +77,7 @@ apeiron::opengl::Tileset::Tileset(std::uint32_t columns, std::uint32_t rows,
 }
 
 
-void apeiron::opengl::Tileset::load(std::string_view filename)
+void apeiron::opengl::Tileset::load_texture(std::string_view filename)
 {
   texture_.load(filename);
 }
