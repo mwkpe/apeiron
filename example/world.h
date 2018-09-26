@@ -35,9 +35,9 @@ private:
   const Options* options_;
   opengl::Renderer renderer_;
   opengl::Tileset charset_;
-  opengl::Texture akari_;
+  opengl::Texture cube_texture_;
+  opengl::Cuboid cube_model_;
   opengl::Model bulb_;
-  opengl::Cuboid cube_;
   engine::Camera camera_;
   engine::Text world_text_;
   engine::Text screen_text_;
