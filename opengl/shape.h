@@ -13,12 +13,11 @@ class Shape
 public:
   Shape() = default;
   virtual ~Shape();
-  // OpenGL delete calls in destructor
   Shape(const Shape&) = delete;
   Shape(Shape&& other);
   Shape& operator=(const Shape&) = delete;
   Shape& operator=(Shape&& other);
-  void delete_buffers();
+
   virtual void render() const {};
   virtual void render([[maybe_unused]] std::uint32_t start,
       [[maybe_unused]] std::uint32_t count) const {}
@@ -29,6 +28,9 @@ protected:
   std::uint32_t ebo_ = 0;
   std::uint32_t vertex_count_ = 0;
   std::uint32_t element_count_ = 0;
+
+private:
+  void delete_buffers();
 };
 
 
