@@ -13,11 +13,12 @@ class Cuboid final : public Shape
 {
 public:
   explicit Cuboid(glm::vec3 size, bool wireframe = false, float line_width = 1.0f);
+  Cuboid(glm::vec3 size, glm::vec4 color);
   void render() const override;
 
 private:
-  bool wireframe_;
-  float line_width_;
+  bool wireframe_ = false;
+  float line_width_ = 1.0f;
 };
 
 

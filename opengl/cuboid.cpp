@@ -67,6 +67,67 @@ std::vector<apeiron::engine::Vertex_normal_texcoords> build_vertices(glm::vec3 s
 }
 
 
+std::vector<apeiron::engine::Vertex> build_vertices(glm::vec3 size, glm::vec4 color)
+{
+  const float x = size.x / 2.0f;
+  const float y = size.y / 2.0f;
+  const float z = size.z / 2.0f;
+
+  const float r = color.r;
+  const float g = color.g;
+  const float b = color.b;
+  const float a = color.a;
+
+  return {
+    {
+      // x, y, z, nx, ny, nz, s, t
+      // Front (xy-plane)
+      {-x, -y, z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, r, g, b, a},
+      { x, -y, z, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, r, g, b, a},
+      { x,  y, z, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, r, g, b, a},
+      { x,  y, z, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, r, g, b, a},
+      {-x,  y, z, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, r, g, b, a},
+      {-x, -y, z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, r, g, b, a},
+      // Back (xy-plane)
+      { x, -y, -z, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, r, g, b, a},
+      {-x, -y, -z, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f, r, g, b, a},
+      {-x,  y, -z, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f, r, g, b, a},
+      {-x,  y, -z, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f, r, g, b, a},
+      { x,  y, -z, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, r, g, b, a},
+      { x, -y, -z, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, r, g, b, a},
+      // Left (yz-plane)
+      {-x, -y, -z, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, r, g, b, a},
+      {-x, -y,  z, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, r, g, b, a},
+      {-x,  y,  z, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f, r, g, b, a},
+      {-x,  y,  z, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f, r, g, b, a},
+      {-x,  y, -z, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, r, g, b, a},
+      {-x, -y, -z, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, r, g, b, a},
+      // Right (yz-plane)
+      {x, -y,  z, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, r, g, b, a},
+      {x, -y, -z, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, r, g, b, a},
+      {x,  y, -z, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, r, g, b, a},
+      {x,  y, -z, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, r, g, b, a},
+      {x,  y,  z, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, r, g, b, a},
+      {x, -y,  z, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, r, g, b, a},
+      // Top (xz-plane)
+      {-x, y,  z, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, r, g, b, a},
+      { x, y,  z, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, r, g, b, a},
+      { x, y, -z, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, r, g, b, a},
+      { x, y, -z, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, r, g, b, a},
+      {-x, y, -z, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, r, g, b, a},
+      {-x, y,  z, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, r, g, b, a},
+      // Bottom (xz-plane)
+      {-x, -y, -z, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, r, g, b, a},
+      { x, -y, -z, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, r, g, b, a},
+      { x, -y,  z, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f, r, g, b, a},
+      { x, -y,  z, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f, r, g, b, a},
+      {-x, -y,  z, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, r, g, b, a},
+      {-x, -y, -z, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, r, g, b, a}
+    }
+  };
+}
+
+
 auto build_wireframe_vertices(glm::vec3 size)
     -> std::tuple<std::vector<float>, std::vector<std::uint16_t>>
 {
@@ -145,6 +206,38 @@ apeiron::opengl::Cuboid::Cuboid(glm::vec3 size, bool wireframe, float line_width
         reinterpret_cast<void*>(offsetof(engine::Vertex_normal_texcoords, texcoords)));
     glEnableVertexAttribArray(2);
   }
+}
+
+
+apeiron::opengl::Cuboid::Cuboid(glm::vec3 size, glm::vec4 color)
+{
+  glGenVertexArrays(1, &vao_);
+  glGenBuffers(1, &vbo_);
+  glBindVertexArray(vao_);
+
+  const auto vertices = build_vertices(size, color);
+  vertex_count_ = vertices.size();
+  const int stride = sizeof(engine::Vertex);
+
+  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex),
+      vertices.data(), GL_STATIC_DRAW);
+
+  // Position
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(0));
+  glEnableVertexAttribArray(0);
+  // Normal
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride,
+      reinterpret_cast<void*>(offsetof(engine::Vertex, normal)));
+  glEnableVertexAttribArray(1);
+  // Texture coordinates
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
+      reinterpret_cast<void*>(offsetof(engine::Vertex, texcoords)));
+  glEnableVertexAttribArray(2);
+    // Color
+  glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, stride,
+      reinterpret_cast<void*>(offsetof(engine::Vertex, color)));
+  glEnableVertexAttribArray(3);
 }
 
 
