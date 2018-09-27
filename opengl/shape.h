@@ -15,9 +15,9 @@ public:
   virtual ~Shape();
   // OpenGL delete calls in destructor
   Shape(const Shape&) = delete;
-  Shape(Shape&&) = delete;
+  Shape(Shape&& other);
   Shape& operator=(const Shape&) = delete;
-  Shape& operator=(Shape&&) = delete;
+  Shape& operator=(Shape&& other);
   void delete_buffers();
   virtual void render() const {};
   virtual void render([[maybe_unused]] std::uint32_t start,
