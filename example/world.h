@@ -7,6 +7,7 @@
 #include "options.h"
 #include "opengl/renderer.h"
 #include "opengl/texture.h"
+#include "opengl/tileset.h"
 #include "opengl/cuboid.h"
 #include "opengl/model.h"
 #include "engine/input.h"
