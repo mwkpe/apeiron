@@ -134,7 +134,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
                 SDL_SetRelativeMouseMode(SDL_TRUE);
               }
               break;
-            case SDLK_F2:
+            case SDLK_F4:
               options.wireframe = !options.wireframe;
               break;
             case SDLK_F6:
@@ -152,13 +152,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       }
     }
 
-    if (!options.show_menu) {
-      auto input = get_input_state();
-      world.update(time, delta_time, &input);
-    }
-    else {  // imgui handles input
-      world.update(time, delta_time);
-    }
+    auto input = get_input_state();
+    world.update(time, delta_time, &input);
 
     glCullFace(GL_BACK);
     glEnable(GL_DEPTH_TEST);
