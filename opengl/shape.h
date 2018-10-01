@@ -37,5 +37,4 @@ private:
 }  // namespace apeiron::opengl
 
 
-
 #endif  // APEIRON_OPENGL_SHAPE_H
