@@ -14,9 +14,14 @@ class Light final : public engine::Entity
 {
 public:
   explicit Light(const opengl::Model* model = nullptr) : model_{model} {}
+  void toggle() { on_ = !on_; }
+  void switch_on() { on_ = true; }
+  void switch_off() { on_ = false; }
+  bool is_on() { return on_; }
   void render() const override { if (model_) model_->render(); }
 
 private:
+  bool on_ = false;
   const opengl::Model* model_ = nullptr;
 };
 
