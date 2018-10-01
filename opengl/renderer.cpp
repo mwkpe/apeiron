@@ -64,15 +64,22 @@ void apeiron::opengl::Renderer::use_color_shading()
 }
 
 
+void apeiron::opengl::Renderer::set_view(const glm::mat4& view)
+{
+  current_shader_->set_uniform("view", view);
+}
+
+
 void apeiron::opengl::Renderer::set_projection(const glm::mat4& projection)
 {
   current_shader_->set_uniform("projection", projection);
 }
 
 
-void apeiron::opengl::Renderer::set_view(const glm::mat4& view)
+void apeiron::opengl::Renderer::set_view_projection()
 {
-  current_shader_->set_uniform("view", view);
+  view_projection_ = projection_ * view_;
+  current_shader_->set_uniform("view_projection", view_projection_);
 }
 
 

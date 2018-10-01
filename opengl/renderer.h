@@ -17,29 +17,42 @@ class Renderer final
 {
 public:
   void init();
+
   void use_world_space();
   void use_screen_space();
   void use_texture_shading();
-  void use_vertex_color_shading();
   void use_color_shading();
-  void set_projection(const glm::mat4& projection);
+  void use_vertex_color_shading();
+
+  void preset_view(const glm::mat4& view) { view_ = view; }
+  void preset_projection(const glm::mat4& projection) { projection_ = projection; }
+
   void set_view(const glm::mat4& view);
+  void set_projection(const glm::mat4& projection);
+  void set_view_projection();
   void set_wireframe(bool wireframe);
   void set_colorize(bool colorize);
   void set_lighting(bool lighting);
   void set_light_position(const glm::vec3& position);
   void set_light_color(const glm::vec4& color);
+
   void render(const engine::Entity& entity);
   void render(const engine::Entity& entity, const glm::vec4& color);
   void render(const engine::Text& text, const opengl::Tileset& charset);
   void render(const engine::Text& text, const opengl::Tileset& charset, const glm::vec4& color);
-  void render_screen(const engine::Text& text, const opengl::Tileset& charset, const glm::vec4& color);
+  void render_screen(const engine::Text& text, const opengl::Tileset& charset,
+      const glm::vec4& color);
   void render_bounds(const engine::Entity& entity, const glm::vec4& color);
+
+  glm::mat4 inverse_view_projection() { return glm::inverse(view_projection_); }
 
 private:
   Shader world_shader_;
   Shader screen_shader_;
   Shader* current_shader_ = &world_shader_;
+  glm::mat4 view_;
+  glm::mat4 projection_;
+  glm::mat4 view_projection_;
 };
 
 
