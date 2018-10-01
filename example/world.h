@@ -33,6 +33,9 @@ public:
   void render();
 
 private:
+  void update_camera(float delta_time, const engine::Input* input);
+  void handle_mouse_click(int x, int y);
+
   const Options* options_;
   opengl::Renderer renderer_;
   opengl::Tileset charset_;
@@ -48,6 +51,7 @@ private:
   prefab::Teapot teapot_;
   Cylinder cylinder_;
   std::vector<Cube> cubes_;
+  bool mouse_left_down_ = false;
   int frame_ = 0;
   float frame_time_ = 0;
 };

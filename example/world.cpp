@@ -2,8 +2,10 @@
 
 
 #include <random>
+#include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
 #include "engine/model_flags.h"
+#include "engine/ray.h"
 
 
 apeiron::example::World::World(const Options* options)
@@ -21,6 +23,13 @@ apeiron::example::World::World(const Options* options)
 void apeiron::example::World::init()
 {
   renderer_.init();
+  renderer_.use_screen_space();
+  renderer_.set_projection(glm::ortho(0.0f, static_cast<float>(options_->window_width),
+      0.0f, static_cast<float>(options_->window_height)));
+
+  renderer_.use_world_space();
+  auto aspect_ratio = static_cast<float>(options_->window_width) / options_->window_height;
+  renderer_.preset_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 500.0f));
 
   charset_.load_texture("assets/roboto_mono.png");
   cube_texture_.load("assets/ab_crate_a.png");
@@ -32,10 +41,11 @@ void apeiron::example::World::init()
   }
 
   light_.set_position(0.0f, 8.5f, -options_->light_distance);
-  light_.set_color(1.0f, 1.0f, 1.0f, 1.0f);
-  renderer_.set_light_position(light_.position());
-  renderer_.set_light_color(light_.color());
-  teapot_.set_position(-3.0f, 0.2f, 5.0f);
+  light_.set_color(1.0f, 1.0f, 1.0f);
+  light_.set_intersection_radius(0.5f);
+  light_.switch_on();
+
+  teapot_.set_position(-4.0f, 3.0f, 3.0f);
   teapot_.set_rotation(0.0f, glm::radians(-45.0f), 0.0f);
   teapot_.set_center(0.0f, 1.271f / 2.0f, 0.0f);  // Offset model origin to center
   cylinder_.set_position(5.0f, 1.5f, -5.0f);
@@ -60,7 +70,6 @@ void apeiron::example::World::init()
 
   world_text_.set_text("Hello world!");
   world_text_.set_position(2.5f, 2.5f, 0.0f);
-  //world_text_.set_rotation(glm::radians(90.0f), 0.0f, 0.0f);
   world_text_.set_size(1.0f);
   world_text_.set_spacing(0.975f, 1.0f);
 
@@ -77,30 +86,21 @@ void apeiron::example::World::update(float time, float delta_time, const engine:
     frame_time_ = time;
 
   if (input) {
-    using Direction = engine::Camera::Direction;
-    auto distance = options_->camera_speed * delta_time;
-    if (input->forward)
-      camera_.move(Direction::Forward, distance);
-    if (input->backward)
-      camera_.move(Direction::Backward, distance);
-    if (input->left)
-      camera_.move(Direction::Left, distance);
-    if (input->right)
-      camera_.move(Direction::Right, distance);
+    if (!options_->show_menu) {
+      update_camera(delta_time, input);
+    }
 
-    camera_.orient(input->mouse_x_rel, input->mouse_y_rel, options_->camera_sensitivity);
-
-    if (input->mouse_left)
-      screen_text_.set_text("mouse left");
-    if (input->mouse_middle)
-      screen_text_.set_text("mouse middle");
-    if (input->mouse_right)
-      screen_text_.set_text("mouse right");
+    if (!mouse_left_down_ && input->mouse_left) {
+      mouse_left_down_ = true;
+      handle_mouse_click(input->mouse_x_abs, input->mouse_y_abs);
+    }
+    else if (mouse_left_down_ && !input->mouse_left) {
+      mouse_left_down_ = false;
+    }
   }
 
-  if (options_->lighting) {
-    const auto& mc = options_->main_color;
-    light_.set_color(mc.r, mc.g, mc.b, 1.0f);
+  if (options_->lighting && light_.is_on()) {
+    light_.set_color(options_->main_color);
   }
   else {
     light_.set_color(0.3f, 0.3f, 0.3f, 1.0f);
@@ -122,16 +122,43 @@ void apeiron::example::World::update(float time, float delta_time, const engine:
 }
 
 
+void apeiron::example::World::update_camera(float delta_time, const engine::Input* input)
+{
+  using Direction = engine::Camera::Direction;
+  auto distance = options_->camera_speed * delta_time;
+
+  if (input->forward)
+    camera_.move(Direction::Forward, distance);
+  if (input->backward)
+    camera_.move(Direction::Backward, distance);
+  if (input->left)
+    camera_.move(Direction::Left, distance);
+  if (input->right)
+    camera_.move(Direction::Right, distance);
+
+  camera_.orient(input->mouse_x_rel, input->mouse_y_rel, options_->camera_sensitivity);
+}
+
+
+void apeiron::example::World::handle_mouse_click(int x, int y)
+{
+  float norm_x = static_cast<float>(x) / options_->window_width * 2.0f - 1.0f;
+  float norm_y = -(static_cast<float>(y) / options_->window_height * 2.0f - 1.0f);
+  engine::Ray ray = engine::screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
+  if (engine::intersects(ray, light_))
+    light_.toggle();
+}
+
+
 void apeiron::example::World::render()
 {
   frame_++;
   auto color = options_->main_color;
 
   renderer_.use_world_space();
-  auto aspect_ratio = static_cast<float>(options_->window_width) / options_->window_height;
-  renderer_.set_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 500.0f));
+  renderer_.preset_view(camera_.view());
+  renderer_.set_view_projection();
 
-  renderer_.set_view(camera_.view());
   renderer_.set_wireframe(options_->wireframe);
   renderer_.set_lighting(false);
   renderer_.set_colorize(false);
@@ -156,7 +183,7 @@ void apeiron::example::World::render()
     renderer_.set_wireframe(options_->wireframe);
   }
 
-  renderer_.set_lighting(options_->lighting);
+  renderer_.set_lighting(options_->lighting && light_.is_on());
 
   renderer_.render(teapot_, color);
   if (options_->show_cubes) {
@@ -171,7 +198,5 @@ void apeiron::example::World::render()
   renderer_.render(world_text_, charset_, color);
 
   renderer_.use_screen_space();
-  renderer_.set_projection(glm::ortho(0.0f, static_cast<float>(options_->window_width),
-      0.0f, static_cast<float>(options_->window_height)));
   renderer_.render_screen(screen_text_, charset_, color);
 }
