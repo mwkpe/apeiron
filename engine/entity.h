@@ -26,12 +26,14 @@ public:
   void set_scale(glm::vec3 scale) { scale_ = scale; };
   void set_color(float r, float g, float b, float a = 1.0f) { color_ = glm::vec4{r, g, b, a}; };
   void set_color(glm::vec4 color) { color_ = color; };
+  void set_intersection_radius(float radius) { intersection_radius_ = radius; }
   glm::vec3 center() const { return center_; }
   glm::vec3 size() const { return size_; }
   glm::vec3 position() const { return position_; }
   glm::vec3 rotation() const { return rotation_; }
   glm::vec3 scale() const { return scale_; }
   glm::vec4 color() const { return color_; }
+  float intersection_radius() const { return intersection_radius_; }
   virtual void render() const {}
   virtual void render_bounds() const {}
 
@@ -42,6 +44,7 @@ protected:
   glm::vec3 scale_ = glm::vec3{1.0f, 1.0f, 1.0f};
   glm::vec3 center_ = glm::vec3{0.0f, 0.0f, 0.0f};
   glm::vec4 color_ = glm::vec4{1.0f, 0.0f, 1.0f, 1.0f};
+  float intersection_radius_ = 1.0f;
 };
 
 
