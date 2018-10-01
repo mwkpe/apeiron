@@ -59,6 +59,8 @@ add_executable(apeiron
     engine/camera.cpp
     engine/camera.h
     engine/text.h
+    engine/vertex.h
+    engine/ray.h
     engine/image_loader.cpp
     engine/image_loader.h
     engine/model_loader.cpp
