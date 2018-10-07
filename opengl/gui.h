@@ -12,7 +12,7 @@ class Gui
 {
 public:
   explicit Gui(SDL_Window* window, SDL_GLContext context)
-  		: window_{window}, context_{context} {}
+      : window_{window}, context_{context} {}
   void init();
   void process(SDL_Event* event);
   void create_frame();
