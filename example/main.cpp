@@ -76,7 +76,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     SDL_GL_SetSwapInterval(0);
 
   apeiron::example::World world(&options);
-  apeiron::example::Menu menu(window);
+  apeiron::example::Menu menu(window, context);
   try {
     world.init();
     menu.init();

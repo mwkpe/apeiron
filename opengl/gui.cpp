@@ -3,33 +3,37 @@
 
 #include "GL/glew.h"
 #include "imgui/imgui.h"
-#include "imgui/imgui_impl_sdl_gl3.h"
+#include "imgui/imgui_impl_opengl3.h"
+#include "imgui/imgui_impl_sdl.h"
 
 
 void apeiron::opengl::Gui::init()
 {
   ImGui::CreateContext();
-  ImGui_ImplSdlGL3_Init(window_);
+  ImGui_ImplSDL2_InitForOpenGL(window_, context_);
+  ImGui_ImplOpenGL3_Init(nullptr);
   ImGui::StyleColorsDark();
 }
 
 
 void apeiron::opengl::Gui::process(SDL_Event* event)
 {
-  ImGui_ImplSdlGL3_ProcessEvent(event);
+  ImGui_ImplSDL2_ProcessEvent(event);
 }
 
 
 void apeiron::opengl::Gui::create_frame()
 {
-  ImGui_ImplSdlGL3_NewFrame(window_);
+  ImGui_ImplOpenGL3_NewFrame();
+  ImGui_ImplSDL2_NewFrame(window_);
+  ImGui::NewFrame();
 }
 
 
 void apeiron::opengl::Gui::render()
 {
   auto& io = ImGui::GetIO();
-  glViewport(0, 0, static_cast<int>(io.DisplaySize.x), static_cast<int>(io.DisplaySize.y));
   ImGui::Render();
-  ImGui_ImplSdlGL3_RenderDrawData(ImGui::GetDrawData());
+  glViewport(0, 0, static_cast<int>(io.DisplaySize.x), static_cast<int>(io.DisplaySize.y));
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }

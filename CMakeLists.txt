@@ -4,10 +4,13 @@ project(apeiron CXX)
 add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/external/imgui/imgui.cpp
     ${CMAKE_CURRENT_LIST_DIR}/external/imgui/imgui.h
+    ${CMAKE_CURRENT_LIST_DIR}/external/imgui/imgui_widgets.cpp
     ${CMAKE_CURRENT_LIST_DIR}/external/imgui/imgui_draw.cpp
     ${CMAKE_CURRENT_LIST_DIR}/external/imgui/imgui_internal.h
-    ${CMAKE_CURRENT_LIST_DIR}/external/imgui/imgui_impl_sdl_gl3.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/external/imgui/imgui_impl_sdl_gl3.h
+    ${CMAKE_CURRENT_LIST_DIR}/external/imgui/imgui_impl_opengl3.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/external/imgui/imgui_impl_opengl3.h
+    ${CMAKE_CURRENT_LIST_DIR}/external/imgui/imgui_impl_sdl.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/external/imgui/imgui_impl_sdl.h
     ${CMAKE_CURRENT_LIST_DIR}/utility/linear_range.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/error.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/vertex.h
