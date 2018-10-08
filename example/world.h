@@ -34,6 +34,7 @@ public:
 
 private:
   void update_camera(float delta_time, const engine::Input* input);
+  void handle_mouse_move(int x, int y);
   void handle_mouse_click(int x, int y);
 
   const Options* options_;

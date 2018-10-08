@@ -5,7 +5,7 @@
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
 #include "engine/model_flags.h"
-#include "engine/ray.h"
+#include "engine/collision.h"
 
 
 apeiron::example::World::World(const Options* options)
@@ -90,6 +90,8 @@ void apeiron::example::World::update(float time, float delta_time, const engine:
       update_camera(delta_time, input);
     }
 
+    handle_mouse_move(input->mouse_x_abs, input->mouse_y_abs);
+
     if (!mouse_left_down_ && input->mouse_left) {
       mouse_left_down_ = true;
       handle_mouse_click(input->mouse_x_abs, input->mouse_y_abs);
@@ -140,12 +142,32 @@ void apeiron::example::World::update_camera(float delta_time, const engine::Inpu
 }
 
 
-void apeiron::example::World::handle_mouse_click(int x, int y)
+void apeiron::example::World::handle_mouse_move(int x, int y)
 {
+  using namespace engine::collision;
   float norm_x = static_cast<float>(x) / options_->window_width * 2.0f - 1.0f;
   float norm_y = -(static_cast<float>(y) / options_->window_height * 2.0f - 1.0f);
-  engine::Ray ray = engine::screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
-  if (engine::intersects(ray, light_))
+  auto ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
+  Quad quad{
+    {-1.0f, 0.0f, -1.0f},
+    { 1.0f, 0.0f, -1.0f},
+    { 1.0f, 0.0f,  1.0f},
+    {-1.0f, 0.0f,  1.0f}
+  };
+  if (intersects(ray, quad))
+    light_.switch_on();
+  else
+    light_.switch_off();
+}
+
+
+void apeiron::example::World::handle_mouse_click(int x, int y)
+{
+  using namespace engine::collision;
+  float norm_x = static_cast<float>(x) / options_->window_width * 2.0f - 1.0f;
+  float norm_y = -(static_cast<float>(y) / options_->window_height * 2.0f - 1.0f);
+  auto ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
+  if (intersects(ray, Sphere{light_.position(), light_.intersection_radius()}))
     light_.toggle();
 }
 

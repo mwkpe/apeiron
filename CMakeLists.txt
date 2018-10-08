@@ -14,8 +14,8 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/utility/linear_range.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/error.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/vertex.h
-    ${CMAKE_CURRENT_LIST_DIR}/engine/ray.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/entity.h
+    ${CMAKE_CURRENT_LIST_DIR}/engine/collision.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/camera.cpp
     ${CMAKE_CURRENT_LIST_DIR}/engine/camera.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/text.h
