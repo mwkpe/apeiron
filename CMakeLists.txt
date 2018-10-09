@@ -39,8 +39,8 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/opengl/grid.h
     ${CMAKE_CURRENT_LIST_DIR}/opengl/triangles.cpp
     ${CMAKE_CURRENT_LIST_DIR}/opengl/triangles.h
-    ${CMAKE_CURRENT_LIST_DIR}/opengl/rectangle.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/opengl/rectangle.h
+    ${CMAKE_CURRENT_LIST_DIR}/opengl/quad.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/opengl/quad.h
     ${CMAKE_CURRENT_LIST_DIR}/opengl/tileset.cpp
     ${CMAKE_CURRENT_LIST_DIR}/opengl/tileset.h
     ${CMAKE_CURRENT_LIST_DIR}/opengl/cuboid.cpp

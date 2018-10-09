@@ -1,4 +1,4 @@
-#include "rectangle.h"
+#include "quad.h"
 
 
 #include <vector>
@@ -49,7 +49,7 @@ std::vector<apeiron::engine::Vertex_color> build_vertices(float w, float h, glm:
 }  // namespace
 
 
-apeiron::opengl::Rectangle::Rectangle(float width, float height)
+apeiron::opengl::Quad::Quad(float width, float height)
 {
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
@@ -73,7 +73,7 @@ apeiron::opengl::Rectangle::Rectangle(float width, float height)
 }
 
 
-apeiron::opengl::Rectangle::Rectangle(float width, float height, glm::vec4 color)
+apeiron::opengl::Quad::Quad(float width, float height, glm::vec4 color)
 {
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
@@ -97,7 +97,7 @@ apeiron::opengl::Rectangle::Rectangle(float width, float height, glm::vec4 color
 }
 
 
-void apeiron::opengl::Rectangle::render() const
+void apeiron::opengl::Quad::render() const
 {
   glBindVertexArray(vao_);
   glDrawArrays(GL_TRIANGLES, 0, vertex_count_);
