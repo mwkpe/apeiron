@@ -61,5 +61,6 @@ add_library(apeiron
 target_link_libraries(apeiron -lglew32 -lglu32)
 link_directories(${CMAKE_CURRENT_LIST_DIR}/external/glew/lib/Release/x64)
 include_directories(${CMAKE_CURRENT_LIST_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}/external
     ${CMAKE_CURRENT_LIST_DIR}/external/glew/include
     ${CMAKE_CURRENT_LIST_DIR}/external/glm)
