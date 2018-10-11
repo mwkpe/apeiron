@@ -52,7 +52,7 @@ inline bool intersects(const Ray& ray, const Sphere& sphere)
 }
 
 
-inline bool intersects(const Ray& ray, const Quad& quad)
+inline bool intersects(const Ray&, const Quad&)
 {
   return false;
 }
