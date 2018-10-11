@@ -5,21 +5,20 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 
-apeiron::engine::Camera::Camera(float pitch, float yaw,
-    glm::vec3 position, glm::vec3 front, glm::vec3 world_up)
+apeiron::engine::Camera::Camera(float pitch, float yaw, glm::vec3 position)
 {
-  setup(pitch, yaw, position, front, world_up);
+  setup(pitch, yaw, position);
 }
 
 
-void apeiron::engine::Camera::setup(float pitch, float yaw,
-    glm::vec3 position, glm::vec3 front, glm::vec3 world_up)
+void apeiron::engine::Camera::setup(float pitch, float yaw, glm::vec3 position)
 {
   position_ = position;
-  front_ = front;
-  world_up_ = world_up;
+  front_ = glm::vec3{0.0f, 0.0f, -1.0f};
+  world_up_ = glm::vec3{0.0f, 1.0f, 0.0f};
+  up_ = world_up_;
   pitch_ = pitch;
-  yaw_ = yaw;
+  yaw_ = yaw - 90.0f;  // Look to negative z
   orient(0, 0, 0.0f);  // Apply default pitch and yaw
 }
 
@@ -43,10 +42,10 @@ void apeiron::engine::Camera::move(Direction direction, float distance)
 }
 
 
-void apeiron::engine::Camera::orient(int delta_x, int delta_y, float sensitivity)
+void apeiron::engine::Camera::orient(int dx, int dy, float sensitivity)
 {
-  yaw_ += delta_x * sensitivity;
-  pitch_ += delta_y * sensitivity;
+  yaw_ += dx * sensitivity;
+  pitch_ += dy * sensitivity;
   yaw_ = yaw_ > 360.0f ? yaw_ - 360.0f : yaw_ < -360.0f ? yaw_ + 360.0f : yaw_;
   pitch_ = std::clamp(pitch_, -89.0f, 89.0f);
   front_.x = std::cos(glm::radians(yaw_)) * std::cos(glm::radians(pitch_));
