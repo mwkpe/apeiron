@@ -7,7 +7,6 @@ set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra")
 include(../CMakeLists.txt)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/../external
     ${CMAKE_CURRENT_SOURCE_DIR}/../external/SDL2/x86_64-w64-mingw32/include)
 
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../external/SDL2/x86_64-w64-mingw32/lib)
