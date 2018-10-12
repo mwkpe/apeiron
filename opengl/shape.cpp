@@ -4,20 +4,19 @@
 #include "GL/glew.h"
 
 
-apeiron::opengl::Shape::~Shape()
+apeiron::opengl::Shape::Shape(Shape&& other)
 {
-  delete_buffers();
-}
+  vbo_ = other.vbo_;
+  ebo_ = other.ebo_;
+  vao_ = other.vao_;
+  vertex_count_ = other.vertex_count_;
+  element_count_ = other.element_count_;
 
-
-void apeiron::opengl::Shape::delete_buffers()
-{
-  if (vbo_)
-    glDeleteBuffers(1, &vbo_);
-  if (ebo_)
-    glDeleteBuffers(1, &ebo_);
-  if (vao_)
-    glDeleteVertexArrays(1, &vao_);
+  other.vbo_ = 0;
+  other.ebo_ = 0;
+  other.vao_ = 0;
+  other.vertex_count_ = 0;
+  other.element_count_ = 0;
 }
 
 
@@ -39,17 +38,18 @@ auto apeiron::opengl::Shape::operator=(Shape&& other) -> Shape&
 }
 
 
-apeiron::opengl::Shape::Shape(Shape&& other)
+apeiron::opengl::Shape::~Shape()
 {
-  vbo_ = other.vbo_;
-  ebo_ = other.ebo_;
-  vao_ = other.vao_;
-  vertex_count_ = other.vertex_count_;
-  element_count_ = other.element_count_;
+  delete_buffers();
+}
 
-  other.vbo_ = 0;
-  other.ebo_ = 0;
-  other.vao_ = 0;
-  other.vertex_count_ = 0;
-  other.element_count_ = 0;
+
+void apeiron::opengl::Shape::delete_buffers()
+{
+  if (vbo_)
+    glDeleteBuffers(1, &vbo_);
+  if (ebo_)
+    glDeleteBuffers(1, &ebo_);
+  if (vao_)
+    glDeleteVertexArrays(1, &vao_);
 }
