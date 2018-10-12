@@ -7,6 +7,22 @@
 #include "engine/image_loader.h"
 
 
+apeiron::opengl::Texture::Texture(Texture&& other)
+{
+  id_ = other.id_;
+  other.id_ = 0;
+}
+
+
+auto apeiron::opengl::Texture::operator=(Texture&& other) -> Texture&
+{
+  id_ = other.id_;
+  other.id_ = 0;
+
+  return *this;
+}
+
+
 apeiron::opengl::Texture::~Texture()
 {
   if (id_ > 0)

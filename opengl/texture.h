@@ -15,9 +15,9 @@ public:
   Texture() = default;
   ~Texture();
   Texture(const Texture&) = delete;
-  Texture(Texture&&) = delete;
+  Texture(Texture&&);
   Texture& operator=(const Texture&) = delete;
-  Texture& operator=(Texture&&) = delete;
+  Texture& operator=(Texture&&);
   void load(std::string_view filename);
   void bind() const;
   std::uint32_t id() const { return id_; }
