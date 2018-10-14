@@ -17,6 +17,8 @@ add_executable(apeiron_example
     options.h
     menu.cpp
     menu.h
+    event_visitor.cpp
+    event_visitor.h
     cube.h
     cylinder.h
     world.cpp

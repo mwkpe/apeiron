@@ -11,6 +11,7 @@
 #include "opengl/cuboid.h"
 #include "opengl/model.h"
 #include "engine/input.h"
+#include "engine/event.h"
 #include "engine/camera.h"
 #include "engine/text.h"
 #include "prefab/axes.h"
@@ -29,10 +30,12 @@ class World final
 public:
   explicit World(const Options* options);
   void init();
-  void update(float time, float delta_time, const engine::Input* input = nullptr);
+  void update(float time, float delta_time, const std::vector<apeiron::engine::Event>& events,
+      const engine::Input* input = nullptr);
   void render();
 
 private:
+  friend class Event_visitor;
   void update_camera(float delta_time, const engine::Input* input);
   void handle_mouse_move(int x, int y);
   void handle_mouse_click(int x, int y);
@@ -52,7 +55,6 @@ private:
   prefab::Teapot teapot_;
   Cylinder cylinder_;
   std::vector<Cube> cubes_;
-  bool mouse_left_down_ = false;
   int frame_ = 0;
   float frame_time_ = 0;
 };

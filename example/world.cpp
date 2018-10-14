@@ -6,12 +6,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "engine/model_flags.h"
 #include "engine/collision.h"
+#include "event_visitor.h"
 
 
 apeiron::example::World::World(const Options* options)
     : options_{options}, charset_{16, 8, 32, 0.5f, 1.0f},
       cube_model_{{1.0f, 1.0f, 1.0f}},
-      camera_{-45.0f, -145.0f, {10.0f, 15.0f, 10.0f}},
+      camera_{-45.0f, -55.0f, {10.0f, 15.0f, 10.0f}},
       axes_{16, 0.01f, 25.0f},
       ground_{{50.0f, 50.0f}, 21, 21, {0.25f, 0.25f, 0.25f, 1.0f}, 1.0f},
       light_{&bulb_},
@@ -80,46 +81,45 @@ void apeiron::example::World::init()
 }
 
 
-void apeiron::example::World::update(float time, float delta_time, const engine::Input* input)
+void apeiron::example::World::update(float time, float delta_time,
+    const std::vector<apeiron::engine::Event>& events, const engine::Input* input)
 {
-  if (options_->rotate_cubes)
-    frame_time_ = time;
+  // Process events and input state
+  for (const auto& event : events)
+    std::visit(Event_visitor{*this}, event);
 
   if (input) {
     if (!options_->show_menu) {
       update_camera(delta_time, input);
     }
-
-    handle_mouse_move(input->mouse_x_abs, input->mouse_y_abs);
-
-    if (!mouse_left_down_ && input->mouse_left) {
-      mouse_left_down_ = true;
-      handle_mouse_click(input->mouse_x_abs, input->mouse_y_abs);
-    }
-    else if (mouse_left_down_ && !input->mouse_left) {
-      mouse_left_down_ = false;
-    }
   }
 
+  // Light
+  light_.set_position(0.0f, 9.5f, -options_->light_distance);
   if (options_->lighting && light_.is_on()) {
     light_.set_color(options_->main_color);
   }
   else {
     light_.set_color(0.3f, 0.3f, 0.3f, 1.0f);
   }
-  light_.set_position(0.0f, 9.5f, -options_->light_distance);
 
+  // Cylinder
   cylinder_.set_rotation(frame_time_ * glm::radians(360.0f * options_->cylinder_revs) *
       cylinder_.rotation_magnitudes());
   if (cylinder_.points() != options_->cylinder_points) {
     cylinder_.rebuild(options_->cylinder_points);
   }
 
-  for (auto& c : cubes_) {
-    c.set_rotation(frame_time_ * glm::radians(120.0f) * c.rotation_magnitudes());
+  // Cubes
+  if (options_->rotate_cubes) {
+    frame_time_ = time;
+    for (auto& c : cubes_) {
+      c.set_rotation(frame_time_ * glm::radians(120.0f) * c.rotation_magnitudes());
+    }
   }
-  teapot_.set_rotation(frame_time_ * glm::radians(120.0f) * glm::vec3{0.0f, 0.2f, 0.2f});
 
+  // Other
+  teapot_.set_rotation(frame_time_ * glm::radians(120.0f) * glm::vec3{0.0f, 0.2f, 0.2f});
   world_text_.set_text(options_->text);
 }
 

@@ -20,6 +20,7 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/engine/camera.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/text.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/input.h
+    ${CMAKE_CURRENT_LIST_DIR}/engine/event.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/image_loader.cpp
     ${CMAKE_CURRENT_LIST_DIR}/engine/image_loader.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/model_loader.cpp
