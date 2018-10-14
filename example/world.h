@@ -4,20 +4,20 @@
 
 #include <cstdint>
 #include <vector>
-#include "options.h"
+#include "engine/input.h"
+#include "engine/event.h"
+#include "engine/camera.h"
+#include "engine/text.h"
 #include "opengl/renderer.h"
 #include "opengl/texture.h"
 #include "opengl/tileset.h"
 #include "opengl/cuboid.h"
 #include "opengl/model.h"
-#include "engine/input.h"
-#include "engine/event.h"
-#include "engine/camera.h"
-#include "engine/text.h"
 #include "prefab/axes.h"
 #include "prefab/ground.h"
 #include "prefab/light.h"
 #include "prefab/teapot.h"
+#include "example/options.h"
 #include "example/cube.h"
 #include "example/cylinder.h"
 
