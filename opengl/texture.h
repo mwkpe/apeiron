@@ -9,6 +9,10 @@
 namespace apeiron::opengl {
 
 
+enum class Texture_filter { Linear, Nearest };
+enum class Wrap_mode { Clamp_to_edge, Repeat };
+
+
 class Texture
 {
 public:
@@ -18,7 +22,11 @@ public:
   Texture(Texture&&);
   Texture& operator=(const Texture&) = delete;
   Texture& operator=(Texture&&);
-  void load(std::string_view filename);
+  void load(std::string_view filename,
+      Texture_filter min_filter = Texture_filter::Linear,
+      Texture_filter mag_filter = Texture_filter::Linear,
+      Wrap_mode wrap_s = Wrap_mode::Clamp_to_edge,
+      Wrap_mode wrap_t = Wrap_mode::Clamp_to_edge);
   void bind() const;
   std::uint32_t id() const { return id_; }
 
