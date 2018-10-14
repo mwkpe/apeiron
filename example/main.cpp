@@ -121,8 +121,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
   bool benchmarking = false;
   float benchmark_start_time = 0;
   int benchmark_total_frames = 0;
-  using namespace apeiron::engine;
-  std::vector<Event> events;
+  std::vector<apeiron::engine::Event> events;
 
   while (!options.quit) {
     auto elapsed = frame_timer(benchmarking);  // May also delay and hence limits fps
@@ -168,15 +167,15 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
           }
         } break;
         case SDL_MOUSEBUTTONUP: {
-          events.push_back(Mouse_button_up_event{get_mouse_button(event.button.button),
-              event.button.x, event.button.y});
+          events.push_back(apeiron::engine::Mouse_button_up_event{
+              get_mouse_button(event.button.button), event.button.x, event.button.y});
         } break;
         case SDL_MOUSEBUTTONDOWN: {
-          events.push_back(Mouse_button_down_event{get_mouse_button(event.button.button),
-              event.button.x, event.button.y});
+          events.push_back(apeiron::engine::Mouse_button_down_event{
+              get_mouse_button(event.button.button), event.button.x, event.button.y});
         } break;
         case SDL_MOUSEWHEEL: {
-          events.push_back(Mouse_wheel_event{event.wheel.x, event.wheel.y});
+          events.push_back(apeiron::engine::Mouse_wheel_event{event.wheel.x, event.wheel.y});
         } break;
         default:;
       }
