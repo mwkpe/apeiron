@@ -20,6 +20,7 @@
 #include "example/options.h"
 #include "example/cube.h"
 #include "example/cylinder.h"
+#include "example/ground_highlight.h"
 
 
 namespace apeiron::example {
@@ -34,11 +35,15 @@ public:
       const engine::Input* input = nullptr);
   void render();
 
+  // Event handling
+  void operator()(const engine::Mouse_motion_event& event);
+  void operator()(const engine::Mouse_button_down_event& event);
+  void operator()(const engine::Mouse_button_up_event& event);
+  void operator()(const engine::Mouse_wheel_event& event);
+
 private:
-  friend class Event_visitor;
   void update_camera(float delta_time, const engine::Input* input);
   void handle_mouse_move(int x, int y);
-  void handle_mouse_click(int x, int y);
 
   const Options* options_;
   opengl::Renderer renderer_;
@@ -54,6 +59,7 @@ private:
   prefab::Light light_;
   prefab::Teapot teapot_;
   Cylinder cylinder_;
+  Ground_highlight ground_highlight_;
   std::vector<Cube> cubes_;
   int frame_ = 0;
   float frame_time_ = 0;

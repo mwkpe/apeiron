@@ -6,7 +6,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "engine/model_flags.h"
 #include "engine/collision.h"
-#include "event_visitor.h"
 
 
 apeiron::example::World::World(const Options* options)
@@ -14,7 +13,7 @@ apeiron::example::World::World(const Options* options)
       cube_model_{{1.0f, 1.0f, 1.0f}},
       camera_{-45.0f, -55.0f, {10.0f, 15.0f, 10.0f}},
       axes_{16, 0.01f, 25.0f},
-      ground_{{50.0f, 50.0f}, 21, 21, {0.25f, 0.25f, 0.25f, 1.0f}, 1.0f},
+      ground_{{48.0f, 48.0f}, 48, 48, {0.25f, 0.25f, 0.25f, 1.0f}, 1.0f},
       light_{&bulb_},
       cylinder_{options_->cylinder_points, 0.0f, 0.0f, 1.0f}
 {
@@ -86,7 +85,7 @@ void apeiron::example::World::update(float time, float delta_time,
 {
   // Process events and input state
   for (const auto& event : events)
-    std::visit(Event_visitor{*this}, event);
+    std::visit(*this, event);
 
   if (input) {
     if (!options_->show_menu) {
@@ -161,17 +160,6 @@ void apeiron::example::World::handle_mouse_move(int x, int y)
 }
 
 
-void apeiron::example::World::handle_mouse_click(int x, int y)
-{
-  using namespace engine::collision;
-  float norm_x = static_cast<float>(x) / options_->window_width * 2.0f - 1.0f;
-  float norm_y = -(static_cast<float>(y) / options_->window_height * 2.0f - 1.0f);
-  auto ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
-  if (intersects(ray, Sphere{light_.position(), light_.intersection_radius()}))
-    light_.toggle();
-}
-
-
 void apeiron::example::World::render()
 {
   frame_++;
@@ -196,6 +184,10 @@ void apeiron::example::World::render()
   renderer_.render(ground_);
 
   renderer_.use_color_shading();
+
+  if (ground_highlight_.visible())
+    renderer_.render(ground_highlight_, color);
+
   renderer_.render(cylinder_, color);
 
   if (options_->show_light) {
@@ -221,4 +213,56 @@ void apeiron::example::World::render()
 
   renderer_.use_screen_space();
   renderer_.render_screen(screen_text_, charset_, color);
+}
+
+
+void apeiron::example::World::operator()([[maybe_unused]] const engine::Mouse_motion_event& event)
+{
+  using namespace engine::collision;
+  float norm_x = static_cast<float>(event.x) / options_->window_width * 2.0f - 1.0f;
+  float norm_y = -(static_cast<float>(event.y) / options_->window_height * 2.0f - 1.0f);
+  Ray ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
+  Quad quad{{0.0f, 0.0f, 0.0f}, {2.0f, 0.0f, 0.0f}, {2.0f, 0.0f, 2.0f}, {0.0f, 0.0f, 2.0f}};
+  Plane plane{{0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};
+
+  if (auto point = intersection_point(ray, plane)) {
+    if (point->x > -24.0f && point->x < 24.0f && point->z > -24.0f && point->z < 24.0f) {
+      ground_highlight_.set_position(std::floor(point->x) + 0.5f, 0.0f, std::floor(point->z) + 0.5f);
+      ground_highlight_.set_visible(true);
+    }
+    else {
+      ground_highlight_.set_visible(false);
+    }
+  }
+  else {
+    ground_highlight_.set_visible(false);
+  }
+
+  if (intersects(ray, quad))
+    light_.switch_on();
+  else
+    light_.switch_off();
+}
+
+
+void apeiron::example::World::operator()(const engine::Mouse_button_down_event& event)
+{
+  if (event.button == engine::Mouse_button::Left) {
+    using namespace engine::collision;
+    float norm_x = static_cast<float>(event.x) / options_->window_width * 2.0f - 1.0f;
+    float norm_y = -(static_cast<float>(event.y) / options_->window_height * 2.0f - 1.0f);
+    auto ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
+    if (intersects(ray, Sphere{light_.position(), light_.intersection_radius()}))
+      light_.toggle();
+  }
+}
+
+
+void apeiron::example::World::operator()([[maybe_unused]] const engine::Mouse_button_up_event& event)
+{
+}
+
+
+void apeiron::example::World::operator()([[maybe_unused]] const engine::Mouse_wheel_event& event)
+{
 }
