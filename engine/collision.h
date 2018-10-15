@@ -2,7 +2,7 @@
 #define APEIRON_ENGINE_COLLISION_H
 
 
-#include <cmath>
+#include <optional>
 #include <glm/glm.hpp>
 
 
@@ -23,6 +23,13 @@ struct Sphere
 };
 
 
+struct Plane
+{
+  glm::vec3 origin;
+  glm::vec3 normal;
+};
+
+
 struct Quad
 {
   glm::vec3 top_left;
@@ -32,30 +39,14 @@ struct Quad
 };
 
 
-inline Ray screen_raycast(float norm_x, float norm_y, const glm::mat4& inv_view_projection)
-{
-  auto near = glm::vec4{norm_x, norm_y, -1.0f, 1.0f};
-  auto far = glm::vec4{norm_x, norm_y, 1.0f, 1.0f};
-  auto near_world = inv_view_projection * near;
-  auto far_world = inv_view_projection * far;
-  near_world /= near_world.w;
-  far_world /= far_world.w;
-  return {glm::vec3{near_world}, glm::vec3{far_world - near_world}};
-}
+Ray screen_raycast(float norm_x, float norm_y, const glm::mat4& inv_view_projection);
 
 
-inline bool intersects(const Ray& ray, const Sphere& sphere)
-{
-  auto distance = glm::length(glm::cross(sphere.position - ray.position,
-      sphere.position - (ray.position + ray.vector))) / glm::length(ray.vector);
-  return distance < sphere.radius;
-}
+bool intersects(const Ray& ray, const Sphere& sphere);
+bool intersects(const Ray& ray, const Quad& quad);
 
 
-inline bool intersects(const Ray&, const Quad&)
-{
-  return false;
-}
+std::optional<glm::vec3> intersection_point(const Ray& ray, const Plane& plane);
 
 
 }  // namespace apeiron::engine::collision
