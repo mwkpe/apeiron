@@ -166,6 +166,10 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
             default:;
           }
         } break;
+        case SDL_MOUSEMOTION: {
+          events.push_back(apeiron::engine::Mouse_motion_event{event.motion.x, event.motion.y,
+              event.motion.xrel, event.motion.yrel});
+        } break;
         case SDL_MOUSEBUTTONUP: {
           events.push_back(apeiron::engine::Mouse_button_up_event{
               get_mouse_button(event.button.button), event.button.x, event.button.y});
