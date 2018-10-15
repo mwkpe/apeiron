@@ -89,6 +89,7 @@ void apeiron::example::World::update(float time, float delta_time,
 
   if (input) {
     if (!options_->show_menu) {
+      ground_highlight_.set_visible(false);
       update_camera(delta_time, input);
     }
   }
@@ -218,23 +219,27 @@ void apeiron::example::World::render()
 
 void apeiron::example::World::operator()([[maybe_unused]] const engine::Mouse_motion_event& event)
 {
-  using namespace engine::collision;
-  float norm_x = static_cast<float>(event.x) / options_->window_width * 2.0f - 1.0f;
-  float norm_y = -(static_cast<float>(event.y) / options_->window_height * 2.0f - 1.0f);
-  Ray ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
-  Quad quad{{0.0f, 0.0f, 0.0f}, {2.0f, 0.0f, 0.0f}, {2.0f, 0.0f, 2.0f}, {0.0f, 0.0f, 2.0f}};
-  Plane plane{{0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};
+  if (options_->show_menu) {
+    using namespace engine::collision;
 
-  ground_highlight_.set_visible(false);
-  if (auto point = intersection_point(ray, plane)) {
-    if (point->x > -24.0f && point->x < 24.0f && point->z > -24.0f && point->z < 24.0f) {
-      ground_highlight_.set_position(std::floor(point->x) + 0.5f, 0.0f, std::floor(point->z) + 0.5f);
-      ground_highlight_.set_visible(true);
+    float norm_x = static_cast<float>(event.x) / options_->window_width * 2.0f - 1.0f;
+    float norm_y = -(static_cast<float>(event.y) / options_->window_height * 2.0f - 1.0f);
+    Ray ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
+    Quad quad{{0.0f, 0.0f, 0.0f}, {2.0f, 0.0f, 0.0f}, {2.0f, 0.0f, 2.0f}, {0.0f, 0.0f, 2.0f}};
+    Plane plane{{0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};
+
+    ground_highlight_.set_visible(false);
+
+    if (auto point = intersection_point(ray, plane)) {
+      if (point->x > -24.0f && point->x < 24.0f && point->z > -24.0f && point->z < 24.0f) {
+        ground_highlight_.set_position(std::floor(point->x) + 0.5f, 0.0f, std::floor(point->z) + 0.5f);
+        ground_highlight_.set_visible(true);
+      }
     }
-  }
 
-  if (intersects(ray, quad))
-    light_.switch_on();
+    if (intersects(ray, quad))
+      light_.switch_on();
+  }
 }
 
 
