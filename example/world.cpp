@@ -142,25 +142,6 @@ void apeiron::example::World::update_camera(float delta_time, const engine::Inpu
 }
 
 
-void apeiron::example::World::handle_mouse_move(int x, int y)
-{
-  using namespace engine::collision;
-  float norm_x = static_cast<float>(x) / options_->window_width * 2.0f - 1.0f;
-  float norm_y = -(static_cast<float>(y) / options_->window_height * 2.0f - 1.0f);
-  auto ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
-  Quad quad{
-    {-1.0f, 0.0f, -1.0f},
-    { 1.0f, 0.0f, -1.0f},
-    { 1.0f, 0.0f,  1.0f},
-    {-1.0f, 0.0f,  1.0f}
-  };
-  if (intersects(ray, quad))
-    light_.switch_on();
-  else
-    light_.switch_off();
-}
-
-
 void apeiron::example::World::render()
 {
   frame_++;
