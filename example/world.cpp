@@ -225,23 +225,16 @@ void apeiron::example::World::operator()([[maybe_unused]] const engine::Mouse_mo
   Quad quad{{0.0f, 0.0f, 0.0f}, {2.0f, 0.0f, 0.0f}, {2.0f, 0.0f, 2.0f}, {0.0f, 0.0f, 2.0f}};
   Plane plane{{0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};
 
+  ground_highlight_.set_visible(false);
   if (auto point = intersection_point(ray, plane)) {
     if (point->x > -24.0f && point->x < 24.0f && point->z > -24.0f && point->z < 24.0f) {
       ground_highlight_.set_position(std::floor(point->x) + 0.5f, 0.0f, std::floor(point->z) + 0.5f);
       ground_highlight_.set_visible(true);
     }
-    else {
-      ground_highlight_.set_visible(false);
-    }
-  }
-  else {
-    ground_highlight_.set_visible(false);
   }
 
   if (intersects(ray, quad))
     light_.switch_on();
-  else
-    light_.switch_off();
 }
 
 
