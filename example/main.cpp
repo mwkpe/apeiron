@@ -28,7 +28,7 @@ void disable_dpi_scaling()
       using fp = HRESULT (WINAPI*)(int);
       if (auto f = reinterpret_cast<fp>(GetProcAddress(shcore.get(), "SetProcessDpiAwareness"))) {
         if (f(PROCESS_SYSTEM_DPI_AWARE) != S_OK) {
-          throw apeiron::engine::Warning{"Could not disable DPI scaling"};
+          std::cerr << "Could not disable DPI scaling" << std::endl;
         }
       }
     }
@@ -78,18 +78,14 @@ apeiron::engine::Mouse_button get_mouse_button(std::uint8_t button)
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
+  disable_dpi_scaling();
+
   apeiron::example::Options options;
   try {
-    disable_dpi_scaling();
     options = apeiron::example::load_configuration("config.json");
   }
   catch (const apeiron::engine::Warning& w) {
     std::cout << w.what() << std::endl;
-  }
-  catch (const apeiron::engine::Error& e) {
-    std::cout << e.what() << std::endl;
-    std::cin.ignore();  // Keep console open
-    return 1;
   }
 
   SDL_Init(SDL_INIT_VIDEO);
