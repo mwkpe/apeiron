@@ -1,5 +1,10 @@
 #include <cstdint>
+#include <memory>
 #include <iostream>
+#ifdef _WIN32
+  #define WIN32_LEAN_AND_MEAN
+  #include <windows.h>
+#endif
 #include "SDL2/SDL.h"
 #include "GL/glew.h"
 #include "engine/error.h"
@@ -11,6 +16,24 @@
 
 
 namespace {
+
+
+void disable_dpi_scaling()
+{
+  #if defined(_WIN32)
+    enum { PROCESS_DPI_UNAWARE, PROCESS_SYSTEM_DPI_AWARE, PROCESS_PER_MONITOR_DPI_AWARE};
+    auto free_module = [](HMODULE module){ FreeLibrary(module); };
+    using mp = std::unique_ptr<std::remove_pointer<HMODULE>::type, decltype(free_module)>;
+    if (auto shcore = mp{LoadLibrary("Shcore.dll"), free_module}) {
+      using fp = HRESULT (WINAPI*)(int);
+      if (auto f = reinterpret_cast<fp>(GetProcAddress(shcore.get(), "SetProcessDpiAwareness"))) {
+        if (f(PROCESS_SYSTEM_DPI_AWARE) != S_OK) {
+          throw apeiron::engine::Warning{"Could not disable DPI scaling"};
+        }
+      }
+    }
+  #endif
+}
 
 
 apeiron::engine::Input get_input_state()
@@ -26,9 +49,9 @@ apeiron::engine::Input get_input_state()
   auto mouse_state = SDL_GetMouseState(&input.mouse_x_abs, &input.mouse_y_abs);
   SDL_GetRelativeMouseState(&input.mouse_x_rel, &input.mouse_y_rel);
   input.mouse_y_rel = -input.mouse_y_rel;  // Make mouse up correspond to camera pitch up
-  input.mouse_left = mouse_state & SDL_BUTTON(SDL_BUTTON_LEFT);
-  input.mouse_middle = mouse_state & SDL_BUTTON(SDL_BUTTON_MIDDLE);
-  input.mouse_right =  mouse_state & SDL_BUTTON(SDL_BUTTON_RIGHT);
+  input.mouse_left = static_cast<bool>(mouse_state & SDL_BUTTON(SDL_BUTTON_LEFT));
+  input.mouse_middle = static_cast<bool>(mouse_state & SDL_BUTTON(SDL_BUTTON_MIDDLE));
+  input.mouse_right =  static_cast<bool>(mouse_state & SDL_BUTTON(SDL_BUTTON_RIGHT));
 
   return input;
 }
@@ -43,6 +66,7 @@ apeiron::engine::Mouse_button get_mouse_button(std::uint8_t button)
     case SDL_BUTTON_RIGHT: return Mouse_button::Right;
     case SDL_BUTTON_X1: return Mouse_button::Side1;
     case SDL_BUTTON_X2: return Mouse_button::Side2;
+    default:;
   }
 
   return Mouse_button::Unknown;
@@ -56,10 +80,16 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
   apeiron::example::Options options;
   try {
+    disable_dpi_scaling();
     options = apeiron::example::load_configuration("config.json");
   }
   catch (const apeiron::engine::Warning& w) {
     std::cout << w.what() << std::endl;
+  }
+  catch (const apeiron::engine::Error& e) {
+    std::cout << e.what() << std::endl;
+    std::cin.ignore();  // Keep console open
+    return 1;
   }
 
   SDL_Init(SDL_INIT_VIDEO);
