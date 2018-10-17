@@ -31,9 +31,12 @@ apeiron::opengl::Texture::~Texture()
 
 
 void apeiron::opengl::Texture::load(std::string_view filename, Texture_filter min_filter,
-    Texture_filter mag_filter, Wrap_mode wrap_s, Wrap_mode wrap_t)
+    Texture_filter mag_filter, std::uint32_t anisotropy_level, Wrap_mode wrap_s, Wrap_mode wrap_t)
 {
   auto&& [pixel, width, height, channel_count] = engine::load_image(filename);
+
+  if (channel_count != 3 && channel_count != 4)
+    throw engine::Error{"Image format not supported"};
 
   if (id_ > 0)
     glDeleteTextures(1, &id_);
@@ -66,12 +69,21 @@ void apeiron::opengl::Texture::load(std::string_view filename, Texture_filter mi
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, gl_wrap_t);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, gl_min_filter);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, gl_mag_filter);
-  if (channel_count == 4)
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixel.data());
-  else if (channel_count == 3)
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, pixel.data());
-  else
-    throw engine::Error{"Image format not supported"};
+
+  if (anisotropy_level > 1)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy_level);
+
+  switch (channel_count) {
+    case 3:
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE,
+          pixel.data());
+      break;
+    case 4:
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+          pixel.data());
+      break;
+  }
+
   glGenerateMipmap(GL_TEXTURE_2D);
 }
 

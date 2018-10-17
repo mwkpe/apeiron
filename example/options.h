@@ -24,6 +24,7 @@ struct Options
   int window_width = 1280;
   int window_height = 720;
   int msaa_samples = 4;
+  int af_samples = 1;
   int cylinder_points = 8;
   int max_fps = 90;
   float light_distance = -5.0f;

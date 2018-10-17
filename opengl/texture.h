@@ -25,6 +25,7 @@ public:
   void load(std::string_view filename,
       Texture_filter min_filter = Texture_filter::Linear,
       Texture_filter mag_filter = Texture_filter::Linear,
+      std::uint32_t anisotropy_level = 1,
       Wrap_mode wrap_s = Wrap_mode::Clamp_to_edge,
       Wrap_mode wrap_t = Wrap_mode::Clamp_to_edge);
   void bind() const;

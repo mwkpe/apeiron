@@ -21,11 +21,11 @@ namespace {
 void disable_dpi_scaling()
 {
   #ifdef _WIN32
-    enum { PROCESS_DPI_UNAWARE, PROCESS_SYSTEM_DPI_AWARE, PROCESS_PER_MONITOR_DPI_AWARE};
+    enum { PROCESS_DPI_UNAWARE, PROCESS_SYSTEM_DPI_AWARE, PROCESS_PER_MONITOR_DPI_AWARE };
     auto free_module = [](HMODULE module){ FreeLibrary(module); };
     using mp = std::unique_ptr<std::remove_pointer<HMODULE>::type, decltype(free_module)>;
     if (auto shcore = mp{LoadLibrary("Shcore.dll"), free_module}) {
-      using fp = HRESULT (WINAPI*)(int);
+      using fp = HRESULT(WINAPI*)(int);
       if (auto f = reinterpret_cast<fp>(GetProcAddress(shcore.get(), "SetProcessDpiAwareness"))) {
         if (f(PROCESS_SYSTEM_DPI_AWARE) != S_OK) {
           std::cerr << "Could not disable DPI scaling" << std::endl;
@@ -52,6 +52,8 @@ apeiron::engine::Input get_input_state()
   input.mouse_left = static_cast<bool>(mouse_state & SDL_BUTTON(SDL_BUTTON_LEFT));
   input.mouse_middle = static_cast<bool>(mouse_state & SDL_BUTTON(SDL_BUTTON_MIDDLE));
   input.mouse_right =  static_cast<bool>(mouse_state & SDL_BUTTON(SDL_BUTTON_RIGHT));
+  input.mouse_side1 =  static_cast<bool>(mouse_state & SDL_BUTTON(SDL_BUTTON_X1));
+  input.mouse_side2 =  static_cast<bool>(mouse_state & SDL_BUTTON(SDL_BUTTON_X2));
 
   return input;
 }
@@ -111,6 +113,13 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     quit_sdl();
     std::cin.ignore();  // Keep console open
     return 1;
+  }
+
+  if (glewIsSupported("GL_EXT_texture_filter_anisotropic")) {
+    GLint max_anisotropy = 1;
+    glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &max_anisotropy);
+    if (max_anisotropy > 1)
+      options.af_samples = max_anisotropy;
   }
 
   if (options.vsync)

@@ -32,7 +32,8 @@ void apeiron::example::World::init()
   renderer_.preset_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 500.0f));
 
   charset_.load_texture("assets/roboto_mono.png");
-  cube_texture_.load("assets/ab_crate_a.png");
+  cube_texture_.load("assets/ab_crate_a.png", opengl::Texture_filter::Linear,
+      opengl::Texture_filter::Linear, options_->af_samples);
 
   {
     namespace mf = engine::model_flags;
