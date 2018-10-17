@@ -18,6 +18,8 @@ struct Input
   bool mouse_left = false;
   bool mouse_middle = false;
   bool mouse_right = false;
+  bool mouse_side1 = false;
+  bool mouse_side2 = false;
   int mouse_x_abs = 0;
   int mouse_x_rel = 0;
   int mouse_y_abs = 0;
