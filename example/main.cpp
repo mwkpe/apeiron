@@ -20,7 +20,7 @@ namespace {
 
 void disable_dpi_scaling()
 {
-  #if defined(_WIN32)
+  #ifdef _WIN32
     enum { PROCESS_DPI_UNAWARE, PROCESS_SYSTEM_DPI_AWARE, PROCESS_PER_MONITOR_DPI_AWARE};
     auto free_module = [](HMODULE module){ FreeLibrary(module); };
     using mp = std::unique_ptr<std::remove_pointer<HMODULE>::type, decltype(free_module)>;
