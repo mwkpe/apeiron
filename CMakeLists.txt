@@ -60,9 +60,20 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/prefab/light.h
     ${CMAKE_CURRENT_LIST_DIR}/prefab/teapot.h)
 
-target_link_libraries(apeiron -lglew32 -lglu32)
-link_directories(${CMAKE_CURRENT_LIST_DIR}/external/glew/lib/Release/x64)
-include_directories(${CMAKE_CURRENT_LIST_DIR}
+list(APPEND APEIRON_INCLUDE_DIRECTORIES
+    ${CMAKE_CURRENT_LIST_DIR}
     ${CMAKE_CURRENT_LIST_DIR}/external
-    ${CMAKE_CURRENT_LIST_DIR}/external/glew/include
     ${CMAKE_CURRENT_LIST_DIR}/external/glm)
+
+if (WIN32)
+  list(APPEND APEIRON_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/external/glew/include)
+  link_directories(${CMAKE_CURRENT_LIST_DIR}/external/glew/lib/Release/x64)
+endif ()
+
+include_directories(${APEIRON_INCLUDE_DIRECTORIES})
+
+if (WIN32)
+  target_link_libraries(apeiron -lglew32 -lglu32 -lopengl32)
+elseif (UNIX AND NOT APPLE)
+  target_link_libraries(apeiron -lGLEW -lGLU -lGL)
+endif ()
