@@ -14,9 +14,9 @@ public:
   Shape() = default;
   virtual ~Shape();
   Shape(const Shape&) = delete;
-  Shape(Shape&& other);
+  Shape(Shape&& other) noexcept;
   Shape& operator=(const Shape&) = delete;
-  Shape& operator=(Shape&& other);
+  Shape& operator=(Shape&& other) noexcept;
 
   virtual void render() const {};
   virtual void render([[maybe_unused]] std::uint32_t start,

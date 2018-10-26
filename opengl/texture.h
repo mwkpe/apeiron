@@ -19,9 +19,9 @@ public:
   Texture() = default;
   ~Texture();
   Texture(const Texture&) = delete;
-  Texture(Texture&&);
+  Texture(Texture&&) noexcept;
   Texture& operator=(const Texture&) = delete;
-  Texture& operator=(Texture&&);
+  Texture& operator=(Texture&&) noexcept;
   void load(std::string_view filename,
       Texture_filter min_filter = Texture_filter::Linear,
       Texture_filter mag_filter = Texture_filter::Linear,

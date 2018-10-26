@@ -7,14 +7,14 @@
 #include "engine/image_loader.h"
 
 
-apeiron::opengl::Texture::Texture(Texture&& other)
+apeiron::opengl::Texture::Texture(Texture&& other) noexcept
 {
   id_ = other.id_;
   other.id_ = 0;
 }
 
 
-auto apeiron::opengl::Texture::operator=(Texture&& other) -> Texture&
+auto apeiron::opengl::Texture::operator=(Texture&& other) noexcept -> Texture&
 {
   id_ = other.id_;
   other.id_ = 0;
@@ -43,26 +43,46 @@ void apeiron::opengl::Texture::load(std::string_view filename, Texture_filter mi
   glGenTextures(1, &id_);
   glBindTexture(GL_TEXTURE_2D, id_);
 
-  GLint gl_wrap_s = GL_REPEAT;
-  GLint gl_wrap_t = GL_REPEAT;
+  GLint gl_wrap_s;
+  GLint gl_wrap_t;
   switch (wrap_s) {
-    case Wrap_mode::Clamp_to_edge: gl_wrap_s = GL_CLAMP_TO_EDGE; break;
-    case Wrap_mode::Repeat: gl_wrap_s = GL_REPEAT; break;
+    case Wrap_mode::Repeat:
+      gl_wrap_s = GL_REPEAT;
+      break;
+    case Wrap_mode::Clamp_to_edge:
+    [[fallthrough]];
+    default:
+      gl_wrap_s = GL_CLAMP_TO_EDGE;
   }
   switch (wrap_t) {
-    case Wrap_mode::Clamp_to_edge: gl_wrap_t = GL_CLAMP_TO_EDGE; break;
-    case Wrap_mode::Repeat: gl_wrap_t = GL_REPEAT; break;
+    case Wrap_mode::Repeat:
+      gl_wrap_t = GL_REPEAT;
+      break;
+    case Wrap_mode::Clamp_to_edge:
+    [[fallthrough]];
+    default:
+      gl_wrap_t = GL_CLAMP_TO_EDGE;
   }
 
-  GLint gl_min_filter = GL_LINEAR;
-  GLint gl_mag_filter = GL_LINEAR;
+  GLint gl_min_filter;
+  GLint gl_mag_filter;
   switch (min_filter) {
-    case Texture_filter::Linear: gl_min_filter = GL_LINEAR; break;
-    case Texture_filter::Nearest: gl_min_filter = GL_NEAREST; break;
+    case Texture_filter::Nearest:
+      gl_min_filter = GL_NEAREST;
+      break;
+    case Texture_filter::Linear:
+    [[fallthrough]];
+    default:
+      gl_min_filter = GL_LINEAR;
   }
   switch (mag_filter) {
-    case Texture_filter::Linear: gl_mag_filter = GL_LINEAR; break;
-    case Texture_filter::Nearest: gl_mag_filter = GL_NEAREST; break;
+    case Texture_filter::Nearest:
+      gl_mag_filter = GL_NEAREST;
+      break;
+    case Texture_filter::Linear:
+    [[fallthrough]];
+    default:
+      gl_mag_filter = GL_LINEAR;
   }
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, gl_wrap_s);

@@ -4,7 +4,7 @@
 #include "GL/glew.h"
 
 
-apeiron::opengl::Shape::Shape(Shape&& other)
+apeiron::opengl::Shape::Shape(Shape&& other) noexcept
 {
   vbo_ = other.vbo_;
   ebo_ = other.ebo_;
@@ -20,7 +20,7 @@ apeiron::opengl::Shape::Shape(Shape&& other)
 }
 
 
-auto apeiron::opengl::Shape::operator=(Shape&& other) -> Shape&
+auto apeiron::opengl::Shape::operator=(Shape&& other) noexcept -> Shape&
 {
   vbo_ = other.vbo_;
   ebo_ = other.ebo_;

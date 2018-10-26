@@ -152,7 +152,7 @@ void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::T
     apply_rotation(model, text.rotation());
     current_shader_->set_uniform("model", model);
     charset.render(c);
-    offset += charset.tile_width() * text.size() * text.spacing().x;
+    offset += charset.tile_width() * text.text_size() * text.spacing().x;
   }
 }
 
@@ -173,7 +173,7 @@ void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::T
     apply_rotation(model, text.rotation());
     current_shader_->set_uniform("model", model);
     charset.render(c);
-    offset += charset.tile_width() * text.size() * text.spacing().x;
+    offset += charset.tile_width() * text.text_size() * text.spacing().x;
   }
 
   set_colorize(false);
@@ -187,14 +187,14 @@ void apeiron::opengl::Renderer::render_screen(const engine::Text& text,
   charset.bind();
   set_colorize(true);
   current_shader_->set_uniform("color", color);
-  current_shader_->set_uniform("scale", glm::vec3{text.size(), text.size(), 1.0f});
+  current_shader_->set_uniform("scale", glm::vec3{text.text_size(), text.text_size(), 1.0f});
 
   float offset = 0.0f;
   auto pos = text.position();
   for (char c : text) {
     current_shader_->set_uniform("translation", glm::vec3{pos.x + offset, pos.y, pos.z});
     charset.render(c);
-    offset += charset.tile_width() * text.size() * text.spacing().x;
+    offset += charset.tile_width() * text.text_size() * text.spacing().x;
   }
   set_colorize(false);
 }

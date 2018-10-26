@@ -15,10 +15,10 @@ public:
   std::string::const_iterator begin() const { return std::cbegin(text_); }
   std::string::const_iterator end() const { return std::cend(text_); }
   void set_text(std::string text) { text_ = std::move(text); }
-  void set_size(float size) { set_scale(size, size, size); }
+  void set_text_size(float size) { set_scale(size, size, size); }
   void set_spacing(float x, float y) { spacing_ = {x, y}; }
   std::size_t length() const { return text_.size(); }
-  float size() const { return scale().x; }
+  float text_size() const { return scale().x; }
   glm::vec2 spacing() const { return spacing_; }
 
 private:
