@@ -22,6 +22,11 @@ apeiron::opengl::Shape::Shape(Shape&& other) noexcept
 
 auto apeiron::opengl::Shape::operator=(Shape&& other) noexcept -> Shape&
 {
+  if (&other == this)
+    return *this;
+
+  delete_buffers();
+
   vbo_ = other.vbo_;
   ebo_ = other.ebo_;
   vao_ = other.vao_;

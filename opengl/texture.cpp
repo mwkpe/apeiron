@@ -16,6 +16,12 @@ apeiron::opengl::Texture::Texture(Texture&& other) noexcept
 
 auto apeiron::opengl::Texture::operator=(Texture&& other) noexcept -> Texture&
 {
+  if (&other == this)
+    return *this;
+
+  if (id_ > 0)
+    glDeleteTextures(1, &id_);
+
   id_ = other.id_;
   other.id_ = 0;
 
