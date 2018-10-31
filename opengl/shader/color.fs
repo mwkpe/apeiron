@@ -17,7 +17,7 @@ in vec4 vertex_color;
 void main()
 {
   vec4 object_color;
-  float ambient = 0.2;
+  float ambient_strength = 0.2;
 
   switch (color_mode) {
     case 0:
@@ -39,9 +39,9 @@ void main()
 
   switch (light_mode) {
     case 1:
-      vec3 n = normalize(normal);
       vec3 dir = normalize(light_position - frag_position);
-      vec3 diffuse = max(dot(n, dir), 0.0) * light_color.rgb;
+      vec3 diffuse = max(dot(normalize(normal), dir), 0.0) * light_color.rgb;
+      vec3 ambient = ambient_strength * light_color.rgb;
       frag_color = vec4(object_color.rgb * (ambient + diffuse), object_color.a);
       break;
     default:
