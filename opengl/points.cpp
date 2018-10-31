@@ -5,7 +5,19 @@
 #include "GL/glew.h"
 
 
-void apeiron::opengl::Points::init(std::vector<engine::Vertex_simple>&& vertices)
+apeiron::opengl::Points::Points(const std::vector<engine::Vertex_simple>& vertices)
+{
+  set(vertices);
+}
+
+
+apeiron::opengl::Points::Points(const std::vector<engine::Vertex_color>& vertices)
+{
+  set(vertices);
+}
+
+
+void apeiron::opengl::Points::set(const std::vector<engine::Vertex_simple>& vertices)
 {
   vertex_count_ = vertices.size();
 
@@ -23,7 +35,7 @@ void apeiron::opengl::Points::init(std::vector<engine::Vertex_simple>&& vertices
 }
 
 
-void apeiron::opengl::Points::init(std::vector<engine::Vertex_color>&& vertices)
+void apeiron::opengl::Points::set(const std::vector<engine::Vertex_color>& vertices)
 {
   vertex_count_ = vertices.size();
 

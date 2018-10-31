@@ -14,8 +14,11 @@ namespace apeiron::opengl {
 class Points final : public Shape
 {
 public:
-  void init(std::vector<engine::Vertex_simple>&& vertices);
-  void init(std::vector<engine::Vertex_color>&& vertices);
+  Points() = default;
+  Points(const std::vector<engine::Vertex_simple>& vertices);
+  Points(const std::vector<engine::Vertex_color>& vertices);
+  void set(const std::vector<engine::Vertex_simple>& vertices);
+  void set(const std::vector<engine::Vertex_color>& vertices);
   void set_size(float size) { point_size_ = size; }
   void render() const override;
   void render(std::uint32_t start, std::uint32_t count) const override;
