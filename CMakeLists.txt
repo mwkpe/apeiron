@@ -14,6 +14,8 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/utility/linear_range.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/error.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/vertex.h
+    ${CMAKE_CURRENT_LIST_DIR}/engine/primitive.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/engine/primitive.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/entity.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/collision.cpp
     ${CMAKE_CURRENT_LIST_DIR}/engine/collision.h
