@@ -58,6 +58,13 @@ struct Vertex_simple
 };
 
 
+struct Vertex_normal
+{
+  vertex::Position position;
+  vertex::Normal normal;
+};
+
+
 struct Vertex_color
 {
   vertex::Position position;
