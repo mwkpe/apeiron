@@ -21,6 +21,9 @@ namespace {
 void disable_dpi_scaling()
 {
   #ifdef _WIN32
+    // Silence gcc >= 8 warning about the winapi function cast
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wcast-function-type"
     enum { PROCESS_DPI_UNAWARE, PROCESS_SYSTEM_DPI_AWARE, PROCESS_PER_MONITOR_DPI_AWARE };
     auto free_module = [](HMODULE module){ FreeLibrary(module); };
     using mp = std::unique_ptr<std::remove_pointer<HMODULE>::type, decltype(free_module)>;
@@ -32,6 +35,7 @@ void disable_dpi_scaling()
         }
       }
     }
+    #pragma GCC diagnostic pop
   #endif
 }
 
