@@ -49,6 +49,8 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/opengl/tileset.h
     ${CMAKE_CURRENT_LIST_DIR}/opengl/cuboid.cpp
     ${CMAKE_CURRENT_LIST_DIR}/opengl/cuboid.h
+    ${CMAKE_CURRENT_LIST_DIR}/opengl/wire_cuboid.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/opengl/wire_cuboid.h
     ${CMAKE_CURRENT_LIST_DIR}/opengl/cylinder.cpp
     ${CMAKE_CURRENT_LIST_DIR}/opengl/cylinder.h
     ${CMAKE_CURRENT_LIST_DIR}/opengl/model.cpp
