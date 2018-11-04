@@ -23,14 +23,13 @@ public:
       [[maybe_unused]] std::uint32_t count) const {}
 
 protected:
+  void delete_buffers();
+
   std::uint32_t vao_ = 0;
   std::uint32_t vbo_ = 0;
   std::uint32_t ebo_ = 0;
   std::uint32_t vertex_count_ = 0;
   std::uint32_t element_count_ = 0;
-
-private:
-  void delete_buffers();
 };
 
 

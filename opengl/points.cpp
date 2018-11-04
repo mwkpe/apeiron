@@ -19,6 +19,8 @@ apeiron::opengl::Points::Points(const std::vector<engine::Vertex_color>& vertice
 
 void apeiron::opengl::Points::set(const std::vector<engine::Vertex_simple>& vertices)
 {
+  delete_buffers();
+
   vertex_count_ = vertices.size();
 
   glGenVertexArrays(1, &vao_);
@@ -37,6 +39,8 @@ void apeiron::opengl::Points::set(const std::vector<engine::Vertex_simple>& vert
 
 void apeiron::opengl::Points::set(const std::vector<engine::Vertex_color>& vertices)
 {
+  delete_buffers();
+
   vertex_count_ = vertices.size();
 
   glGenVertexArrays(1, &vao_);

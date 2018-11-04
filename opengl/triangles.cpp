@@ -49,6 +49,8 @@ apeiron::opengl::Triangles::Triangles(const std::vector<engine::Vertex_normal_te
 
 void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex>& vertices)
 {
+  delete_buffers();
+
   vertex_count_ = vertices.size();
 
   glGenVertexArrays(1, &vao_);
@@ -81,6 +83,8 @@ void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex>& vertices
 
 void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex_simple>& vertices)
 {
+  delete_buffers();
+
   vertex_count_ = vertices.size();
 
   glGenVertexArrays(1, &vao_);
@@ -99,6 +103,8 @@ void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex_simple>& v
 
 void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex_normal>& vertices)
 {
+  delete_buffers();
+
   vertex_count_ = vertices.size();
 
   glGenVertexArrays(1, &vao_);
@@ -123,6 +129,8 @@ void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex_normal>& v
 
 void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex_color>& vertices)
 {
+  delete_buffers();
+
   vertex_count_ = vertices.size();
 
   glGenVertexArrays(1, &vao_);
@@ -147,6 +155,8 @@ void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex_color>& ve
 
 void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex_texcoords>& vertices)
 {
+  delete_buffers();
+
   vertex_count_ = vertices.size();
 
   glGenVertexArrays(1, &vao_);
@@ -171,6 +181,8 @@ void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex_texcoords>
 
 void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex_normal_color>& vertices)
 {
+  delete_buffers();
+
   vertex_count_ = vertices.size();
 
   glGenVertexArrays(1, &vao_);
@@ -199,6 +211,8 @@ void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex_normal_col
 
 void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex_normal_texcoords>& vertices)
 {
+  delete_buffers();
+
   vertex_count_ = vertices.size();
 
   glGenVertexArrays(1, &vao_);
