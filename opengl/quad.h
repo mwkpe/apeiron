@@ -12,7 +12,7 @@ namespace apeiron::opengl {
 class Quad final : public Shape
 {
 public:
-	Quad() = default;
+  Quad() = default;
   Quad(float width, float height);
   Quad(float width, float height, glm::vec4 color);
   void set(float width, float height);
