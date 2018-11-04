@@ -18,7 +18,7 @@ public:
   void render() const override;
 
 private:
-	float line_width_ = 1.0f;
+  float line_width_ = 1.0f;
 };
 
 
