@@ -51,6 +51,20 @@ std::vector<apeiron::engine::Vertex_color> build_vertices(float w, float h, glm:
 
 apeiron::opengl::Quad::Quad(float width, float height)
 {
+  set(width, height);
+}
+
+
+apeiron::opengl::Quad::Quad(float width, float height, glm::vec4 color)
+{
+  set(width, height, color);
+}
+
+
+void apeiron::opengl::Quad::set(float width, float height)
+{
+  delete_buffers();
+
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   glBindVertexArray(vao_);
@@ -73,8 +87,10 @@ apeiron::opengl::Quad::Quad(float width, float height)
 }
 
 
-apeiron::opengl::Quad::Quad(float width, float height, glm::vec4 color)
+void apeiron::opengl::Quad::set(float width, float height, glm::vec4 color)
 {
+  delete_buffers();
+
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   glBindVertexArray(vao_);

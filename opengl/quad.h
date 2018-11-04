@@ -14,6 +14,8 @@ class Quad final : public Shape
 public:
   Quad(float width, float height);
   Quad(float width, float height, glm::vec4 color);
+  void set(float width, float height);
+  void set(float width, float height, glm::vec4 color);
   void render() const override;
 };
 
