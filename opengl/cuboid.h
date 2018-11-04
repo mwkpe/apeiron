@@ -12,8 +12,8 @@ namespace apeiron::opengl {
 class Cuboid final : public Shape
 {
 public:
-  explicit Cuboid(glm::vec3 size);
-  Cuboid(glm::vec3 size, glm::vec4 color);
+  explicit Cuboid(glm::vec3 size, glm::vec3 position = glm::vec3{0.0f});
+  Cuboid(glm::vec3 size, glm::vec4 color, glm::vec3 position = glm::vec3{0.0f});
   void render() const override;
 };
 

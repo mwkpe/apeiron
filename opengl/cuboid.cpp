@@ -9,13 +9,13 @@
 #include "engine/primitive.h"
 
 
-apeiron::opengl::Cuboid::Cuboid(glm::vec3 size)
+apeiron::opengl::Cuboid::Cuboid(glm::vec3 size, glm::vec3 position)
 {
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   glBindVertexArray(vao_);
 
-  const auto vertices = engine::primitive::cube_vertices_normal_texcoords(size);
+  const auto vertices = engine::primitive::cube_vertices_normal_texcoords(size, position);
   vertex_count_ = vertices.size();
   const int stride = sizeof(engine::Vertex_normal_texcoords);
 
@@ -37,13 +37,13 @@ apeiron::opengl::Cuboid::Cuboid(glm::vec3 size)
 }
 
 
-apeiron::opengl::Cuboid::Cuboid(glm::vec3 size, glm::vec4 color)
+apeiron::opengl::Cuboid::Cuboid(glm::vec3 size, glm::vec4 color, glm::vec3 position)
 {
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   glBindVertexArray(vao_);
 
-  const auto vertices = engine::primitive::cube_vertices(size, color);
+  const auto vertices = engine::primitive::cube_vertices(size, color, position);
   vertex_count_ = vertices.size();
   const int stride = sizeof(engine::Vertex);
 
