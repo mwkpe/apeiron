@@ -9,7 +9,7 @@
 
 void apeiron::opengl::Model::load(std::string_view filename, std::uint32_t flags)
 {
-  namespace mf = engine::model_flags;
+  delete_buffers();
 
   auto&& [vertices, values_per_vertex] = engine::load_model(filename, flags);
   vertex_count_ = vertices.size() / values_per_vertex;
@@ -20,6 +20,7 @@ void apeiron::opengl::Model::load(std::string_view filename, std::uint32_t flags
   glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
   const int stride = values_per_vertex * sizeof(float);
   int offset = 0;
+  namespace mf = engine::model_flags;
   if (flags & mf::vertices) {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
     glEnableVertexAttribArray(0);
