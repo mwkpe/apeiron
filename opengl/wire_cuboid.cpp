@@ -97,6 +97,20 @@ auto build_wireframe_vertices(glm::vec3 size, glm::vec4 color, glm::vec3 positio
 
 apeiron::opengl::Wire_cuboid::Wire_cuboid(glm::vec3 size, glm::vec3 position)
 {
+  set(size, position);
+}
+
+
+apeiron::opengl::Wire_cuboid::Wire_cuboid(glm::vec3 size, glm::vec4 color, glm::vec3 position)
+{
+  set(size, color, position);
+}
+
+
+void apeiron::opengl::Wire_cuboid::set(glm::vec3 size, glm::vec3 position)
+{
+  delete_buffers();
+
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   glGenBuffers(1, &ebo_);
@@ -121,8 +135,10 @@ apeiron::opengl::Wire_cuboid::Wire_cuboid(glm::vec3 size, glm::vec3 position)
 }
 
 
-apeiron::opengl::Wire_cuboid::Wire_cuboid(glm::vec3 size, glm::vec4 color, glm::vec3 position)
+void apeiron::opengl::Wire_cuboid::set(glm::vec3 size, glm::vec4 color, glm::vec3 position)
 {
+  delete_buffers();
+
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   glGenBuffers(1, &ebo_);
