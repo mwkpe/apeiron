@@ -206,19 +206,27 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
           }
         } break;
         case SDL_MOUSEMOTION: {
-          events.push_back(apeiron::engine::Mouse_motion_event{event.motion.x, event.motion.y,
-              event.motion.xrel, event.motion.yrel});
+          if (!menu.has_mouse()) {
+            events.push_back(apeiron::engine::Mouse_motion_event{event.motion.x, event.motion.y,
+                event.motion.xrel, event.motion.yrel});
+          }
         } break;
         case SDL_MOUSEBUTTONUP: {
-          events.push_back(apeiron::engine::Mouse_button_up_event{
-              get_mouse_button(event.button.button), event.button.x, event.button.y});
+          if (!menu.has_mouse()) {
+            events.push_back(apeiron::engine::Mouse_button_up_event{
+                get_mouse_button(event.button.button), event.button.x, event.button.y});
+          }
         } break;
         case SDL_MOUSEBUTTONDOWN: {
-          events.push_back(apeiron::engine::Mouse_button_down_event{
-              get_mouse_button(event.button.button), event.button.x, event.button.y});
+          if (!menu.has_mouse()) {
+              events.push_back(apeiron::engine::Mouse_button_down_event{
+                  get_mouse_button(event.button.button), event.button.x, event.button.y});
+          }
         } break;
         case SDL_MOUSEWHEEL: {
-          events.push_back(apeiron::engine::Mouse_wheel_event{event.wheel.x, event.wheel.y});
+          if (!menu.has_mouse()) {
+            events.push_back(apeiron::engine::Mouse_wheel_event{event.wheel.x, event.wheel.y});
+          }
         } break;
         default:;
       }

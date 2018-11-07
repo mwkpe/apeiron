@@ -131,4 +131,6 @@ void apeiron::example::Menu::build(example::Options* options, float time)
       options->quit = true;
     ImGui::End();
   }
+
+  has_mouse_ = io.WantCaptureMouse;
 }
