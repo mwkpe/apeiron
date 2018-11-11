@@ -18,12 +18,24 @@
 namespace {
 
 
+enum class Operating_system { Unknown, Linux, Windows };
+#ifdef _WIN32
+  constexpr Operating_system operating_system = Operating_system::Windows;
+#elif __linux__
+  constexpr Operating_system operating_system = Operating_system::Linux;
+#else
+  constexpr Operating_system operating_system = Operating_system::Unknown;
+#endif
+
+
 void disable_dpi_scaling()
 {
-  #ifdef _WIN32
-    // Silence gcc >= 8 warning about the winapi function cast
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Wcast-function-type"
+  // Silence gcc >= 8 warning about the winapi function cast
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wcast-function-type"
+
+  if constexpr (operating_system == Operating_system::Windows) {
+    std::cout << "lol windows" << std::endl;
     enum { PROCESS_DPI_UNAWARE, PROCESS_SYSTEM_DPI_AWARE, PROCESS_PER_MONITOR_DPI_AWARE };
     auto free_module = [](HMODULE module){ FreeLibrary(module); };
     using mp = std::unique_ptr<std::remove_pointer<HMODULE>::type, decltype(free_module)>;
@@ -35,8 +47,9 @@ void disable_dpi_scaling()
         }
       }
     }
-    #pragma GCC diagnostic pop
-  #endif
+  }
+
+  #pragma GCC diagnostic pop
 }
 
 
