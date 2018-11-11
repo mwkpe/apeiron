@@ -35,7 +35,6 @@ void disable_dpi_scaling()
   #pragma GCC diagnostic ignored "-Wcast-function-type"
 
   if constexpr (operating_system == Operating_system::Windows) {
-    std::cout << "lol windows" << std::endl;
     enum { PROCESS_DPI_UNAWARE, PROCESS_SYSTEM_DPI_AWARE, PROCESS_PER_MONITOR_DPI_AWARE };
     auto free_module = [](HMODULE module){ FreeLibrary(module); };
     using mp = std::unique_ptr<std::remove_pointer<HMODULE>::type, decltype(free_module)>;
