@@ -4,7 +4,6 @@
 
 #include <vector>
 #include <glm/glm.hpp>
-#include "engine/vertex.h"
 
 
 namespace apeiron::engine::primitive {

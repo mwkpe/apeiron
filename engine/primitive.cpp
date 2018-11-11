@@ -2,6 +2,7 @@
 
 
 #include <type_traits>
+#include "engine/vertex.h"
 
 
 template<typename T> std::vector<T> apeiron::engine::primitive::cube_vertices(glm::vec3 size,
@@ -379,7 +380,7 @@ template<typename T> std::vector<T> apeiron::engine::primitive::cube_vertices(gl
   }
 }
 
-/*
+
 namespace apeiron::engine::primitive {
 
 
@@ -401,4 +402,4 @@ template auto cube_vertices<Vertex_normal_color>(glm::vec3 size, glm::vec4 color
     glm::vec3 position) -> std::vector<Vertex_normal_color>;
 
 
-}  // apeiron::engine::primitive*/
+}  // apeiron::engine::primitive
