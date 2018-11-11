@@ -2,240 +2,64 @@
 
 
 #include <cstddef>
+#include <type_traits>
 #include "GL/glew.h"
+#include "engine/vertex.h"
 
 
-apeiron::opengl::Triangles::Triangles(const std::vector<engine::Vertex>& vertices)
+template<typename T> apeiron::opengl::Triangles::Triangles(const std::vector<T>& vertices)
 {
   set(vertices);
 }
 
 
-apeiron::opengl::Triangles::Triangles(const std::vector<engine::Vertex_simple>& vertices)
+template<typename T> void apeiron::opengl::Triangles::set(const std::vector<T>& vertices)
 {
-  set(vertices);
-}
+  using namespace apeiron::engine;
 
-
-apeiron::opengl::Triangles::Triangles(const std::vector<engine::Vertex_normal>& vertices)
-{
-  set(vertices);
-}
-
-
-apeiron::opengl::Triangles::Triangles(const std::vector<engine::Vertex_color>& vertices)
-{
-  set(vertices);
-}
-
-
-apeiron::opengl::Triangles::Triangles(const std::vector<engine::Vertex_texcoords>& vertices)
-{
-  set(vertices);
-}
-
-
-apeiron::opengl::Triangles::Triangles(const std::vector<engine::Vertex_normal_color>& vertices)
-{
-  set(vertices);
-}
-
-
-apeiron::opengl::Triangles::Triangles(const std::vector<engine::Vertex_normal_texcoords>& vertices)
-{
-  set(vertices);
-}
-
-
-void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex>& vertices)
-{
   delete_buffers();
-
-  vertex_count_ = vertices.size();
-
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   glBindVertexArray(vao_);
 
-  const int stride = sizeof(engine::Vertex);
+  vertex_count_ = vertices.size();
+  const int stride = sizeof(T);
 
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex),
+  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(T),
       vertices.data(), GL_STATIC_DRAW);
 
   // Position
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(0));
   glEnableVertexAttribArray(0);
+
   // Normal
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex, normal)));
-  glEnableVertexAttribArray(1);
+  if constexpr (std::is_same<T, Vertex>::value ||
+      std::is_same<T, Vertex_normal>::value ||
+      std::is_same<T, Vertex_normal_color>::value ||
+      std::is_same<T, Vertex_normal_texcoords>::value) {
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride,
+        reinterpret_cast<void*>(offsetof(T, normal)));
+    glEnableVertexAttribArray(1);
+  }
+
   // Texture coordinates
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex, texcoords)));
-  glEnableVertexAttribArray(2);
+  if constexpr (std::is_same<T, Vertex>::value ||
+      std::is_same<T, Vertex_texcoords>::value ||
+      std::is_same<T, Vertex_normal_texcoords>::value) {
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
+        reinterpret_cast<void*>(offsetof(T, texcoords)));
+    glEnableVertexAttribArray(2);
+  }
+
   // Color
-  glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex, color)));
-  glEnableVertexAttribArray(3);
-}
-
-
-void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex_simple>& vertices)
-{
-  delete_buffers();
-
-  vertex_count_ = vertices.size();
-
-  glGenVertexArrays(1, &vao_);
-  glGenBuffers(1, &vbo_);
-  glBindVertexArray(vao_);
-
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_simple),
-      vertices.data(), GL_STATIC_DRAW);
-
-  // Position
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void*>(0));
-  glEnableVertexAttribArray(0);
-}
-
-
-void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex_normal>& vertices)
-{
-  delete_buffers();
-
-  vertex_count_ = vertices.size();
-
-  glGenVertexArrays(1, &vao_);
-  glGenBuffers(1, &vbo_);
-  glBindVertexArray(vao_);
-
-  const int stride = sizeof(engine::Vertex_normal);
-
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_normal),
-      vertices.data(), GL_STATIC_DRAW);
-
-  // Position
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(0));
-  glEnableVertexAttribArray(0);
-  // Normal
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex_normal, normal)));
-  glEnableVertexAttribArray(1);
-}
-
-
-void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex_color>& vertices)
-{
-  delete_buffers();
-
-  vertex_count_ = vertices.size();
-
-  glGenVertexArrays(1, &vao_);
-  glGenBuffers(1, &vbo_);
-  glBindVertexArray(vao_);
-
-  const int stride = sizeof(engine::Vertex_color);
-
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_color),
-      vertices.data(), GL_STATIC_DRAW);
-
-  // Position
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(0));
-  glEnableVertexAttribArray(0);
-  // Color
-  glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex_color, color)));
-  glEnableVertexAttribArray(3);
-}
-
-
-void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex_texcoords>& vertices)
-{
-  delete_buffers();
-
-  vertex_count_ = vertices.size();
-
-  glGenVertexArrays(1, &vao_);
-  glGenBuffers(1, &vbo_);
-  glBindVertexArray(vao_);
-
-  const int stride = sizeof(engine::Vertex_texcoords);
-
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_texcoords),
-      vertices.data(), GL_STATIC_DRAW);
-
-  // Position
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(0));
-  glEnableVertexAttribArray(0);
-  // Texture coordinates
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex_texcoords, texcoords)));
-  glEnableVertexAttribArray(2);
-}
-
-
-void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex_normal_color>& vertices)
-{
-  delete_buffers();
-
-  vertex_count_ = vertices.size();
-
-  glGenVertexArrays(1, &vao_);
-  glGenBuffers(1, &vbo_);
-  glBindVertexArray(vao_);
-
-  const int stride = sizeof(engine::Vertex_normal_color);
-
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_normal_color),
-      vertices.data(), GL_STATIC_DRAW);
-
-  // Position
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(0));
-  glEnableVertexAttribArray(0);
-  // Normal
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex_normal_color, normal)));
-  glEnableVertexAttribArray(1);
-  // Color
-  glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex_normal_color, color)));
-  glEnableVertexAttribArray(3);
-}
-
-
-void apeiron::opengl::Triangles::set(const std::vector<engine::Vertex_normal_texcoords>& vertices)
-{
-  delete_buffers();
-
-  vertex_count_ = vertices.size();
-
-  glGenVertexArrays(1, &vao_);
-  glGenBuffers(1, &vbo_);
-  glBindVertexArray(vao_);
-
-  const int stride = sizeof(engine::Vertex_normal_texcoords);
-
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_normal_texcoords),
-      vertices.data(), GL_STATIC_DRAW);
-
-  // Position
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(0));
-  glEnableVertexAttribArray(0);
-  // Normal
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex_normal_texcoords, normal)));
-  glEnableVertexAttribArray(1);
-  // Texture coordinates
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex_normal_texcoords, texcoords)));
-  glEnableVertexAttribArray(2);
+  if constexpr (std::is_same<T, Vertex>::value ||
+      std::is_same<T, Vertex_color>::value ||
+      std::is_same<T, Vertex_normal_color>::value) {
+    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, stride,
+        reinterpret_cast<void*>(offsetof(T, color)));
+    glEnableVertexAttribArray(3);
+  }
 }
 
 
@@ -251,3 +75,30 @@ void apeiron::opengl::Triangles::render(std::uint32_t start, std::uint32_t count
   glBindVertexArray(vao_);
   glDrawArrays(GL_TRIANGLES, start, count);
 }
+
+
+namespace apeiron::opengl {
+
+
+using namespace apeiron::engine;
+
+
+template Triangles::Triangles(const std::vector<Vertex>& vertices);
+template Triangles::Triangles(const std::vector<Vertex_simple>& vertices);
+template Triangles::Triangles(const std::vector<Vertex_normal>& vertices);
+template Triangles::Triangles(const std::vector<Vertex_color>& vertices);
+template Triangles::Triangles(const std::vector<Vertex_texcoords>& vertices);
+template Triangles::Triangles(const std::vector<Vertex_normal_color>& vertices);
+template Triangles::Triangles(const std::vector<Vertex_normal_texcoords>& vertices);
+
+
+template void Triangles::set(const std::vector<Vertex>& vertices);
+template void Triangles::set(const std::vector<Vertex_simple>& vertices);
+template void Triangles::set(const std::vector<Vertex_normal>& vertices);
+template void Triangles::set(const std::vector<Vertex_color>& vertices);
+template void Triangles::set(const std::vector<Vertex_texcoords>& vertices);
+template void Triangles::set(const std::vector<Vertex_normal_color>& vertices);
+template void Triangles::set(const std::vector<Vertex_normal_texcoords>& vertices);
+
+
+}  // apeiron::opengl

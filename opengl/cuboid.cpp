@@ -23,18 +23,19 @@ apeiron::opengl::Cuboid::Cuboid(glm::vec3 size, glm::vec4 color, glm::vec3 posit
 
 void apeiron::opengl::Cuboid::set(glm::vec3 size, glm::vec3 position)
 {
-  delete_buffers();
+  using namespace apeiron::engine;
 
+  delete_buffers();
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   glBindVertexArray(vao_);
 
-  const auto vertices = engine::primitive::cube_vertices_normal_texcoords(size, position);
+  const auto vertices = primitive::cube_vertices<Vertex_normal_texcoords>(size, position);
   vertex_count_ = vertices.size();
-  const int stride = sizeof(engine::Vertex_normal_texcoords);
+  const int stride = sizeof(Vertex_normal_texcoords);
 
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_normal_texcoords),
+  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex_normal_texcoords),
       vertices.data(), GL_STATIC_DRAW);
 
   // Position
@@ -42,29 +43,30 @@ void apeiron::opengl::Cuboid::set(glm::vec3 size, glm::vec3 position)
   glEnableVertexAttribArray(0);
   // Normal
   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex_normal_texcoords, normal)));
+      reinterpret_cast<void*>(offsetof(Vertex_normal_texcoords, normal)));
   glEnableVertexAttribArray(1);
   // Texture coordinates
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex_normal_texcoords, texcoords)));
+      reinterpret_cast<void*>(offsetof(Vertex_normal_texcoords, texcoords)));
   glEnableVertexAttribArray(2);
 }
 
 
 void apeiron::opengl::Cuboid::set(glm::vec3 size, glm::vec4 color, glm::vec3 position)
 {
-  delete_buffers();
+  using namespace apeiron::engine;
 
+  delete_buffers();
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   glBindVertexArray(vao_);
 
-  const auto vertices = engine::primitive::cube_vertices(size, color, position);
+  const auto vertices = primitive::cube_vertices<Vertex>(size, color, position);
   vertex_count_ = vertices.size();
-  const int stride = sizeof(engine::Vertex);
+  const int stride = sizeof(Vertex);
 
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex),
+  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex),
       vertices.data(), GL_STATIC_DRAW);
 
   // Position
@@ -72,15 +74,15 @@ void apeiron::opengl::Cuboid::set(glm::vec3 size, glm::vec4 color, glm::vec3 pos
   glEnableVertexAttribArray(0);
   // Normal
   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex, normal)));
+      reinterpret_cast<void*>(offsetof(Vertex, normal)));
   glEnableVertexAttribArray(1);
   // Texture coordinates
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex, texcoords)));
+      reinterpret_cast<void*>(offsetof(Vertex, texcoords)));
   glEnableVertexAttribArray(2);
   // Color
   glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex, color)));
+      reinterpret_cast<void*>(offsetof(Vertex, color)));
   glEnableVertexAttribArray(3);
 }
 
