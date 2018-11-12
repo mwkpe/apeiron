@@ -4,7 +4,6 @@
 #include <cstddef>
 #include <type_traits>
 #include "GL/glew.h"
-#include "engine/vertex.h"
 
 
 template<typename T> apeiron::opengl::Triangles::Triangles(const std::vector<T>& vertices)

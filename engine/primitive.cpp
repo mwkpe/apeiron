@@ -2,7 +2,6 @@
 
 
 #include <type_traits>
-#include "engine/vertex.h"
 
 
 template<typename T> std::vector<T> apeiron::engine::primitive::cube_vertices(glm::vec3 size,
