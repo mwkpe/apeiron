@@ -4,7 +4,6 @@
 #include <random>
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
-#include "engine/model_flags.h"
 #include "engine/collision.h"
 
 
@@ -36,8 +35,7 @@ void apeiron::example::World::init()
       opengl::Texture_filter::Linear, options_->af_samples);
 
   {
-    namespace mf = engine::model_flags;
-    bulb_.load("assets/private/bulb.obj", mf::vertices);
+    bulb_.load("assets/private/bulb.obj");
     teapot_.load_model();
   }
 

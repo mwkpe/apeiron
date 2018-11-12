@@ -28,7 +28,6 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/engine/image_loader.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/model_loader.cpp
     ${CMAKE_CURRENT_LIST_DIR}/engine/model_loader.h
-    ${CMAKE_CURRENT_LIST_DIR}/engine/model_flags.h
     ${CMAKE_CURRENT_LIST_DIR}/opengl/renderer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/opengl/renderer.h
     ${CMAKE_CURRENT_LIST_DIR}/opengl/shader.cpp

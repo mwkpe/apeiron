@@ -2,16 +2,15 @@
 #define APEIRON_ENGINE_MODEL_LOADER_H
 
 
-#include <cstdint>
 #include <string_view>
 #include <vector>
-#include <tuple>
+#include "engine/vertex.h"
 
 
 namespace apeiron::engine {
 
 
-std::tuple<std::vector<float>, int> load_model(std::string_view filename, std::uint32_t flags);
+template<typename T = Vertex> std::vector<T> load_model(std::string_view filename);
 
 
 }  // namespace apeiron::engine
