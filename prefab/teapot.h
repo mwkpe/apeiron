@@ -12,7 +12,7 @@ namespace apeiron::prefab {
 class Teapot final : public engine::Entity
 {
 public:
-  void load_model() { model_.load("assets/utah_teapot.obj"); }
+  void load_model() { model_.load<engine::Vertex_normal>("assets/utah_teapot.obj"); }
   void render() const override { model_.render();  }
 
 private:
