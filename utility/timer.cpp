@@ -61,5 +61,5 @@ apeiron::utility::Scope_timer::~Scope_timer()
 {
   const auto duration = std::chrono::high_resolution_clock::now() - start_;
   const auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
-  std::cout << name_ << ": " << ms << std::endl;
+  std::cout << name_ << ": " << ms << "ms" << std::endl;
 }
