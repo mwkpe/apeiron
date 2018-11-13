@@ -4,10 +4,10 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tiny_obj_loader.h"
 #include "engine/error.h"
+#include "utility/timer.h"
 
 
 namespace {
-
 
 
 apeiron::engine::Vertex get_vertex(const tinyobj::attrib_t& attrib, const tinyobj::index_t& index)
@@ -49,6 +49,8 @@ apeiron::engine::Vertex get_vertex(const tinyobj::attrib_t& attrib, const tinyob
 
 auto apeiron::engine::load_model(std::string_view filename) -> std::vector<std::vector<Vertex>>
 {
+  utility::Scope_timer timer{std::string{filename}};
+
   tinyobj::attrib_t attrib;
   std::vector<tinyobj::shape_t> shapes;
   std::vector<tinyobj::material_t> materials;
