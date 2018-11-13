@@ -12,6 +12,8 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/external/imgui/imgui_impl_sdl.cpp
     ${CMAKE_CURRENT_LIST_DIR}/external/imgui/imgui_impl_sdl.h
     ${CMAKE_CURRENT_LIST_DIR}/utility/linear_range.h
+    ${CMAKE_CURRENT_LIST_DIR}/utility/timer.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/utility/timer.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/error.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/vertex.h
     ${CMAKE_CURRENT_LIST_DIR}/engine/primitive.cpp
@@ -52,6 +54,8 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/opengl/wire_cuboid.h
     ${CMAKE_CURRENT_LIST_DIR}/opengl/cylinder.cpp
     ${CMAKE_CURRENT_LIST_DIR}/opengl/cylinder.h
+    ${CMAKE_CURRENT_LIST_DIR}/opengl/mesh.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/opengl/mesh.h
     ${CMAKE_CURRENT_LIST_DIR}/opengl/model.cpp
     ${CMAKE_CURRENT_LIST_DIR}/opengl/model.h
     ${CMAKE_CURRENT_LIST_DIR}/opengl/gui.cpp
