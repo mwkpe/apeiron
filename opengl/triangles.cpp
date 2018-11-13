@@ -79,7 +79,6 @@ void apeiron::opengl::Triangles::render(std::uint32_t start, std::uint32_t count
 using namespace apeiron::engine;
 using namespace apeiron::opengl;
 
-
 template Triangles::Triangles(const std::vector<Vertex>& vertices);
 template Triangles::Triangles(const std::vector<Vertex_simple>& vertices);
 template Triangles::Triangles(const std::vector<Vertex_normal>& vertices);
@@ -87,7 +86,6 @@ template Triangles::Triangles(const std::vector<Vertex_color>& vertices);
 template Triangles::Triangles(const std::vector<Vertex_texcoords>& vertices);
 template Triangles::Triangles(const std::vector<Vertex_normal_color>& vertices);
 template Triangles::Triangles(const std::vector<Vertex_normal_texcoords>& vertices);
-
 
 template void Triangles::set(const std::vector<Vertex>& vertices);
 template void Triangles::set(const std::vector<Vertex_simple>& vertices);

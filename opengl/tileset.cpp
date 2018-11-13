@@ -25,20 +25,20 @@ auto build_vertices(std::uint32_t columns, std::uint32_t rows, std::uint32_t til
     const float s = (i % columns) * w;
     const float t = 1.0f - h - (i / columns) * h;
     if (flip_y) {  // E.g. when using top left origin
-      vertices.push_back({ x,  y, 0.0f, s+w, t});
-      vertices.push_back({ x, -y, 0.0f, s+w, t+h});
-      vertices.push_back({-x,  y, 0.0f, s,   t});
-      vertices.push_back({-x, -y, 0.0f, s,   t+h});
-      vertices.push_back({-x,  y, 0.0f, s,   t});
-      vertices.push_back({ x, -y, 0.0f, s+w, t+h});
+      vertices.push_back({{ x,  y, 0.0f}, {s+w, t}});
+      vertices.push_back({{ x, -y, 0.0f}, {s+w, t+h}});
+      vertices.push_back({{-x,  y, 0.0f}, {s,   t}});
+      vertices.push_back({{-x, -y, 0.0f}, {s,   t+h}});
+      vertices.push_back({{-x,  y, 0.0f}, {s,   t}});
+      vertices.push_back({{ x, -y, 0.0f}, {s+w, t+h}});
     }
     else {
-      vertices.push_back({-x, -y, 0.0f, s,   t});
-      vertices.push_back({ x, -y, 0.0f, s+w, t});
-      vertices.push_back({-x,  y, 0.0f, s,   t+h});
-      vertices.push_back({ x, -y, 0.0f, s+w, t});
-      vertices.push_back({ x,  y, 0.0f, s+w, t+h});
-      vertices.push_back({-x,  y, 0.0f, s,   t+h});
+      vertices.push_back({{-x, -y, 0.0f}, {s,   t}});
+      vertices.push_back({{ x, -y, 0.0f}, {s+w, t}});
+      vertices.push_back({{-x,  y, 0.0f}, {s,   t+h}});
+      vertices.push_back({{ x, -y, 0.0f}, {s+w, t}});
+      vertices.push_back({{ x,  y, 0.0f}, {s+w, t+h}});
+      vertices.push_back({{-x,  y, 0.0f}, {s,   t+h}});
     }
   }
 

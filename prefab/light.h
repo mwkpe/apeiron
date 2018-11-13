@@ -18,7 +18,7 @@ public:
   void switch_on() { on_ = true; }
   void switch_off() { on_ = false; }
   bool is_on() { return on_; }
-  void render() const override { if (model_) model_->render(); }
+  void render() const override { if (model_) for (const auto& mesh : *model_) mesh.render(); }
 
 private:
   bool on_ = false;

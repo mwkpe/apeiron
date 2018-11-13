@@ -17,12 +17,12 @@ std::vector<apeiron::engine::Vertex_texcoords> build_vertices(float w, float h)
 
   return {
     {
-      {-w, -h, 0.0f, 0.0f, 0.0f},
-      { w, -h, 0.0f, 1.0f, 0.0f},
-      {-w,  h, 0.0f, 0.0f, 1.0f},
-      { w, -h, 0.0f, 1.0f, 0.0f},
-      { w,  h, 0.0f, 1.0f, 1.0f},
-      {-w,  h, 0.0f, 0.0f, 1.0f}
+      {{-w, -h, 0.0f}, {0.0f, 0.0f}},
+      {{ w, -h, 0.0f}, {1.0f, 0.0f}},
+      {{-w,  h, 0.0f}, {0.0f, 1.0f}},
+      {{ w, -h, 0.0f}, {1.0f, 0.0f}},
+      {{ w,  h, 0.0f}, {1.0f, 1.0f}},
+      {{-w,  h, 0.0f}, {0.0f, 1.0f}}
     }
   };
 }
@@ -35,12 +35,12 @@ std::vector<apeiron::engine::Vertex_color> build_vertices(float w, float h, glm:
 
   return {
     {
-      {-w, -h, 0.0f, color.r, color.g, color.b, color.a},
-      { w, -h, 0.0f, color.r, color.g, color.b, color.a},
-      {-w,  h, 0.0f, color.r, color.g, color.b, color.a},
-      { w, -h, 0.0f, color.r, color.g, color.b, color.a},
-      { w,  h, 0.0f, color.r, color.g, color.b, color.a},
-      {-w,  h, 0.0f, color.r, color.g, color.b, color.a}
+      {{-w, -h, 0.0f}, color},
+      {{ w, -h, 0.0f}, color},
+      {{-w,  h, 0.0f}, color},
+      {{ w, -h, 0.0f}, color},
+      {{ w,  h, 0.0f}, color},
+      {{-w,  h, 0.0f}, color}
     }
   };
 }

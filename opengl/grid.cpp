@@ -27,13 +27,13 @@ auto build_vertices(glm::vec2 size, std::size_t x_steps, std::size_t y_steps, gl
   const float height = 0.0f;
 
   for (float x : Linear_range{x_first, x_last, x_steps + 1}) {
-    vertices.push_back(Vertex_color{x, height, y_first, color.r, color.g, color.b, color.a});
-    vertices.push_back(Vertex_color{x, height, y_last, color.r, color.g, color.b, color.a});
+    vertices.push_back({{x, height, y_first}, color});
+    vertices.push_back({{x, height, y_last}, color});
   }
 
   for (float y : Linear_range{y_first, y_last, y_steps + 1}) {
-    vertices.push_back(Vertex_color{x_first, height, y, color.r, color.g, color.b, color.a});
-    vertices.push_back(Vertex_color{x_last, height, y, color.r, color.g, color.b, color.a});
+    vertices.push_back({{x_first, height, y}, color});
+    vertices.push_back({{x_last, height, y}, color});
   }
 
   return vertices;

@@ -26,15 +26,15 @@ auto build_wireframe_vertices(glm::vec3 size, glm::vec3 position)
     // Vertices
     {
       // Front
-      {-w + x, -h + y, l + z},
-      { w + x, -h + y, l + z},
-      { w + x,  h + y, l + z},
-      {-w + x,  h + y, l + z},
+      {{-w + x, -h + y, l + z}},
+      {{ w + x, -h + y, l + z}},
+      {{ w + x,  h + y, l + z}},
+      {{-w + x,  h + y, l + z}},
       // Back
-      {-w + x, -h + y, -l + z},
-      { w + x, -h + y, -l + z},
-      { w + x,  h + y, -l + z},
-      {-w + x,  h + y, -l + z}
+      {{-w + x, -h + y, -l + z}},
+      {{ w + x, -h + y, -l + z}},
+      {{ w + x,  h + y, -l + z}},
+      {{-w + x,  h + y, -l + z}}
     },
     // Elements
     {
@@ -60,24 +60,19 @@ auto build_wireframe_vertices(glm::vec3 size, glm::vec4 color, glm::vec3 positio
   const float h = size.y * 0.5f;
   const float l = size.z * 0.5f;
 
-  const float r = color.r;
-  const float g = color.g;
-  const float b = color.b;
-  const float a = color.a;
-
   return {
     // Vertices
     {
       // Front
-      {-w + x, -h + y, l + z, r, g, b, a},
-      { w + x, -h + y, l + z, r, g, b, a},
-      { w + x,  h + y, l + z, r, g, b, a},
-      {-w + x,  h + y, l + z, r, g, b, a},
+      {{-w + x, -h + y, l + z}, color},
+      {{ w + x, -h + y, l + z}, color},
+      {{ w + x,  h + y, l + z}, color},
+      {{-w + x,  h + y, l + z}, color},
       // Back
-      {-w + x, -h + y, -l + z, r, g, b, a},
-      { w + x, -h + y, -l + z, r, g, b, a},
-      { w + x,  h + y, -l + z, r, g, b, a},
-      {-w + x,  h + y, -l + z, r, g, b, a}
+      {{-w + x, -h + y, -l + z}, color},
+      {{ w + x, -h + y, -l + z}, color},
+      {{ w + x,  h + y, -l + z}, color},
+      {{-w + x,  h + y, -l + z}, color}
     },
     // Elements
     {
