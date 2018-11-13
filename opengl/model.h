@@ -2,20 +2,23 @@
 #define APEIRON_OPENGL_MODEL_H
 
 
-#include <cstdint>
 #include <string_view>
-#include "engine/vertex.h"
-#include "opengl/shape.h"
+#include <vector>
+#include "opengl/mesh.h"
 
 
 namespace apeiron::opengl {
 
 
-class Model final : public Shape
+class Model
 {
 public:
-  template<typename T = apeiron::engine::Vertex> void load(std::string_view filename);
-  void render() const override;
+  std::vector<Mesh>::const_iterator begin() const { return std::cbegin(meshes_); }
+  std::vector<Mesh>::const_iterator end() const { return std::cend(meshes_); }
+  void load(std::string_view filename);
+
+private:
+  std::vector<Mesh> meshes_;
 };
 
 

@@ -10,7 +10,7 @@
 namespace apeiron::engine {
 
 
-template<typename T = Vertex> std::vector<T> load_model(std::string_view filename);
+std::vector<std::vector<Vertex>> load_model(std::string_view filename);
 
 
 }  // namespace apeiron::engine
