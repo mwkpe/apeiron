@@ -43,13 +43,16 @@ void apeiron::opengl::Texture::load(std::string_view filename,
     Wrap_mode wrap_s,
     Wrap_mode wrap_t)
 {
+  if (id_ > 0) {
+    glDeleteTextures(1, &id_);
+    id_ = 0;
+  }
+
   auto&& [pixel, width, height, channel_count] = engine::load_image(filename);
 
   if (channel_count != 3 && channel_count != 4)
     throw engine::Error{"Image format not supported"};
 
-  if (id_ > 0)
-    glDeleteTextures(1, &id_);
   glGenTextures(1, &id_);
   glBindTexture(GL_TEXTURE_2D, id_);
 
