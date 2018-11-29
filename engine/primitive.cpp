@@ -4,7 +4,7 @@
 #include <type_traits>
 
 
-template<typename T = apeiron::engine::Vertex>
+template<typename T = apeiron::engine::Vertex_normal_texcoords>
 std::vector<T> apeiron::engine::primitive::cube_vertices(glm::vec3 size, glm::vec3 position)
 {
   const float x = position.x;
