@@ -85,9 +85,15 @@ void apeiron::opengl::Shader::set_uniform(const char* name, bool value) const
 }
 
 
-void apeiron::opengl::Shader::set_uniform(const char* name, int value) const
+void apeiron::opengl::Shader::set_uniform(const char* name, std::int32_t value) const
 {
   glUniform1i(glGetUniformLocation(id_, name), value);
+}
+
+
+void apeiron::opengl::Shader::set_uniform(const char* name, float value) const
+{
+  glUniform1f(glGetUniformLocation(id_, name), value);
 }
 
 

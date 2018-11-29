@@ -16,7 +16,8 @@ public:
   void load(std::string_view vertex_shader_file, std::string_view fragment_shader_file);
   void use() const;
   void set_uniform(const char* name, bool value) const;
-  void set_uniform(const char* name, int value) const;
+  void set_uniform(const char* name, std::int32_t value) const;
+  void set_uniform(const char* name, float value) const;
   void set_uniform(const char* name, const glm::vec2& vec) const;
   void set_uniform(const char* name, const glm::vec3& vec) const;
   void set_uniform(const char* name, const glm::vec4& vec) const;
