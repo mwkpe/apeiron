@@ -6,6 +6,7 @@
 
 void apeiron::opengl::Model::load(std::string_view filename)
 {
-  for (auto&& mesh : engine::load_model(filename))
-    meshes_.emplace_back(std::move(mesh));
+  auto model_data = engine::load_model(filename);
+  for (const auto& mesh_data : model_data.meshes)
+    meshes_.emplace_back(mesh_data.vertices);
 }
