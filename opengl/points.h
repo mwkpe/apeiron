@@ -3,7 +3,6 @@
 
 
 #include <vector>
-#include <glm/glm.hpp>
 #include "engine/vertex.h"
 #include "opengl/shape.h"
 
