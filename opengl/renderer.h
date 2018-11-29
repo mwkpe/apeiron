@@ -44,12 +44,11 @@ public:
       const glm::vec4& color);
   void render_bounds(const engine::Entity& entity, const glm::vec4& color);
 
+  glm::mat4 view_projection() { return view_projection_; }
   glm::mat4 inverse_view_projection() { return glm::inverse(view_projection_); }
 
 private:
-  Shader world_shader_;
-  Shader screen_shader_;
-  Shader* current_shader_ = &world_shader_;
+  Shader shader_;
   glm::mat4 view_;
   glm::mat4 projection_;
   glm::mat4 view_projection_;

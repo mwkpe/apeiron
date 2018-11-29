@@ -22,64 +22,60 @@ void apply_rotation(glm::mat4& model, const glm::vec3& rotation)
 
 void apeiron::opengl::Renderer::init()
 {
-  world_shader_.load("shader/world.vs", "shader/color.fs");
-  screen_shader_.load("shader/screen.vs", "shader/color.fs");
-  use_world_space();
+  shader_.load("shader/vertex.vs", "shader/color.fs");
+  shader_.use();
+  shader_.set_uniform("render_mode", 0);
+  shader_.set_uniform("color_mode", 0xFF);
+  shader_.set_uniform("texture2d", 0);
 }
 
 
 void apeiron::opengl::Renderer::use_world_space()
 {
-  world_shader_.use();
-  world_shader_.set_uniform("texture2d", 0);
-  world_shader_.set_uniform("color_mode", 0xFF);
-  current_shader_ = &world_shader_;
+  shader_.set_uniform("render_mode", 0);
 }
 
 
 void apeiron::opengl::Renderer::use_screen_space()
 {
-  screen_shader_.use();
-  screen_shader_.set_uniform("texture2d", 0);
-  screen_shader_.set_uniform("color_mode", 0xFF);
-  current_shader_ = &screen_shader_;
+  shader_.set_uniform("render_mode", 1);
 }
 
 
 void apeiron::opengl::Renderer::use_texture_shading()
 {
-  current_shader_->set_uniform("color_mode", 0);
+  shader_.set_uniform("color_mode", 0);
 }
 
 
 void apeiron::opengl::Renderer::use_vertex_color_shading()
 {
-  current_shader_->set_uniform("color_mode", 1);
+  shader_.set_uniform("color_mode", 1);
 }
 
 
 void apeiron::opengl::Renderer::use_color_shading()
 {
-  current_shader_->set_uniform("color_mode", 2);
+  shader_.set_uniform("color_mode", 2);
 }
 
 
 void apeiron::opengl::Renderer::set_view(const glm::mat4& view)
 {
-  current_shader_->set_uniform("view", view);
+  shader_.set_uniform("view", view);
 }
 
 
 void apeiron::opengl::Renderer::set_projection(const glm::mat4& projection)
 {
-  current_shader_->set_uniform("projection", projection);
+  shader_.set_uniform("projection", projection);
 }
 
 
 void apeiron::opengl::Renderer::set_view_projection()
 {
   view_projection_ = projection_ * view_;
-  current_shader_->set_uniform("view_projection", view_projection_);
+  shader_.set_uniform("view_projection", view_projection_);
 }
 
 
@@ -90,29 +86,29 @@ void apeiron::opengl::Renderer::set_wireframe(bool wireframe)
   else
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
-
+ 
 
 void apeiron::opengl::Renderer::set_colorize(bool colorize)
 {
-  current_shader_->set_uniform("colorize", colorize);
+  shader_.set_uniform("colorize", colorize);
 }
 
 
 void apeiron::opengl::Renderer::set_lighting(bool lighting)
 {
-  current_shader_->set_uniform("light_mode", lighting ? 1 : 0);
+  shader_.set_uniform("light_mode", lighting ? 1 : 0);
 }
 
 
 void apeiron::opengl::Renderer::set_light_position(const glm::vec3& position)
 {
-  current_shader_->set_uniform("light_position", position);
+  shader_.set_uniform("light_position", position);
 }
 
 
 void apeiron::opengl::Renderer::set_light_color(const glm::vec4& color)
 {
-  current_shader_->set_uniform("light_color", color);
+  shader_.set_uniform("light_color", color);
 }
 
 
@@ -122,7 +118,7 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity)
   model = glm::translate(model, entity.position());
   model = glm::scale(model, entity.scale());
   apply_rotation(model, entity.rotation());
-  current_shader_->set_uniform("model", model);
+  shader_.set_uniform("model", model);
   entity.render();
 }
 
@@ -133,8 +129,8 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity, const glm::
   model = glm::translate(model, entity.position());
   model = glm::scale(model, entity.scale());
   apply_rotation(model, entity.rotation());
-  current_shader_->set_uniform("model", model);
-  current_shader_->set_uniform("color", color);
+  shader_.set_uniform("model", model);
+  shader_.set_uniform("color", color);
   entity.render();
 }
 
@@ -150,7 +146,7 @@ void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::T
     model = glm::translate(model, text.position() + text.center() + glm::vec3{offset, 0.0f, 0.0f});
     model = glm::scale(model, text.scale());
     apply_rotation(model, text.rotation());
-    current_shader_->set_uniform("model", model);
+    shader_.set_uniform("model", model);
     charset.render(c);
     offset += charset.tile_width() * text.text_size() * text.spacing().x;
   }
@@ -162,7 +158,7 @@ void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::T
 {
   use_texture_shading();
   set_colorize(true);
-  current_shader_->set_uniform("color", color);
+  shader_.set_uniform("color", color);
   charset.bind();
 
   float offset = 0.0f;
@@ -171,7 +167,7 @@ void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::T
     model = glm::translate(model, text.position() + text.center() + glm::vec3{offset, 0.0f, 0.0f});
     model = glm::scale(model, text.scale());
     apply_rotation(model, text.rotation());
-    current_shader_->set_uniform("model", model);
+    shader_.set_uniform("model", model);
     charset.render(c);
     offset += charset.tile_width() * text.text_size() * text.spacing().x;
   }
@@ -186,13 +182,13 @@ void apeiron::opengl::Renderer::render_screen(const engine::Text& text,
   use_texture_shading();
   charset.bind();
   set_colorize(true);
-  current_shader_->set_uniform("color", color);
-  current_shader_->set_uniform("scale", glm::vec3{text.text_size(), text.text_size(), 1.0f});
+  shader_.set_uniform("color", color);
+  shader_.set_uniform("scale", glm::vec3{text.text_size(), text.text_size(), 1.0f});
 
   float offset = 0.0f;
   auto pos = text.position();
   for (char c : text) {
-    current_shader_->set_uniform("translation", glm::vec3{pos.x + offset, pos.y, pos.z});
+    shader_.set_uniform("translation", glm::vec3{pos.x + offset, pos.y, pos.z});
     charset.render(c);
     offset += charset.tile_width() * text.text_size() * text.spacing().x;
   }
@@ -206,7 +202,7 @@ void apeiron::opengl::Renderer::render_bounds(const engine::Entity& entity, cons
   model = glm::translate(model, entity.position() + entity.center());
   model = glm::scale(model, entity.scale());
   apply_rotation(model, entity.rotation());
-  current_shader_->set_uniform("model", model);
-  current_shader_->set_uniform("color", color);
+  shader_.set_uniform("model", model);
+  shader_.set_uniform("color", color);
   entity.render_bounds();
 }
