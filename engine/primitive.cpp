@@ -15,7 +15,56 @@ std::vector<T> apeiron::engine::primitive::cube_vertices(glm::vec3 size, glm::ve
   const float h = size.y * 0.5f;
   const float l = size.z * 0.5f;
 
-  if constexpr (std::is_same<T, Vertex_simple>::value) {
+  if constexpr (std::is_same<T, Vertex>::value) {
+    return {
+      {
+        // x, y, z, nx, ny, nz, s, t
+        // Front (xy-plane)
+        {{-w + x, -h + y, l + z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{ w + x, -h + y, l + z}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{ w + x,  h + y, l + z}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{ w + x,  h + y, l + z}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{-w + x,  h + y, l + z}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{-w + x, -h + y, l + z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        // Back (xy-plane)
+        {{ w + x, -h + y, -l + z}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{-w + x, -h + y, -l + z}, {0.0f, 0.0f, -1.0f}, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{-w + x,  h + y, -l + z}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{-w + x,  h + y, -l + z}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{ w + x,  h + y, -l + z}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{ w + x, -h + y, -l + z}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        // Left (yz-plane)
+        {{-w + x, -h + y, -l + z}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{-w + x, -h + y,  l + z}, {-1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{-w + x,  h + y,  l + z}, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{-w + x,  h + y,  l + z}, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{-w + x,  h + y, -l + z}, {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{-w + x, -h + y, -l + z}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        // Right (yz-plane)
+        {{w + x, -h + y,  l + z}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{w + x, -h + y, -l + z}, {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{w + x,  h + y, -l + z}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{w + x,  h + y, -l + z}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{w + x,  h + y,  l + z}, {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{w + x, -h + y,  l + z}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        // Top (xz-plane)
+        {{-w + x, h + y,  l + z}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{ w + x, h + y,  l + z}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{ w + x, h + y, -l + z}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{ w + x, h + y, -l + z}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{-w + x, h + y, -l + z}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{-w + x, h + y,  l + z}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        // Bottom (xz-plane)
+        {{-w + x, -h + y, -l + z}, {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{ w + x, -h + y, -l + z}, {0.0f, -1.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{ w + x, -h + y,  l + z}, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{ w + x, -h + y,  l + z}, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{-w + x, -h + y,  l + z}, {0.0f, -1.0f, 0.0f}, {0.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        {{-w + x, -h + y, -l + z}, {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}}
+      }
+    };
+  }
+  else if constexpr (std::is_same<T, Vertex_simple>::value) {
     return {
       {
         // x, y, z
@@ -384,6 +433,7 @@ std::vector<T> apeiron::engine::primitive::cube_vertices(glm::vec3 size,
 using namespace apeiron::engine;
 using namespace apeiron::engine::primitive;
 
+template std::vector<Vertex> cube_vertices(glm::vec3 size, glm::vec3 position);
 template std::vector<Vertex> cube_vertices(glm::vec3 size, glm::vec4 color, glm::vec3 position);
 template std::vector<Vertex_simple> cube_vertices(glm::vec3 size, glm::vec3 position);
 template std::vector<Vertex_normal> cube_vertices(glm::vec3 size, glm::vec3 position);
