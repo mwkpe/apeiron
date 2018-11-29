@@ -47,7 +47,7 @@ apeiron::engine::Vertex get_vertex(const tinyobj::attrib_t& attrib, const tinyob
 }  // namespace
 
 
-auto apeiron::engine::load_model(std::string_view filename) -> std::vector<std::vector<Vertex>>
+auto apeiron::engine::load_model(std::string_view filename) -> Model_data
 {
   utility::Scope_timer timer{std::string{filename}};
 
@@ -55,26 +55,34 @@ auto apeiron::engine::load_model(std::string_view filename) -> std::vector<std::
   std::vector<tinyobj::shape_t> shapes;
   std::vector<tinyobj::material_t> materials;
   std::string error;
+  std::string warning;
 
-  if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &error, std::string{filename}.c_str(),
-      nullptr, true, true)) {
+  if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warning, &error,
+      std::string{filename}.c_str(), nullptr, true, true)) {
     throw engine::Error{error};
   }
 
-  std::vector<std::vector<Vertex>> meshes;
+  Model_data model_data;
+
+  for (const auto& material : materials) {
+    Material_data material_data;
+    material_data.diffuse_texture_filename = material.diffuse_texname;
+    model_data.materials.push_back(std::move(material_data));
+  }
+
   for (const auto& shape : shapes) {
-    meshes.emplace_back();
-    auto& mesh = meshes.back();
+    Mesh_data mesh_data;
     std::size_t index_offset = 0;
     for (std::size_t f=0; f<shape.mesh.num_face_vertices.size(); ++f) {
       auto fv = shape.mesh.num_face_vertices[f];
       for (std::size_t v=0; v<fv; ++v) {
         tinyobj::index_t index = shape.mesh.indices[index_offset + v];
-        mesh.push_back(get_vertex(attrib, index));
+        mesh_data.vertices.push_back(get_vertex(attrib, index));
       }
       index_offset += fv;
     }
+    model_data.meshes.push_back(std::move(mesh_data));
   }
 
-  return meshes;
+  return model_data;
 }
