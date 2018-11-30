@@ -4,7 +4,9 @@ project(apeiron_example)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra")
 
-include(../CMakeLists.txt)
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
+
+include(apeiron)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
