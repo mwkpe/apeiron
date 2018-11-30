@@ -7,6 +7,7 @@ set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra")
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
 
 include(apeiron)
+include(apeiron-gui-sdl2-opengl3)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -28,7 +29,7 @@ add_executable(apeiron_example
     world.h)
 
 if (WIN32 AND MINGW)
-  target_link_libraries(apeiron_example apeiron -lmingw32 -lSDL2main -lSDL2)
+  target_link_libraries(apeiron_example apeiron apeiron-gui-sdl2-opengl3 -lmingw32 -lSDL2main -lSDL2)
 elseif (UNIX AND NOT APPLE)
-  target_link_libraries(apeiron_example apeiron -lSDL2main -lSDL2)
+  target_link_libraries(apeiron_example apeiron apeiron-gui-sdl2-opengl3 -lSDL2main -lSDL2)
 endif ()

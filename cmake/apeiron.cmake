@@ -2,15 +2,6 @@ cmake_minimum_required(VERSION 3.11)
 project(apeiron CXX)
 
 add_library(apeiron
-    ${CMAKE_CURRENT_LIST_DIR}/../external/imgui/imgui.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../external/imgui/imgui.h
-    ${CMAKE_CURRENT_LIST_DIR}/../external/imgui/imgui_widgets.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../external/imgui/imgui_draw.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../external/imgui/imgui_internal.h
-    ${CMAKE_CURRENT_LIST_DIR}/../external/imgui/imgui_impl_opengl3.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../external/imgui/imgui_impl_opengl3.h
-    ${CMAKE_CURRENT_LIST_DIR}/../external/imgui/imgui_impl_sdl.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../external/imgui/imgui_impl_sdl.h
     ${CMAKE_CURRENT_LIST_DIR}/../utility/linear_range.h
     ${CMAKE_CURRENT_LIST_DIR}/../utility/timer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../utility/timer.h
@@ -58,8 +49,6 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/../opengl/mesh.h
     ${CMAKE_CURRENT_LIST_DIR}/../opengl/model.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../opengl/model.h
-    ${CMAKE_CURRENT_LIST_DIR}/../opengl/gui.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../opengl/gui.h
     ${CMAKE_CURRENT_LIST_DIR}/../prefab/axis.h
     ${CMAKE_CURRENT_LIST_DIR}/../prefab/axes.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../prefab/axes.h
