@@ -41,7 +41,6 @@ void apeiron::example::World::init()
 
   light_.set_position(0.0f, 8.5f, -options_->light_distance);
   light_.set_color(1.0f, 1.0f, 1.0f);
-  light_.set_intersection_radius(0.5f);
   light_.switch_on();
 
   teapot_.set_position(-4.0f, 3.0f, 3.0f);
@@ -230,7 +229,7 @@ void apeiron::example::World::operator()(const engine::Mouse_button_down_event& 
     float norm_x = static_cast<float>(event.x) / options_->window_width * 2.0f - 1.0f;
     float norm_y = -(static_cast<float>(event.y) / options_->window_height * 2.0f - 1.0f);
     auto ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
-    if (intersects(ray, Sphere{light_.position(), light_.intersection_radius()}))
+    if (intersects(ray, light_.collider()))
       light_.toggle();
   }
 }
