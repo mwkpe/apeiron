@@ -17,6 +17,7 @@ public:
   void use() const;
   void set_uniform(const char* name, bool value) const;
   void set_uniform(const char* name, std::int32_t value) const;
+  void set_uniform(const char* name, std::uint32_t value) const;
   void set_uniform(const char* name, float value) const;
   void set_uniform(const char* name, const glm::vec2& vec) const;
   void set_uniform(const char* name, const glm::vec3& vec) const;
