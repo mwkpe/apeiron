@@ -4,8 +4,8 @@
 #include <type_traits>
 
 
-template<typename T = apeiron::engine::Vertex_normal_texcoords>
-std::vector<T> apeiron::engine::primitive::cube_vertices(glm::vec3 size, glm::vec3 position)
+template<typename T> std::vector<T> apeiron::engine::primitive::cube_vertices(glm::vec3 size,
+        glm::vec3 position)
 {
   const float x = position.x;
   const float y = position.y;
@@ -263,8 +263,7 @@ std::vector<T> apeiron::engine::primitive::cube_vertices(glm::vec3 size, glm::ve
 }
 
 
-template<typename T = apeiron::engine::Vertex>
-std::vector<T> apeiron::engine::primitive::cube_vertices(glm::vec3 size,
+template<typename T> std::vector<T> apeiron::engine::primitive::cube_vertices(glm::vec3 size,
     glm::vec4 color, glm::vec3 position)
 {
   const float x = position.x;
@@ -433,13 +432,11 @@ std::vector<T> apeiron::engine::primitive::cube_vertices(glm::vec3 size,
 using namespace apeiron::engine;
 using namespace apeiron::engine::primitive;
 
-template std::vector<Vertex> cube_vertices(glm::vec3 size, glm::vec3 position);
-template std::vector<Vertex> cube_vertices(glm::vec3 size, glm::vec4 color, glm::vec3 position);
-template std::vector<Vertex_simple> cube_vertices(glm::vec3 size, glm::vec3 position);
-template std::vector<Vertex_normal> cube_vertices(glm::vec3 size, glm::vec3 position);
-template std::vector<Vertex_color> cube_vertices(glm::vec3 size, glm::vec4 color,
-    glm::vec3 position);
-template std::vector<Vertex_texcoords> cube_vertices(glm::vec3 size, glm::vec3 position);
-template std::vector<Vertex_normal_color> cube_vertices(glm::vec3 size, glm::vec4 color,
-    glm::vec3 position);
-template std::vector<Vertex_normal_texcoords> cube_vertices(glm::vec3 size, glm::vec3 position);
+template std::vector<Vertex> cube_vertices(glm::vec3, glm::vec3);
+template std::vector<Vertex> cube_vertices(glm::vec3, glm::vec4, glm::vec3);
+template std::vector<Vertex_simple> cube_vertices(glm::vec3, glm::vec3);
+template std::vector<Vertex_normal> cube_vertices(glm::vec3, glm::vec3);
+template std::vector<Vertex_color> cube_vertices(glm::vec3, glm::vec4, glm::vec3);
+template std::vector<Vertex_texcoords> cube_vertices(glm::vec3, glm::vec3);
+template std::vector<Vertex_normal_color> cube_vertices(glm::vec3, glm::vec4, glm::vec3);
+template std::vector<Vertex_normal_texcoords> cube_vertices(glm::vec3, glm::vec3);
