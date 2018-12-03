@@ -9,7 +9,6 @@
 
 apeiron::example::World::World(const Options* options)
     : options_{options}, charset_{16, 8, 32, 0.5f, 1.0f},
-      cube_model_{{1.0f, 1.0f, 1.0f}},
       camera_{-45.0f, -55.0f, {10.0f, 15.0f, 10.0f}},
       axes_{16, 0.01f, 25.0f},
       ground_{{48.0f, 48.0f}, 48, 48, {0.25f, 0.25f, 0.25f, 1.0f}, 1.0f},
@@ -34,10 +33,9 @@ void apeiron::example::World::init()
   cube_texture_.load("assets/ab_crate_a.png", opengl::Texture_filter::Linear,
       opengl::Texture_filter::Linear, options_->af_samples);
 
-  {
-    bulb_.load("assets/private/bulb.obj");
-    teapot_.load_model();
-  }
+  cube_model_.set<engine::Vertex_normal_texcoords>({1.0f, 1.0f, 1.0f});
+  bulb_.load("assets/private/bulb.obj");
+  teapot_.load_model();
 
   light_.set_position(0.0f, 8.5f, -options_->light_distance);
   light_.set_color(1.0f, 1.0f, 1.0f);

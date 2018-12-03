@@ -3,6 +3,7 @@
 
 
 #include <glm/glm.hpp>
+#include "engine/vertex.h"
 #include "opengl/shape.h"
 
 
@@ -15,7 +16,9 @@ public:
   Cuboid() = default;
   explicit Cuboid(glm::vec3 size, glm::vec3 position = glm::vec3{0.0f});
   Cuboid(glm::vec3 size, glm::vec4 color, glm::vec3 position = glm::vec3{0.0f});
+  template<typename T = engine::Vertex>
   void set(glm::vec3 size, glm::vec3 position = glm::vec3{0.0f});
+  template<typename T = engine::Vertex>
   void set(glm::vec3 size, glm::vec4 color, glm::vec3 position = glm::vec3{0.0f});
   void render() const override;
 };
