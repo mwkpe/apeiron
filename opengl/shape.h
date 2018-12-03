@@ -3,6 +3,8 @@
 
 
 #include <cstdint>
+#include <vector>
+#include "engine/vertex.h"
 
 
 namespace apeiron::opengl {
@@ -24,6 +26,7 @@ public:
 
 protected:
   void delete_buffers();
+  template<typename T> void set_buffers(const std::vector<T>& vertices);
 
   std::uint32_t vao_ = 0;
   std::uint32_t vbo_ = 0;
