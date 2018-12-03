@@ -4,7 +4,8 @@
 
 #include <string_view>
 #include <vector>
-#include "opengl/mesh.h"
+#include "engine/vertex.h"
+#include "opengl/triangles.h"
 
 
 namespace apeiron::opengl {
@@ -13,12 +14,12 @@ namespace apeiron::opengl {
 class Model
 {
 public:
-  std::vector<Mesh>::const_iterator begin() const { return std::cbegin(meshes_); }
-  std::vector<Mesh>::const_iterator end() const { return std::cend(meshes_); }
-  void load(std::string_view filename);
+  std::vector<Triangles>::const_iterator begin() const { return std::cbegin(meshes_); }
+  std::vector<Triangles>::const_iterator end() const { return std::cend(meshes_); }
+  template<typename T = engine::Vertex> void load(std::string_view filename);
 
 private:
-  std::vector<Mesh> meshes_;
+  std::vector<Triangles> meshes_;
 };
 
 

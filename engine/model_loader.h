@@ -17,21 +17,21 @@ struct Material_data
 };
 
 
-struct Mesh_data
+template<typename T = Vertex> struct Mesh_data
 {
-  std::vector<Vertex> vertices;
+  std::vector<T> vertices;
   int material_index = -1;
 };
 
 
-struct Model_data
+template<typename T = Vertex> struct Model_data
 {
-  std::vector<Mesh_data> meshes;
+  std::vector<Mesh_data<T>> meshes;
   std::vector<Material_data> materials;
 };
 
 
-Model_data load_model(std::string_view filename);
+template<typename T = Vertex> Model_data<T> load_model(std::string_view filename);
 
 
 }  // namespace apeiron::engine

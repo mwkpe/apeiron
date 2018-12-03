@@ -10,44 +10,79 @@
 namespace {
 
 
-apeiron::engine::Vertex get_vertex(const tinyobj::attrib_t& attrib, const tinyobj::index_t& index)
+template <typename T> T get_vertex(const tinyobj::attrib_t& attrib, const tinyobj::index_t& index)
 {
   float x = attrib.vertices[3 * index.vertex_index + 0];
   float y = attrib.vertices[3 * index.vertex_index + 1];
   float z = attrib.vertices[3 * index.vertex_index + 2];
 
-  float nx, ny, nz;
-  if (attrib.normals.empty()) {
-    nx = ny = nz = 0.0f;
-  }
-  else {
-    nx = attrib.normals[3 * index.normal_index + 0];
-    ny = attrib.normals[3 * index.normal_index + 1];
-    nz = attrib.normals[3 * index.normal_index + 2];
+  if constexpr (std::is_same<T, apeiron::engine::Vertex_simple>::value) {
+    return {{x, y, z}};
   }
 
-  float s, t;
-  if (attrib.texcoords.empty()) {
-    s = t = 0.0f;
-  }
-  else {
-    s = attrib.texcoords[2 * index.texcoord_index + 0];
-    t = attrib.texcoords[2 * index.texcoord_index + 1];
+  [[maybe_unused]] float nx, ny, nz;
+  if constexpr (std::is_same<T, apeiron::engine::Vertex>::value ||
+      std::is_same<T, apeiron::engine::Vertex_normal>::value ||
+      std::is_same<T, apeiron::engine::Vertex_normal_texcoords>::value ||
+      std::is_same<T, apeiron::engine::Vertex_normal_color>::value) {
+    if (attrib.normals.empty()) {
+      nx = ny = nz = 0.0f;
+    }
+    else {
+      nx = attrib.normals[3 * index.normal_index + 0];
+      ny = attrib.normals[3 * index.normal_index + 1];
+      nz = attrib.normals[3 * index.normal_index + 2];
+    }
   }
 
-  // Color defaulted to white in LoadObj
-  float r = attrib.colors[3 * index.vertex_index + 0];
-  float g = attrib.colors[3 * index.vertex_index + 1];
-  float b = attrib.colors[3 * index.vertex_index + 2];
+  [[maybe_unused]] float s, t;
+  if constexpr (std::is_same<T, apeiron::engine::Vertex>::value ||
+      std::is_same<T, apeiron::engine::Vertex_texcoords>::value ||
+      std::is_same<T, apeiron::engine::Vertex_normal_texcoords>::value) {
+    if (attrib.texcoords.empty()) {
+      s = t = 0.0f;
+    }
+    else {
+      s = attrib.texcoords[2 * index.texcoord_index + 0];
+      t = attrib.texcoords[2 * index.texcoord_index + 1];
+    }
+  }
 
-  return {{x, y, z}, {nx, ny, nz}, {s, t}, {r, g, b, 1.0f}};
+  [[maybe_unused]] float r, g, b;
+  if constexpr (std::is_same<T, apeiron::engine::Vertex>::value ||
+      std::is_same<T, apeiron::engine::Vertex_color>::value ||
+      std::is_same<T, apeiron::engine::Vertex_normal_color>::value) {
+    // Color defaulted to white in LoadObj
+    r = attrib.colors[3 * index.vertex_index + 0];
+    g = attrib.colors[3 * index.vertex_index + 1];
+    b = attrib.colors[3 * index.vertex_index + 2];
+  }
+
+  if constexpr (std::is_same<T, apeiron::engine::Vertex>::value) {
+    return {{x, y, z}, {nx, ny, nz}, {s, t}, {r, g, b, 1.0f}};
+  }
+  else if constexpr (std::is_same<T, apeiron::engine::Vertex_normal>::value) {
+    return {{x, y, z}, {nx, ny, nz}};
+  }
+  else if constexpr (std::is_same<T, apeiron::engine::Vertex_color>::value) {
+    return {{x, y, z}, {r, g, b, 1.0f}};
+  }
+  else if constexpr (std::is_same<T, apeiron::engine::Vertex_texcoords>::value) {
+    return {{x, y, z}, {s, t}};
+  }
+  else if constexpr (std::is_same<T, apeiron::engine::Vertex_normal_color>::value) {
+    return {{x, y, z}, {nx, ny, nz}, {r, g, b, 1.0f}};
+  }
+  else if constexpr (std::is_same<T, apeiron::engine::Vertex_normal_texcoords>::value) {
+    return {{x, y, z}, {nx, ny, nz}, {s, t}};
+  }
 }
 
 
 }  // namespace
 
 
-auto apeiron::engine::load_model(std::string_view filename) -> Model_data
+template <typename T> auto apeiron::engine::load_model(std::string_view filename) -> Model_data<T>
 {
   utility::Scope_timer timer{std::string{filename}};
 
@@ -62,7 +97,7 @@ auto apeiron::engine::load_model(std::string_view filename) -> Model_data
     throw engine::Error{error};
   }
 
-  Model_data model_data;
+  Model_data<T> model_data;
 
   for (const auto& material : materials) {
     Material_data material_data;
@@ -71,13 +106,13 @@ auto apeiron::engine::load_model(std::string_view filename) -> Model_data
   }
 
   for (const auto& shape : shapes) {
-    Mesh_data mesh_data;
+    Mesh_data<T> mesh_data;
     std::size_t index_offset = 0;
     for (std::size_t f=0; f<shape.mesh.num_face_vertices.size(); ++f) {
       auto fv = shape.mesh.num_face_vertices[f];
       for (std::size_t v=0; v<fv; ++v) {
         tinyobj::index_t index = shape.mesh.indices[index_offset + v];
-        mesh_data.vertices.push_back(get_vertex(attrib, index));
+        mesh_data.vertices.push_back(get_vertex<T>(attrib, index));
       }
       index_offset += fv;
     }
@@ -86,3 +121,14 @@ auto apeiron::engine::load_model(std::string_view filename) -> Model_data
 
   return model_data;
 }
+
+
+using namespace apeiron::engine;
+
+template auto load_model(std::string_view filename) -> Model_data<Vertex>;
+template auto load_model(std::string_view filename) -> Model_data<Vertex_simple>;
+template auto load_model(std::string_view filename) -> Model_data<Vertex_normal>;
+template auto load_model(std::string_view filename) -> Model_data<Vertex_color>;
+template auto load_model(std::string_view filename) -> Model_data<Vertex_texcoords>;
+template auto load_model(std::string_view filename) -> Model_data<Vertex_normal_color>;
+template auto load_model(std::string_view filename) -> Model_data<Vertex_normal_texcoords>;
