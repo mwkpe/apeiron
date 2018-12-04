@@ -13,7 +13,7 @@ namespace apeiron::example {
 class Ground_highlight final : public engine::Entity
 {
 public:
-  Ground_highlight() : quad_{0.8f, 0.8f} { set_rotation(glm::radians(-90.0f), 0.0f, 0.0f); }
+  Ground_highlight() : quad_{0.8f, 0.8f, engine::Face::Up} {}
   void set_visible(bool visible) { visible_ = visible; }
   bool visible() { return visible_; }
   void render() const override { quad_.render(); }

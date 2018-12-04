@@ -4,112 +4,33 @@
 #include <vector>
 #include <cstddef>
 #include "GL/glew.h"
-#include "engine/vertex.h"
 
 
-namespace {
-
-
-std::vector<apeiron::engine::Vertex_texcoords> build_vertices(float w, float h)
+apeiron::opengl::Quad::Quad(float width, float height, engine::Face face,
+    glm::vec3 position)
 {
-  w /= 2.0f;
-  h /= 2.0f;
-
-  return {
-    {
-      {{-w, -h, 0.0f}, {0.0f, 0.0f}},
-      {{ w, -h, 0.0f}, {1.0f, 0.0f}},
-      {{-w,  h, 0.0f}, {0.0f, 1.0f}},
-      {{ w, -h, 0.0f}, {1.0f, 0.0f}},
-      {{ w,  h, 0.0f}, {1.0f, 1.0f}},
-      {{-w,  h, 0.0f}, {0.0f, 1.0f}}
-    }
-  };
+  set(width, height, face, position);
 }
 
 
-std::vector<apeiron::engine::Vertex_color> build_vertices(float w, float h, glm::vec4 color)
+apeiron::opengl::Quad::Quad(float width, float height, glm::vec4 color,
+    engine::Face face, glm::vec3 position)
 {
-  w /= 2.0f;
-  h /= 2.0f;
-
-  return {
-    {
-      {{-w, -h, 0.0f}, color},
-      {{ w, -h, 0.0f}, color},
-      {{-w,  h, 0.0f}, color},
-      {{ w, -h, 0.0f}, color},
-      {{ w,  h, 0.0f}, color},
-      {{-w,  h, 0.0f}, color}
-    }
-  };
+  set(width, height, color, face, position);
 }
 
 
-}  // namespace
-
-
-apeiron::opengl::Quad::Quad(float width, float height)
+template<typename T> void apeiron::opengl::Quad::set(float width, float height,
+    engine::Face face, glm::vec3 position)
 {
-  set(width, height);
+  set_buffers(engine::primitive::quad_vertices<T>(width, height, face, position));
 }
 
 
-apeiron::opengl::Quad::Quad(float width, float height, glm::vec4 color)
+template<typename T> void apeiron::opengl::Quad::set(float width, float height,
+    glm::vec4 color, engine::Face face, glm::vec3 position)
 {
-  set(width, height, color);
-}
-
-
-void apeiron::opengl::Quad::set(float width, float height)
-{
-  delete_buffers();
-
-  glGenVertexArrays(1, &vao_);
-  glGenBuffers(1, &vbo_);
-  glBindVertexArray(vao_);
-
-  const auto vertices = build_vertices(width, height);
-  vertex_count_ = vertices.size();
-  const int stride = sizeof(engine::Vertex_texcoords);
-
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_texcoords),
-      vertices.data(), GL_STATIC_DRAW);
-  
-  // Position
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(0));
-  glEnableVertexAttribArray(0);
-  // Texture coordinates
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex_texcoords, texcoords)));
-  glEnableVertexAttribArray(2);
-}
-
-
-void apeiron::opengl::Quad::set(float width, float height, glm::vec4 color)
-{
-  delete_buffers();
-
-  glGenVertexArrays(1, &vao_);
-  glGenBuffers(1, &vbo_);
-  glBindVertexArray(vao_);
-
-  const auto vertices = build_vertices(width, height, color);
-  vertex_count_ = vertices.size();
-  const int stride = sizeof(engine::Vertex_color);
-
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_color),
-      vertices.data(), GL_STATIC_DRAW);
-  
-  // Position
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(0));
-  glEnableVertexAttribArray(0);
-  // Color
-  glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex_color, color)));
-  glEnableVertexAttribArray(3);
+  set_buffers(engine::primitive::quad_vertices<T>(width, height, color, face, position));
 }
 
 
@@ -118,3 +39,17 @@ void apeiron::opengl::Quad::render() const
   glBindVertexArray(vao_);
   glDrawArrays(GL_TRIANGLES, 0, vertex_count_);
 }
+
+
+using namespace apeiron::engine;
+using namespace apeiron::engine::primitive;
+using namespace apeiron::opengl;
+
+template void Quad::set<Vertex>(float, float, Face, glm::vec3);
+template void Quad::set<Vertex>(float, float, glm::vec4, Face, glm::vec3);
+template void Quad::set<Vertex_simple>(float, float, Face, glm::vec3);
+template void Quad::set<Vertex_normal>(float, float, Face, glm::vec3);
+template void Quad::set<Vertex_color>(float, float, glm::vec4, Face, glm::vec3);
+template void Quad::set<Vertex_texcoords>(float, float, Face, glm::vec3);
+template void Quad::set<Vertex_normal_color>(float, float, glm::vec4, Face, glm::vec3);
+template void Quad::set<Vertex_normal_texcoords>(float, float, Face, glm::vec3);

@@ -4,8 +4,563 @@
 #include <type_traits>
 
 
-template<typename T> std::vector<T> apeiron::engine::primitive::cube_vertices(glm::vec3 size,
-        glm::vec3 position)
+template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(float width,
+    float height, Face face, glm::vec3 position)
+{
+  const float x = position.x;
+  const float y = position.y;
+  const float z = position.z;
+
+  const float w = width * 0.5f;
+  const float h = height * 0.5f;
+
+  if constexpr (std::is_same<T, Vertex>::value) {
+    switch (face) {
+      case Face::Front:
+        return {
+          // x, y, z, nx, ny, nz, s, t
+          // xy-plane
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}}
+        };
+      case Face::Back:
+        return {
+          // xy-plane
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}}
+        };
+      case Face::Left:
+        return {
+          // yz-plane
+          {{x, -h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{x, -h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{x,  h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{x,  h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{x,  h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{x, -h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}}
+        };
+      case Face::Right:
+        return {
+          // yz-plane
+          {{x, -h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{x, -h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{x,  h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{x,  h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{x,  h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{x, -h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}}
+        };
+      case Face::Up:
+        return {
+          // xz-plane
+          {{-w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{ w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{ w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{ w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{-w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{-w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}}
+        };
+      case Face::Down:
+        return {
+          // xz-plane
+          {{-w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{ w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{ w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{ w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{-w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {0.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          {{-w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}}
+        };
+    }
+  }
+  else if constexpr (std::is_same<T, Vertex_simple>::value) {
+    switch (face) {
+      case Face::Front:
+        return {
+          // x, y, z, nx, ny, nz, s, t
+          // xy-plane
+          {{-w + x, -h + y, z}},
+          {{ w + x, -h + y, z}},
+          {{ w + x,  h + y, z}},
+          {{ w + x,  h + y, z}},
+          {{-w + x,  h + y, z}},
+          {{-w + x, -h + y, z}}
+        };
+      case Face::Back:
+        return {
+          // xy-plane
+          {{ w + x, -h + y, z}},
+          {{-w + x, -h + y, z}},
+          {{-w + x,  h + y, z}},
+          {{-w + x,  h + y, z}},
+          {{ w + x,  h + y, z}},
+          {{ w + x, -h + y, z}}
+        };
+      case Face::Left:
+        return {
+          // yz-plane
+          {{x, -h + y, -w + z}},
+          {{x, -h + y,  w + z}},
+          {{x,  h + y,  w + z}},
+          {{x,  h + y,  w + z}},
+          {{x,  h + y, -w + z}},
+          {{x, -h + y, -w + z}}
+        };
+      case Face::Right:
+        return {
+          // yz-plane
+          {{x, -h + y,  w + z}},
+          {{x, -h + y, -w + z}},
+          {{x,  h + y, -w + z}},
+          {{x,  h + y, -w + z}},
+          {{x,  h + y,  w + z}},
+          {{x, -h + y,  w + z}}
+        };
+      case Face::Up:
+        return {
+          // xz-plane
+          {{-w + x, y,  h + z}},
+          {{ w + x, y,  h + z}},
+          {{ w + x, y, -h + z}},
+          {{ w + x, y, -h + z}},
+          {{-w + x, y, -h + z}},
+          {{-w + x, y,  h + z}}
+        };
+      case Face::Down:
+        return {
+          // xz-plane
+          {{-w + x, y, -h + z}},
+          {{ w + x, y, -h + z}},
+          {{ w + x, y,  h + z}},
+          {{ w + x, y,  h + z}},
+          {{-w + x, y,  h + z}},
+          {{-w + x, y, -h + z}}
+        };
+    }
+  }
+  else if constexpr (std::is_same<T, Vertex_normal>::value) {
+    switch (face) {
+      case Face::Front:
+        return {
+          // x, y, z, nx, ny, nz, s, t
+          // xy-plane
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}},
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}},
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}}
+        };
+      case Face::Back:
+        return {
+          // xy-plane
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}},
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}},
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}}
+        };
+      case Face::Left:
+        return {
+          // yz-plane
+          {{x, -h + y, -w + z}, {-1.0f, 0.0f, 0.0f}},
+          {{x, -h + y,  w + z}, {-1.0f, 0.0f, 0.0f}},
+          {{x,  h + y,  w + z}, {-1.0f, 0.0f, 0.0f}},
+          {{x,  h + y,  w + z}, {-1.0f, 0.0f, 0.0f}},
+          {{x,  h + y, -w + z}, {-1.0f, 0.0f, 0.0f}},
+          {{x, -h + y, -w + z}, {-1.0f, 0.0f, 0.0f}}
+        };
+      case Face::Right:
+        return {
+          // yz-plane
+          {{x, -h + y,  w + z}, {1.0f, 0.0f, 0.0f}},
+          {{x, -h + y, -w + z}, {1.0f, 0.0f, 0.0f}},
+          {{x,  h + y, -w + z}, {1.0f, 0.0f, 0.0f}},
+          {{x,  h + y, -w + z}, {1.0f, 0.0f, 0.0f}},
+          {{x,  h + y,  w + z}, {1.0f, 0.0f, 0.0f}},
+          {{x, -h + y,  w + z}, {1.0f, 0.0f, 0.0f}}
+        };
+      case Face::Up:
+        return {
+          // xz-plane
+          {{-w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}},
+          {{ w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}},
+          {{ w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}},
+          {{ w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}},
+          {{-w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}},
+          {{-w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}}
+        };
+      case Face::Down:
+        return {
+          // xz-plane
+          {{-w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}},
+          {{ w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}},
+          {{ w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}},
+          {{ w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}},
+          {{-w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}},
+          {{-w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}}
+        };
+    }
+  }
+  else if constexpr (std::is_same<T, Vertex_texcoords>::value) {
+    switch (face) {
+      case Face::Front:
+        return {
+          // x, y, z, nx, ny, nz, s, t
+          // xy-plane
+          {{-w + x, -h + y, z}, {0.0f, 0.0f}},
+          {{ w + x, -h + y, z}, {1.0f, 0.0f}},
+          {{ w + x,  h + y, z}, {1.0f, 1.0f}},
+          {{ w + x,  h + y, z}, {1.0f, 1.0f}},
+          {{-w + x,  h + y, z}, {0.0f, 1.0f}},
+          {{-w + x, -h + y, z}, {0.0f, 0.0f}}
+        };
+      case Face::Back:
+        return {
+          // xy-plane
+          {{ w + x, -h + y, z}, {0.0f, 0.0f}},
+          {{-w + x, -h + y, z}, {1.0f, 0.0f}},
+          {{-w + x,  h + y, z}, {1.0f, 1.0f}},
+          {{-w + x,  h + y, z}, {1.0f, 1.0f}},
+          {{ w + x,  h + y, z}, {0.0f, 1.0f}},
+          {{ w + x, -h + y, z}, {0.0f, 0.0f}}
+        };
+      case Face::Left:
+        return {
+          // yz-plane
+          {{x, -h + y, -w + z}, {0.0f, 0.0f}},
+          {{x, -h + y,  w + z}, {1.0f, 0.0f}},
+          {{x,  h + y,  w + z}, {1.0f, 1.0f}},
+          {{x,  h + y,  w + z}, {1.0f, 1.0f}},
+          {{x,  h + y, -w + z}, {0.0f, 1.0f}},
+          {{x, -h + y, -w + z}, {0.0f, 0.0f}}
+        };
+      case Face::Right:
+        return {
+          // yz-plane
+          {{x, -h + y,  w + z}, {0.0f, 0.0f}},
+          {{x, -h + y, -w + z}, {1.0f, 0.0f}},
+          {{x,  h + y, -w + z}, {1.0f, 1.0f}},
+          {{x,  h + y, -w + z}, {1.0f, 1.0f}},
+          {{x,  h + y,  w + z}, {0.0f, 1.0f}},
+          {{x, -h + y,  w + z}, {0.0f, 0.0f}}
+        };
+      case Face::Up:
+        return {
+          // xz-plane
+          {{-w + x, y,  h + z}, {0.0f, 0.0f}},
+          {{ w + x, y,  h + z}, {1.0f, 0.0f}},
+          {{ w + x, y, -h + z}, {1.0f, 1.0f}},
+          {{ w + x, y, -h + z}, {1.0f, 1.0f}},
+          {{-w + x, y, -h + z}, {0.0f, 1.0f}},
+          {{-w + x, y,  h + z}, {0.0f, 0.0f}}
+        };
+      case Face::Down:
+        return {
+          // xz-plane
+          {{-w + x, y, -h + z}, {0.0f, 0.0f}},
+          {{ w + x, y, -h + z}, {1.0f, 0.0f}},
+          {{ w + x, y,  h + z}, {1.0f, 1.0f}},
+          {{ w + x, y,  h + z}, {1.0f, 1.0f}},
+          {{-w + x, y,  h + z}, {0.0f, 1.0f}},
+          {{-w + x, y, -h + z}, {0.0f, 0.0f}}
+        };
+    }
+  }
+  else if constexpr (std::is_same<T, Vertex_normal_texcoords>::value) {
+    switch (face) {
+      case Face::Front:
+        return {
+          // x, y, z, nx, ny, nz, s, t
+          // xy-plane
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}},
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}},
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}}
+        };
+      case Face::Back:
+        return {
+          // xy-plane
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}},
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {1.0f, 0.0f}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f}},
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}}
+        };
+      case Face::Left:
+        return {
+          // yz-plane
+          {{x, -h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+          {{x, -h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
+          {{x,  h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
+          {{x,  h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
+          {{x,  h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}},
+          {{x, -h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}}
+        };
+      case Face::Right:
+        return {
+          // yz-plane
+          {{x, -h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+          {{x, -h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
+          {{x,  h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
+          {{x,  h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
+          {{x,  h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}},
+          {{x, -h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}}
+        };
+      case Face::Up:
+        return {
+          // xz-plane
+          {{-w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
+          {{ w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
+          {{ w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f}},
+          {{ w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f}},
+          {{-w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f}},
+          {{-w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}}
+        };
+      case Face::Down:
+        return {
+          // xz-plane
+          {{-w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f}},
+          {{ w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {1.0f, 0.0f}},
+          {{ w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}},
+          {{ w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}},
+          {{-w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {0.0f, 1.0f}},
+          {{-w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f}}
+        };
+    }
+  }
+
+  return {};
+}
+
+
+template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(float width,
+    float height, glm::vec4 color, Face face, glm::vec3 position)
+{
+  const float x = position.x;
+  const float y = position.y;
+  const float z = position.z;
+
+  const float w = width * 0.5f;
+  const float h = height * 0.5f;
+
+  const float r = color.r;
+  const float g = color.g;
+  const float b = color.b;
+  const float a = color.a;
+
+  if constexpr (std::is_same<T, Vertex>::value) {
+    switch (face) {
+      case Face::Front:
+        return {
+          // x, y, z, nx, ny, nz, s, t
+          // xy-plane
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, {r, g, b, a}},
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {r, g, b, a}}
+        };
+      case Face::Back:
+        return {
+          // xy-plane
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}, {r, g, b, a}},
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {1.0f, 0.0f}, {r, g, b, a}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f}, {r, g, b, a}},
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}, {r, g, b, a}}
+        };
+      case Face::Left:
+        return {
+          // yz-plane
+          {{x, -h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {r, g, b, a}},
+          {{x, -h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}, {r, g, b, a}},
+          {{x, -h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {r, g, b, a}}
+        };
+      case Face::Right:
+        return {
+          // yz-plane
+          {{x, -h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {r, g, b, a}},
+          {{x, -h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}, {r, g, b, a}},
+          {{x, -h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {r, g, b, a}}
+        };
+      case Face::Up:
+        return {
+          // xz-plane
+          {{-w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{-w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f}, {r, g, b, a}},
+          {{-w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}, {r, g, b, a}}
+        };
+      case Face::Down:
+        return {
+          // xz-plane
+          {{-w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {1.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{-w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {0.0f, 1.0f}, {r, g, b, a}},
+          {{-w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f}, {r, g, b, a}}
+        };
+    }
+  }
+  else if constexpr (std::is_same<T, Vertex_color>::value) {
+    switch (face) {
+      case Face::Front:
+        return {
+          // x, y, z, nx, ny, nz, s, t
+          // xy-plane
+          {{-w + x, -h + y, z}, {r, g, b, a}},
+          {{ w + x, -h + y, z}, {r, g, b, a}},
+          {{ w + x,  h + y, z}, {r, g, b, a}},
+          {{ w + x,  h + y, z}, {r, g, b, a}},
+          {{-w + x,  h + y, z}, {r, g, b, a}},
+          {{-w + x, -h + y, z}, {r, g, b, a}}
+        };
+      case Face::Back:
+        return {
+          // xy-plane
+          {{ w + x, -h + y, z}, {r, g, b, a}},
+          {{-w + x, -h + y, z}, {r, g, b, a}},
+          {{-w + x,  h + y, z}, {r, g, b, a}},
+          {{-w + x,  h + y, z}, {r, g, b, a}},
+          {{ w + x,  h + y, z}, {r, g, b, a}},
+          {{ w + x, -h + y, z}, {r, g, b, a}}
+        };
+      case Face::Left:
+        return {
+          // yz-plane
+          {{x, -h + y, -w + z}, {r, g, b, a}},
+          {{x, -h + y,  w + z}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {r, g, b, a}},
+          {{x, -h + y, -w + z}, {r, g, b, a}}
+        };
+      case Face::Right:
+        return {
+          // yz-plane
+          {{x, -h + y,  w + z}, {r, g, b, a}},
+          {{x, -h + y, -w + z}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {r, g, b, a}},
+          {{x, -h + y,  w + z}, {r, g, b, a}}
+        };
+      case Face::Up:
+        return {
+          // xz-plane
+          {{-w + x, y,  h + z}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {r, g, b, a}},
+          {{-w + x, y, -h + z}, {r, g, b, a}},
+          {{-w + x, y,  h + z}, {r, g, b, a}}
+        };
+      case Face::Down:
+        return {
+          // xz-plane
+          {{-w + x, y, -h + z}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {r, g, b, a}},
+          {{-w + x, y,  h + z}, {r, g, b, a}},
+          {{-w + x, y, -h + z}, {r, g, b, a}}
+        };
+    }
+  }
+  else if constexpr (std::is_same<T, Vertex_normal_color>::value) {
+    switch (face) {
+      case Face::Front:
+        return {
+          // x, y, z, nx, ny, nz, s, t
+          // xy-plane
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {r, g, b, a}},
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {r, g, b, a}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {r, g, b, a}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {r, g, b, a}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {r, g, b, a}},
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {r, g, b, a}}
+        };
+      case Face::Back:
+        return {
+          // xy-plane
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {r, g, b, a}},
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {r, g, b, a}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {r, g, b, a}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {r, g, b, a}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {r, g, b, a}},
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {r, g, b, a}}
+        };
+      case Face::Left:
+        return {
+          // yz-plane
+          {{x, -h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x, -h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x, -h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {r, g, b, a}}
+        };
+      case Face::Right:
+        return {
+          // yz-plane
+          {{x, -h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x, -h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x, -h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {r, g, b, a}}
+        };
+      case Face::Up:
+        return {
+          // xz-plane
+          {{-w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {r, g, b, a}},
+          {{-w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {r, g, b, a}},
+          {{-w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {r, g, b, a}}
+        };
+      case Face::Down:
+        return {
+          // xz-plane
+          {{-w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {r, g, b, a}},
+          {{-w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {r, g, b, a}},
+          {{-w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {r, g, b, a}}
+        };
+    }
+  }
+
+  return {};
+}
+
+
+template<typename T> std::vector<T> apeiron::engine::primitive::cuboid_vertices(glm::vec3 size,
+    glm::vec3 position)
 {
   const float x = position.x;
   const float y = position.y;
@@ -18,7 +573,7 @@ template<typename T> std::vector<T> apeiron::engine::primitive::cube_vertices(gl
   if constexpr (std::is_same<T, Vertex>::value) {
     return {
       {
-        // x, y, z, nx, ny, nz, s, t
+        // x, y, z, nx, ny, nz, s, t, r, g, b, a
         // Front (xy-plane)
         {{-w + x, -h + y, l + z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
         {{ w + x, -h + y, l + z}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
@@ -260,10 +815,12 @@ template<typename T> std::vector<T> apeiron::engine::primitive::cube_vertices(gl
       }
     };
   }
+
+  return {};
 }
 
 
-template<typename T> std::vector<T> apeiron::engine::primitive::cube_vertices(glm::vec3 size,
+template<typename T> std::vector<T> apeiron::engine::primitive::cuboid_vertices(glm::vec3 size,
     glm::vec4 color, glm::vec3 position)
 {
   const float x = position.x;
@@ -426,17 +983,28 @@ template<typename T> std::vector<T> apeiron::engine::primitive::cube_vertices(gl
       }
     };
   }
+  
+  return {};
 }
 
 
 using namespace apeiron::engine;
 using namespace apeiron::engine::primitive;
 
-template std::vector<Vertex> cube_vertices(glm::vec3, glm::vec3);
-template std::vector<Vertex> cube_vertices(glm::vec3, glm::vec4, glm::vec3);
-template std::vector<Vertex_simple> cube_vertices(glm::vec3, glm::vec3);
-template std::vector<Vertex_normal> cube_vertices(glm::vec3, glm::vec3);
-template std::vector<Vertex_color> cube_vertices(glm::vec3, glm::vec4, glm::vec3);
-template std::vector<Vertex_texcoords> cube_vertices(glm::vec3, glm::vec3);
-template std::vector<Vertex_normal_color> cube_vertices(glm::vec3, glm::vec4, glm::vec3);
-template std::vector<Vertex_normal_texcoords> cube_vertices(glm::vec3, glm::vec3);
+template std::vector<Vertex> quad_vertices(float, float, Face, glm::vec3);
+template std::vector<Vertex> quad_vertices(float, float, glm::vec4, Face, glm::vec3);
+template std::vector<Vertex_simple> quad_vertices(float, float, Face, glm::vec3);
+template std::vector<Vertex_normal> quad_vertices(float, float, Face, glm::vec3);
+template std::vector<Vertex_color> quad_vertices(float, float, glm::vec4, Face, glm::vec3);
+template std::vector<Vertex_texcoords> quad_vertices(float, float, Face, glm::vec3);
+template std::vector<Vertex_normal_color> quad_vertices(float, float, glm::vec4, Face, glm::vec3);
+template std::vector<Vertex_normal_texcoords> quad_vertices(float, float, Face, glm::vec3);
+
+template std::vector<Vertex> cuboid_vertices(glm::vec3, glm::vec3);
+template std::vector<Vertex> cuboid_vertices(glm::vec3, glm::vec4, glm::vec3);
+template std::vector<Vertex_simple> cuboid_vertices(glm::vec3, glm::vec3);
+template std::vector<Vertex_normal> cuboid_vertices(glm::vec3, glm::vec3);
+template std::vector<Vertex_color> cuboid_vertices(glm::vec3, glm::vec4, glm::vec3);
+template std::vector<Vertex_texcoords> cuboid_vertices(glm::vec3, glm::vec3);
+template std::vector<Vertex_normal_color> cuboid_vertices(glm::vec3, glm::vec4, glm::vec3);
+template std::vector<Vertex_normal_texcoords> cuboid_vertices(glm::vec3, glm::vec3);

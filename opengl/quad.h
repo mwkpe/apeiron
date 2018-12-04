@@ -3,6 +3,8 @@
 
 
 #include <glm/glm.hpp>
+#include "engine/vertex.h"
+#include "engine/primitive.h"
 #include "opengl/shape.h"
 
 
@@ -13,10 +15,14 @@ class Quad final : public Shape
 {
 public:
   Quad() = default;
-  Quad(float width, float height);
-  Quad(float width, float height, glm::vec4 color);
-  void set(float width, float height);
-  void set(float width, float height, glm::vec4 color);
+  Quad(float width, float height, engine::Face face = engine::Face::Front,
+      glm::vec3 position = glm::vec3{0.0f});
+  Quad(float width, float height, glm::vec4 color, engine::Face face = engine::Face::Front,
+      glm::vec3 position = glm::vec3{0.0f});
+  template<typename T = engine::Vertex> void set(float width, float height,
+      engine::Face face = engine::Face::Front, glm::vec3 position = glm::vec3{0.0f});
+  template<typename T = engine::Vertex> void set(float width, float height, glm::vec4 color,
+      engine::Face face = engine::Face::Front, glm::vec3 position = glm::vec3{0.0f});
   void render() const override;
 };
 
