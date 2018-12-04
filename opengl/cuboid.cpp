@@ -24,14 +24,14 @@ apeiron::opengl::Cuboid::Cuboid(glm::vec3 size, glm::vec4 color,
 
 template<typename T> void apeiron::opengl::Cuboid::set(glm::vec3 size, glm::vec3 position)
 {
-  set_buffers(engine::primitive::cube_vertices<T>(size, position));
+  set_buffers(engine::primitive::cuboid_vertices<T>(size, position));
 }
 
 
 template<typename T> void apeiron::opengl::Cuboid::set(glm::vec3 size, glm::vec4 color,
     glm::vec3 position)
 {
-  set_buffers(engine::primitive::cube_vertices<T>(size, color, position));
+  set_buffers(engine::primitive::cuboid_vertices<T>(size, color, position));
 }
 
 
