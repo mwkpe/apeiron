@@ -19,13 +19,13 @@ apeiron::opengl::Points::Points(const std::vector<engine::Vertex_color>& vertice
 
 void apeiron::opengl::Points::set(const std::vector<engine::Vertex_simple>& vertices)
 {
-  set_buffers<engine::Vertex_simple>(vertices);
+  set_buffers(vertices);
 }
 
 
 void apeiron::opengl::Points::set(const std::vector<engine::Vertex_color>& vertices)
 {
-  set_buffers<engine::Vertex_color>(vertices);
+  set_buffers(vertices);
 }
 
 
