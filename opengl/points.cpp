@@ -19,45 +19,13 @@ apeiron::opengl::Points::Points(const std::vector<engine::Vertex_color>& vertice
 
 void apeiron::opengl::Points::set(const std::vector<engine::Vertex_simple>& vertices)
 {
-  delete_buffers();
-
-  vertex_count_ = vertices.size();
-
-  glGenVertexArrays(1, &vao_);
-  glGenBuffers(1, &vbo_);
-  glBindVertexArray(vao_);
-
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_simple),
-      vertices.data(), GL_STATIC_DRAW);
-
-  // Position
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void*>(0));
-  glEnableVertexAttribArray(0);
+  set_buffers<engine::Vertex_simple>(vertices);
 }
 
 
 void apeiron::opengl::Points::set(const std::vector<engine::Vertex_color>& vertices)
 {
-  delete_buffers();
-
-  vertex_count_ = vertices.size();
-
-  glGenVertexArrays(1, &vao_);
-  glGenBuffers(1, &vbo_);
-  glBindVertexArray(vao_);
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_color),
-      vertices.data(), GL_STATIC_DRAW);
-
-  // Position
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(engine::Vertex_color),
-      reinterpret_cast<void*>(0));
-  glEnableVertexAttribArray(0);
-  // Color
-  glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(engine::Vertex_color),
-      reinterpret_cast<void*>(offsetof(engine::Vertex_color, color)));
-  glEnableVertexAttribArray(3);
+  set_buffers<engine::Vertex_color>(vertices);
 }
 
 
