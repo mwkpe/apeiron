@@ -54,26 +54,7 @@ apeiron::opengl::Tileset::Tileset(std::uint32_t columns, std::uint32_t rows,
     : tile_offset_{tile_offset}, tile_count_{columns * rows},
       tile_width_{tile_width}, tile_height_{tile_height}
 {
-  glGenVertexArrays(1, &vao_);
-  glGenBuffers(1, &vbo_);
-  glBindVertexArray(vao_);
-
-  const auto vertices = build_vertices(columns, rows, tile_count_,
-      tile_height_, tile_width_, flip_y);
-  vertex_count_ = vertices.size();
-  const int stride = sizeof(engine::Vertex_texcoords);
-
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_texcoords),
-      vertices.data(), GL_STATIC_DRAW);
-
-  // Position
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(0));
-  glEnableVertexAttribArray(0);
-  // Texture coordinates
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
-      reinterpret_cast<void*>(offsetof(engine::Vertex_texcoords, texcoords)));
-  glEnableVertexAttribArray(2);
+  set_buffers(build_vertices(columns, rows, tile_count_, tile_height_, tile_width_, flip_y));
 }
 
 
