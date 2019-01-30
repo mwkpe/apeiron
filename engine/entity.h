@@ -12,16 +12,19 @@ namespace apeiron::engine {
 class Entity
 {
 public:
-  void set_position(float x, float y, float z) { position_ = glm::vec3{x, y, z}; };
-  void set_position(glm::vec3 position) { position_ = position; };
-  void set_center(float x, float y, float z) { center_ = glm::vec3{x, y, z}; };
-  void set_center(glm::vec3 center) { center_ = center; };
-  void set_size(float x, float y, float z) { size_ = glm::vec3{x, y, z}; };
-  void set_size(glm::vec3 size) { size_ = size; };
-  void set_scale(float x, float y, float z) { scale_ = glm::vec3{x, y, z}; };
-  void set_scale(glm::vec3 scale) { scale_ = scale; };
-  void set_rotation(float x, float y, float z) { rotation_ = glm::vec3{x, y, z}; };
-  void set_rotation(glm::vec3 rotation) { rotation_ = rotation; };
+  Entity() = default;
+  virtual ~Entity() = default;
+
+  void set_position(float x, float y, float z) { position_ = glm::vec3{x, y, z}; }
+  void set_position(glm::vec3 position) { position_ = position; }
+  void set_center(float x, float y, float z) { center_ = glm::vec3{x, y, z}; }
+  void set_center(glm::vec3 center) { center_ = center; }
+  void set_size(float x, float y, float z) { size_ = glm::vec3{x, y, z}; }
+  void set_size(glm::vec3 size) { size_ = size; }
+  void set_scale(float x, float y, float z) { scale_ = glm::vec3{x, y, z}; }
+  void set_scale(glm::vec3 scale) { scale_ = scale; }
+  void set_rotation(float x, float y, float z) { rotation_ = glm::vec3{x, y, z}; }
+  void set_rotation(glm::vec3 rotation) { rotation_ = rotation; }
 
   glm::vec3 position() const { return position_; }
   glm::vec3 center() const { return center_; }
