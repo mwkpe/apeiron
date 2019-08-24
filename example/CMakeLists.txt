@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.11)
-project(apeiron_example)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra")
@@ -8,6 +7,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
 
 include(apeiron)
 include(apeiron-gui-sdl2-opengl3)
+
+project(apeiron_example)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
