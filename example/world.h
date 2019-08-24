@@ -9,6 +9,7 @@
 #include "engine/camera.h"
 #include "engine/text.h"
 #include "opengl/renderer.h"
+#include "opengl/frame_buffer.h"
 #include "opengl/texture.h"
 #include "opengl/tileset.h"
 #include "opengl/cuboid.h"
@@ -46,6 +47,7 @@ private:
 
   const Options* options_;
   opengl::Renderer renderer_;
+  opengl::Frame_buffer frame_buffer_;
   opengl::Tileset charset_;
   opengl::Texture cube_texture_;
   opengl::Cuboid cube_model_;
