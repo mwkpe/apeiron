@@ -30,6 +30,12 @@ void apeiron::opengl::Renderer::init()
 }
 
 
+void apeiron::opengl::Renderer::set_viewport(int x, int y, int w, int h)
+{
+  glViewport(x, y, w, h);
+}
+
+
 void apeiron::opengl::Renderer::use_world_space()
 {
   shader_.set_uniform("render_mode", 0);
@@ -109,6 +115,20 @@ void apeiron::opengl::Renderer::set_light_position(const glm::vec3& position)
 void apeiron::opengl::Renderer::set_light_color(const glm::vec4& color)
 {
   shader_.set_uniform("light_color", color);
+}
+
+
+void apeiron::opengl::Renderer::clear() const
+{
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+}
+
+
+void apeiron::opengl::Renderer::clear(float r, float g, float b) const
+{
+  glClearColor(r, g, b, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 

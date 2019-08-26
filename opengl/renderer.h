@@ -17,6 +17,7 @@ class Renderer final
 {
 public:
   void init();
+  void set_viewport(int x, int y, int w, int h);
 
   void use_world_space();
   void use_screen_space();
@@ -35,6 +36,9 @@ public:
   void set_lighting(bool lighting);
   void set_light_position(const glm::vec3& position);
   void set_light_color(const glm::vec4& color);
+
+  void clear() const;
+  void clear(float r, float g, float b) const;
 
   void render(const engine::Entity& entity);
   void render(const engine::Entity& entity, const glm::vec4& color);
