@@ -19,10 +19,10 @@ public:
   Frame_buffer& operator=(Frame_buffer&&) noexcept;
   void init(std::int32_t width, std::int32_t height, std::int32_t samples = 1);
   void bind() const;
+  void unbind() const;
   void bind_texture() const;
   void blit() const;
-  void clear() const;
-  void clear(float r, float g, float b) const;
+  std::uint32_t texture_id() const { return color_buffer_id_; }
 
 private:
   void delete_buffers();

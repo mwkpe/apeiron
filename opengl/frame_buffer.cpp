@@ -106,6 +106,7 @@ void apeiron::opengl::Frame_buffer::init(std::int32_t width, std::int32_t height
   else {
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
   }
+  glBindRenderbuffer(GL_RENDERBUFFER, 0);
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER,
       render_buffer_id_);
 
@@ -143,6 +144,12 @@ void apeiron::opengl::Frame_buffer::bind() const
 }
 
 
+void apeiron::opengl::Frame_buffer::unbind() const
+{
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+
 void apeiron::opengl::Frame_buffer::bind_texture() const
 {
   glBindTexture(GL_TEXTURE_2D, color_buffer_id_);
@@ -151,23 +158,10 @@ void apeiron::opengl::Frame_buffer::bind_texture() const
 
 void apeiron::opengl::Frame_buffer::blit() const
 {
+  if (frame_buffer_resolve_id_ == 0)  // FB not multisampled
+    return;
+
   glBindFramebuffer(GL_READ_FRAMEBUFFER, frame_buffer_render_id_);
   glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frame_buffer_resolve_id_);
   glBlitFramebuffer(0, 0, width_, height_, 0, 0, width_, height_, GL_COLOR_BUFFER_BIT, GL_LINEAR);
-  glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-}
-
-
-void apeiron::opengl::Frame_buffer::clear() const
-{
-  glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-}
-
-
-void apeiron::opengl::Frame_buffer::clear(float r, float g, float b) const
-{
-  glClearColor(r, g, b, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
