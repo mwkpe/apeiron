@@ -14,7 +14,7 @@ class Teapot final : public engine::Entity
 {
 public:
   void load_model() { model_.load<engine::Vertex_normal>("assets/utah_teapot.obj"); }
-  void render() const override { for (const auto& mesh : model_) mesh.render();  }
+  void render() const override { for (const auto& mesh : model_) mesh.render(); }
 
 private:
   opengl::Model model_;
