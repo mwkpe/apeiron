@@ -10,7 +10,7 @@
 namespace {
 
 
-template <typename T> T get_vertex(const tinyobj::attrib_t& attrib, const tinyobj::index_t& index)
+template<typename T> T get_vertex(const tinyobj::attrib_t& attrib, const tinyobj::index_t& index)
 {
   float x = attrib.vertices[3 * index.vertex_index + 0];
   float y = attrib.vertices[3 * index.vertex_index + 1];
