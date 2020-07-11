@@ -82,7 +82,7 @@ template<typename T> T get_vertex(const tinyobj::attrib_t& attrib, const tinyobj
 }  // namespace
 
 
-template <typename T> auto apeiron::engine::load_model(std::string_view filename) -> Model_data<T>
+template<typename T> auto apeiron::engine::load_model(std::string_view filename) -> Model_data<T>
 {
   utility::Scope_timer timer{std::string{filename}};
 
