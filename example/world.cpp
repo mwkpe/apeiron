@@ -29,8 +29,6 @@ void apeiron::example::World::init()
   auto aspect_ratio = static_cast<float>(options_->window_width) / options_->window_height;
   renderer_.preset_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 500.0f));
 
-  frame_buffer_.init(1024, 1024, options_->af_samples);
-
   charset_.load_texture("assets/roboto_mono.png");
   cube_texture_.load("assets/ab_crate_a.png", opengl::Texture_filter::Linear,
       opengl::Texture_filter::Linear, options_->af_samples);
@@ -145,10 +143,6 @@ void apeiron::example::World::render()
   frame_++;
   auto color = options_->main_color;
 
-  frame_buffer_.bind();
-  frame_buffer_.clear((frame_ % 1000) * 0.001f, 0.0f, 0.0f);
-  frame_buffer_.blit();
-
   renderer_.use_world_space();
   renderer_.preset_view(camera_.view());
   renderer_.set_view_projection();
@@ -186,8 +180,7 @@ void apeiron::example::World::render()
   renderer_.render(teapot_, color);
   if (options_->show_cubes) {
     renderer_.use_texture_shading();
-    //cube_texture_.bind();
-    frame_buffer_.bind_texture();
+    cube_texture_.bind();
     for (const auto& c : cubes_) {
       renderer_.render(c);
     }

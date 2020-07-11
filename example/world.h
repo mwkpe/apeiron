@@ -47,7 +47,6 @@ private:
 
   const Options* options_;
   opengl::Renderer renderer_;
-  opengl::Frame_buffer frame_buffer_;
   opengl::Tileset charset_;
   opengl::Texture cube_texture_;
   opengl::Cuboid cube_model_;
