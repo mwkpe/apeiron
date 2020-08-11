@@ -15,6 +15,8 @@ class Timer
 public:
   Timer(bool autostart = false);
   Timer(std::string&& name, bool autostart = false);
+  template<typename T = std::int64_t> static T system_now();
+  template<typename T = std::int64_t> static T high_res_now();
   void start();
   void restart(bool print = false);
   void stop(bool print = false);
@@ -38,6 +40,19 @@ public:
 
 private:
   std::string name_;
+  std::chrono::high_resolution_clock::time_point start_;
+};
+
+
+class Duration_timer
+{
+public:
+  Duration_timer(int duration, bool autostart = false);
+  void start();
+  bool test();
+
+private:
+  int duration_;
   std::chrono::high_resolution_clock::time_point start_;
 };
 
