@@ -1,10 +1,54 @@
 #include "texture.h"
 
 
+#include <cassert>
 #include <vector>
 #include "GL/glew.h"
 #include "engine/error.h"
 #include "engine/image_loader.h"
+
+
+namespace {
+
+
+GLenum translate(apeiron::Texture_filter texture_filter)
+{
+  switch (texture_filter) {
+    case apeiron::Texture_filter::Nearest: return GL_NEAREST;
+    case apeiron::Texture_filter::Linear:
+    [[fallthrough]];
+    default:
+      return GL_LINEAR;
+  }
+}
+
+
+GLenum translate(apeiron::Wrap_mode wrap_mode)
+{
+  switch (wrap_mode) {
+    case apeiron::Wrap_mode::Repeat: return GL_REPEAT;
+    case apeiron::Wrap_mode::Clamp_to_edge:
+    [[fallthrough]];
+    default:
+      return GL_CLAMP_TO_EDGE;
+  }
+}
+
+
+GLenum translate(apeiron::Pixel_format pixel_format)
+{
+  switch (pixel_format) {
+    case apeiron::Pixel_format::Rgb: return GL_RGB;
+    case apeiron::Pixel_format::Rgba: return GL_RGBA;
+    case apeiron::Pixel_format::Bgr: return GL_BGR;
+    case apeiron::Pixel_format::Bgra: return GL_BGRA;
+  }
+
+  return 0;
+}
+
+
+}  // namespace
 
 
 apeiron::opengl::Texture::Texture(Texture&& other) noexcept
@@ -36,88 +80,74 @@ apeiron::opengl::Texture::~Texture()
 }
 
 
-void apeiron::opengl::Texture::load(std::string_view filename,
-    Texture_filter min_filter,
-    Texture_filter mag_filter,
-    std::uint32_t anisotropy_level,
-    Wrap_mode wrap_s,
-    Wrap_mode wrap_t)
+void apeiron::opengl::Texture::load(std::string_view filename, Pixel_format pixel_format)
+{
+  auto&& [pixel, width, height, channel_count] = engine::load_image(filename);
+
+  switch (pixel_format) {
+    case Pixel_format::Rgb:
+    [[fallthrough]];
+    case Pixel_format::Bgr:
+      if (channel_count != 3)
+        throw engine::Error{"Image format error"};
+    break;
+    case Pixel_format::Rgba:
+    [[fallthrough]];
+    case Pixel_format::Bgra:
+      if (channel_count != 4)
+        throw engine::Error{"Image format error"};
+    break;
+  }
+
+  create(pixel.data(), width, height, pixel_format);
+}
+
+
+void apeiron::opengl::Texture::create(const std::uint8_t* pixel,
+    int width, int height, Pixel_format pixel_format)
 {
   if (id_ > 0) {
     glDeleteTextures(1, &id_);
     id_ = 0;
   }
 
-  auto&& [pixel, width, height, channel_count] = engine::load_image(filename);
-
-  if (channel_count != 3 && channel_count != 4)
-    throw engine::Error{"Image format not supported"};
-
   glGenTextures(1, &id_);
   glBindTexture(GL_TEXTURE_2D, id_);
 
-  GLint gl_wrap_s;
-  GLint gl_wrap_t;
-  switch (wrap_s) {
-    case Wrap_mode::Repeat:
-      gl_wrap_s = GL_REPEAT;
-      break;
-    case Wrap_mode::Clamp_to_edge:
-    [[fallthrough]];
-    default:
-      gl_wrap_s = GL_CLAMP_TO_EDGE;
-  }
-  switch (wrap_t) {
-    case Wrap_mode::Repeat:
-      gl_wrap_t = GL_REPEAT;
-      break;
-    case Wrap_mode::Clamp_to_edge:
-    [[fallthrough]];
-    default:
-      gl_wrap_t = GL_CLAMP_TO_EDGE;
-  }
-
-  GLint gl_min_filter;
-  GLint gl_mag_filter;
-  switch (min_filter) {
-    case Texture_filter::Nearest:
-      gl_min_filter = GL_NEAREST;
-      break;
-    case Texture_filter::Linear:
-    [[fallthrough]];
-    default:
-      gl_min_filter = GL_LINEAR;
-  }
-  switch (mag_filter) {
-    case Texture_filter::Nearest:
-      gl_mag_filter = GL_NEAREST;
-      break;
-    case Texture_filter::Linear:
-    [[fallthrough]];
-    default:
-      gl_mag_filter = GL_LINEAR;
-  }
-
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, gl_wrap_s);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, gl_wrap_t);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, gl_min_filter);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, gl_mag_filter);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, translate(wrap_mode_s_));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, translate(wrap_mode_t_));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, translate(min_filter_));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, translate(mag_filter_));
 
   if (anisotropy_level > 1)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy_level);
 
-  switch (channel_count) {
-    case 3:
+  switch (pixel_format) {
+    case Pixel_format::Rgb:
+    [[fallthrough]];
+    case Pixel_format::Bgr:
       glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0,
-          GL_RGB, GL_UNSIGNED_BYTE, pixel.data());
-      break;
-    case 4:
+          translate(pixel_format), GL_UNSIGNED_BYTE, pixel);
+    break;
+    case Pixel_format::Rgba:
+    [[fallthrough]];
+    case Pixel_format::Bgra:
       glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0,
-          GL_RGBA, GL_UNSIGNED_BYTE, pixel.data());
-      break;
+          translate(pixel_format), GL_UNSIGNED_BYTE, pixel);
+    break;
   }
 
-  glGenerateMipmap(GL_TEXTURE_2D);
+  if (generate_mipmap)
+    glGenerateMipmap(GL_TEXTURE_2D);
+}
+
+
+void apeiron::opengl::Texture::update(const std::uint8_t* pixel, int width, int height, Pixel_format pixel_format)
+{
+  assert((pixel_format == Pixel_format::Rgb || pixel_format == Pixel_format::Rgb));
+  glBindTexture(GL_TEXTURE_2D, id_);
+  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height,
+      translate(pixel_format), GL_UNSIGNED_BYTE, pixel);
 }
 
 

@@ -29,9 +29,8 @@ void apeiron::example::World::init()
   auto aspect_ratio = static_cast<float>(options_->window_width) / options_->window_height;
   renderer_.preset_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 500.0f));
 
-  charset_.load_texture("assets/roboto_mono.png");
-  cube_texture_.load("assets/ab_crate_a.png", opengl::Texture_filter::Linear,
-      opengl::Texture_filter::Linear, options_->af_samples);
+  charset_.load_texture("assets/roboto_mono.png", Pixel_format::Rgba);
+  cube_texture_.load("assets/ab_crate_a.png", Pixel_format::Rgba);
 
   cube_model_.set<engine::Vertex_normal_texcoords>({1.0f, 1.0f, 1.0f});
   bulb_.load("assets/private/bulb.obj");

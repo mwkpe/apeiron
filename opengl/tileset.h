@@ -16,7 +16,7 @@ class Tileset final : public Shape
 public:
   Tileset(std::uint32_t columns, std::uint32_t rows, std::uint32_t tile_offset,
       float tile_width = 1.0f, float tile_height = 1.0f, bool flip_y = false);
-  void load_texture(std::string_view filename);
+  void load_texture(std::string_view filename, Pixel_format pixel_format);
   void bind() const;
   void render(std::uint32_t i) const;
   float tile_width() const { return tile_width_; }
