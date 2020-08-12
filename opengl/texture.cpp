@@ -1,8 +1,6 @@
 #include "texture.h"
 
 
-#include <cassert>
-#include <vector>
 #include "GL/glew.h"
 #include "engine/error.h"
 #include "engine/image_loader.h"
@@ -158,7 +156,6 @@ void apeiron::opengl::Texture::create(const std::uint8_t* pixel,
 
 void apeiron::opengl::Texture::update(const std::uint8_t* pixel, int width, int height, Pixel_format pixel_format)
 {
-  assert((pixel_format == Pixel_format::Rgb || pixel_format == Pixel_format::Rgb));
   glBindTexture(GL_TEXTURE_2D, id_);
   glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height,
       translate(pixel_format), GL_UNSIGNED_BYTE, pixel);
