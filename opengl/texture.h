@@ -31,6 +31,8 @@ public:
   Texture& operator=(Texture&&) noexcept;
   void set_filter(Texture_filter min, Texture_filter mag);
   void set_wrap(Wrap_mode s, Wrap_mode t);
+  void set_anisotropy_level(int level) { anisotropy_level_ = level; }
+  void set_generate_mipmap(bool generate_mipmap) { generate_mipmap_ = generate_mipmap; }
   void load(std::string_view filename, Pixel_format pixel_format);
   void create(const std::uint8_t* pixel, int width, int height, Pixel_format pixel_format);
   void update(const std::uint8_t* pixel, int width, int height, Pixel_format pixel_format);
@@ -39,8 +41,8 @@ public:
 
 private:
   std::uint32_t id_ = 0;
-  int anisotropy_level = 1;
-  bool generate_mipmap = false;
+  int anisotropy_level_ = 1;
+  bool generate_mipmap_ = false;
   Texture_filter min_filter_ = Texture_filter::Linear;
   Texture_filter mag_filter_ = Texture_filter::Linear;
   Wrap_mode wrap_mode_s_ = Wrap_mode::Clamp_to_edge;

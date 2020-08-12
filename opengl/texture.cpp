@@ -55,6 +55,13 @@ apeiron::opengl::Texture::Texture(Texture&& other) noexcept
 {
   id_ = other.id_;
   other.id_ = 0;
+
+  anisotropy_level_ = other.anisotropy_level_;
+  generate_mipmap_ = other.generate_mipmap_;
+  min_filter_ = other.min_filter_;
+  mag_filter_ = other.mag_filter_;
+  wrap_mode_s_ = other.wrap_mode_s_;
+  wrap_mode_t_ = other.wrap_mode_t_;
 }
 
 
@@ -68,6 +75,13 @@ auto apeiron::opengl::Texture::operator=(Texture&& other) noexcept -> Texture&
 
   id_ = other.id_;
   other.id_ = 0;
+
+  anisotropy_level_ = other.anisotropy_level_;
+  generate_mipmap_ = other.generate_mipmap_;
+  min_filter_ = other.min_filter_;
+  mag_filter_ = other.mag_filter_;
+  wrap_mode_s_ = other.wrap_mode_s_;
+  wrap_mode_t_ = other.wrap_mode_t_;
 
   return *this;
 }
@@ -119,8 +133,8 @@ void apeiron::opengl::Texture::create(const std::uint8_t* pixel,
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, translate(min_filter_));
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, translate(mag_filter_));
 
-  if (anisotropy_level > 1)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy_level);
+  if (anisotropy_level_ > 1)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy_level_);
 
   switch (pixel_format) {
     case Pixel_format::Rgb:
@@ -137,7 +151,7 @@ void apeiron::opengl::Texture::create(const std::uint8_t* pixel,
     break;
   }
 
-  if (generate_mipmap)
+  if (generate_mipmap_)
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
