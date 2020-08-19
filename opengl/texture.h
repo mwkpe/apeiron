@@ -29,6 +29,7 @@ public:
   Texture(Texture&&) noexcept;
   Texture& operator=(const Texture&) = delete;
   Texture& operator=(Texture&&) noexcept;
+  void set_unpack_alignment(int alignment) { unpack_alignment_ = alignment; };
   void set_filter(Texture_filter min, Texture_filter mag);
   void set_wrap(Wrap_mode s, Wrap_mode t);
   void set_anisotropy_level(int level) { anisotropy_level_ = level; }
@@ -41,6 +42,7 @@ public:
 
 private:
   std::uint32_t id_ = 0;
+  int unpack_alignment_ = 4;
   int anisotropy_level_ = 1;
   bool generate_mipmap_ = false;
   Texture_filter min_filter_ = Texture_filter::Linear;

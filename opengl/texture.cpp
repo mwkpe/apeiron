@@ -134,6 +134,9 @@ void apeiron::opengl::Texture::create(const std::uint8_t* pixel,
   if (anisotropy_level_ > 1)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy_level_);
 
+  if (unpack_alignment_ != 4)
+    glPixelStorei(GL_UNPACK_ALIGNMENT, unpack_alignment_);
+
   switch (pixel_format) {
     case Pixel_format::Rgb:
     [[fallthrough]];
@@ -149,16 +152,22 @@ void apeiron::opengl::Texture::create(const std::uint8_t* pixel,
     break;
   }
 
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 4);  // Set back to default
+
   if (generate_mipmap_)
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 
-void apeiron::opengl::Texture::update(const std::uint8_t* pixel, int width, int height, Pixel_format pixel_format)
+void apeiron::opengl::Texture::update(const std::uint8_t* pixel, int width, int height,
+    Pixel_format pixel_format)
 {
   glBindTexture(GL_TEXTURE_2D, id_);
+  if (unpack_alignment_ != 4)
+    glPixelStorei(GL_UNPACK_ALIGNMENT, unpack_alignment_);
   glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height,
       translate(pixel_format), GL_UNSIGNED_BYTE, pixel);
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 4);  // Set back to default
 }
 
 
