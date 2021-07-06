@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.11)
-project(apeiron-gui-sdl2-opengl3 CXX)
 
 add_library(apeiron-gui-sdl2-opengl3
     ${CMAKE_CURRENT_LIST_DIR}/../external/imgui/imgui.cpp

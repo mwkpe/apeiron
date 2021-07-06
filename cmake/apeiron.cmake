@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.11)
-project(apeiron CXX)
 
 add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/../utility/linear_range.h
