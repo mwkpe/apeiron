@@ -18,7 +18,7 @@
 #include "prefab/ground.h"
 #include "prefab/light.h"
 #include "prefab/teapot.h"
-#include "example/options.h"
+#include "example/settings.h"
 #include "example/cube.h"
 #include "example/cylinder.h"
 #include "example/ground_highlight.h"
@@ -30,7 +30,7 @@ namespace apeiron::example {
 class World final
 {
 public:
-  explicit World(const Options* options);
+  explicit World(const Settings* settings);
   void init();
   void update(float time, float delta_time, const std::vector<apeiron::engine::Event>& events,
       const engine::Input* input = nullptr);
@@ -45,7 +45,7 @@ public:
 private:
   void update_camera(float delta_time, const engine::Input* input);
 
-  const Options* options_;
+  const Settings* settings_;
   opengl::Renderer renderer_;
   opengl::Tileset charset_;
   opengl::Texture cube_texture_;

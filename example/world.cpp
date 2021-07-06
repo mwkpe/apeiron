@@ -7,13 +7,14 @@
 #include "engine/collision.h"
 
 
-apeiron::example::World::World(const Options* options)
-    : options_{options}, charset_{16, 8, 32, 0.5f, 1.0f},
+apeiron::example::World::World(const Settings* settings)
+    : settings_{settings},
+      charset_{16, 8, 32, 0.5f, 1.0f},
       camera_{-45.0f, -55.0f, {10.0f, 15.0f, 10.0f}},
       axes_{16, 0.01f, 25.0f},
       ground_{{48.0f, 48.0f}, 48, 48, {0.25f, 0.25f, 0.25f, 1.0f}, 1.0f},
       light_{&bulb_},
-      cylinder_{options_->cylinder_points, 0.0f, 0.0f, 1.0f}
+      cylinder_{settings_->cylinder_points, 0.0f, 0.0f, 1.0f}
 {
 }
 
@@ -22,11 +23,11 @@ void apeiron::example::World::init()
 {
   renderer_.init();
   renderer_.use_screen_space();
-  renderer_.set_projection(glm::ortho(0.0f, static_cast<float>(options_->window_width),
-      0.0f, static_cast<float>(options_->window_height)));
+  renderer_.set_projection(glm::ortho(0.0f, static_cast<float>(settings_->window_width),
+      0.0f, static_cast<float>(settings_->window_height)));
 
   renderer_.use_world_space();
-  auto aspect_ratio = static_cast<float>(options_->window_width) / options_->window_height;
+  auto aspect_ratio = static_cast<float>(settings_->window_width) / settings_->window_height;
   renderer_.preset_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 500.0f));
 
   charset_.load_texture("assets/roboto_mono.png", Pixel_format::Rgba);
@@ -37,7 +38,7 @@ void apeiron::example::World::init()
   teapot_.load_model();
 
   light_.set_scale(0.2f, 0.3f, 0.2f);
-  light_.set_position(0.0f, 8.5f, -options_->light_distance);
+  light_.set_position(0.0f, 8.5f, -settings_->light_distance);
   light_.set_color(1.0f, 1.0f, 1.0f);
   light_.switch_on();
 
@@ -84,30 +85,30 @@ void apeiron::example::World::update(float time, float delta_time,
     std::visit(*this, event);
 
   if (input) {
-    if (!options_->show_menu) {
+    if (!settings_->show_menu) {
       ground_highlight_.set_visible(false);
       update_camera(delta_time, input);
     }
   }
 
   // Light
-  light_.set_position(0.0f, 9.5f, -options_->light_distance);
-  if (options_->lighting && light_.is_on()) {
-    light_.set_color(options_->main_color);
+  light_.set_position(0.0f, 9.5f, -settings_->light_distance);
+  if (settings_->lighting && light_.is_on()) {
+    light_.set_color(settings_->main_color);
   }
   else {
     light_.set_color(0.3f, 0.3f, 0.3f, 1.0f);
   }
 
   // Cylinder
-  cylinder_.set_rotation(frame_time_ * glm::radians(360.0f * options_->cylinder_revs) *
+  cylinder_.set_rotation(frame_time_ * glm::radians(360.0f * settings_->cylinder_revs) *
       cylinder_.rotation_magnitudes());
-  if (cylinder_.points() != options_->cylinder_points) {
-    cylinder_.rebuild(options_->cylinder_points);
+  if (cylinder_.points() != settings_->cylinder_points) {
+    cylinder_.rebuild(settings_->cylinder_points);
   }
 
   // Cubes
-  if (options_->rotate_cubes) {
+  if (settings_->rotate_cubes) {
     frame_time_ = time;
     for (auto& c : cubes_) {
       c.set_rotation(frame_time_ * glm::radians(120.0f) * c.rotation_magnitudes());
@@ -116,14 +117,14 @@ void apeiron::example::World::update(float time, float delta_time,
 
   // Other
   teapot_.set_rotation(frame_time_ * glm::radians(120.0f) * glm::vec3{0.0f, 0.2f, 0.2f});
-  world_text_.set_text(options_->text);
+  world_text_.set_text(settings_->text);
 }
 
 
 void apeiron::example::World::update_camera(float delta_time, const engine::Input* input)
 {
   using Direction = engine::Camera::Direction;
-  auto distance = options_->camera_speed * delta_time;
+  auto distance = settings_->camera_speed * delta_time;
 
   if (input->forward)
     camera_.move(Direction::Forward, distance);
@@ -134,24 +135,24 @@ void apeiron::example::World::update_camera(float delta_time, const engine::Inpu
   if (input->right)
     camera_.move(Direction::Right, distance);
 
-  camera_.orient(input->mouse_x_rel, input->mouse_y_rel, options_->camera_sensitivity);
+  camera_.orient(input->mouse_x_rel, input->mouse_y_rel, settings_->camera_sensitivity);
 }
 
 
 void apeiron::example::World::render()
 {
   frame_++;
-  auto color = options_->main_color;
+  auto color = settings_->main_color;
 
   renderer_.use_world_space();
   renderer_.preset_view(camera_.view());
   renderer_.set_view_projection();
 
-  renderer_.set_wireframe(options_->wireframe);
+  renderer_.set_wireframe(settings_->wireframe);
   renderer_.set_lighting(false);
   renderer_.set_colorize(false);
 
-  if (options_->lighting) {
+  if (settings_->lighting) {
     renderer_.set_light_color(light_.color());
     renderer_.set_light_position(light_.position());
   }
@@ -168,17 +169,17 @@ void apeiron::example::World::render()
 
   renderer_.render(cylinder_, color);
 
-  if (options_->show_light) {
+  if (settings_->show_light) {
     renderer_.set_lighting(false);
     renderer_.set_wireframe(true);
     renderer_.render(light_, light_.color());
-    renderer_.set_wireframe(options_->wireframe);
+    renderer_.set_wireframe(settings_->wireframe);
   }
 
-  renderer_.set_lighting(options_->lighting && light_.is_on());
+  renderer_.set_lighting(settings_->lighting && light_.is_on());
 
   renderer_.render(teapot_, color);
-  if (options_->show_cubes) {
+  if (settings_->show_cubes) {
     renderer_.use_texture_shading();
     cube_texture_.bind();
     for (const auto& c : cubes_) {
@@ -196,11 +197,11 @@ void apeiron::example::World::render()
 
 void apeiron::example::World::operator()([[maybe_unused]] const engine::Mouse_motion_event& event)
 {
-  if (options_->show_menu) {
+  if (settings_->show_menu) {
     using namespace engine::collision;
 
-    float norm_x = static_cast<float>(event.x) / options_->window_width * 2.0f - 1.0f;
-    float norm_y = -(static_cast<float>(event.y) / options_->window_height * 2.0f - 1.0f);
+    float norm_x = static_cast<float>(event.x) / settings_->window_width * 2.0f - 1.0f;
+    float norm_y = -(static_cast<float>(event.y) / settings_->window_height * 2.0f - 1.0f);
     Ray ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
     Quad quad{{0.0f, 0.0f, 0.0f}, {2.0f, 0.0f, 0.0f}, {2.0f, 0.0f, 2.0f}, {0.0f, 0.0f, 2.0f}};
     Plane plane{{0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};
@@ -224,8 +225,8 @@ void apeiron::example::World::operator()(const engine::Mouse_button_down_event& 
 {
   if (event.button == engine::Mouse_button::Left) {
     using namespace engine::collision;
-    float norm_x = static_cast<float>(event.x) / options_->window_width * 2.0f - 1.0f;
-    float norm_y = -(static_cast<float>(event.y) / options_->window_height * 2.0f - 1.0f);
+    float norm_x = static_cast<float>(event.x) / settings_->window_width * 2.0f - 1.0f;
+    float norm_y = -(static_cast<float>(event.y) / settings_->window_height * 2.0f - 1.0f);
     auto ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
     if (intersects(ray, light_.collider()))
       light_.toggle();

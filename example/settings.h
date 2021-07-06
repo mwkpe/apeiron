@@ -1,5 +1,5 @@
-#ifndef APEIRON_EXAMPLE_OPTIONS_H
-#define APEIRON_EXAMPLE_OPTIONS_H
+#ifndef APEIRON_EXAMPLE_SETTINGS_H
+#define APEIRON_EXAMPLE_SETTINGS_H
 
 
 #include <string>
@@ -10,7 +10,7 @@
 namespace apeiron::example {
 
 
-struct Options
+struct Settings
 {
   bool quit = false;
   bool show_menu = true;
@@ -26,7 +26,7 @@ struct Options
   int msaa_samples = 4;
   int af_samples = 1;
   int cylinder_points = 8;
-  int max_fps = 90;
+  int max_fps = 144;
   float light_distance = -5.0f;
   float cylinder_revs = 0.2f;
   float camera_speed = 10.0f;
@@ -36,11 +36,11 @@ struct Options
 };
 
 
-Options load_configuration(std::string_view filename);
-void save_configuration(const Options& options, std::string_view filename);
+Settings load_settings(std::string_view filename);
+void save_settings(const Settings& settings, std::string_view filename);
 
 
 }  // namespace apeiron::example
 
 
-#endif  // APEIRON_EXAMPLE_OPTIONS_H
+#endif  // APEIRON_EXAMPLE_SETTINGS_H

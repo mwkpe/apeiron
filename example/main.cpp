@@ -10,7 +10,7 @@
 #include "engine/error.h"
 #include "engine/input.h"
 #include "engine/event.h"
-#include "example/options.h"
+#include "example/settings.h"
 #include "example/menu.h"
 #include "example/world.h"
 
@@ -88,9 +88,9 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
   disable_dpi_scaling();
 
-  apeiron::example::Options options;
+  apeiron::example::Settings settings;
   try {
-    options = apeiron::example::load_configuration("config.json");
+    settings = apeiron::example::load_settings("settings.toml");
   }
   catch (const apeiron::engine::Warning& w) {
     std::cout << w.what() << std::endl;
@@ -102,10 +102,10 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-  SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, options.msaa_samples);
+  SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, settings.msaa_samples);
 
   auto* window = SDL_CreateWindow("apeiron", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-      options.window_width, options.window_height, SDL_WINDOW_OPENGL);
+      settings.window_width, settings.window_height, SDL_WINDOW_OPENGL);
   auto context = SDL_GL_CreateContext(window);
   auto quit_sdl = [&]{
     SDL_GL_DeleteContext(context);
@@ -125,20 +125,20 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     GLint max_anisotropy = 1;
     glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &max_anisotropy);
     if (max_anisotropy > 1)
-      options.af_samples = max_anisotropy;
+      settings.af_samples = max_anisotropy;
   }
 
-  if (options.vsync)
+  if (settings.vsync)
     SDL_GL_SetSwapInterval(1);
   else
     SDL_GL_SetSwapInterval(0);
 
-  apeiron::example::World world(&options);
+  apeiron::example::World world(&settings);
   apeiron::example::Menu menu(window, context);
   try {
     world.init();
     menu.init();
-    menu.setup(&options);
+    menu.setup(&settings);
   }
   catch (const apeiron::engine::Error& e) {
     std::cerr << e.what() << std::endl;
@@ -147,10 +147,10 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     return 1;
   }
 
-  auto frame_timer = [&options, last_ticks = SDL_GetTicks()](bool benchmarking) mutable {
+  auto frame_timer = [&settings, last_ticks = SDL_GetTicks()](bool benchmarking) mutable {
     auto current_ticks = SDL_GetTicks();
     auto elapsed = current_ticks - last_ticks;
-    if (auto target = 1000u / options.max_fps; !benchmarking && options.limit_fps && elapsed < target) {
+    if (auto target = 1000u / settings.max_fps; !benchmarking && settings.limit_fps && elapsed < target) {
       SDL_Delay(target - elapsed);
       current_ticks = SDL_GetTicks();
       elapsed = current_ticks - last_ticks;
@@ -164,26 +164,26 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
   int benchmark_total_frames = 0;
   std::vector<apeiron::engine::Event> events;
 
-  while (!options.quit) {
+  while (!settings.quit) {
     auto elapsed = frame_timer(benchmarking);  // May also delay and hence limits fps
     float delta_time = elapsed / 1000.0f;
     auto time = SDL_GetTicks() / 1000.0f;
 
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-      if (options.show_menu) {
+      if (settings.show_menu) {
         menu.process(&event);
       }
-      options.quit = event.type == SDL_QUIT;
+      settings.quit = event.type == SDL_QUIT;
       switch (event.type) {
         case SDL_KEYDOWN: {
           switch (event.key.keysym.sym) {
             case SDLK_ESCAPE:
-              options.quit = true;
+              settings.quit = true;
               break;
             case SDLK_F1:
-              options.show_menu = !options.show_menu;
-              if (options.show_menu) {
+              settings.show_menu = !settings.show_menu;
+              if (settings.show_menu) {
                 SDL_CaptureMouse(SDL_FALSE);
                 SDL_SetRelativeMouseMode(SDL_FALSE);
               }
@@ -194,7 +194,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
               }
               break;
             case SDLK_F4:
-              options.wireframe = !options.wireframe;
+              settings.wireframe = !settings.wireframe;
               break;
             case SDLK_F6:
               if (!benchmarking) {
@@ -247,8 +247,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     world.render();
-    if (options.show_menu) {
-      menu.build(&options, time);
+    if (settings.show_menu) {
+      menu.build(&settings, time);
       menu.render();
     }
 
@@ -264,7 +264,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
   }
 
   quit_sdl();
-  apeiron::example::save_configuration(options, "config.json");
+  apeiron::example::save_settings(settings, "settings.toml");
 
   return 0;
 }

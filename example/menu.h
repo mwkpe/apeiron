@@ -3,7 +3,7 @@
 
 
 #include "opengl/gui.h"
-#include "example/options.h"
+#include "example/settings.h"
 
 
 namespace apeiron::example {
@@ -13,8 +13,8 @@ class Menu final : public opengl::Gui
 {
 public:
   Menu(SDL_Window* window, SDL_GLContext context) : opengl::Gui{window, context} {}
-  void setup(example::Options* options);
-  void build(example::Options* options, float time);
+  void setup(example::Settings* settings);
+  void build(example::Settings* settings, float time);
   bool has_mouse() const { return has_mouse_; }
 
 private:

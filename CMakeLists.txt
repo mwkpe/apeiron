@@ -19,8 +19,8 @@ endif ()
 
 add_executable(apeiron_example
     example/main.cpp
-    example/options.cpp
-    example/options.h
+    example/settings.cpp
+    example/settings.h
     example/menu.cpp
     example/menu.h
     example/cube.h
