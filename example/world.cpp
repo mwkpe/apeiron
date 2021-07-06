@@ -33,9 +33,10 @@ void apeiron::example::World::init()
   cube_texture_.load("assets/ab_crate_a.png", Pixel_format::Rgba);
 
   cube_model_.set<engine::Vertex_normal_texcoords>({1.0f, 1.0f, 1.0f});
-  bulb_.load("assets/private/bulb.obj");
+  bulb_.load("assets/cube.obj");
   teapot_.load_model();
 
+  light_.set_scale(0.2f, 0.3f, 0.2f);
   light_.set_position(0.0f, 8.5f, -options_->light_distance);
   light_.set_color(1.0f, 1.0f, 1.0f);
   light_.switch_on();
