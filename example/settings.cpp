@@ -39,7 +39,6 @@ void apeiron::example::save_settings(const Settings& settings, std::string_view 
 {
   toml::table t;
   t.insert("window_width", settings.window_width);
-  t.insert("window_width", settings.window_width);
   t.insert("window_height", settings.window_height);
   t.insert("msaa_samples", settings.msaa_samples);
   t.insert("max_fps", settings.max_fps);
