@@ -4,6 +4,7 @@
 
 #include <cstdint>
 #include <variant>
+#include <vector>
 
 
 namespace apeiron::engine {
@@ -49,6 +50,8 @@ using Event = std::variant<
     Mouse_button_up_event,
     Mouse_button_down_event,
     Mouse_wheel_event>;
+
+using Event_queue = std::vector<Event>;
 
 
 }  // namespace apeiron::engine
