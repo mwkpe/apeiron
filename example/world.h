@@ -32,7 +32,7 @@ class World final
 public:
   explicit World(const Settings* settings);
   void init();
-  void update(float time, float delta_time, const std::vector<apeiron::engine::Event>& events,
+  void update(float time, float delta_time, const apeiron::engine::Event_queue& events,
       const engine::Input* input = nullptr);
   void render();
 

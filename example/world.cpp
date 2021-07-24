@@ -78,7 +78,7 @@ void apeiron::example::World::init()
 
 
 void apeiron::example::World::update(float time, float delta_time,
-    const std::vector<apeiron::engine::Event>& events, const engine::Input* input)
+    const apeiron::engine::Event_queue& events, const engine::Input* input)
 {
   // Process events and input state
   for (const auto& event : events)
@@ -145,7 +145,7 @@ void apeiron::example::World::render()
   auto color = settings_->main_color;
 
   renderer_.use_world_space();
-  renderer_.preset_view(camera_.view());
+  renderer_.preset_view(camera_.perspective_view());
   renderer_.set_view_projection();
 
   renderer_.set_wireframe(settings_->wireframe);
