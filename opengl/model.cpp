@@ -13,6 +13,13 @@ template<typename T> void apeiron::opengl::Model::load(std::string_view filename
 }
 
 
+void apeiron::opengl::Model::render() const
+{
+  for (const auto& mesh : meshes_)
+    mesh.render();
+}
+
+
 using namespace apeiron::engine;
 using namespace apeiron::opengl;
 

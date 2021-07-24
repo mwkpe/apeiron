@@ -17,6 +17,7 @@ public:
   std::vector<Triangles>::const_iterator begin() const { return std::cbegin(meshes_); }
   std::vector<Triangles>::const_iterator end() const { return std::cend(meshes_); }
   template<typename T = engine::Vertex> void load(std::string_view filename);
+  void render() const;
 
 private:
   std::vector<Triangles> meshes_;
