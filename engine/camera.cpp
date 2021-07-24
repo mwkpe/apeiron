@@ -57,7 +57,13 @@ void apeiron::engine::Camera::orient(int dx, int dy, float sensitivity)
 }
 
 
-glm::mat4 apeiron::engine::Camera::view() const
+glm::mat4 apeiron::engine::Camera::perspective_view() const
 {
   return glm::lookAt(position_, position_ + front_, up_);
+}
+
+
+glm::mat4 apeiron::engine::Camera::isometric_view() const
+{
+  return glm::lookAt(center_ + position_, center_, world_up_);
 }
