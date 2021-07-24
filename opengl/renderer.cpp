@@ -30,6 +30,12 @@ void apeiron::opengl::Renderer::init()
 }
 
 
+void apeiron::opengl::Renderer::use()
+{
+  shader_.use();
+}
+
+
 void apeiron::opengl::Renderer::set_viewport(int x, int y, int w, int h)
 {
   glViewport(x, y, w, h);

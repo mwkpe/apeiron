@@ -17,6 +17,7 @@ class Renderer final
 {
 public:
   void init();
+  void use();
   void set_viewport(int x, int y, int w, int h);
 
   void use_world_space();
