@@ -11,7 +11,7 @@ void apeiron::opengl::Gui::init()
 {
   ImGui::CreateContext();
   ImGui_ImplSDL2_InitForOpenGL(window_, context_);
-  ImGui_ImplOpenGL3_Init(nullptr);
+  ImGui_ImplOpenGL3_Init("#version 330");
   ImGui::StyleColorsDark();
 }
 
