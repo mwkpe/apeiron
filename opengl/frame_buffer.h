@@ -21,6 +21,7 @@ public:
   void bind() const;
   void unbind() const;
   void bind_texture() const;
+  void unbind_texture() const;
   void blit() const;
   std::uint32_t texture_id() const { return color_buffer_id_; }
 

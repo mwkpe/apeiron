@@ -156,6 +156,12 @@ void apeiron::opengl::Frame_buffer::bind_texture() const
 }
 
 
+void apeiron::opengl::Frame_buffer::unbind_texture() const
+{
+  glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+
 void apeiron::opengl::Frame_buffer::blit() const
 {
   if (frame_buffer_resolve_id_ == 0)  // FB not multisampled
