@@ -92,6 +92,20 @@ apeiron::opengl::Texture::~Texture()
 }
 
 
+void apeiron::opengl::Texture::set_filter(Texture_filter min, Texture_filter mag)
+{
+  min_filter_ = min;
+  mag_filter_ = mag;
+}
+
+
+void apeiron::opengl::Texture::set_wrap(Wrap_mode s, Wrap_mode t)
+{
+  wrap_mode_s_ = s;
+  wrap_mode_t_ = t;
+}
+
+
 void apeiron::opengl::Texture::load(std::string_view filename, Pixel_format pixel_format)
 {
   auto&& [pixel, width, height, channel_count] = engine::load_image(filename);
