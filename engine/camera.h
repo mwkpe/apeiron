@@ -16,12 +16,14 @@ public:
       glm::vec3 position = glm::vec3{0.0f, 0.0f, 0.0f});
   void setup(float pitch = 0.0f, float yaw = 0.0f,
       glm::vec3 position = glm::vec3{0.0f, 0.0f, 0.0f});
+  void update();
   void set_position(glm::vec3 position) { position_ = position; }
   void set_center(glm::vec3 center) { center_ = center; }
   void set_world_up(glm::vec3 world_up) { world_up_ = world_up; }
   void move(Direction direction, float distances);
   void move(float dx, float dy, float dz) { position_ += glm::vec3{dx, dy, dz}; }
   void isometric_move(float dx, float dy, float dz) { center_ += glm::vec3{dx, dy, dz}; }
+  void invert_pitch() { pitch_ = -pitch_; }
   void orient(int dx, int dy, float sensitivity);
   glm::vec3 position() const { return position_; }
   glm::mat4 perspective_view() const;
