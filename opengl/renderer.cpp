@@ -22,7 +22,7 @@ void apply_rotation(glm::mat4& model, const glm::vec3& rotation)
 
 void apeiron::opengl::Renderer::init()
 {
-  shader_.load("shader/vertex.vs", "shader/color.fs");
+  shader_.load("shader/default.vs", "shader/default.fs");
   shader_.use();
   shader_.set_uniform("render_mode", 0);
   shader_.set_uniform("clip_scene", false);
