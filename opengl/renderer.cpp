@@ -25,6 +25,7 @@ void apeiron::opengl::Renderer::init()
   shader_.load("shader/vertex.vs", "shader/color.fs");
   shader_.use();
   shader_.set_uniform("render_mode", 0);
+  shader_.set_uniform("clip_scene", false);
   shader_.set_uniform("color_mode", 0xFF);
   shader_.set_uniform("texture2d", 0);
 }
@@ -91,6 +92,23 @@ void apeiron::opengl::Renderer::set_view_projection()
 }
 
 
+void apeiron::opengl::Renderer::set_clip_scene(bool clip_scene)
+{
+  if (clip_scene)
+    glEnable(GL_CLIP_DISTANCE0);
+  else
+    glDisable(GL_CLIP_DISTANCE0);
+
+  shader_.set_uniform("clip_scene", clip_scene);
+}
+
+
+void apeiron::opengl::Renderer::set_clipping_plane(const glm::vec4& plane)
+{
+  shader_.set_uniform("clipping_plane", plane);
+}
+
+
 void apeiron::opengl::Renderer::set_wireframe(bool wireframe)
 {
   if (wireframe)
@@ -98,7 +116,16 @@ void apeiron::opengl::Renderer::set_wireframe(bool wireframe)
   else
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
- 
+
+
+void apeiron::opengl::Renderer::set_depth_test(bool depth_test)
+{
+  if (depth_test)
+    glEnable(GL_DEPTH_TEST);
+  else
+    glDisable(GL_DEPTH_TEST);
+}
+
 
 void apeiron::opengl::Renderer::set_colorize(bool colorize)
 {
@@ -199,6 +226,14 @@ void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::T
   }
 
   set_colorize(false);
+}
+
+
+void apeiron::opengl::Renderer::render_screen(const engine::Entity& entity)
+{
+  shader_.set_uniform("translation", entity.position());
+  shader_.set_uniform("scale", entity.scale());
+  entity.render();
 }
 
 

@@ -32,7 +32,10 @@ public:
   void set_view(const glm::mat4& view);
   void set_projection(const glm::mat4& projection);
   void set_view_projection();
+  void set_clip_scene(bool clip_scene);
+  void set_clipping_plane(const glm::vec4& plane);
   void set_wireframe(bool wireframe);
+  void set_depth_test(bool depth_test);
   void set_colorize(bool colorize);
   void set_lighting(bool lighting);
   void set_light_position(const glm::vec3& position);
@@ -45,6 +48,7 @@ public:
   void render(const engine::Entity& entity, const glm::vec4& color);
   void render(const engine::Text& text, const opengl::Tileset& charset);
   void render(const engine::Text& text, const opengl::Tileset& charset, const glm::vec4& color);
+  void render_screen(const engine::Entity& entity);
   void render_screen(const engine::Text& text, const opengl::Tileset& charset,
       const glm::vec4& color);
   void render_bounds(const engine::Entity& entity, const glm::vec4& color);
