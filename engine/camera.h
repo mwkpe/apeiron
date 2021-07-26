@@ -25,6 +25,7 @@ public:
   void isometric_move(float dx, float dy, float dz) { center_ += glm::vec3{dx, dy, dz}; }
   void invert_pitch() { pitch_ = -pitch_; }
   void orient(int dx, int dy, float sensitivity);
+  float pitch() const { return pitch_; }
   glm::vec3 position() const { return position_; }
   glm::mat4 perspective_view() const;
   glm::mat4 isometric_view() const;
