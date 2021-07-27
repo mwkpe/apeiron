@@ -3,6 +3,7 @@
 
 
 #include <cstdint>
+#include <vector>
 #include <string_view>
 #include <glm/glm.hpp>
 
@@ -14,6 +15,8 @@ class Shader final
 {
 public:
   void load(std::string_view vertex_shader_file, std::string_view fragment_shader_file);
+  void compose(const std::vector<std::string>& vertex_shader_files,
+      const std::vector<std::string>& fragment_shader_files);
   void use() const;
   void set_uniform(const char* name, bool value) const;
   void set_uniform(const char* name, std::int32_t value) const;

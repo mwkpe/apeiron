@@ -73,6 +73,25 @@ void apeiron::opengl::Shader::load(std::string_view vertex_shader_file,
 }
 
 
+void apeiron::opengl::Shader::compose(const std::vector<std::string>& vertex_shader_files,
+      const std::vector<std::string>& fragment_shader_files)
+{
+  std::string vs_source;
+  for (const auto& file : vertex_shader_files) {
+    vs_source += read_file(file);
+  }
+
+  std::string fs_source;
+  for (const auto& file : fragment_shader_files) {
+    fs_source += read_file(file);
+  }
+
+  auto vertex_shader = create_shader(GL_VERTEX_SHADER, vs_source);
+  auto fragment_shader = create_shader(GL_FRAGMENT_SHADER, fs_source);
+  id_ = create_program(vertex_shader, fragment_shader);
+}
+
+
 void apeiron::opengl::Shader::use() const
 {
   glUseProgram(id_);
