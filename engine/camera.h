@@ -27,6 +27,7 @@ public:
   void orient(int dx, int dy, float sensitivity);
   float pitch() const { return pitch_; }
   glm::vec3 position() const { return position_; }
+  glm::vec3 center() const { return center_; }
   glm::mat4 perspective_view() const;
   glm::mat4 isometric_view() const;
 
