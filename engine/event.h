@@ -13,6 +13,20 @@ namespace apeiron::engine {
 enum class Mouse_button : std::uint8_t  { Unknown, Left, Middle, Right, Side1, Side2 };
 
 
+struct Key_down_event
+{
+  int keycode;
+  int keymod;
+};
+
+
+struct Key_up_event
+{
+  int keycode;
+  int keymod;
+};
+
+
 struct Mouse_motion_event
 {
   std::int32_t x;
@@ -46,6 +60,8 @@ struct Mouse_wheel_event
 
 
 using Event = std::variant<
+    Key_down_event,
+    Key_up_event,
     Mouse_motion_event,
     Mouse_button_up_event,
     Mouse_button_down_event,
