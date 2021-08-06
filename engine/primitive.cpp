@@ -5,7 +5,7 @@
 
 
 template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(float width,
-    float height, Face face, glm::vec3 position)
+    float height, Face face, const glm::vec3& position)
 {
   const float x = position.x;
   const float y = position.y;
@@ -18,7 +18,7 @@ template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(fl
     switch (face) {
       case Face::Front:
         return {
-          // x, y, z, nx, ny, nz, s, t
+          // x, y, z, nx, ny, nz, s, t, r, g, b, a
           // xy-plane
           {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
           {{ w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
@@ -83,7 +83,7 @@ template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(fl
     switch (face) {
       case Face::Front:
         return {
-          // x, y, z, nx, ny, nz, s, t
+          // x, y, z
           // xy-plane
           {{-w + x, -h + y, z}},
           {{ w + x, -h + y, z}},
@@ -148,7 +148,7 @@ template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(fl
     switch (face) {
       case Face::Front:
         return {
-          // x, y, z, nx, ny, nz, s, t
+          // x, y, z, nx, ny, nz
           // xy-plane
           {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}},
           {{ w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}},
@@ -213,7 +213,7 @@ template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(fl
     switch (face) {
       case Face::Front:
         return {
-          // x, y, z, nx, ny, nz, s, t
+          // x, y, z, s, t
           // xy-plane
           {{-w + x, -h + y, z}, {0.0f, 0.0f}},
           {{ w + x, -h + y, z}, {1.0f, 0.0f}},
@@ -345,7 +345,7 @@ template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(fl
 
 
 template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(float width,
-    float height, glm::vec4 color, Face face, glm::vec3 position)
+    float height, const glm::vec4& color, Face face, const glm::vec3& position)
 {
   const float x = position.x;
   const float y = position.y;
@@ -363,7 +363,7 @@ template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(fl
     switch (face) {
       case Face::Front:
         return {
-          // x, y, z, nx, ny, nz, s, t
+          // x, y, z, nx, ny, nz, s, t, r, g, b, a
           // xy-plane
           {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {r, g, b, a}},
           {{ w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, {r, g, b, a}},
@@ -428,7 +428,7 @@ template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(fl
     switch (face) {
       case Face::Front:
         return {
-          // x, y, z, nx, ny, nz, s, t
+          // x, y, z, r, g, b, a
           // xy-plane
           {{-w + x, -h + y, z}, {r, g, b, a}},
           {{ w + x, -h + y, z}, {r, g, b, a}},
@@ -493,7 +493,7 @@ template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(fl
     switch (face) {
       case Face::Front:
         return {
-          // x, y, z, nx, ny, nz, s, t
+          // x, y, z, nx, ny, nz, r, g, b, a
           // xy-plane
           {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {r, g, b, a}},
           {{ w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {r, g, b, a}},
@@ -559,8 +559,8 @@ template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(fl
 }
 
 
-template<typename T> std::vector<T> apeiron::engine::primitive::cuboid_vertices(glm::vec3 size,
-    glm::vec3 position)
+template<typename T> std::vector<T> apeiron::engine::primitive::cuboid_vertices(const glm::vec3& size,
+    const glm::vec3& position)
 {
   const float x = position.x;
   const float y = position.y;
@@ -720,7 +720,7 @@ template<typename T> std::vector<T> apeiron::engine::primitive::cuboid_vertices(
   else if constexpr (std::is_same<T, Vertex_texcoords>::value) {
     return {
       {
-        // x, y, z, nx, ny, nz, s, t, r, g, b, a
+        // x, y, z, s, t
         // Front (xy-plane)
         {{-w + x, -h + y, l + z}, {0.0f, 0.0f}},
         {{ w + x, -h + y, l + z}, {1.0f, 0.0f}},
@@ -820,8 +820,8 @@ template<typename T> std::vector<T> apeiron::engine::primitive::cuboid_vertices(
 }
 
 
-template<typename T> std::vector<T> apeiron::engine::primitive::cuboid_vertices(glm::vec3 size,
-    glm::vec4 color, glm::vec3 position)
+template<typename T> std::vector<T> apeiron::engine::primitive::cuboid_vertices(
+    const glm::vec3& size, const glm::vec4& color, const glm::vec3& position)
 {
   const float x = position.x;
   const float y = position.y;
@@ -988,23 +988,267 @@ template<typename T> std::vector<T> apeiron::engine::primitive::cuboid_vertices(
 }
 
 
+template<typename T> std::vector<T> apeiron::engine::primitive::disk_vertices(float radius,
+    int points, Face face, const glm::vec3& position)
+{
+  constexpr float pi = 3.141592f;
+  constexpr float tau = 2.0f * pi;
+
+  const float x = position.x;
+  const float y = position.y;
+  const float z = position.z;
+
+  std::vector<glm::vec4> vertices;
+
+  for (int i=0; i<=points; ++i) {
+    const float angle = static_cast<float>(i) / points * tau;
+    const float p1 = x + radius * std::cos(angle);
+    const float p2 = y + radius * std::sin(angle);
+    const float p3 = z + radius * std::sin(angle);
+    const float p4 = y + radius * std::cos(angle);
+    vertices.emplace_back(p1, p2, p3, p4);
+  }
+
+  std::vector<T> triangle_vertices;
+
+  for (int i=1; i<=points; ++i) {
+    switch (face) {
+      case Face::Front:
+      case Face::Back: {
+        const auto& v1 = face == Face::Front ? vertices[i-1] : vertices[i];
+        const auto& v2 = face == Face::Front ? vertices[i] : vertices[i-1];
+
+        // Direction of normal
+        float n = face == Face::Front ? 1.0f : -1.0f;
+
+        if constexpr (std::is_same<T, Vertex>::value) {
+          // x, y, z, nx, ny, nz, s, t, r, g, b, a (texcoords s and t are not provided and kept zero)
+          triangle_vertices.emplace_back(v1.x, v1.y, z, 0.0f, 0.0f, n, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+          triangle_vertices.emplace_back(v2.x, v2.y, z, 0.0f, 0.0f, n, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+          triangle_vertices.emplace_back(x,       y, z, 0.0f, 0.0f, n, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+        }
+        else if constexpr (std::is_same<T, Vertex_simple>::value) {
+          // x, y, z
+          triangle_vertices.emplace_back(v1.x, v1.y, z);
+          triangle_vertices.emplace_back(v2.x, v2.y, z);
+          triangle_vertices.emplace_back(x,       y, z);
+        }
+        else if constexpr (std::is_same<T, Vertex_normal>::value) {
+          // x, y, z, nx, ny, nz
+          triangle_vertices.emplace_back(v1.x, v1.y, z, 0.0f, 0.0f, n);
+          triangle_vertices.emplace_back(v2.x, v2.y, z, 0.0f, 0.0f, n);
+          triangle_vertices.emplace_back(x,       y, z, 0.0f, 0.0f, n);
+        }
+      }
+      break;
+      case Face::Up:
+      case Face::Down: {
+        const auto& v1 = face == Face::Down ? vertices[i-1] : vertices[i];
+        const auto& v2 = face == Face::Down ? vertices[i] : vertices[i-1];
+
+        // Direction of normal
+        float n = face == Face::Up ? 1.0f : -1.0f;
+
+        if constexpr (std::is_same<T, Vertex>::value) {
+          // x, y, z, nx, ny, nz, s, t, r, g, b, a (texcoords s and t are not provided and kept zero)
+          triangle_vertices.emplace_back(v1.x, y, v1.z, 0.0f, n, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+          triangle_vertices.emplace_back(v2.x, y, v2.z, 0.0f, n, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+          triangle_vertices.emplace_back(x,    y,    z, 0.0f, n, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+        }
+        else if constexpr (std::is_same<T, Vertex_simple>::value) {
+          // x, y, z
+          triangle_vertices.emplace_back(v1.x, y, v1.z);
+          triangle_vertices.emplace_back(v2.x, y, v2.z);
+          triangle_vertices.emplace_back(x,    y,    z);
+        }
+        else if constexpr (std::is_same<T, Vertex_normal>::value) {
+          // x, y, z, nx, ny, nz
+          triangle_vertices.emplace_back(v1.x, y, v1.z, 0.0f, n, 0.0f);
+          triangle_vertices.emplace_back(v2.x, y, v2.z, 0.0f, n, 0.0f);
+          triangle_vertices.emplace_back(x,    y,    z, 0.0f, n, 0.0f);
+        }
+      }
+      break;
+      case Face::Left:
+      case Face::Right: {
+        const auto& v1 = face == Face::Left ? vertices[i] : vertices[i-1];
+        const auto& v2 = face == Face::Left ? vertices[i-1] : vertices[i];
+
+        // Direction of normal
+        float n = face == Face::Right ? 1.0f : -1.0f;
+
+        if constexpr (std::is_same<T, Vertex>::value) {
+          // x, y, z, nx, ny, nz, s, t, r, g, b, a (texcoords s and t are not provided and kept zero)
+          triangle_vertices.emplace_back(x, v1.w, v1.z, n, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+          triangle_vertices.emplace_back(x, v2.w, v2.z, n, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+          triangle_vertices.emplace_back(x,    y,    z, n, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+        }
+        else if constexpr (std::is_same<T, Vertex_simple>::value) {
+          // x, y, z
+          triangle_vertices.emplace_back(x, v1.w, v1.z);
+          triangle_vertices.emplace_back(x, v2.w, v2.z);
+          triangle_vertices.emplace_back(x,    y,    z);
+        }
+        else if constexpr (std::is_same<T, Vertex_normal>::value) {
+          // x, y, z, nx, ny, nz
+          triangle_vertices.emplace_back(x, v1.w, v1.z, n, 0.0f, 0.0f);
+          triangle_vertices.emplace_back(x, v2.w, v2.z, n, 0.0f, 0.0f);
+          triangle_vertices.emplace_back(x,    y,    z, n, 0.0f, 0.0f);
+        }
+      }
+      break;
+    }
+  }
+
+  return triangle_vertices;
+}
+
+
+template<typename T> std::vector<T> apeiron::engine::primitive::disk_vertices(float radius,
+    int points, const glm::vec4& color, Face face, const glm::vec3& position)
+{
+  constexpr float pi = 3.141592f;
+  constexpr float tau = 2.0f * pi;
+
+  const float x = position.x;
+  const float y = position.y;
+  const float z = position.z;
+
+  const float r = color.r;
+  const float g = color.g;
+  const float b = color.b;
+  const float a = color.a;
+
+  std::vector<glm::vec4> vertices;
+
+  for (int i=0; i<=points; ++i) {
+    const float angle = static_cast<float>(i) / points * tau;
+    const float p1 = x + radius * std::cos(angle);
+    const float p2 = y + radius * std::sin(angle);
+    const float p3 = z + radius * std::sin(angle);
+    const float p4 = y + radius * std::cos(angle);
+    vertices.emplace_back(p1, p2, p3, p4);
+  }
+
+  std::vector<T> triangle_vertices;
+
+  for (int i=1; i<=points; ++i) {
+    switch (face) {
+      case Face::Front:
+      case Face::Back: {
+        const auto& v1 = face == Face::Front ? vertices[i-1] : vertices[i];
+        const auto& v2 = face == Face::Front ? vertices[i] : vertices[i-1];
+
+        // Direction of normal
+        float n = face == Face::Front ? 1.0f : -1.0f;
+
+        if constexpr (std::is_same<T, Vertex>::value) {
+          // x, y, z, nx, ny, nz, s, t, r, g, b, a (texcoords s and t are not provided and kept zero)
+          triangle_vertices.emplace_back(v1.x, v1.y, z, 0.0f, 0.0f, n, 0.0f, 0.0f, r, g, b, a);
+          triangle_vertices.emplace_back(v2.x, v2.y, z, 0.0f, 0.0f, n, 0.0f, 0.0f, r, g, b, a);
+          triangle_vertices.emplace_back(x,       y, z, 0.0f, 0.0f, n, 0.0f, 0.0f, r, g, b, a);
+        }
+        else if constexpr (std::is_same<T, Vertex_color>::value) {
+          // x, y, z, r, g, b, a
+          triangle_vertices.emplace_back(v1.x, v1.y, z, r, g, b, a);
+          triangle_vertices.emplace_back(v2.x, v2.y, z, r, g, b, a);
+          triangle_vertices.emplace_back(x,       y, z, r, g, b, a);
+        }
+        else if constexpr (std::is_same<T, Vertex_normal_color>::value) {
+          // x, y, z, nx, ny, nz, r, g, b, a
+          triangle_vertices.emplace_back(v1.x, v1.y, z, 0.0f, 0.0f, n, r, g, b, a);
+          triangle_vertices.emplace_back(v2.x, v2.y, z, 0.0f, 0.0f, n, r, g, b, a);
+          triangle_vertices.emplace_back(x,       y, z, 0.0f, 0.0f, n, r, g, b, a);
+        }
+      }
+      break;
+      case Face::Up:
+      case Face::Down: {
+        const auto& v1 = face == Face::Down ? vertices[i-1] : vertices[i];
+        const auto& v2 = face == Face::Down ? vertices[i] : vertices[i-1];
+
+        // Direction of normal
+        float n = face == Face::Up ? 1.0f : -1.0f;
+
+        if constexpr (std::is_same<T, Vertex>::value) {
+          // x, y, z, nx, ny, nz, s, t, r, g, b, a (texcoords s and t are not provided and kept zero)
+          triangle_vertices.emplace_back(v1.x, y, v1.z, 0.0f, n, 0.0f, 0.0f, 0.0f, r, g, b, a);
+          triangle_vertices.emplace_back(v2.x, y, v2.z, 0.0f, n, 0.0f, 0.0f, 0.0f, r, g, b, a);
+          triangle_vertices.emplace_back(x,    y,    z, 0.0f, n, 0.0f, 0.0f, 0.0f, r, g, b, a);
+        }
+        else if constexpr (std::is_same<T, Vertex_color>::value) {
+          // x, y, z, r, g, b, a
+          triangle_vertices.emplace_back(v1.x, y, v1.z, r, g, b, a);
+          triangle_vertices.emplace_back(v2.x, y, v2.z, r, g, b, a);
+          triangle_vertices.emplace_back(x,    y,    z, r, g, b, a);
+        }
+        else if constexpr (std::is_same<T, Vertex_normal_color>::value) {
+          // x, y, z, nx, ny, nz, r, g, b, a
+          triangle_vertices.emplace_back(v1.x, y, v1.z, 0.0f, n, 0.0f, r, g, b, a);
+          triangle_vertices.emplace_back(v2.x, y, v2.z, 0.0f, n, 0.0f, r, g, b, a);
+          triangle_vertices.emplace_back(x,    y,    z, 0.0f, n, 0.0f, r, g, b, a);
+        }
+      }
+      break;
+      case Face::Left:
+      case Face::Right: {
+        const auto& v1 = face == Face::Left ? vertices[i] : vertices[i-1];
+        const auto& v2 = face == Face::Left ? vertices[i-1] : vertices[i];
+
+        // Direction of normal
+        float n = face == Face::Right ? 1.0f : -1.0f;
+
+        if constexpr (std::is_same<T, Vertex>::value) {
+          // x, y, z, nx, ny, nz, s, t, r, g, b, a (texcoords s and t are not provided and kept zero)
+          triangle_vertices.emplace_back(x, v1.w, v1.z, n, 0.0f, 0.0f, 0.0f, 0.0f, r, g, b, a);
+          triangle_vertices.emplace_back(x, v2.w, v2.z, n, 0.0f, 0.0f, 0.0f, 0.0f, r, g, b, a);
+          triangle_vertices.emplace_back(x,    y,    z, n, 0.0f, 0.0f, 0.0f, 0.0f, r, g, b, a);
+        }
+        else if constexpr (std::is_same<T, Vertex_color>::value) {
+          // x, y, z, r, g, b, a
+          triangle_vertices.emplace_back(x, v1.w, v1.z, r, g, b, a);
+          triangle_vertices.emplace_back(x, v2.w, v2.z, r, g, b, a);
+          triangle_vertices.emplace_back(x, y, z, r, g, b, a);
+        }
+        else if constexpr (std::is_same<T, Vertex_normal_color>::value) {
+          // x, y, z, nx, ny, nz, r, g, b, a
+          triangle_vertices.emplace_back(x, v1.w, v1.z, n, 0.0f, 0.0f, r, g, b, a);
+          triangle_vertices.emplace_back(x, v2.w, v2.z, n, 0.0f, 0.0f, r, g, b, a);
+          triangle_vertices.emplace_back(x,    y,    z, n, 0.0f, 0.0f, r, g, b, a);
+        }
+      }
+      break;
+    }
+  }
+
+  return triangle_vertices;
+}
+
+
 using namespace apeiron::engine;
 using namespace apeiron::engine::primitive;
 
-template std::vector<Vertex> quad_vertices(float, float, Face, glm::vec3);
-template std::vector<Vertex> quad_vertices(float, float, glm::vec4, Face, glm::vec3);
-template std::vector<Vertex_simple> quad_vertices(float, float, Face, glm::vec3);
-template std::vector<Vertex_normal> quad_vertices(float, float, Face, glm::vec3);
-template std::vector<Vertex_color> quad_vertices(float, float, glm::vec4, Face, glm::vec3);
-template std::vector<Vertex_texcoords> quad_vertices(float, float, Face, glm::vec3);
-template std::vector<Vertex_normal_color> quad_vertices(float, float, glm::vec4, Face, glm::vec3);
-template std::vector<Vertex_normal_texcoords> quad_vertices(float, float, Face, glm::vec3);
+template std::vector<Vertex> quad_vertices(float, float, Face, const glm::vec3&);
+template std::vector<Vertex> quad_vertices(float, float, const glm::vec4&, Face, const glm::vec3&);
+template std::vector<Vertex_simple> quad_vertices(float, float, Face, const glm::vec3&);
+template std::vector<Vertex_normal> quad_vertices(float, float, Face, const glm::vec3&);
+template std::vector<Vertex_color> quad_vertices(float, float, const glm::vec4&, Face, const glm::vec3&);
+template std::vector<Vertex_texcoords> quad_vertices(float, float, Face, const glm::vec3&);
+template std::vector<Vertex_normal_color> quad_vertices(float, float, const glm::vec4&, Face, const glm::vec3&);
+template std::vector<Vertex_normal_texcoords> quad_vertices(float, float, Face, const glm::vec3&);
 
-template std::vector<Vertex> cuboid_vertices(glm::vec3, glm::vec3);
-template std::vector<Vertex> cuboid_vertices(glm::vec3, glm::vec4, glm::vec3);
-template std::vector<Vertex_simple> cuboid_vertices(glm::vec3, glm::vec3);
-template std::vector<Vertex_normal> cuboid_vertices(glm::vec3, glm::vec3);
-template std::vector<Vertex_color> cuboid_vertices(glm::vec3, glm::vec4, glm::vec3);
-template std::vector<Vertex_texcoords> cuboid_vertices(glm::vec3, glm::vec3);
-template std::vector<Vertex_normal_color> cuboid_vertices(glm::vec3, glm::vec4, glm::vec3);
-template std::vector<Vertex_normal_texcoords> cuboid_vertices(glm::vec3, glm::vec3);
+template std::vector<Vertex> cuboid_vertices(const glm::vec3&, const glm::vec3&);
+template std::vector<Vertex> cuboid_vertices(const glm::vec3&, const glm::vec4&, const glm::vec3&);
+template std::vector<Vertex_simple> cuboid_vertices(const glm::vec3&, const glm::vec3&);
+template std::vector<Vertex_normal> cuboid_vertices(const glm::vec3&, const glm::vec3&);
+template std::vector<Vertex_color> cuboid_vertices(const glm::vec3&, const glm::vec4&, const glm::vec3&);
+template std::vector<Vertex_texcoords> cuboid_vertices(const glm::vec3&, const glm::vec3&);
+template std::vector<Vertex_normal_color> cuboid_vertices(const glm::vec3&, const glm::vec4&, const glm::vec3&);
+template std::vector<Vertex_normal_texcoords> cuboid_vertices(const glm::vec3&, const glm::vec3&);
+
+template std::vector<Vertex> disk_vertices(float, int, Face, const glm::vec3&);
+template std::vector<Vertex> disk_vertices(float, int, const glm::vec4&, Face, const glm::vec3&);
+template std::vector<Vertex_simple> disk_vertices(float, int, Face, const glm::vec3&);
+template std::vector<Vertex_normal> disk_vertices(float, int, Face, const glm::vec3&);
+template std::vector<Vertex_color> disk_vertices(float, int, const glm::vec4&, Face, const glm::vec3&);
+template std::vector<Vertex_normal_color> disk_vertices(float, int, const glm::vec4&, Face, const glm::vec3&);
