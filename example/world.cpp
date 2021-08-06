@@ -221,6 +221,16 @@ void apeiron::example::World::operator()([[maybe_unused]] const engine::Mouse_mo
 }
 
 
+void apeiron::example::World::operator()(const apeiron::engine::Key_down_event& event)
+{
+}
+
+
+void apeiron::example::World::operator()([[maybe_unused]] const apeiron::engine::Key_up_event& event)
+{
+}
+
+
 void apeiron::example::World::operator()(const engine::Mouse_button_down_event& event)
 {
   if (event.button == engine::Mouse_button::Left) {
@@ -240,5 +250,20 @@ void apeiron::example::World::operator()([[maybe_unused]] const engine::Mouse_bu
 
 
 void apeiron::example::World::operator()([[maybe_unused]] const engine::Mouse_wheel_event& event)
+{
+}
+
+
+void apeiron::example::World::operator()([[maybe_unused]] const apeiron::engine::Controller_button_down_event& event)
+{
+}
+
+
+void apeiron::example::World::operator()([[maybe_unused]] const apeiron::engine::Controller_button_up_event& event)
+{
+}
+
+
+void apeiron::example::World::operator()([[maybe_unused]] const apeiron::engine::Controller_axis_motion_event& event)
 {
 }

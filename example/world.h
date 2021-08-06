@@ -37,10 +37,15 @@ public:
   void render();
 
   // Event handling
-  void operator()(const engine::Mouse_motion_event& event);
-  void operator()(const engine::Mouse_button_down_event& event);
-  void operator()(const engine::Mouse_button_up_event& event);
-  void operator()(const engine::Mouse_wheel_event& event);
+  void operator()(const apeiron::engine::Key_down_event& event);
+  void operator()(const apeiron::engine::Key_up_event& event);
+  void operator()(const apeiron::engine::Mouse_button_down_event& event);
+  void operator()(const apeiron::engine::Mouse_button_up_event& event);
+  void operator()(const apeiron::engine::Mouse_motion_event& event);
+  void operator()(const apeiron::engine::Mouse_wheel_event& event);
+  void operator()(const apeiron::engine::Controller_button_down_event& event);
+  void operator()(const apeiron::engine::Controller_button_up_event& event);
+  void operator()(const apeiron::engine::Controller_axis_motion_event& event);
 
 private:
   void update_camera(float delta_time, const engine::Input* input);
