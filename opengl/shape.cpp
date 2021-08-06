@@ -1,7 +1,7 @@
 #include "shape.h"
 
 
-#include "GL/glew.h"
+#include <glad/glad.h>
 
 
 apeiron::opengl::Shape::Shape(Shape&& other) noexcept

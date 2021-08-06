@@ -4,7 +4,7 @@
 #include <tuple>
 #include <vector>
 #include <cstddef>
-#include "GL/glew.h"
+#include <glad/glad.h>
 #include "engine/vertex.h"
 #include "engine/primitive.h"
 

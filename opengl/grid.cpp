@@ -4,7 +4,7 @@
 #include <tuple>
 #include <vector>
 #include <cmath>
-#include "GL/glew.h"
+#include <glad/glad.h>
 #include "engine/vertex.h"
 #include "utility/linear_range.h"
 

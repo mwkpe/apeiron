@@ -6,7 +6,7 @@
   #include <windows.h>
 #endif
 #include "SDL2/SDL.h"
-#include "GL/glew.h"
+#include <glad/glad.h>
 #include "engine/error.h"
 #include "engine/input.h"
 #include "engine/event.h"
@@ -113,20 +113,19 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     SDL_Quit();
   };
 
-  glewExperimental = GL_TRUE;
-  if (GLenum status = glewInit(); status != GLEW_OK) {
-    std::cerr << reinterpret_cast<const char*>(glewGetErrorString(status));
+  if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
+    std::cerr << "Failed to initialize OpenGL context" << std::endl;
     quit_sdl();
     std::cin.ignore();  // Keep console open
     return 1;
   }
 
-  if (glewIsSupported("GL_EXT_texture_filter_anisotropic")) {
-    GLint max_anisotropy = 1;
-    glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &max_anisotropy);
-    if (max_anisotropy > 1)
-      settings.af_samples = max_anisotropy;
-  }
+//  if (glewIsSupported("GL_EXT_texture_filter_anisotropic")) {
+//    GLint max_anisotropy = 1;
+//    glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &max_anisotropy);
+//    if (max_anisotropy > 1)
+//      settings.af_samples = max_anisotropy;
+//  }
 
   if (settings.vsync)
     SDL_GL_SetSwapInterval(1);

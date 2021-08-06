@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
 
-project(apeiron_example CXX)
+project(apeiron_example C CXX)  # Must specify C for glad library included by apeiron
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra")

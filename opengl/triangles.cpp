@@ -3,7 +3,7 @@
 
 #include <cstddef>
 #include <type_traits>
-#include "GL/glew.h"
+#include <glad/glad.h>
 
 
 template<typename T> apeiron::opengl::Triangles::Triangles(const std::vector<T>& vertices)

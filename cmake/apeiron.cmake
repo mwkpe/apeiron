@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.11)
+add_library(glad ${CMAKE_CURRENT_LIST_DIR}/../external/glad/src/glad.c)
 
 add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/../utility/linear_range.h
@@ -58,17 +58,8 @@ add_library(apeiron
 list(APPEND APEIRON_INCLUDE_DIRECTORIES
     ${CMAKE_CURRENT_LIST_DIR}/..
     ${CMAKE_CURRENT_LIST_DIR}/../external
-    ${CMAKE_CURRENT_LIST_DIR}/../external/glm)
-
-if (WIN32)
-  list(APPEND APEIRON_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/../external/glew/include)
-  link_directories(${CMAKE_CURRENT_LIST_DIR}/../external/glew/lib/Release/x64)
-endif ()
+    ${CMAKE_CURRENT_LIST_DIR}/../external/glm
+    ${CMAKE_CURRENT_LIST_DIR}/../external/glad/include)
 
 include_directories(${APEIRON_INCLUDE_DIRECTORIES})
-
-if (WIN32)
-  target_link_libraries(apeiron -lglew32 -lglu32 -lopengl32)
-elseif (UNIX AND NOT APPLE)
-  target_link_libraries(apeiron -lGLEW -lGLU -lGL)
-endif ()
+target_link_libraries(apeiron glad)

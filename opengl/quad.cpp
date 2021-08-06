@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <cstddef>
-#include "GL/glew.h"
+#include <glad/glad.h>
 
 
 apeiron::opengl::Quad::Quad(float width, float height, engine::Face face,

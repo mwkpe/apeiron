@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <tuple>
 #include <vector>
-#include "GL/glew.h"
+#include <glad/glad.h>
 #include <glm/glm.hpp>
 #include "engine/vertex.h"
 

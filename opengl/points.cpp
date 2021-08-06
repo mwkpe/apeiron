@@ -2,7 +2,7 @@
 
 
 #include <cstddef>
-#include "GL/glew.h"
+#include <glad/glad.h>
 
 
 apeiron::opengl::Points::Points(const std::vector<engine::Vertex_simple>& vertices)
