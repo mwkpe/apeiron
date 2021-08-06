@@ -49,6 +49,7 @@ public:
   void render(const engine::Text& text, const opengl::Tileset& charset);
   void render(const engine::Text& text, const opengl::Tileset& charset, const glm::vec4& color);
   void render_screen(const engine::Entity& entity);
+  void render_screen(const engine::Entity& entity, const glm::vec4& color);
   void render_screen(const engine::Text& text, const opengl::Tileset& charset,
       const glm::vec4& color);
   void render_bounds(const engine::Entity& entity, const glm::vec4& color);

@@ -237,6 +237,15 @@ void apeiron::opengl::Renderer::render_screen(const engine::Entity& entity)
 }
 
 
+void apeiron::opengl::Renderer::render_screen(const engine::Entity& entity, const glm::vec4& color)
+{
+  shader_.set_uniform("translation", entity.position());
+  shader_.set_uniform("scale", entity.scale());
+  shader_.set_uniform("color", color);
+  entity.render();
+}
+
+
 void apeiron::opengl::Renderer::render_screen(const engine::Text& text,
     const opengl::Tileset& charset, const glm::vec4& color)
 {
