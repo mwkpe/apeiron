@@ -27,7 +27,7 @@ public:
   void set_rotation(float x, float y, float z) { rotation_ = glm::vec3{x, y, z}; }
   void set_rotation(glm::vec3 rotation) { rotation_ = rotation; }
 
-  const Entity* parent() const { return parent };
+  const Entity* parent() const { return parent_; };
   glm::vec3 position() const { return position_; }
   glm::vec3 center() const { return center_; }
   glm::vec3 size() const { return size_; }
