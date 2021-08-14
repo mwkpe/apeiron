@@ -18,7 +18,7 @@ void apeiron::engine::Camera::setup(float pitch, float yaw, glm::vec3 position)
   world_up_ = glm::vec3{0.0f, 1.0f, 0.0f};
   up_ = world_up_;
   pitch_ = pitch;
-  yaw_ = yaw - 90.0f;  // Look to negative z
+  yaw_ = yaw;
   update();
 }
 

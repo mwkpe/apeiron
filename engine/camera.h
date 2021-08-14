@@ -26,6 +26,7 @@ public:
   void invert_pitch() { pitch_ = -pitch_; }
   void orient(int dx, int dy, float sensitivity);
   float pitch() const { return pitch_; }
+  float yaw() const { return yaw_; }
   glm::vec3 position() const { return position_; }
   glm::vec3 center() const { return center_; }
   glm::mat4 perspective_view() const;
