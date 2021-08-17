@@ -46,6 +46,8 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/../opengl/wire_cuboid.h
     ${CMAKE_CURRENT_LIST_DIR}/../opengl/cylinder.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../opengl/cylinder.h
+    ${CMAKE_CURRENT_LIST_DIR}/../opengl/mesh_font.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../opengl/mesh_font.h
     ${CMAKE_CURRENT_LIST_DIR}/../opengl/model.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../opengl/model.h
     ${CMAKE_CURRENT_LIST_DIR}/../prefab/axis.h

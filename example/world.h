@@ -12,6 +12,7 @@
 #include "opengl/frame_buffer.h"
 #include "opengl/texture.h"
 #include "opengl/tileset.h"
+#include "opengl/mesh_font.h"
 #include "opengl/cuboid.h"
 #include "opengl/model.h"
 #include "prefab/axes.h"
@@ -52,7 +53,8 @@ private:
 
   const Settings* settings_;
   opengl::Renderer renderer_;
-  opengl::Tileset charset_;
+  opengl::Tileset bitmap_charset_;
+  opengl::Mesh_font mesh_charset_;
   opengl::Texture cube_texture_;
   opengl::Cuboid cube_model_;
   opengl::Model bulb_;
@@ -65,6 +67,7 @@ private:
   prefab::Teapot teapot_;
   Cylinder cylinder_;
   Ground_highlight ground_highlight_;
+  Cube cube_;
   std::vector<Cube> cubes_;
   int frame_ = 0;
   float frame_time_ = 0;

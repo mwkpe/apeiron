@@ -20,6 +20,13 @@ void apeiron::opengl::Model::render() const
 }
 
 
+void apeiron::opengl::Model::render(std::size_t index) const
+{
+  if (index < meshes_.size())
+    meshes_[index].render();
+}
+
+
 using namespace apeiron::engine;
 using namespace apeiron::opengl;
 

@@ -2,6 +2,7 @@
 #define APEIRON_OPENGL_MODEL_H
 
 
+#include <cstddef>
 #include <string_view>
 #include <vector>
 #include "engine/vertex.h"
@@ -18,6 +19,7 @@ public:
   std::vector<Triangles>::const_iterator end() const { return std::cend(meshes_); }
   template<typename T = engine::Vertex> void load(std::string_view filename);
   void render() const;
+  void render(std::size_t index) const;
 
 private:
   std::vector<Triangles> meshes_;

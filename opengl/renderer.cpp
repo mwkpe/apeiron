@@ -85,6 +85,12 @@ void apeiron::opengl::Renderer::set_projection(const glm::mat4& projection)
 }
 
 
+void apeiron::opengl::Renderer::set_ortho_projection(float width, float height)
+{
+  shader_.set_uniform("projection", glm::ortho(0.0f, width, 0.0f, height));
+}
+
+
 void apeiron::opengl::Renderer::set_view_projection()
 {
   view_projection_ = projection_ * view_;
@@ -124,6 +130,15 @@ void apeiron::opengl::Renderer::set_depth_test(bool depth_test)
     glEnable(GL_DEPTH_TEST);
   else
     glDisable(GL_DEPTH_TEST);
+}
+
+
+void apeiron::opengl::Renderer::set_blend(bool blend)
+{
+  if (blend)
+    glEnable(GL_BLEND);
+  else
+    glDisable(GL_BLEND);
 }
 
 
@@ -229,6 +244,38 @@ void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::T
 }
 
 
+void apeiron::opengl::Renderer::render(const engine::Text& text,
+    const opengl::Mesh_font& charset, const glm::vec4& color)
+{
+  use_color_shading();
+  shader_.set_uniform("color", color);
+
+  float offset_x = 0.0f;
+  float offset_y = 0.0f;
+
+  for (char c : text) {
+    if (c == '\n') {
+      offset_x = 0.0f;
+      offset_y += charset.letter_height() * text.text_size() * text.spacing().y;
+    }
+    else if (c == ' ') {
+      offset_x += charset.letter_spacing() * text.text_size() * text.spacing().x;
+    }
+    else {
+      glm::mat4 model{1.0f};
+      float letter_position = charset.letter_position(c) * text.text_size();
+      model = glm::translate(model, text.position() + glm::vec3{offset_x -
+          letter_position, 0.0f, offset_y});
+      model = glm::scale(model, text.scale());
+      apply_rotation(model, text.rotation());
+      shader_.set_uniform("model", model);
+      charset.render(c);
+      offset_x += charset.letter_spacing() * text.text_size() * text.spacing().x;
+    }
+  }
+}
+
+
 void apeiron::opengl::Renderer::render_screen(const engine::Entity& entity)
 {
   shader_.set_uniform("translation", entity.position());
@@ -257,12 +304,43 @@ void apeiron::opengl::Renderer::render_screen(const engine::Text& text,
 
   float offset = 0.0f;
   auto pos = text.position();
+
   for (char c : text) {
     shader_.set_uniform("translation", glm::vec3{pos.x + offset, pos.y, pos.z});
     charset.render(c);
     offset += charset.tile_width() * text.text_size() * text.spacing().x;
   }
   set_colorize(false);
+}
+
+
+void apeiron::opengl::Renderer::render_screen(const engine::Text& text,
+    const opengl::Mesh_font& charset, const glm::vec4& color)
+{
+  use_color_shading();
+  shader_.set_uniform("color", color);
+  shader_.set_uniform("scale", glm::vec3{text.text_size(), text.text_size(), 1.0f});
+
+  float offset_x = 0.0f;
+  float offset_y = 0.0f;
+
+  for (char c : text) {
+    if (c == '\n') {
+      offset_x = 0.0f;
+      // Origin is bottom left (see ortho)
+      offset_y -= charset.letter_height() * text.text_size() * text.spacing().y;
+    }
+    else if (c == ' ') {
+      offset_x += charset.letter_spacing() * text.text_size() * text.spacing().x;
+    }
+    else {
+      float letter_position = charset.letter_position(c) * text.text_size();
+      glm::vec3 position = text.position() + glm::vec3{offset_x - letter_position, offset_y, 0.0f};
+      shader_.set_uniform("translation", position);
+      charset.render(c);
+      offset_x += charset.letter_spacing() * text.text_size() * text.spacing().x;
+    }
+  }
 }
 
 
