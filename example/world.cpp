@@ -45,8 +45,8 @@ void apeiron::example::World::init()
   light_.switch_on();
 
   teapot_.set_position(-4.0f, 0.0f, 5.0f);
-  teapot_.set_rotation(0.0f, glm::radians(-45.0f), 0.0f);
-  teapot_.set_center(0.0f, 1.271f / 2.0f, 0.0f);  // Offset model origin to center
+  teapot_.set_rotation_deg(0.0f, -45.0f, 0.0f);
+  teapot_.set_origin(0.0f, 1.271f / 2.0f, 0.0f);  // Offset model origin to center
   cylinder_.set_position(5.0f, 1.5f, -5.0f);
 
   std::mt19937 rng{0x102df64d};
@@ -67,7 +67,7 @@ void apeiron::example::World::init()
     cubes_.back().set_position(position(), position(), position());
   }
 
-  cube_.set_rotation(0.0f, glm::radians(15.0f), 0.0f);
+  cube_.set_rotation_deg(0.0f, 15.0f, 0.0f);
   cube_.set_position(-5.0f, 1.5f, -4.0f);
   cube_.set_scale(3.0f, 3.0f, 3.0f);
 
@@ -107,7 +107,7 @@ void apeiron::example::World::update(float time, float delta_time,
   }
 
   // Cylinder
-  cylinder_.set_rotation(frame_time_ * glm::radians(360.0f * settings_->cylinder_revs) *
+  cylinder_.set_rotation_deg(frame_time_ * 360.0f * settings_->cylinder_revs *
       cylinder_.rotation_magnitudes());
   if (cylinder_.points() != settings_->cylinder_points) {
     cylinder_.rebuild(settings_->cylinder_points);
@@ -117,7 +117,7 @@ void apeiron::example::World::update(float time, float delta_time,
   if (settings_->rotate_cubes) {
     frame_time_ = time;
     for (auto& c : cubes_) {
-      c.set_rotation(frame_time_ * glm::radians(120.0f) * c.rotation_magnitudes());
+      c.set_rotation_deg(frame_time_ * 120.0f * c.rotation_magnitudes());
     }
   }
 
