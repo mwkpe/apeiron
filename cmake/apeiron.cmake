@@ -20,6 +20,7 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/../engine/image_loader.h
     ${CMAKE_CURRENT_LIST_DIR}/../engine/model_loader.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../engine/model_loader.h
+    ${CMAKE_CURRENT_LIST_DIR}/../engine/color_converter.h
     ${CMAKE_CURRENT_LIST_DIR}/../opengl/renderer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../opengl/renderer.h
     ${CMAKE_CURRENT_LIST_DIR}/../opengl/frame_buffer.cpp
