@@ -34,7 +34,7 @@ namespace apeiron::engine {
 constexpr glm::vec3 as_rgb(std::string_view hex_code)
 {
   if (hex_code.size() < 7 || hex_code[0] != '#')
-    return {1.0f, 1.0f, 1.0f};
+    return {255, 255, 255};
 
   return {
     detail::as_decimal(hex_code[1]) << 4 | detail::as_decimal(hex_code[2]),
@@ -47,7 +47,7 @@ constexpr glm::vec3 as_rgb(std::string_view hex_code)
 constexpr glm::vec4 as_rgba(std::string_view hex_code)
 {
   if (hex_code.size() < 9 || hex_code[0] != '#')
-    return {1.0f, 1.0f, 1.0f, 1.0f};
+    return {255, 255, 255, 255};
 
   return {
     detail::as_decimal(hex_code[1]) << 4 | detail::as_decimal(hex_code[2]),
