@@ -17,22 +17,28 @@ public:
 
   void set_parent(const Entity* parent) { parent_ = parent; }
   void set_position(float x, float y, float z) { position_ = glm::vec3{x, y, z}; }
-  void set_position(glm::vec3 position) { position_ = position; }
-  void set_center(float x, float y, float z) { center_ = glm::vec3{x, y, z}; }
-  void set_center(glm::vec3 center) { center_ = center; }
+  void set_position(const glm::vec3& position) { position_ = position; }
+  void set_origin(float x, float y, float z) { origin_ = glm::vec3{x, y, z}; }
+  void set_origin(const glm::vec3& origin) { origin_ = origin; }
+  void set_rotation_origin(float x, float y, float z) { rotation_origin_ = glm::vec3{x, y, z}; }
+  void set_rotation_origin(const glm::vec3& origin) { rotation_origin_ = origin; }
   void set_size(float x, float y, float z) { size_ = glm::vec3{x, y, z}; }
-  void set_size(glm::vec3 size) { size_ = size; }
+  void set_size(const glm::vec3& size) { size_ = size; }
   void set_scale(float x, float y, float z) { scale_ = glm::vec3{x, y, z}; }
-  void set_scale(glm::vec3 scale) { scale_ = scale; }
-  void set_rotation(float x, float y, float z) { rotation_ = glm::vec3{x, y, z}; }
-  void set_rotation(glm::vec3 rotation) { rotation_ = rotation; }
+  void set_scale(const glm::vec3& scale) { scale_ = scale; }
+  void set_rotation_deg(float x, float y, float z) { rotation_ = glm::radians(glm::vec3{x, y, z}); }
+  void set_rotation_deg(const glm::vec3& rotation) { rotation_ = glm::radians(rotation); }
+  void set_rotation_rad(float x, float y, float z) { rotation_ = glm::vec3{x, y, z}; }
+  void set_rotation_rad(const glm::vec3& rotation) { rotation_ = rotation; }
 
   const Entity* parent() const { return parent_; };
   glm::vec3 position() const { return position_; }
-  glm::vec3 center() const { return center_; }
+  glm::vec3 origin() const { return origin_; }
+  glm::vec3 rotation_origin() const { return rotation_origin_; }
   glm::vec3 size() const { return size_; }
   glm::vec3 scale() const { return scale_; }
-  glm::vec3 rotation() const { return rotation_; }
+  glm::vec3 rotation_rad() const { return rotation_; }
+  glm::vec3 rotation_deg() const { return glm::degrees(rotation_); }
 
   virtual void render() const {}
   virtual void render_bounds() const {}
@@ -40,7 +46,8 @@ public:
 protected:
   const Entity* parent_ = nullptr;
   glm::vec3 position_ = glm::vec3{0.0f, 0.0f, 0.0f};
-  glm::vec3 center_ = glm::vec3{0.0f, 0.0f, 0.0f};
+  glm::vec3 origin_ = glm::vec3{0.0f, 0.0f, 0.0f};
+  glm::vec3 rotation_origin_ = glm::vec3{0.0f, 0.0f, 0.0f};
   glm::vec3 size_ = glm::vec3{1.0f, 1.0f, 1.0f};
   glm::vec3 scale_ = glm::vec3{1.0f, 1.0f, 1.0f};
   glm::vec3 rotation_ = glm::vec3{0.0f, 0.0f, 0.0f};
