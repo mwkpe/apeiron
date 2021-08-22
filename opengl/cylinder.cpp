@@ -47,8 +47,15 @@ std::vector<float> build_vertices(int points, float radius, float height)
 }  // namespace
 
 
-apeiron::opengl::Cylinder::Cylinder(int points, float radius, float height) : points_{points}
+apeiron::opengl::Cylinder::Cylinder(int points, float radius, float height)
 {
+  init(points, radius, height);
+}
+
+
+void apeiron::opengl::Cylinder::init(int points, float radius, float height)
+{
+  points_ = points;
   glGenVertexArrays(1, &vao_);
   glGenBuffers(1, &vbo_);
   construct(points_, radius, height);

@@ -12,7 +12,9 @@ namespace apeiron::prefab {
 class Axis final : public engine::Entity
 {
 public:
+  Axis() = default;
   Axis(int points, float radius, float height) : axis_{points, radius, height} {}
+  void init(int points, float radius, float height) { axis_.init(points, radius, height); }
   void render() const override { axis_.render(); }
 
 private:

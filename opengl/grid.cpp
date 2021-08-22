@@ -44,8 +44,18 @@ auto build_vertices(glm::vec2 size, std::size_t x_steps, std::size_t y_steps, gl
 
 
 apeiron::opengl::Grid::Grid(glm::vec2 size, std::size_t x_steps, std::size_t y_steps,
-    glm::vec4 color, float line_width) : size_{size}, line_width_{line_width}
+    const glm::vec4& color, float line_width)
 {
+  init(size, x_steps, y_steps, color, line_width);
+}
+
+
+void apeiron::opengl::Grid::init(glm::vec2 size, std::size_t x_steps, std::size_t y_steps,
+    const glm::vec4& color, float line_width)
+{
+  size_ = size;
+  line_width_ = line_width;
+
   const auto vertices = build_vertices(size, x_steps, y_steps, color);
   vertex_count_ = vertices.size();
 
