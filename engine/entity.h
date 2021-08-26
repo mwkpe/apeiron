@@ -4,6 +4,7 @@
 
 #include <string_view>
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 
 namespace apeiron::engine {
@@ -26,10 +27,13 @@ public:
   void set_size(const glm::vec3& size) { size_ = size; }
   void set_scale(float x, float y, float z) { scale_ = glm::vec3{x, y, z}; }
   void set_scale(const glm::vec3& scale) { scale_ = scale; }
-  void set_rotation_deg(float x, float y, float z) { rotation_ = glm::radians(glm::vec3{x, y, z}); }
-  void set_rotation_deg(const glm::vec3& rotation) { rotation_ = glm::radians(rotation); }
-  void set_rotation_rad(float x, float y, float z) { rotation_ = glm::vec3{x, y, z}; }
-  void set_rotation_rad(const glm::vec3& rotation) { rotation_ = rotation; }
+  void set_rotation(const glm::quat& rotation) { rotation_ = rotation; }
+  void set_rotation_deg(float x, float y, float z) {
+      rotation_ = glm::quat{glm::radians(glm::vec3{x, y, z})}; }
+  void set_rotation_deg(const glm::vec3& rotation) {
+      rotation_ = glm::quat{glm::radians(rotation)}; }
+  void set_rotation_rad(float x, float y, float z) { rotation_ = glm::quat{glm::vec3{x, y, z}}; }
+  void set_rotation_rad(const glm::vec3& rotation) { rotation_ = glm::quat{rotation}; }
 
   const Entity* parent() const { return parent_; };
   glm::vec3 position() const { return position_; }
@@ -37,8 +41,9 @@ public:
   glm::vec3 rotation_origin() const { return rotation_origin_; }
   glm::vec3 size() const { return size_; }
   glm::vec3 scale() const { return scale_; }
-  glm::vec3 rotation_rad() const { return rotation_; }
-  glm::vec3 rotation_deg() const { return glm::degrees(rotation_); }
+  glm::quat rotation() const { return rotation_; }
+  glm::vec3 rotation_rad() const { return glm::eulerAngles(rotation_); }
+  glm::vec3 rotation_deg() const { return glm::degrees(glm::eulerAngles(rotation_)); }
 
   virtual void render() const {}
   virtual void render_bounds() const {}
@@ -50,7 +55,7 @@ protected:
   glm::vec3 rotation_origin_ = glm::vec3{0.0f, 0.0f, 0.0f};
   glm::vec3 size_ = glm::vec3{1.0f, 1.0f, 1.0f};
   glm::vec3 scale_ = glm::vec3{1.0f, 1.0f, 1.0f};
-  glm::vec3 rotation_ = glm::vec3{0.0f, 0.0f, 0.0f};
+  glm::quat rotation_ = glm::quat{1.0f, 0.0f, 0.0f, 0.0f};
 };
 
 

@@ -4,6 +4,8 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 
 namespace {
@@ -14,9 +16,7 @@ void apply_rotation(glm::mat4& model, const apeiron::engine::Entity& entity)
   auto rotation_origin = entity.rotation_origin();
   auto rotation = entity.rotation_rad();
   model = glm::translate(model, rotation_origin);
-  model = glm::rotate(model, rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
-  model = glm::rotate(model, rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
-  model = glm::rotate(model, rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+  model *= glm::toMat4(entity.rotation());
   model = glm::translate(model, -rotation_origin);
 }
 
@@ -188,8 +188,8 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity)
 {
   glm::mat4 model{1.0f};
   model = glm::translate(model, entity.origin() + entity.position());
-  model = glm::scale(model, entity.scale());
   apply_rotation(model, entity);
+  model = glm::scale(model, entity.scale());
   shader_.set_uniform("model", model);
   entity.render();
 }
@@ -199,8 +199,8 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity, const glm::
 {
   glm::mat4 model{1.0f};
   model = glm::translate(model, entity.origin() + entity.position());
-  model = glm::scale(model, entity.scale());
   apply_rotation(model, entity);
+  model = glm::scale(model, entity.scale());
   shader_.set_uniform("model", model);
   shader_.set_uniform("color", color);
   entity.render();
@@ -216,8 +216,8 @@ void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::T
   for (char c : text) {
     glm::mat4 model{1.0f};
     model = glm::translate(model, text.position() + text.origin() + glm::vec3{offset, 0.0f, 0.0f});
-    model = glm::scale(model, text.scale());
     apply_rotation(model, text);
+    model = glm::scale(model, text.scale());
     shader_.set_uniform("model", model);
     charset.render(c);
     offset += charset.tile_width() * text.text_size() * text.spacing().x;
@@ -237,8 +237,8 @@ void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::T
   for (char c : text) {
     glm::mat4 model{1.0f};
     model = glm::translate(model, text.position() + text.origin() + glm::vec3{offset, 0.0f, 0.0f});
-    model = glm::scale(model, text.scale());
     apply_rotation(model, text);
+    model = glm::scale(model, text.scale());
     shader_.set_uniform("model", model);
     charset.render(c);
     offset += charset.tile_width() * text.text_size() * text.spacing().x;
@@ -270,8 +270,8 @@ void apeiron::opengl::Renderer::render(const engine::Text& text,
       float letter_position = charset.letter_position(c) * text.text_size();
       model = glm::translate(model, text.position() + glm::vec3{offset_x -
           letter_position, 0.0f, offset_y});
-      model = glm::scale(model, text.scale());
       apply_rotation(model, text);
+      model = glm::scale(model, text.scale());
       shader_.set_uniform("model", model);
       charset.render(c);
       offset_x += charset.letter_spacing() * text.text_size() * text.spacing().x;
@@ -352,8 +352,8 @@ void apeiron::opengl::Renderer::render_bounds(const engine::Entity& entity, cons
 {
   glm::mat4 model{1.0f};
   model = glm::translate(model, entity.origin() + entity.position());
-  model = glm::scale(model, entity.scale());
   apply_rotation(model, entity);
+  model = glm::scale(model, entity.scale());
   shader_.set_uniform("model", model);
   shader_.set_uniform("color", color);
   entity.render_bounds();
