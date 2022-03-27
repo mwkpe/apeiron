@@ -4,6 +4,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <string_view>
 
 
 namespace apeiron::engine {
@@ -16,6 +17,8 @@ public:
   explicit Error(const char* s) : std::runtime_error{s} {}
   Error(const std::string& s, const std::string& p)
       : std::runtime_error{s + p} {}
+  Error(const std::string& s, std::string_view p)
+      : std::runtime_error{s + std::string{p}} {}
 };
 
 
@@ -26,6 +29,8 @@ public:
   explicit Warning(const char* s) : std::runtime_error{s} {}
   Warning(const std::string& s, const std::string& p)
       : std::runtime_error{s + p} {}
+  Warning(const std::string& s, std::string_view p)
+      : std::runtime_error{s + std::string{p}} {}
 };
 
 
