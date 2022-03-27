@@ -28,6 +28,8 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/../opengl/grid.h
     ${CMAKE_CURRENT_LIST_DIR}/../opengl/mesh_font.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../opengl/mesh_font.h
+    ${CMAKE_CURRENT_LIST_DIR}/../opengl/meshset.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../opengl/meshset.h
     ${CMAKE_CURRENT_LIST_DIR}/../opengl/model.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../opengl/model.h
     ${CMAKE_CURRENT_LIST_DIR}/../opengl/points.cpp
