@@ -14,7 +14,6 @@ namespace {
 void apply_rotation(glm::mat4& model, const apeiron::engine::Entity& entity)
 {
   auto rotation_origin = entity.rotation_origin();
-  auto rotation = entity.rotation_rad();
   model = glm::translate(model, rotation_origin);
   model *= glm::toMat4(entity.rotation());
   model = glm::translate(model, -rotation_origin);
@@ -204,6 +203,37 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity, const glm::
   shader_.set_uniform("model", model);
   shader_.set_uniform("color", color);
   entity.render();
+}
+
+
+void apeiron::opengl::Renderer::render(const engine::Entity& entity,
+    const opengl::Tileset& tileset, std::uint32_t index)
+{
+  use_texture_shading();
+  tileset.bind();
+
+  glm::mat4 model{1.0f};
+  model = glm::translate(model, entity.origin() + entity.position());
+  apply_rotation(model, entity);
+  model = glm::scale(model, entity.scale());
+  shader_.set_uniform("model", model);
+
+  tileset.render(index);
+}
+
+
+void apeiron::opengl::Renderer::render(const engine::Entity& entity,
+    const opengl::Meshset& meshset, std::uint32_t index)
+{
+  use_vertex_color_shading();
+
+  glm::mat4 model{1.0f};
+  model = glm::translate(model, entity.origin() + entity.position());
+  apply_rotation(model, entity);
+  model = glm::scale(model, entity.scale());
+  shader_.set_uniform("model", model);
+
+  meshset.render(index);
 }
 
 
