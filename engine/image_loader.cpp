@@ -16,6 +16,6 @@ auto apeiron::engine::load_image(std::string_view filename, bool flip_y)
   std::unique_ptr<std::uint8_t, decltype(delete_data)> data{
       stbi_load(std::string{filename}.c_str(), &width, &height, &channel_count, 0), delete_data};
   if (!data)
-    throw engine::Error{std::string{"Could not load image: "} + std::string{filename}};
+    throw engine::Error{"Could not load image: ", filename};
   return {{data.get(), data.get() + width * height * channel_count}, width, height, channel_count};
 }
