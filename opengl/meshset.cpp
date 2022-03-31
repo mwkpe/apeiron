@@ -20,21 +20,19 @@ namespace {
 }  // namespace
 
 
-apeiron::opengl::Meshset::Meshset(std::uint32_t rows, std::uint32_t cols, std::uint32_t tile_offset)
-    : rows_{rows}, cols_{cols}, tile_count_{cols * rows}, tile_offset_{tile_offset}
+void apeiron::opengl::Meshset::load_from_image(std::string_view filename, std::uint32_t rows,
+    std::uint32_t cols, std::uint32_t tile_offset)
 {
-}
+  tile_count_ = cols * rows;
+  tile_offset_ = tile_offset;
 
-
-void apeiron::opengl::Meshset::load_from_image(std::string_view filename)
-{
   auto&& [pixel, image_w, image_h, channel_count] = engine::load_image(filename, false);
 
   if (channel_count != 4)
     throw engine::Error{"Image must be RGBA: ", filename};
 
-  const std::uint32_t tile_w = image_w / cols_;
-  const std::uint32_t tile_h = image_h / rows_;
+  const std::uint32_t tile_w = image_w / cols;
+  const std::uint32_t tile_h = image_h / rows;
   const float ps = tile_width_ / tile_w;  // Pixel size normalized
 
   std::vector<apeiron::engine::Vertex_color> vertices;
@@ -80,9 +78,9 @@ void apeiron::opengl::Meshset::load_from_image(std::string_view filename)
     return vertex_count;
   };
 
-  for (std::uint32_t i=0; i<rows_ * cols_; i++) {
-    auto count = read_tile(((i % cols_) * tile_w * channel_count) +
-        ((i / cols_) * tile_h * image_w * channel_count), image_w * channel_count);
+  for (std::uint32_t i=0; i<rows * cols; i++) {
+    auto count = read_tile(((i % cols) * tile_w * channel_count) +
+        ((i / cols) * tile_h * image_w * channel_count), image_w * channel_count);
     
     if (i == 0)
       index_.push_back(0);
