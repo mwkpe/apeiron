@@ -12,6 +12,10 @@ namespace apeiron::engine {
 class Text final : public engine::Entity
 {
 public:
+  Text() = default;
+  Text(std::string&& text) { text_ = std::move(text); }
+  Text(const std::string& text) { text_ = text; }
+  Text(const char* text) { text_ = text; }
   std::string::const_iterator begin() const { return std::cbegin(text_); }
   std::string::const_iterator end() const { return std::cend(text_); }
   void set_text(std::string text) { text_ = std::move(text); }
