@@ -14,7 +14,7 @@ namespace apeiron::opengl {
 class Tileset final : public Shape
 {
 public:
-  Tileset(std::uint32_t cols, std::uint32_t rows, std::uint32_t tile_offset = 0,
+  Tileset(std::uint32_t cols, std::uint32_t rows, std::uint32_t index_offset = 0,
       float tile_width = 1.0f, float tile_height = 1.0f, bool flip_y = false);
   void load_texture(std::string_view filename, Pixel_format pixel_format);
   void bind() const;
@@ -25,7 +25,7 @@ public:
 
 private:
   std::uint32_t vertices_per_tile_ = 6;
-  std::uint32_t tile_offset_ = 0;
+  std::uint32_t index_offset_ = 0;
   std::uint32_t tile_count_ = 0;
   float tile_width_ = 0.0f;
   float tile_height_ = 0.0f;

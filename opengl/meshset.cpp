@@ -21,10 +21,10 @@ namespace {
 
 
 void apeiron::opengl::Meshset::load_from_image(std::string_view filename, std::uint32_t rows,
-    std::uint32_t cols, std::uint32_t tile_offset)
+    std::uint32_t cols, std::uint32_t index_offset)
 {
   tile_count_ = cols * rows;
-  tile_offset_ = tile_offset;
+  index_offset_ = index_offset;
 
   auto&& [pixel, image_w, image_h, channel_count] = engine::load_image(filename, false);
 
@@ -96,7 +96,7 @@ void apeiron::opengl::Meshset::load_from_image(std::string_view filename, std::u
 
 void apeiron::opengl::Meshset::render(std::uint32_t i) const
 {
-  const auto index = std::min(i - tile_offset_, tile_count_ - 1);
+  const auto index = std::min(i - index_offset_, tile_count_ - 1);
   glBindVertexArray(vao_);
   glDrawArrays(GL_TRIANGLES, index_[index], vertex_count_[index]);
 }

@@ -51,8 +51,8 @@ auto build_vertices(std::uint32_t columns, std::uint32_t rows, std::uint32_t til
 
 
 apeiron::opengl::Tileset::Tileset(std::uint32_t cols, std::uint32_t rows,
-    std::uint32_t tile_offset, float tile_width, float tile_height, bool flip_y)
-    : tile_offset_{tile_offset}, tile_count_{cols * rows},
+    std::uint32_t index_offset, float tile_width, float tile_height, bool flip_y)
+    : index_offset_{index_offset}, tile_count_{cols * rows},
       tile_width_{tile_width}, tile_height_{tile_height}
 {
   set_buffers(build_vertices(cols, rows, tile_count_, tile_height_, tile_width_, flip_y));
@@ -73,7 +73,7 @@ void apeiron::opengl::Tileset::bind() const
 
 void apeiron::opengl::Tileset::render(std::uint32_t i) const
 {
-  const auto index = std::min(i - tile_offset_, tile_count_ - 1);
+  const auto index = std::min(i - index_offset_, tile_count_ - 1);
   glBindVertexArray(vao_);
   glDrawArrays(GL_TRIANGLES, index * vertices_per_tile_, vertices_per_tile_);
 }
