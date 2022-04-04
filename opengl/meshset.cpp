@@ -21,10 +21,12 @@ namespace {
 
 
 void apeiron::opengl::Meshset::load_from_image(std::string_view filename, std::uint32_t rows,
-    std::uint32_t cols, std::uint32_t index_offset)
+    std::uint32_t cols, std::uint32_t index_offset, float tile_width, float tile_height)
 {
   tile_count_ = cols * rows;
   index_offset_ = index_offset;
+  tile_width_ = tile_width;
+  tile_height_ = tile_height;
 
   auto&& [pixel, image_w, image_h, channel_count] = engine::load_image(filename, false);
 
@@ -38,8 +40,8 @@ void apeiron::opengl::Meshset::load_from_image(std::string_view filename, std::u
   std::vector<apeiron::engine::Vertex_color> vertices;
 
   auto read_tile = [&,this](std::uint32_t pos, std::uint32_t skip) -> std::uint32_t {
-    float x = -0.5f;
-    float y = 0.5f;
+    float x = -0.5f * tile_width_;
+    float y = 0.5f * tile_height_;
     const float z = 0.0f;
     std::size_t vertex_count = 0;
 
@@ -70,7 +72,7 @@ void apeiron::opengl::Meshset::load_from_image(std::string_view filename, std::u
         x += ps;
       }
 
-      x = -0.5f;
+      x = -0.5f * tile_width_;
       y -= ps;
       pos += skip - tile_w * channel_count;
     }

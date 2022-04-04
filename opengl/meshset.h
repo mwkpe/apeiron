@@ -4,6 +4,7 @@
 
 #include <cstdint>
 #include <string_view>
+#include <glm/glm.hpp>
 #include "opengl/shape.h"
 
 
@@ -14,11 +15,10 @@ class Meshset final : public Shape
 {
 public:
   Meshset() = default;
-  void load_from_image(std::string_view filename, std::uint32_t rows,
-      std::uint32_t cols, std::uint32_t index_offset = 0);
+  void load_from_image(std::string_view filename, std::uint32_t rows, std::uint32_t cols,
+      std::uint32_t index_offset = 0, float tile_width = 1.0f, float tile_height = 1.0f);
   void render(std::uint32_t i) const;
-  void set_tile_width(float tile_width) { tile_width_ = tile_width; }
-  void set_tile_height(float tile_height) { tile_height_ = tile_height; }
+  glm::vec2 tile_size() const { return glm::vec2{tile_width_, tile_height_}; }
   float tile_width() const { return tile_width_; }
   float tile_height() const { return tile_height_; }
 
