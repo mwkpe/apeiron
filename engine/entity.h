@@ -36,7 +36,12 @@ public:
   void set_rotation_rad(const glm::vec3& rotation) { rotation_ = glm::quat{rotation}; }
 
   const Entity* parent() const { return parent_; };
+
   glm::vec3 position() const { return position_; }
+  glm::vec3 position2d() const { return glm::vec3{position_.x, 0.0f, position_.z}; }
+  glm::vec3 position(float x, float y, float z) const { return position_ + glm::vec3{x, y, z}; }
+  glm::vec3 position(const glm::vec3& offset) const { return position_ + offset; }
+
   glm::vec3 origin() const { return origin_; }
   glm::vec3 rotation_origin() const { return rotation_origin_; }
   glm::vec3 size() const { return size_; }
