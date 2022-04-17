@@ -29,6 +29,9 @@ void apeiron::opengl::Renderer::init()
   shader_.use();
   shader_.set_uniform("render_mode", 0);
   shader_.set_uniform("clip_scene", false);
+  shader_.set_uniform("colorize", false);
+  shader_.set_uniform("desaturate", false);
+  shader_.set_uniform("clip_scene", false);
   shader_.set_uniform("color_mode", 0xFF);
   shader_.set_uniform("texture2d", 0);
 }
@@ -151,6 +154,24 @@ void apeiron::opengl::Renderer::set_colorize(bool colorize)
 }
 
 
+void apeiron::opengl::Renderer::set_invert_color(bool invert)
+{
+  shader_.set_uniform("invert_color", invert);
+}
+
+
+void apeiron::opengl::Renderer::set_desaturate(bool desaturate)
+{
+  shader_.set_uniform("desaturate", desaturate);
+}
+
+
+void apeiron::opengl::Renderer::set_desaturation_factor(float desaturation_factor)
+{
+  shader_.set_uniform("desaturation_factor", desaturation_factor);
+}
+
+
 void apeiron::opengl::Renderer::set_lighting(bool lighting)
 {
   shader_.set_uniform("light_mode", lighting ? 1 : 0);
@@ -238,10 +259,31 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity,
 
 
 void apeiron::opengl::Renderer::render(const engine::Entity& entity,
-    const opengl::Meshset& meshset, std::uint32_t index, const glm::vec4& color)
+    const opengl::Meshset& meshset, std::uint32_t index, const glm::vec3& offset)
 {
   use_vertex_color_shading();
-  set_colorize(true);
+
+  glm::mat4 model{1.0f};
+  model = glm::translate(model, entity.origin() + entity.position() + offset);
+  apply_rotation(model, entity);
+  model = glm::scale(model, entity.scale());
+  shader_.set_uniform("model", model);
+
+  meshset.render(index);
+}
+
+
+void apeiron::opengl::Renderer::render(const engine::Entity& entity,
+    const opengl::Meshset& meshset, std::uint32_t index, const glm::vec4& color, bool colorize)
+{
+  if (colorize) {
+    use_vertex_color_shading();
+    set_colorize(true);
+  }
+  else {
+    use_color_shading();
+  }
+
   shader_.set_uniform("color", color);
 
   glm::mat4 model{1.0f};
@@ -364,6 +406,38 @@ void apeiron::opengl::Renderer::render_screen(const engine::Entity& entity, cons
 }
 
 
+void apeiron::opengl::Renderer::render_screen(const engine::Entity& entity,
+    const opengl::Meshset& meshset, std::uint32_t index)
+{
+  use_vertex_color_shading();
+
+  shader_.set_uniform("translation", entity.position());
+  shader_.set_uniform("scale", entity.scale());
+
+  meshset.render(index);
+}
+
+
+void apeiron::opengl::Renderer::render_screen(const engine::Entity& entity,
+    const opengl::Meshset& meshset, std::uint32_t index, const glm::vec4& color, bool colorize)
+{
+    if (colorize) {
+    use_vertex_color_shading();
+    set_colorize(true);
+  }
+  else {
+    use_color_shading();
+  }
+
+  shader_.set_uniform("color", color);
+  shader_.set_uniform("translation", entity.position());
+  shader_.set_uniform("scale", entity.scale());
+
+  meshset.render(index);
+  set_colorize(false);
+}
+
+
 void apeiron::opengl::Renderer::render_screen(const engine::Text& text,
     const opengl::Tileset& charset, const glm::vec4& color)
 {
@@ -410,6 +484,35 @@ void apeiron::opengl::Renderer::render_screen(const engine::Text& text,
       shader_.set_uniform("translation", position);
       charset.render(c);
       offset_x += charset.letter_spacing() * text.text_size() * text.spacing().x;
+    }
+  }
+}
+
+
+void apeiron::opengl::Renderer::render_screen(const engine::Text& text,
+    const opengl::Meshset& charset, const glm::vec4& color)
+{
+  use_color_shading();
+  shader_.set_uniform("color", color);
+  shader_.set_uniform("scale", glm::vec3{text.text_size(), text.text_size(), 1.0f});
+
+  float offset_x = 0.0f;
+  float offset_y = 0.0f;
+
+  for (char c : text) {
+    if (c == '\n') {
+      offset_x = 0.0f;
+      // Origin is bottom left (see ortho)
+      offset_y -= charset.tile_height() * text.text_size() * text.spacing().y;
+    }
+    else if (c == ' ') {
+      offset_x += charset.tile_width() * text.text_size() * text.spacing().x;
+    }
+    else {
+      glm::vec3 position = text.position() + glm::vec3{offset_x, offset_y, 0.0f};
+      shader_.set_uniform("translation", position);
+      charset.render(c);
+      offset_x += charset.tile_width() * text.text_size() * text.spacing().x;
     }
   }
 }

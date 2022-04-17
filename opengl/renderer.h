@@ -43,6 +43,9 @@ public:
   void set_depth_test(bool depth_test);
   void set_blend(bool blend);
   void set_colorize(bool colorize);
+  void set_invert_color(bool invert);
+  void set_desaturate(bool desaturate);
+  void set_desaturation_factor(float desaturation_factor);
   void set_lighting(bool lighting);
   void set_light_position(const glm::vec3& position);
   void set_light_color(const glm::vec4& color);
@@ -55,16 +58,24 @@ public:
   void render(const engine::Entity& entity, const opengl::Tileset& tileset, std::uint32_t index);
   void render(const engine::Entity& entity, const opengl::Meshset& meshset, std::uint32_t index);
   void render(const engine::Entity& entity, const opengl::Meshset& meshset, std::uint32_t index,
-      const glm::vec4& color);
+      const glm::vec3& offset);
+  void render(const engine::Entity& entity, const opengl::Meshset& meshset, std::uint32_t index,
+      const glm::vec4& color, bool colorize = false);
   void render(const engine::Text& text, const opengl::Tileset& charset);
   void render(const engine::Text& text, const opengl::Tileset& charset, const glm::vec4& color);
   void render(const engine::Text& text, const opengl::Mesh_font& charset, const glm::vec4& color);
   void render(const engine::Text& text, const opengl::Meshset& charset, const glm::vec4& color);
   void render_screen(const engine::Entity& entity);
   void render_screen(const engine::Entity& entity, const glm::vec4& color);
+  void render_screen(const engine::Entity& entity, const opengl::Meshset& meshset,
+      std::uint32_t index);
+  void render_screen(const engine::Entity& entity, const opengl::Meshset& meshset,
+      std::uint32_t index, const glm::vec4& color, bool colorize = false);
   void render_screen(const engine::Text& text, const opengl::Tileset& charset,
       const glm::vec4& color);
   void render_screen(const engine::Text& text, const opengl::Mesh_font& charset,
+      const glm::vec4& color);
+  void render_screen(const engine::Text& text, const opengl::Meshset& charset,
       const glm::vec4& color);
   void render_bounds(const engine::Entity& entity, const glm::vec4& color);
 
