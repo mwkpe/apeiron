@@ -23,8 +23,8 @@ public:
   float tile_height() const { return tile_height_; }
 
 private:
-  std::vector<std::uint32_t> index_;
-  std::vector<std::uint32_t> vertex_count_;
+  std::vector<std::uint32_t> vertex_indices_;
+  std::vector<std::uint32_t> vertex_counts_;
   std::uint32_t tile_count_ = 1;
   std::uint32_t index_offset_ = 0;
   float tile_width_ = 1.0f;

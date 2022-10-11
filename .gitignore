@@ -39,6 +39,7 @@ external/nlohmann/
 
 # Build directories
 cmake-build*/
+build*/
 
 # IDE
 .idea/

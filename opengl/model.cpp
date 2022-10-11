@@ -27,13 +27,10 @@ void apeiron::opengl::Model::render(std::size_t index) const
 }
 
 
-using namespace apeiron::engine;
-using namespace apeiron::opengl;
-
-template void Model::load<Vertex>(std::string_view);
-template void Model::load<Vertex_simple>(std::string_view);
-template void Model::load<Vertex_normal>(std::string_view);
-template void Model::load<Vertex_color>(std::string_view);
-template void Model::load<Vertex_texcoords>(std::string_view);
-template void Model::load<Vertex_normal_color>(std::string_view);
-template void Model::load<Vertex_normal_texcoords>(std::string_view);
+template void apeiron::opengl::Model::load<apeiron::engine::Vertex>(std::string_view);
+template void apeiron::opengl::Model::load<apeiron::engine::Vertex_simple>(std::string_view);
+template void apeiron::opengl::Model::load<apeiron::engine::Vertex_normal>(std::string_view);
+template void apeiron::opengl::Model::load<apeiron::engine::Vertex_color>(std::string_view);
+template void apeiron::opengl::Model::load<apeiron::engine::Vertex_texcoords>(std::string_view);
+template void apeiron::opengl::Model::load<apeiron::engine::Vertex_normal_color>(std::string_view);
+template void apeiron::opengl::Model::load<apeiron::engine::Vertex_normal_texcoords>(std::string_view);

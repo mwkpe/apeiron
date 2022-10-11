@@ -32,21 +32,18 @@ void apeiron::opengl::Triangles::render(std::uint32_t start, std::uint32_t count
 }
 
 
-using namespace apeiron::engine;
-using namespace apeiron::opengl;
+template apeiron::opengl::Triangles::Triangles(const std::vector<apeiron::engine::Vertex>&);
+template apeiron::opengl::Triangles::Triangles(const std::vector<apeiron::engine::Vertex_simple>&);
+template apeiron::opengl::Triangles::Triangles(const std::vector<apeiron::engine::Vertex_normal>&);
+template apeiron::opengl::Triangles::Triangles(const std::vector<apeiron::engine::Vertex_color>&);
+template apeiron::opengl::Triangles::Triangles(const std::vector<apeiron::engine::Vertex_texcoords>&);
+template apeiron::opengl::Triangles::Triangles(const std::vector<apeiron::engine::Vertex_normal_color>&);
+template apeiron::opengl::Triangles::Triangles(const std::vector<apeiron::engine::Vertex_normal_texcoords>&);
 
-template Triangles::Triangles(const std::vector<Vertex>&);
-template Triangles::Triangles(const std::vector<Vertex_simple>&);
-template Triangles::Triangles(const std::vector<Vertex_normal>&);
-template Triangles::Triangles(const std::vector<Vertex_color>&);
-template Triangles::Triangles(const std::vector<Vertex_texcoords>&);
-template Triangles::Triangles(const std::vector<Vertex_normal_color>&);
-template Triangles::Triangles(const std::vector<Vertex_normal_texcoords>&);
-
-template void Triangles::set(const std::vector<Vertex>&);
-template void Triangles::set(const std::vector<Vertex_simple>&);
-template void Triangles::set(const std::vector<Vertex_normal>&);
-template void Triangles::set(const std::vector<Vertex_color>&);
-template void Triangles::set(const std::vector<Vertex_texcoords>&);
-template void Triangles::set(const std::vector<Vertex_normal_color>&);
-template void Triangles::set(const std::vector<Vertex_normal_texcoords>&);
+template void apeiron::opengl::Triangles::set(const std::vector<apeiron::engine::Vertex>&);
+template void apeiron::opengl::Triangles::set(const std::vector<apeiron::engine::Vertex_simple>&);
+template void apeiron::opengl::Triangles::set(const std::vector<apeiron::engine::Vertex_normal>&);
+template void apeiron::opengl::Triangles::set(const std::vector<apeiron::engine::Vertex_color>&);
+template void apeiron::opengl::Triangles::set(const std::vector<apeiron::engine::Vertex_texcoords>&);
+template void apeiron::opengl::Triangles::set(const std::vector<apeiron::engine::Vertex_normal_color>&);
+template void apeiron::opengl::Triangles::set(const std::vector<apeiron::engine::Vertex_normal_texcoords>&);

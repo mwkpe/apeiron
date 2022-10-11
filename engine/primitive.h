@@ -25,6 +25,9 @@ std::vector<T> quad_vertices(float width, float height,
 template<typename T = Vertex>
 std::vector<T> quad_vertices(float width, float height, const glm::vec4& color,
     Face face = Face::Front, const glm::vec3& position = glm::vec3{0.0f});
+template<typename T = Vertex>
+std::vector<T> quad_vertices(float width, float height, const glm::mat4& color,
+    Face face = Face::Front, const glm::vec3& position = glm::vec3{0.0f});
 
 template<typename T = Vertex>
 std::vector<T> cuboid_vertices(const glm::vec3& size, const glm::vec3& position = glm::vec3{0.0f});
@@ -32,10 +35,10 @@ template<typename T = Vertex>
 std::vector<T> cuboid_vertices(const glm::vec3& size, const glm::vec4& color,
     const glm::vec3& position = glm::vec3{0.0f});
 
-template<typename T> std::vector<T> disk_vertices(float radius, int points,
-    Face face, const glm::vec3& position);
-template<typename T> std::vector<T> disk_vertices(float radius, int points,
-    const glm::vec4& color, Face face, const glm::vec3& position);
+template<typename T = Vertex> std::vector<T> disk_vertices(float radius, int points,
+    Face face = Face::Front, const glm::vec3& position = glm::vec3{0.0f});
+template<typename T = Vertex> std::vector<T> disk_vertices(float radius, int points,
+    const glm::vec4& color, Face face = Face::Front, const glm::vec3& position = glm::vec3{0.0f});
 
 
 }  // namespace apeiron::engine::primitive

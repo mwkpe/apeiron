@@ -33,13 +33,10 @@ float apeiron::opengl::Mesh_font::letter_position(char c) const
 }
 
 
-using namespace apeiron::engine;
-using namespace apeiron::opengl;
-
-template void Mesh_font::load<Vertex>(std::string_view, float, float, std::size_t);
-template void Mesh_font::load<Vertex_simple>(std::string_view, float, float, std::size_t);
-template void Mesh_font::load<Vertex_normal>(std::string_view, float, float, std::size_t);
-template void Mesh_font::load<Vertex_color>(std::string_view, float, float, std::size_t);
-template void Mesh_font::load<Vertex_texcoords>(std::string_view, float, float, std::size_t);
-template void Mesh_font::load<Vertex_normal_color>(std::string_view, float, float, std::size_t);
-template void Mesh_font::load<Vertex_normal_texcoords>(std::string_view, float, float, std::size_t);
+template void apeiron::opengl::Mesh_font::load<apeiron::engine::Vertex>(std::string_view, float, float, std::size_t);
+template void apeiron::opengl::Mesh_font::load<apeiron::engine::Vertex_simple>(std::string_view, float, float, std::size_t);
+template void apeiron::opengl::Mesh_font::load<apeiron::engine::Vertex_normal>(std::string_view, float, float, std::size_t);
+template void apeiron::opengl::Mesh_font::load<apeiron::engine::Vertex_color>(std::string_view, float, float, std::size_t);
+template void apeiron::opengl::Mesh_font::load<apeiron::engine::Vertex_texcoords>(std::string_view, float, float, std::size_t);
+template void apeiron::opengl::Mesh_font::load<apeiron::engine::Vertex_normal_color>(std::string_view, float, float, std::size_t);
+template void apeiron::opengl::Mesh_font::load<apeiron::engine::Vertex_normal_texcoords>(std::string_view, float, float, std::size_t);

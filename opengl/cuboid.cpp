@@ -9,27 +9,27 @@
 #include "engine/primitive.h"
 
 
-apeiron::opengl::Cuboid::Cuboid(glm::vec3 size, glm::vec3 position)
+apeiron::opengl::Cuboid::Cuboid(const glm::vec3& size, const glm::vec3& position)
 {
   set(size, position);
 }
 
 
-apeiron::opengl::Cuboid::Cuboid(glm::vec3 size, glm::vec4 color,
-    glm::vec3 position)
+apeiron::opengl::Cuboid::Cuboid(const glm::vec3& size, const glm::vec4& color,
+    const glm::vec3& position)
 {
   set(size, color, position);
 }
 
 
-template<typename T> void apeiron::opengl::Cuboid::set(glm::vec3 size, glm::vec3 position)
+template<typename T> void apeiron::opengl::Cuboid::set(const glm::vec3& size, const glm::vec3& position)
 {
   set_buffers(engine::primitive::cuboid_vertices<T>(size, position));
 }
 
 
-template<typename T> void apeiron::opengl::Cuboid::set(glm::vec3 size, glm::vec4 color,
-    glm::vec3 position)
+template<typename T> void apeiron::opengl::Cuboid::set(const glm::vec3& size, const glm::vec4& color,
+    const glm::vec3& position)
 {
   set_buffers(engine::primitive::cuboid_vertices<T>(size, color, position));
 }
@@ -42,14 +42,11 @@ void apeiron::opengl::Cuboid::render() const
 }
 
 
-using namespace apeiron::engine;
-using namespace apeiron::opengl;
-
-template void Cuboid::set<Vertex>(glm::vec3, glm::vec3);
-template void Cuboid::set<Vertex>(glm::vec3, glm::vec4, glm::vec3);
-template void Cuboid::set<Vertex_simple>(glm::vec3, glm::vec3);
-template void Cuboid::set<Vertex_normal>(glm::vec3, glm::vec3);
-template void Cuboid::set<Vertex_color>(glm::vec3, glm::vec4, glm::vec3);
-template void Cuboid::set<Vertex_texcoords>(glm::vec3, glm::vec3);
-template void Cuboid::set<Vertex_normal_color>(glm::vec3, glm::vec4, glm::vec3);
-template void Cuboid::set<Vertex_normal_texcoords>(glm::vec3, glm::vec3);
+template void apeiron::opengl::Cuboid::set<apeiron::engine::Vertex>(const glm::vec3&, const glm::vec3&);
+template void apeiron::opengl::Cuboid::set<apeiron::engine::Vertex>(const glm::vec3&, const glm::vec4&, const glm::vec3&);
+template void apeiron::opengl::Cuboid::set<apeiron::engine::Vertex_simple>(const glm::vec3&, const glm::vec3&);
+template void apeiron::opengl::Cuboid::set<apeiron::engine::Vertex_normal>(const glm::vec3&, const glm::vec3&);
+template void apeiron::opengl::Cuboid::set<apeiron::engine::Vertex_color>(const glm::vec3&, const glm::vec4&, const glm::vec3&);
+template void apeiron::opengl::Cuboid::set<apeiron::engine::Vertex_texcoords>(const glm::vec3&, const glm::vec3&);
+template void apeiron::opengl::Cuboid::set<apeiron::engine::Vertex_normal_color>(const glm::vec3&, const glm::vec4&, const glm::vec3&);
+template void apeiron::opengl::Cuboid::set<apeiron::engine::Vertex_normal_texcoords>(const glm::vec3&, const glm::vec3&);

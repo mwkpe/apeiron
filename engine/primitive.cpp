@@ -2,6 +2,7 @@
 
 
 #include <type_traits>
+#include <glm/gtc/matrix_access.hpp>
 
 
 template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(float width,
@@ -371,6 +372,221 @@ template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(fl
           {{ w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, {r, g, b, a}},
           {{-w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, {r, g, b, a}},
           {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {r, g, b, a}}
+        };
+      case Face::Back:
+        return {
+          // xy-plane
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}, {r, g, b, a}},
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {1.0f, 0.0f}, {r, g, b, a}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f}, {r, g, b, a}},
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}, {r, g, b, a}}
+        };
+      case Face::Left:
+        return {
+          // yz-plane
+          {{x, -h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {r, g, b, a}},
+          {{x, -h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}, {r, g, b, a}},
+          {{x, -h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {r, g, b, a}}
+        };
+      case Face::Right:
+        return {
+          // yz-plane
+          {{x, -h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {r, g, b, a}},
+          {{x, -h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}, {r, g, b, a}},
+          {{x, -h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {r, g, b, a}}
+        };
+      case Face::Up:
+        return {
+          // xz-plane
+          {{-w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{-w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f}, {r, g, b, a}},
+          {{-w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}, {r, g, b, a}}
+        };
+      case Face::Down:
+        return {
+          // xz-plane
+          {{-w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {1.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f}, {r, g, b, a}},
+          {{-w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {0.0f, 1.0f}, {r, g, b, a}},
+          {{-w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f}, {r, g, b, a}}
+        };
+    }
+  }
+  else if constexpr (std::is_same<T, Vertex_color>::value) {
+    switch (face) {
+      case Face::Front:
+        return {
+          // x, y, z, r, g, b, a
+          // xy-plane
+          {{-w + x, -h + y, z}, {r, g, b, a}},
+          {{ w + x, -h + y, z}, {r, g, b, a}},
+          {{ w + x,  h + y, z}, {r, g, b, a}},
+          {{ w + x,  h + y, z}, {r, g, b, a}},
+          {{-w + x,  h + y, z}, {r, g, b, a}},
+          {{-w + x, -h + y, z}, {r, g, b, a}}
+        };
+      case Face::Back:
+        return {
+          // xy-plane
+          {{ w + x, -h + y, z}, {r, g, b, a}},
+          {{-w + x, -h + y, z}, {r, g, b, a}},
+          {{-w + x,  h + y, z}, {r, g, b, a}},
+          {{-w + x,  h + y, z}, {r, g, b, a}},
+          {{ w + x,  h + y, z}, {r, g, b, a}},
+          {{ w + x, -h + y, z}, {r, g, b, a}}
+        };
+      case Face::Left:
+        return {
+          // yz-plane
+          {{x, -h + y, -w + z}, {r, g, b, a}},
+          {{x, -h + y,  w + z}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {r, g, b, a}},
+          {{x, -h + y, -w + z}, {r, g, b, a}}
+        };
+      case Face::Right:
+        return {
+          // yz-plane
+          {{x, -h + y,  w + z}, {r, g, b, a}},
+          {{x, -h + y, -w + z}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {r, g, b, a}},
+          {{x, -h + y,  w + z}, {r, g, b, a}}
+        };
+      case Face::Up:
+        return {
+          // xz-plane
+          {{-w + x, y,  h + z}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {r, g, b, a}},
+          {{-w + x, y, -h + z}, {r, g, b, a}},
+          {{-w + x, y,  h + z}, {r, g, b, a}}
+        };
+      case Face::Down:
+        return {
+          // xz-plane
+          {{-w + x, y, -h + z}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {r, g, b, a}},
+          {{-w + x, y,  h + z}, {r, g, b, a}},
+          {{-w + x, y, -h + z}, {r, g, b, a}}
+        };
+    }
+  }
+  else if constexpr (std::is_same<T, Vertex_normal_color>::value) {
+    switch (face) {
+      case Face::Front:
+        return {
+          // x, y, z, nx, ny, nz, r, g, b, a
+          // xy-plane
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {r, g, b, a}},
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {r, g, b, a}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {r, g, b, a}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {r, g, b, a}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {r, g, b, a}},
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {r, g, b, a}}
+        };
+      case Face::Back:
+        return {
+          // xy-plane
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {r, g, b, a}},
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {r, g, b, a}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {r, g, b, a}},
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {r, g, b, a}},
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, -1.0f}, {r, g, b, a}},
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, -1.0f}, {r, g, b, a}}
+        };
+      case Face::Left:
+        return {
+          // yz-plane
+          {{x, -h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x, -h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {-1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x, -h + y, -w + z}, {-1.0f, 0.0f, 0.0f}, {r, g, b, a}}
+        };
+      case Face::Right:
+        return {
+          // yz-plane
+          {{x, -h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x, -h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x,  h + y, -w + z}, {1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x,  h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {r, g, b, a}},
+          {{x, -h + y,  w + z}, {1.0f, 0.0f, 0.0f}, {r, g, b, a}}
+        };
+      case Face::Up:
+        return {
+          // xz-plane
+          {{-w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {r, g, b, a}},
+          {{-w + x, y, -h + z}, {0.0f, 1.0f, 0.0f}, {r, g, b, a}},
+          {{-w + x, y,  h + z}, {0.0f, 1.0f, 0.0f}, {r, g, b, a}}
+        };
+      case Face::Down:
+        return {
+          // xz-plane
+          {{-w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {r, g, b, a}},
+          {{ w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {r, g, b, a}},
+          {{-w + x, y,  h + z}, {0.0f, -1.0f, 0.0f}, {r, g, b, a}},
+          {{-w + x, y, -h + z}, {0.0f, -1.0f, 0.0f}, {r, g, b, a}}
+        };
+    }
+  }
+
+  return {};
+}
+
+
+template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(float width,
+    float height, const glm::mat4& color, Face face, const glm::vec3& position)
+{
+  const float x = position.x;
+  const float y = position.y;
+  const float z = position.z;
+
+  const float w = width * 0.5f;
+  const float h = height * 0.5f;
+
+  const float r = glm::column(color, 0).r;
+  const float g = glm::column(color, 0).g;
+  const float b = glm::column(color, 0).b;
+  const float a = glm::column(color, 0).a;
+
+  if constexpr (std::is_same<T, Vertex>::value) {
+    switch (face) {
+      case Face::Front:
+        return {
+          // x, y, z, nx, ny, nz, s, t, r, g, b, a
+          // xy-plane
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, glm::column(color, 0)},  // Top left
+          {{ w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, glm::column(color, 1)},  // Top right
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, glm::column(color, 2)},  // Bottom right
+          {{ w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, glm::column(color, 2)},  // Bottom right
+          {{-w + x,  h + y, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}, glm::column(color, 3)},  // Bottom left
+          {{-w + x, -h + y, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, glm::column(color, 0)}  // Top left
         };
       case Face::Back:
         return {
@@ -1225,30 +1441,29 @@ template<typename T> std::vector<T> apeiron::engine::primitive::disk_vertices(fl
 }
 
 
-using namespace apeiron::engine;
-using namespace apeiron::engine::primitive;
+template std::vector<apeiron::engine::Vertex> apeiron::engine::primitive::quad_vertices(float, float, apeiron::engine::Face, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex> apeiron::engine::primitive::quad_vertices(float, float, const glm::vec4&, apeiron::engine::Face, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex> apeiron::engine::primitive::quad_vertices(float, float, const glm::mat4&, apeiron::engine::Face, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex_simple> apeiron::engine::primitive::quad_vertices(float, float, apeiron::engine::Face, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex_normal> apeiron::engine::primitive::quad_vertices(float, float, apeiron::engine::Face, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex_color> apeiron::engine::primitive::quad_vertices(float, float, const glm::vec4&, apeiron::engine::Face, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex_color> apeiron::engine::primitive::quad_vertices(float, float, const glm::mat4&, apeiron::engine::Face, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex_texcoords> apeiron::engine::primitive::quad_vertices(float, float, apeiron::engine::Face, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex_normal_color> apeiron::engine::primitive::quad_vertices(float, float, const glm::vec4&, apeiron::engine::Face, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex_normal_texcoords> apeiron::engine::primitive::quad_vertices(float, float, apeiron::engine::Face, const glm::vec3&);
 
-template std::vector<Vertex> quad_vertices(float, float, Face, const glm::vec3&);
-template std::vector<Vertex> quad_vertices(float, float, const glm::vec4&, Face, const glm::vec3&);
-template std::vector<Vertex_simple> quad_vertices(float, float, Face, const glm::vec3&);
-template std::vector<Vertex_normal> quad_vertices(float, float, Face, const glm::vec3&);
-template std::vector<Vertex_color> quad_vertices(float, float, const glm::vec4&, Face, const glm::vec3&);
-template std::vector<Vertex_texcoords> quad_vertices(float, float, Face, const glm::vec3&);
-template std::vector<Vertex_normal_color> quad_vertices(float, float, const glm::vec4&, Face, const glm::vec3&);
-template std::vector<Vertex_normal_texcoords> quad_vertices(float, float, Face, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex> apeiron::engine::primitive::cuboid_vertices(const glm::vec3&, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex> apeiron::engine::primitive::cuboid_vertices(const glm::vec3&, const glm::vec4&, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex_simple> apeiron::engine::primitive::cuboid_vertices(const glm::vec3&, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex_normal> apeiron::engine::primitive::cuboid_vertices(const glm::vec3&, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex_color> apeiron::engine::primitive::cuboid_vertices(const glm::vec3&, const glm::vec4&, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex_texcoords> apeiron::engine::primitive::cuboid_vertices(const glm::vec3&, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex_normal_color> apeiron::engine::primitive::cuboid_vertices(const glm::vec3&, const glm::vec4&, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex_normal_texcoords> apeiron::engine::primitive::cuboid_vertices(const glm::vec3&, const glm::vec3&);
 
-template std::vector<Vertex> cuboid_vertices(const glm::vec3&, const glm::vec3&);
-template std::vector<Vertex> cuboid_vertices(const glm::vec3&, const glm::vec4&, const glm::vec3&);
-template std::vector<Vertex_simple> cuboid_vertices(const glm::vec3&, const glm::vec3&);
-template std::vector<Vertex_normal> cuboid_vertices(const glm::vec3&, const glm::vec3&);
-template std::vector<Vertex_color> cuboid_vertices(const glm::vec3&, const glm::vec4&, const glm::vec3&);
-template std::vector<Vertex_texcoords> cuboid_vertices(const glm::vec3&, const glm::vec3&);
-template std::vector<Vertex_normal_color> cuboid_vertices(const glm::vec3&, const glm::vec4&, const glm::vec3&);
-template std::vector<Vertex_normal_texcoords> cuboid_vertices(const glm::vec3&, const glm::vec3&);
-
-template std::vector<Vertex> disk_vertices(float, int, Face, const glm::vec3&);
-template std::vector<Vertex> disk_vertices(float, int, const glm::vec4&, Face, const glm::vec3&);
-template std::vector<Vertex_simple> disk_vertices(float, int, Face, const glm::vec3&);
-template std::vector<Vertex_normal> disk_vertices(float, int, Face, const glm::vec3&);
-template std::vector<Vertex_color> disk_vertices(float, int, const glm::vec4&, Face, const glm::vec3&);
-template std::vector<Vertex_normal_color> disk_vertices(float, int, const glm::vec4&, Face, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex> apeiron::engine::primitive::disk_vertices(float, int, apeiron::engine::Face, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex> apeiron::engine::primitive::disk_vertices(float, int, const glm::vec4&, apeiron::engine::Face, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex_simple> apeiron::engine::primitive::disk_vertices(float, int, apeiron::engine::Face, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex_normal> apeiron::engine::primitive::disk_vertices(float, int, apeiron::engine::Face, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex_color> apeiron::engine::primitive::disk_vertices(float, int, const glm::vec4&, apeiron::engine::Face, const glm::vec3&);
+template std::vector<apeiron::engine::Vertex_normal_color> apeiron::engine::primitive::disk_vertices(float, int, const glm::vec4&, apeiron::engine::Face, const glm::vec3&);

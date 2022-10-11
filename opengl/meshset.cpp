@@ -85,11 +85,11 @@ void apeiron::opengl::Meshset::load_from_image(std::string_view filename, std::u
         ((i / cols) * tile_h * image_w * channel_count), image_w * channel_count);
     
     if (i == 0)
-      index_.push_back(0);
+      vertex_indices_.push_back(0);
     else
-      index_.push_back(index_.back() + vertex_count_.back());
+      vertex_indices_.push_back(vertex_indices_.back() + vertex_counts_.back());
 
-    vertex_count_.push_back(count);
+    vertex_counts_.push_back(count);
   }
 
   set_buffers(vertices);
@@ -98,7 +98,7 @@ void apeiron::opengl::Meshset::load_from_image(std::string_view filename, std::u
 
 void apeiron::opengl::Meshset::render(std::uint32_t i) const
 {
-  const auto index = std::min(i - index_offset_, tile_count_ - 1);
+  const auto tile_index = std::min(i - index_offset_, tile_count_ - 1);
   glBindVertexArray(vao_);
-  glDrawArrays(GL_TRIANGLES, index_[index], vertex_count_[index]);
+  glDrawArrays(GL_TRIANGLES, vertex_indices_[tile_index], vertex_counts_[tile_index]);
 }

@@ -123,12 +123,10 @@ template<typename T> auto apeiron::engine::load_model(std::string_view filename)
 }
 
 
-using namespace apeiron::engine;
-
-template auto load_model(std::string_view filename) -> Model_data<Vertex>;
-template auto load_model(std::string_view filename) -> Model_data<Vertex_simple>;
-template auto load_model(std::string_view filename) -> Model_data<Vertex_normal>;
-template auto load_model(std::string_view filename) -> Model_data<Vertex_color>;
-template auto load_model(std::string_view filename) -> Model_data<Vertex_texcoords>;
-template auto load_model(std::string_view filename) -> Model_data<Vertex_normal_color>;
-template auto load_model(std::string_view filename) -> Model_data<Vertex_normal_texcoords>;
+template auto apeiron::engine::load_model(std::string_view filename) -> Model_data<apeiron::engine::Vertex>;
+template auto apeiron::engine::load_model(std::string_view filename) -> Model_data<apeiron::engine::Vertex_simple>;
+template auto apeiron::engine::load_model(std::string_view filename) -> Model_data<apeiron::engine::Vertex_normal>;
+template auto apeiron::engine::load_model(std::string_view filename) -> Model_data<apeiron::engine::Vertex_color>;
+template auto apeiron::engine::load_model(std::string_view filename) -> Model_data<apeiron::engine::Vertex_texcoords>;
+template auto apeiron::engine::load_model(std::string_view filename) -> Model_data<apeiron::engine::Vertex_normal_color>;
+template auto apeiron::engine::load_model(std::string_view filename) -> Model_data<apeiron::engine::Vertex_normal_texcoords>;

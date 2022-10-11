@@ -12,7 +12,7 @@
 namespace {
 
 
-auto build_vertices(glm::vec2 size, std::size_t x_steps, std::size_t y_steps, glm::vec4 color)
+auto build_vertices(const glm::vec2& size, std::size_t x_steps, std::size_t y_steps, const glm::vec4& color)
 {
   using namespace apeiron::engine;
   using namespace apeiron::utility;
@@ -43,14 +43,14 @@ auto build_vertices(glm::vec2 size, std::size_t x_steps, std::size_t y_steps, gl
 }  // namespace
 
 
-apeiron::opengl::Grid::Grid(glm::vec2 size, std::size_t x_steps, std::size_t y_steps,
+apeiron::opengl::Grid::Grid(const glm::vec2& size, std::size_t x_steps, std::size_t y_steps,
     const glm::vec4& color, float line_width)
 {
   init(size, x_steps, y_steps, color, line_width);
 }
 
 
-void apeiron::opengl::Grid::init(glm::vec2 size, std::size_t x_steps, std::size_t y_steps,
+void apeiron::opengl::Grid::init(const glm::vec2& size, std::size_t x_steps, std::size_t y_steps,
     const glm::vec4& color, float line_width)
 {
   size_ = size;

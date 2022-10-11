@@ -112,13 +112,10 @@ template<typename T> void apeiron::opengl::Shape::set_buffers(const std::vector<
 }
 
 
-using namespace apeiron::engine;
-using namespace apeiron::opengl;
-
-template void Shape::set_buffers(const std::vector<Vertex>&);
-template void Shape::set_buffers(const std::vector<Vertex_simple>&);
-template void Shape::set_buffers(const std::vector<Vertex_normal>&);
-template void Shape::set_buffers(const std::vector<Vertex_color>&);
-template void Shape::set_buffers(const std::vector<Vertex_texcoords>&);
-template void Shape::set_buffers(const std::vector<Vertex_normal_color>&);
-template void Shape::set_buffers(const std::vector<Vertex_normal_texcoords>&);
+template void apeiron::opengl::Shape::set_buffers(const std::vector<apeiron::engine::Vertex>&);
+template void apeiron::opengl::Shape::set_buffers(const std::vector<apeiron::engine::Vertex_simple>&);
+template void apeiron::opengl::Shape::set_buffers(const std::vector<apeiron::engine::Vertex_normal>&);
+template void apeiron::opengl::Shape::set_buffers(const std::vector<apeiron::engine::Vertex_color>&);
+template void apeiron::opengl::Shape::set_buffers(const std::vector<apeiron::engine::Vertex_texcoords>&);
+template void apeiron::opengl::Shape::set_buffers(const std::vector<apeiron::engine::Vertex_normal_color>&);
+template void apeiron::opengl::Shape::set_buffers(const std::vector<apeiron::engine::Vertex_normal_texcoords>&);
