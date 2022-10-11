@@ -20,7 +20,7 @@ if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     link_directories(${SDL2_DIR}/x86_64-w64-mingw32/lib)
 elseif (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     include_directories(${SDL2_DIR}/include)
-    link_directories(${SDL2_DIR}/lib)
+    link_directories(${SDL2_DIR}/lib/x64)
 endif ()
 
 if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
