@@ -61,7 +61,7 @@ template <typename T> bool intersects(const Rect<T>& a, const Rect<T>& b)
 }
 
 
-template <typename T> bool within(const Rect<T>& r, const Point<T>& p)
+template <typename T> bool within(const Point<T>& p, const Rect<T>& r)
 {
   return p.x > r.x && p.x < r.x + r.w && p.y > r.y && p.y < r.y + r.h;
 }
