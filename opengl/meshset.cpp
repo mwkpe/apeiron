@@ -3,8 +3,6 @@
 
 #include <algorithm>
 #include <cstdint>
-#include <tuple>
-#include <vector>
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
@@ -93,6 +91,27 @@ void apeiron::opengl::Meshset::load_from_image(std::string_view filename, std::u
   }
 
   set_buffers(vertices);
+}
+
+
+void apeiron::opengl::Meshset::set_tile_spacing(const std::vector<std::tuple<float, float>>& tile_spacing)
+{
+  tile_spacing_ = tile_spacing;
+}
+
+
+void apeiron::opengl::Meshset::set_tile_spacing(std::vector<std::tuple<float, float>>&& tile_spacing)
+{
+  tile_spacing_ = std::move(tile_spacing);
+}
+
+
+std::tuple<float, float> apeiron::opengl::Meshset::tile_spacing(std::uint32_t i) const
+{
+  if (const std::uint32_t index = i - index_offset_; index < tile_spacing_.size())
+    return tile_spacing_[index];
+
+  return {tile_width_, tile_height_};
 }
 
 
