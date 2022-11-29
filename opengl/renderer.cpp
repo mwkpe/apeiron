@@ -204,6 +204,20 @@ void apeiron::opengl::Renderer::clear(float r, float g, float b) const
 }
 
 
+void apeiron::opengl::Renderer::clear(const glm::vec3& color) const
+{
+  glClearColor(color.r, color.g, color.b, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+}
+
+
+void apeiron::opengl::Renderer::clear(const glm::vec4& color) const
+{
+  glClearColor(color.r, color.g, color.b, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+}
+
+
 void apeiron::opengl::Renderer::render(const engine::Entity& entity)
 {
   glm::mat4 model{1.0f};
@@ -297,7 +311,8 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity,
 }
 
 
-void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::Tileset& charset)
+template<typename T> void apeiron::opengl::Renderer::render_text(const T& text,
+    const opengl::Tileset& charset)
 {
   use_texture_shading();
   charset.bind();
@@ -315,8 +330,8 @@ void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::T
 }
 
 
-void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::Tileset& charset,
-    const glm::vec4& color)
+template<typename T> void apeiron::opengl::Renderer::render_text(const T& text,
+    const opengl::Tileset& charset, const glm::vec4& color)
 {
   use_texture_shading();
   set_colorize(true);
@@ -338,7 +353,7 @@ void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::T
 }
 
 
-void apeiron::opengl::Renderer::render(const engine::Text& text,
+template<typename T> void apeiron::opengl::Renderer::render_text(const T& text,
     const opengl::Mesh_font& charset, const glm::vec4& color)
 {
   use_color_shading();
@@ -370,8 +385,8 @@ void apeiron::opengl::Renderer::render(const engine::Text& text,
 }
 
 
-void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::Meshset& charset,
-    const glm::vec4& color)
+template<typename T> void apeiron::opengl::Renderer::render_text(const T& text,
+    const opengl::Meshset& charset, const glm::vec4& color)
 {
   use_color_shading();
   shader_.set_uniform("color", color);
@@ -383,8 +398,9 @@ void apeiron::opengl::Renderer::render(const engine::Text& text, const opengl::M
     apply_rotation(model, text);
     model = glm::scale(model, text.scale());
     shader_.set_uniform("model", model);
-    charset.render(c);
-    offset += charset.tile_width() * text.text_size() * text.spacing().x;
+    auto index = static_cast<std::uint32_t>(c);
+    charset.render(index);
+    offset += std::get<0>(charset.tile_spacing(index)) * text.text_size() * text.spacing().x;
   }
 }
 
@@ -528,3 +544,22 @@ void apeiron::opengl::Renderer::render_bounds(const engine::Entity& entity, cons
   shader_.set_uniform("color", color);
   entity.render_bounds();
 }
+
+
+template void apeiron::opengl::Renderer::render_text(const engine::Text& text,
+    const opengl::Tileset& charset);
+template void apeiron::opengl::Renderer::render_text(const engine::Text& text,
+    const opengl::Tileset& charset, const glm::vec4& color);
+template void apeiron::opengl::Renderer::render_text(const engine::Text& text,
+    const opengl::Mesh_font& charset, const glm::vec4& color);
+template void apeiron::opengl::Renderer::render_text(const engine::Text& text,
+    const opengl::Meshset& charset, const glm::vec4& color);
+
+template void apeiron::opengl::Renderer::render_text(const engine::Text_observer& text,
+    const opengl::Tileset& charset);
+template void apeiron::opengl::Renderer::render_text(const engine::Text_observer& text,
+    const opengl::Tileset& charset, const glm::vec4& color);
+template void apeiron::opengl::Renderer::render_text(const engine::Text_observer& text,
+    const opengl::Mesh_font& charset, const glm::vec4& color);
+template void apeiron::opengl::Renderer::render_text(const engine::Text_observer& text,
+    const opengl::Meshset& charset, const glm::vec4& color);

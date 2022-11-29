@@ -52,6 +52,8 @@ public:
 
   void clear() const;
   void clear(float r, float g, float b) const;
+  void clear(const glm::vec3& color) const;
+  void clear(const glm::vec4& color) const;
 
   void render(const engine::Entity& entity);
   void render(const engine::Entity& entity, const glm::vec4& color);
@@ -61,10 +63,10 @@ public:
       const glm::vec3& offset);
   void render(const engine::Entity& entity, const opengl::Meshset& meshset, std::uint32_t index,
       const glm::vec4& color, bool colorize = false);
-  void render(const engine::Text& text, const opengl::Tileset& charset);
-  void render(const engine::Text& text, const opengl::Tileset& charset, const glm::vec4& color);
-  void render(const engine::Text& text, const opengl::Mesh_font& charset, const glm::vec4& color);
-  void render(const engine::Text& text, const opengl::Meshset& charset, const glm::vec4& color);
+  template<typename T> void render_text(const T& text, const opengl::Tileset& charset);
+  template<typename T> void render_text(const T& text, const opengl::Tileset& charset, const glm::vec4& color);
+  template<typename T> void render_text(const T& text, const opengl::Mesh_font& charset, const glm::vec4& color);
+  template<typename T> void render_text(const T& text, const opengl::Meshset& charset, const glm::vec4& color);
   void render_screen(const engine::Entity& entity);
   void render_screen(const engine::Entity& entity, const glm::vec4& color);
   void render_screen(const engine::Entity& entity, const opengl::Meshset& meshset,
