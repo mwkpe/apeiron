@@ -53,8 +53,8 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/../prefab/axis.h
     ${CMAKE_CURRENT_LIST_DIR}/../prefab/axes.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../prefab/axes.h
-    ${CMAKE_CURRENT_LIST_DIR}/../prefab/ground.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../prefab/ground.h
+    ${CMAKE_CURRENT_LIST_DIR}/../prefab/grid.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../prefab/grid.h
     ${CMAKE_CURRENT_LIST_DIR}/../prefab/light.h
     ${CMAKE_CURRENT_LIST_DIR}/../prefab/teapot.h
     ${CMAKE_CURRENT_LIST_DIR}/../utility/linear_range.h

@@ -18,8 +18,6 @@ auto build_vertices(const glm::vec2& size, std::size_t x_steps, std::size_t y_st
   using namespace apeiron::utility;
   std::vector<Vertex_color> vertices;
 
-  // Builds a grid on the OpenGL xz-plane (with y as height vector),
-  // therefore puts the y coordinate into the z coordinate
   const float x_first = -size.x / 2.0f;
   const float x_last = size.x / 2.0f;
   const float y_first = -size.y / 2.0f;
@@ -27,13 +25,13 @@ auto build_vertices(const glm::vec2& size, std::size_t x_steps, std::size_t y_st
   const float height = 0.0f;
 
   for (float x : Linear_range{x_first, x_last, x_steps + 1}) {
-    vertices.push_back({{x, height, y_first}, color});
-    vertices.push_back({{x, height, y_last}, color});
+    vertices.push_back({{x, y_first, height}, color});
+    vertices.push_back({{x, y_last, height}, color});
   }
 
   for (float y : Linear_range{y_first, y_last, y_steps + 1}) {
-    vertices.push_back({{x_first, height, y}, color});
-    vertices.push_back({{x_last, height, y}, color});
+    vertices.push_back({{x_first, y, height}, color});
+    vertices.push_back({{x_last, y, height}, color});
   }
 
   return vertices;
