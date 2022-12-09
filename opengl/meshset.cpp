@@ -15,18 +15,49 @@
 namespace {
 
 
+struct Pixel
+{
+  auto operator<=>(const Pixel&) const = default;
+  std::uint8_t r;
+  std::uint8_t g;
+  std::uint8_t b;
+  std::uint8_t a;
+};
+
+
+void add_quad(auto& vertices, Pixel pixel, float x, float y, float w, float h)
+{
+  const auto r = static_cast<float>(pixel.r) / 255.0f;
+  const auto g = static_cast<float>(pixel.g) / 255.0f;
+  const auto b = static_cast<float>(pixel.b) / 255.0f;
+  const auto a = static_cast<float>(pixel.a) / 255.0f;
+
+  const float z = 0.0f;
+
+  // First triangle
+  vertices.push_back({{x,   y,   z}, {r, g, b, a}});
+  vertices.push_back({{x,   y-h, z}, {r, g, b, a}});
+  vertices.push_back({{x+w, y-h, z}, {r, g, b, a}});
+  // Second triangle
+  vertices.push_back({{x+w, y-h, z}, {r, g, b, a}});
+  vertices.push_back({{x+w, y,   z}, {r, g, b, a}});
+  vertices.push_back({{x,   y,   z}, {r, g, b, a}});
+}
+
+
 }  // namespace
 
 
 void apeiron::opengl::Meshset::load_from_image(std::string_view filename, std::uint32_t rows,
-    std::uint32_t cols, std::uint32_t index_offset, float tile_width, float tile_height)
+    std::uint32_t cols, std::uint32_t index_offset, float tile_width, float tile_height,
+    bool optimize)
 {
   tile_count_ = cols * rows;
   index_offset_ = index_offset;
   tile_width_ = tile_width;
   tile_height_ = tile_height;
 
-  auto&& [pixel, image_w, image_h, channel_count] = engine::load_image(filename, false);
+  auto&& [bytes, image_w, image_h, channel_count] = engine::load_image(filename, false);
 
   if (channel_count != 4)
     throw engine::Error{"Image must be RGBA: ", filename};
@@ -40,34 +71,38 @@ void apeiron::opengl::Meshset::load_from_image(std::string_view filename, std::u
   auto read_tile = [&,this](std::uint32_t pos, std::uint32_t skip) -> std::uint32_t {
     float x = -0.5f * tile_width_;
     float y = 0.5f * tile_height_;
-    const float z = 0.0f;
     std::size_t vertex_count = 0;
 
     for (std::uint32_t i=0; i<tile_h; i++) {
-      for (std::uint32_t j=0; j<tile_w; j++) {
+      // Read first pixel
+      Pixel last_pixel{bytes[pos], bytes[pos + 1], bytes[pos + 2], bytes[pos + 3]};
+      pos += channel_count;
+      std::uint32_t run_length = 1;
+
+      for (std::uint32_t j=1; j<tile_w; j++) {
         // Read pixel
-        const float r = pixel[pos] / 255.0f;
-        const float g = pixel[pos + 1] / 255.0f;
-        const float b = pixel[pos + 2] / 255.0f;
-        const std::uint8_t alpha = pixel[pos + 3];
-        const float a = alpha / 255.0f;
+        Pixel current_pixel{bytes[pos], bytes[pos + 1], bytes[pos + 2], bytes[pos + 3]};
         pos += channel_count;
 
-        // Pixel to quad
-        if (alpha > 0) {
-          // First triangle
-          vertices.push_back({{x,    y,    z}, {r, g, b, a}});
-          vertices.push_back({{x,    y-ps, z}, {r, g, b, a}});
-          vertices.push_back({{x+ps, y-ps, z}, {r, g, b, a}});
-          // Second triangle
-          vertices.push_back({{x+ps, y-ps, z}, {r, g, b, a}});
-          vertices.push_back({{x+ps, y,    z}, {r, g, b, a}});
-          vertices.push_back({{x,    y,    z}, {r, g, b, a}});
-
-          vertex_count += 6;
+        // Combine pixels with identical color
+        if (optimize && current_pixel == last_pixel) {
+          run_length++;
         }
+        else {
+          if (last_pixel.a > 0) {
+            add_quad(vertices, last_pixel, x, y, run_length * ps, ps);
+            vertex_count += 6;
+          }
 
-        x += ps;
+          x += run_length * ps;
+          last_pixel = current_pixel;
+          run_length = 1;
+        }
+      }
+
+      if (last_pixel.a > 0) {
+        add_quad(vertices, last_pixel, x, y, run_length * ps, ps);
+        vertex_count += 6;
       }
 
       x = -0.5f * tile_width_;
@@ -94,13 +129,13 @@ void apeiron::opengl::Meshset::load_from_image(std::string_view filename, std::u
 }
 
 
-void apeiron::opengl::Meshset::set_tile_spacing(const std::vector<std::tuple<float, float>>& tile_spacing)
+void apeiron::opengl::Meshset::set_tile_spacing(const Spacing_vector& tile_spacing)
 {
   tile_spacing_ = tile_spacing;
 }
 
 
-void apeiron::opengl::Meshset::set_tile_spacing(std::vector<std::tuple<float, float>>&& tile_spacing)
+void apeiron::opengl::Meshset::set_tile_spacing(Spacing_vector&& tile_spacing)
 {
   tile_spacing_ = std::move(tile_spacing);
 }
