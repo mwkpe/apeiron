@@ -118,14 +118,34 @@ void apeiron::opengl::Meshset::load_from_image(std::string_view filename, std::u
         ((i / cols) * tile_h * image_w * channel_count), image_w * channel_count);
     
     if (i == 0)
-      vertex_indices_.push_back(0);
+      tile_indices_.push_back(0);
     else
-      vertex_indices_.push_back(vertex_indices_.back() + vertex_counts_.back());
+      tile_indices_.push_back(tile_indices_.back() + vertex_counts_.back());
 
     vertex_counts_.push_back(count);
   }
 
   set_buffers(vertices);
+}
+
+
+template<typename T> void apeiron::opengl::Meshset::set_data(const std::vector<T>& vertices,
+    std::vector<std::uint32_t>&& tile_indices, std::vector<std::uint32_t>&& vertex_counts)
+{
+  set_buffers(vertices);
+  tile_indices_ = std::move(tile_indices);
+  vertex_counts_ = std::move(vertex_counts);
+  tile_count_ = tile_indices_.size();
+}
+
+
+template<typename T> void apeiron::opengl::Meshset::set_data(const std::vector<T>& vertices,
+    const std::vector<std::uint32_t>& tile_indices, const std::vector<std::uint32_t>& vertex_counts)
+{
+  set_buffers(vertices);
+  tile_indices_ = tile_indices;
+  vertex_counts_ = vertex_counts;
+  tile_count_ = tile_indices_.size();
 }
 
 
@@ -154,5 +174,20 @@ void apeiron::opengl::Meshset::render(std::uint32_t i) const
 {
   const auto tile_index = std::min(i - index_offset_, tile_count_ - 1);
   glBindVertexArray(vao_);
-  glDrawArrays(GL_TRIANGLES, vertex_indices_[tile_index], vertex_counts_[tile_index]);
+  glDrawArrays(GL_TRIANGLES, tile_indices_[tile_index], vertex_counts_[tile_index]);
 }
+
+
+template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex>&, 
+    std::vector<std::uint32_t>&&,
+    std::vector<std::uint32_t>&&);
+template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex>&, 
+    const std::vector<std::uint32_t>&,
+    const std::vector<std::uint32_t>&);
+
+template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_color>&, 
+    std::vector<std::uint32_t>&&,
+    std::vector<std::uint32_t>&&);
+template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_color>&, 
+    const std::vector<std::uint32_t>&,
+    const std::vector<std::uint32_t>&);
