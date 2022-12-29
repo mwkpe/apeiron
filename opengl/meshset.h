@@ -31,11 +31,13 @@ public:
   void set_tile_spacing(const Spacing_vector& tile_spacing);
   void set_tile_spacing(Spacing_vector&& tile_spacing);
   void set_index_offset(std::uint32_t offset) { index_offset_ = offset; }
-  void render(std::uint32_t i) const;
+  void render(std::uint32_t index) const;
+  std::uint32_t tile_count() const { return tile_indices_.size(); }
+  bool empty(std::uint32_t index) const;
   glm::vec2 tile_size() const { return glm::vec2{tile_width_, tile_height_}; }
   float tile_width() const { return tile_width_; }
   float tile_height() const { return tile_height_; }
-  std::tuple<float, float> tile_spacing(std::uint32_t i) const;
+  std::tuple<float, float> tile_spacing(std::uint32_t index) const;
 
 private:
   std::vector<std::uint32_t> tile_indices_;

@@ -161,18 +161,27 @@ void apeiron::opengl::Meshset::set_tile_spacing(Spacing_vector&& tile_spacing)
 }
 
 
-std::tuple<float, float> apeiron::opengl::Meshset::tile_spacing(std::uint32_t i) const
+bool apeiron::opengl::Meshset::empty(std::uint32_t index) const
 {
-  if (const std::uint32_t index = i - index_offset_; index < tile_spacing_.size())
-    return tile_spacing_[index];
+  if (const std::uint32_t i = index - index_offset_; i < vertex_counts_.size())
+    return vertex_counts_[i] == 0;
+
+  return true;
+}
+
+
+std::tuple<float, float> apeiron::opengl::Meshset::tile_spacing(std::uint32_t index) const
+{
+  if (const std::uint32_t i = index - index_offset_; i < tile_spacing_.size())
+    return tile_spacing_[i];
 
   return {tile_width_, tile_height_};
 }
 
 
-void apeiron::opengl::Meshset::render(std::uint32_t i) const
+void apeiron::opengl::Meshset::render(std::uint32_t index) const
 {
-  const auto tile_index = std::min(i - index_offset_, tile_count_ - 1);
+  const auto tile_index = std::min(index - index_offset_, tile_count_ - 1);
   glBindVertexArray(vao_);
   glDrawArrays(GL_TRIANGLES, tile_indices_[tile_index], vertex_counts_[tile_index]);
 }
