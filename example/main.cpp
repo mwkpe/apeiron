@@ -8,8 +8,9 @@
 #include "SDL2/SDL.h"
 #include <glad/glad.h>
 #include "engine/error.h"
-#include "engine/input.h"
 #include "engine/event.h"
+#include "engine/input.h"
+#include "engine/sdl_input.h"
 #include "example/settings.h"
 #include "example/menu.h"
 #include "example/world.h"
@@ -39,45 +40,6 @@ void disable_dpi_scaling()
   #endif
 
   #pragma GCC diagnostic pop
-}
-
-
-apeiron::engine::Input get_input_state()
-{
-  apeiron::engine::Input input;
-  const std::uint8_t* kb_state = SDL_GetKeyboardState(nullptr);
-
-  input.forward = kb_state[SDL_SCANCODE_UP] || kb_state[SDL_SCANCODE_W];
-  input.backward = kb_state[SDL_SCANCODE_DOWN] || kb_state[SDL_SCANCODE_S];
-  input.left = kb_state[SDL_SCANCODE_LEFT] || kb_state[SDL_SCANCODE_A];
-  input.right = kb_state[SDL_SCANCODE_RIGHT] || kb_state[SDL_SCANCODE_D];
-
-  auto mouse_state = SDL_GetMouseState(&input.mouse_x_abs, &input.mouse_y_abs);
-  SDL_GetRelativeMouseState(&input.mouse_x_rel, &input.mouse_y_rel);
-  input.mouse_y_rel = -input.mouse_y_rel;  // Make mouse up correspond to camera pitch up
-  input.mouse_left = static_cast<bool>(mouse_state & SDL_BUTTON(SDL_BUTTON_LEFT));
-  input.mouse_middle = static_cast<bool>(mouse_state & SDL_BUTTON(SDL_BUTTON_MIDDLE));
-  input.mouse_right =  static_cast<bool>(mouse_state & SDL_BUTTON(SDL_BUTTON_RIGHT));
-  input.mouse_side1 =  static_cast<bool>(mouse_state & SDL_BUTTON(SDL_BUTTON_X1));
-  input.mouse_side2 =  static_cast<bool>(mouse_state & SDL_BUTTON(SDL_BUTTON_X2));
-
-  return input;
-}
-
-
-apeiron::engine::Mouse_button get_mouse_button(std::uint8_t button)
-{
-  using namespace apeiron::engine;
-  switch (button) {
-    case SDL_BUTTON_LEFT: return Mouse_button::Left;
-    case SDL_BUTTON_MIDDLE: return Mouse_button::Middle;
-    case SDL_BUTTON_RIGHT: return Mouse_button::Right;
-    case SDL_BUTTON_X1: return Mouse_button::Side1;
-    case SDL_BUTTON_X2: return Mouse_button::Side2;
-    default:;
-  }
-
-  return Mouse_button::Unknown;
 }
 
 
@@ -215,13 +177,15 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
         case SDL_MOUSEBUTTONUP: {
           if (!menu.has_mouse()) {
             events.push_back(apeiron::engine::Mouse_button_up_event{
-                get_mouse_button(event.button.button), event.button.x, event.button.y});
+                apeiron::engine::get_mouse_button(event.button.button),
+                event.button.x, event.button.y});
           }
         } break;
         case SDL_MOUSEBUTTONDOWN: {
           if (!menu.has_mouse()) {
               events.push_back(apeiron::engine::Mouse_button_down_event{
-                  get_mouse_button(event.button.button), event.button.x, event.button.y});
+                  apeiron::engine::get_mouse_button(event.button.button),
+                  event.button.x, event.button.y});
           }
         } break;
         case SDL_MOUSEWHEEL: {
@@ -233,7 +197,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       }
     }
 
-    auto input = get_input_state();
+    auto input = apeiron::engine::get_input_state();
     world.update(time, delta_time, events, &input);
     events.clear();
 
