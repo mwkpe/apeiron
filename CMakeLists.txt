@@ -12,7 +12,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(apeiron)
 include(apeiron-gui-sdl2-opengl3)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/example)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/example)
 
 add_executable(apeiron_example
     example/main.cpp

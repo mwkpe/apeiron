@@ -4,7 +4,7 @@
 #include <random>
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
-#include "engine/collision.h"
+#include "apeiron/engine/collision.h"
 
 
 apeiron::example::World::World(const Settings* settings)
@@ -12,7 +12,7 @@ apeiron::example::World::World(const Settings* settings)
       bitmap_charset_{16, 8, 32, 0.5f, 1.0f},
       camera_{-45.0f, -145.0f, {10.0f, 15.0f, 10.0f}},
       axes_{16, 0.01f, 25.0f},
-      ground_{{48.0f, 48.0f}, 48, 48, {0.25f, 0.25f, 0.25f, 1.0f}, 1.0f},
+      grid_{{48.0f, 48.0f}, 48, 48, {0.25f, 0.25f, 0.25f, 1.0f}, 1.0f},
       light_{&bulb_},
       cylinder_{settings_->cylinder_points, 0.0f, 0.0f, 1.0f},
       cube_{&cube_model_, 0.0f, 0.0f, 0.0f}
@@ -38,6 +38,8 @@ void apeiron::example::World::init()
   cube_model_.set<engine::Vertex_normal_texcoords>({1.0f, 1.0f, 1.0f});
   bulb_.load("assets/models/sphere_med_poly.obj");
   teapot_.load_model();
+
+  grid_.set_rotation_deg(-90.0f, 0.0f, 0.0f);
 
   light_.set_scale(0.3f, 0.3f, 0.3f);
   light_.set_position(0.0f, 8.0f, -settings_->light_distance);
@@ -166,7 +168,7 @@ void apeiron::example::World::render()
   axes_.render(renderer_);
 
   renderer_.use_vertex_color_shading();
-  renderer_.render(ground_);
+  renderer_.render(grid_);
 
   renderer_.use_color_shading();
 
@@ -197,7 +199,7 @@ void apeiron::example::World::render()
   }
 
   renderer_.set_lighting(false);
-  renderer_.render(world_text_, mesh_charset_, color);
+  renderer_.render_text(world_text_, mesh_charset_, color);
 
   renderer_.use_screen_space();
   renderer_.render_screen(screen_text_, mesh_charset_, color);

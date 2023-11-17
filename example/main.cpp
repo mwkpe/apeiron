@@ -7,10 +7,10 @@
 #endif
 #include "SDL2/SDL.h"
 #include <glad/glad.h>
-#include "engine/error.h"
-#include "engine/event.h"
-#include "engine/input.h"
-#include "engine/sdl_input.h"
+#include "apeiron/engine/error.h"
+#include "apeiron/engine/event.h"
+#include "apeiron/engine/input.h"
+#include "apeiron/engine/sdl_input.h"
 #include "example/settings.h"
 #include "example/menu.h"
 #include "example/world.h"

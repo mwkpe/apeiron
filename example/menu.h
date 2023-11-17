@@ -2,7 +2,7 @@
 #define APEIRON_EXAMPLE_MENU_H
 
 
-#include "opengl/gui.h"
+#include "apeiron/opengl/gui.h"
 #include "example/settings.h"
 
 

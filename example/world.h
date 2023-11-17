@@ -4,21 +4,21 @@
 
 #include <cstdint>
 #include <vector>
-#include "engine/input.h"
-#include "engine/event.h"
-#include "engine/camera.h"
-#include "engine/text.h"
-#include "opengl/renderer.h"
-#include "opengl/frame_buffer.h"
-#include "opengl/texture.h"
-#include "opengl/tileset.h"
-#include "opengl/mesh_font.h"
-#include "opengl/cuboid.h"
-#include "opengl/model.h"
-#include "prefab/axes.h"
-#include "prefab/ground.h"
-#include "prefab/light.h"
-#include "prefab/teapot.h"
+#include "apeiron/engine/input.h"
+#include "apeiron/engine/event.h"
+#include "apeiron/engine/camera.h"
+#include "apeiron/engine/text.h"
+#include "apeiron/opengl/renderer.h"
+#include "apeiron/opengl/frame_buffer.h"
+#include "apeiron/opengl/texture.h"
+#include "apeiron/opengl/tileset.h"
+#include "apeiron/opengl/mesh_font.h"
+#include "apeiron/opengl/cuboid.h"
+#include "apeiron/opengl/model.h"
+#include "apeiron/prefab/axes.h"
+#include "apeiron/prefab/grid.h"
+#include "apeiron/prefab/light.h"
+#include "apeiron/prefab/teapot.h"
 #include "example/settings.h"
 #include "example/cube.h"
 #include "example/cylinder.h"
@@ -62,7 +62,7 @@ private:
   engine::Text world_text_;
   engine::Text screen_text_;
   prefab::Axes axes_;
-  prefab::Ground ground_;
+  prefab::Grid grid_;
   prefab::Light light_;
   prefab::Teapot teapot_;
   Cylinder cylinder_;

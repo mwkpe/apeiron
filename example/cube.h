@@ -3,8 +3,8 @@
 
 
 #include <glm/glm.hpp>
-#include "engine/entity.h"
-#include "opengl/cuboid.h"
+#include "apeiron/engine/entity.h"
+#include "apeiron/opengl/cuboid.h"
 
 
 namespace apeiron::example {

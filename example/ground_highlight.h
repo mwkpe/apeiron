@@ -3,8 +3,8 @@
 
 
 #include <glm/glm.hpp>
-#include "engine/entity.h"
-#include "opengl/quad.h"
+#include "apeiron/engine/entity.h"
+#include "apeiron/opengl/quad.h"
 
 
 namespace apeiron::example {

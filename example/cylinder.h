@@ -3,8 +3,8 @@
 
 
 #include <glm/glm.hpp>
-#include "engine/entity.h"
-#include "opengl/cylinder.h"
+#include "apeiron/engine/entity.h"
+#include "apeiron/opengl/cylinder.h"
 
 
 namespace apeiron::example {
