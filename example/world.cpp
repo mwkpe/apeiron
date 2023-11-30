@@ -111,7 +111,7 @@ void apeiron::example::World::update(float time, float delta_time,
   // Cylinder
   cylinder_.set_rotation_deg(frame_time_ * 360.0f * settings_->cylinder_revs *
       cylinder_.rotation_magnitudes());
-  if (cylinder_.points() != settings_->cylinder_points) {
+  if (cylinder_.points() != static_cast<std::uint32_t>(settings_->cylinder_points)) {
     cylinder_.rebuild(settings_->cylinder_points);
   }
 
