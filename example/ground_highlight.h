@@ -15,7 +15,7 @@ class Ground_highlight final : public engine::Entity
 public:
   Ground_highlight() : quad_{0.8f, 0.8f, engine::Face::Up} {}
   void set_visible(bool visible) { visible_ = visible; }
-  bool visible() { return visible_; }
+  [[nodiscard]] bool visible() const { return visible_; }
   void render() const override { quad_.render(); }
 
 private:

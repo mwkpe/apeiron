@@ -15,7 +15,7 @@ public:
   Menu(SDL_Window* window, SDL_GLContext context) : opengl::Gui{window, context} {}
   void setup(example::Settings* settings);
   void build(example::Settings* settings, float time);
-  bool has_mouse() const { return has_mouse_; }
+  [[nodiscard]] bool has_mouse() const { return has_mouse_; }
 
 private:
   bool has_mouse_ = false;

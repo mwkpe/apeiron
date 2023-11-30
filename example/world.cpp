@@ -14,7 +14,7 @@ apeiron::example::World::World(const Settings* settings)
       axes_{16, 0.01f, 25.0f},
       grid_{{48.0f, 48.0f}, 48, 48, {0.25f, 0.25f, 0.25f, 1.0f}, 1.0f},
       light_{&bulb_},
-      cylinder_{settings_->cylinder_points, 0.0f, 0.0f, 1.0f},
+      cylinder_{static_cast<std::uint32_t>(settings_->cylinder_points), 0.0f, 0.0f, 1.0f},
       cube_{&cube_model_, 0.0f, 0.0f, 0.0f}
 {
 }

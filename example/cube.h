@@ -15,7 +15,7 @@ class Cube final : public engine::Entity
 public:
   Cube(const opengl::Cuboid* cuboid, float xrot, float yrot, float zrot)
       : cuboid_{cuboid}, rotation_magnitudes_{xrot, yrot, zrot} {}
-  glm::vec3 rotation_magnitudes() const { return rotation_magnitudes_; }
+  [[nodiscard]] glm::vec3 rotation_magnitudes() const { return rotation_magnitudes_; }
   void render() const override { cuboid_->render(); }
 
 private:
