@@ -19,12 +19,14 @@ public:
       const glm::vec3& position = glm::vec3{0.0f});
   Quad(float width, float height, const glm::vec4& color, engine::Face face = engine::Face::Front,
       const glm::vec3& position = glm::vec3{0.0f});
+
   template<typename T = engine::Vertex> void set(float width, float height,
       engine::Face face = engine::Face::Front, const glm::vec3& position = glm::vec3{0.0f});
   template<typename T = engine::Vertex> void set(float width, float height, const glm::vec4& color,
       engine::Face face = engine::Face::Front, const glm::vec3& position = glm::vec3{0.0f});
   template<typename T = engine::Vertex> void set(float width, float height, const glm::mat4& color,
       engine::Face face = engine::Face::Front, const glm::vec3& position = glm::vec3{0.0f});
+
   void render() const override;
 };
 

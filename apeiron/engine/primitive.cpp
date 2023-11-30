@@ -86,62 +86,62 @@ template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(fl
         return {
           // x, y, z
           // xy-plane
-          {{-w + x, -h + y, z}},
-          {{ w + x, -h + y, z}},
-          {{ w + x,  h + y, z}},
-          {{ w + x,  h + y, z}},
-          {{-w + x,  h + y, z}},
-          {{-w + x, -h + y, z}}
+          {-w + x, -h + y, z},
+          { w + x, -h + y, z},
+          { w + x,  h + y, z},
+          { w + x,  h + y, z},
+          {-w + x,  h + y, z},
+          {-w + x, -h + y, z}
         };
       case Face::Back:
         return {
           // xy-plane
-          {{ w + x, -h + y, z}},
-          {{-w + x, -h + y, z}},
-          {{-w + x,  h + y, z}},
-          {{-w + x,  h + y, z}},
-          {{ w + x,  h + y, z}},
-          {{ w + x, -h + y, z}}
+          { w + x, -h + y, z},
+          {-w + x, -h + y, z},
+          {-w + x,  h + y, z},
+          {-w + x,  h + y, z},
+          { w + x,  h + y, z},
+          { w + x, -h + y, z}
         };
       case Face::Left:
         return {
           // yz-plane
-          {{x, -h + y, -w + z}},
-          {{x, -h + y,  w + z}},
-          {{x,  h + y,  w + z}},
-          {{x,  h + y,  w + z}},
-          {{x,  h + y, -w + z}},
-          {{x, -h + y, -w + z}}
+          {x, -h + y, -w + z},
+          {x, -h + y,  w + z},
+          {x,  h + y,  w + z},
+          {x,  h + y,  w + z},
+          {x,  h + y, -w + z},
+          {x, -h + y, -w + z}
         };
       case Face::Right:
         return {
           // yz-plane
-          {{x, -h + y,  w + z}},
-          {{x, -h + y, -w + z}},
-          {{x,  h + y, -w + z}},
-          {{x,  h + y, -w + z}},
-          {{x,  h + y,  w + z}},
-          {{x, -h + y,  w + z}}
+          {x, -h + y,  w + z},
+          {x, -h + y, -w + z},
+          {x,  h + y, -w + z},
+          {x,  h + y, -w + z},
+          {x,  h + y,  w + z},
+          {x, -h + y,  w + z}
         };
       case Face::Up:
         return {
           // xz-plane
-          {{-w + x, y,  h + z}},
-          {{ w + x, y,  h + z}},
-          {{ w + x, y, -h + z}},
-          {{ w + x, y, -h + z}},
-          {{-w + x, y, -h + z}},
-          {{-w + x, y,  h + z}}
+          {-w + x, y,  h + z},
+          { w + x, y,  h + z},
+          { w + x, y, -h + z},
+          { w + x, y, -h + z},
+          {-w + x, y, -h + z},
+          {-w + x, y,  h + z}
         };
       case Face::Down:
         return {
           // xz-plane
-          {{-w + x, y, -h + z}},
-          {{ w + x, y, -h + z}},
-          {{ w + x, y,  h + z}},
-          {{ w + x, y,  h + z}},
-          {{-w + x, y,  h + z}},
-          {{-w + x, y, -h + z}}
+          {-w + x, y, -h + z},
+          { w + x, y, -h + z},
+          { w + x, y,  h + z},
+          { w + x, y,  h + z},
+          {-w + x, y,  h + z},
+          {-w + x, y, -h + z}
         };
     }
   }
@@ -840,47 +840,47 @@ template<typename T> std::vector<T> apeiron::engine::primitive::cuboid_vertices(
       {
         // x, y, z
         // Front (xy-plane)
-        {{-w + x, -h + y, l + z}},
-        {{ w + x, -h + y, l + z}},
-        {{ w + x,  h + y, l + z}},
-        {{ w + x,  h + y, l + z}},
-        {{-w + x,  h + y, l + z}},
-        {{-w + x, -h + y, l + z}},
+        {-w + x, -h + y, l + z},
+        { w + x, -h + y, l + z},
+        { w + x,  h + y, l + z},
+        { w + x,  h + y, l + z},
+        {-w + x,  h + y, l + z},
+        {-w + x, -h + y, l + z},
         // Back (xy-plane)
-        {{ w + x, -h + y, -l + z}},
-        {{-w + x, -h + y, -l + z}},
-        {{-w + x,  h + y, -l + z}},
-        {{-w + x,  h + y, -l + z}},
-        {{ w + x,  h + y, -l + z}},
-        {{ w + x, -h + y, -l + z}},
+        { w + x, -h + y, -l + z},
+        {-w + x, -h + y, -l + z},
+        {-w + x,  h + y, -l + z},
+        {-w + x,  h + y, -l + z},
+        { w + x,  h + y, -l + z},
+        { w + x, -h + y, -l + z},
         // Left (yz-plane)
-        {{-w + x, -h + y, -l + z}},
-        {{-w + x, -h + y,  l + z}},
-        {{-w + x,  h + y,  l + z}},
-        {{-w + x,  h + y,  l + z}},
-        {{-w + x,  h + y, -l + z}},
-        {{-w + x, -h + y, -l + z}},
+        {-w + x, -h + y, -l + z},
+        {-w + x, -h + y,  l + z},
+        {-w + x,  h + y,  l + z},
+        {-w + x,  h + y,  l + z},
+        {-w + x,  h + y, -l + z},
+        {-w + x, -h + y, -l + z},
         // Right (yz-plane)
-        {{w + x, -h + y,  l + z}},
-        {{w + x, -h + y, -l + z}},
-        {{w + x,  h + y, -l + z}},
-        {{w + x,  h + y, -l + z}},
-        {{w + x,  h + y,  l + z}},
-        {{w + x, -h + y,  l + z}},
+        {w + x, -h + y,  l + z},
+        {w + x, -h + y, -l + z},
+        {w + x,  h + y, -l + z},
+        {w + x,  h + y, -l + z},
+        {w + x,  h + y,  l + z},
+        {w + x, -h + y,  l + z},
         // Top (xz-plane)
-        {{-w + x, h + y,  l + z}},
-        {{ w + x, h + y,  l + z}},
-        {{ w + x, h + y, -l + z}},
-        {{ w + x, h + y, -l + z}},
-        {{-w + x, h + y, -l + z}},
-        {{-w + x, h + y,  l + z}},
+        {-w + x, h + y,  l + z},
+        { w + x, h + y,  l + z},
+        { w + x, h + y, -l + z},
+        { w + x, h + y, -l + z},
+        {-w + x, h + y, -l + z},
+        {-w + x, h + y,  l + z},
         // Bottom (xz-plane)
-        {{-w + x, -h + y, -l + z}},
-        {{ w + x, -h + y, -l + z}},
-        {{ w + x, -h + y,  l + z}},
-        {{ w + x, -h + y,  l + z}},
-        {{-w + x, -h + y,  l + z}},
-        {{-w + x, -h + y, -l + z}}
+        {-w + x, -h + y, -l + z},
+        { w + x, -h + y, -l + z},
+        { w + x, -h + y,  l + z},
+        { w + x, -h + y,  l + z},
+        {-w + x, -h + y,  l + z},
+        {-w + x, -h + y, -l + z}
       }
     };
   }
@@ -1217,7 +1217,7 @@ template<typename T> std::vector<T> apeiron::engine::primitive::disk_vertices(fl
   std::vector<glm::vec4> vertices;
 
   for (int i=0; i<=points; ++i) {
-    const float angle = static_cast<float>(i) / points * tau;
+    const float angle = static_cast<float>(i) / static_cast<float>(points) * tau;
     const float p1 = x + radius * std::cos(angle);
     const float p2 = y + radius * std::sin(angle);
     const float p3 = z + radius * std::sin(angle);
@@ -1338,7 +1338,7 @@ template<typename T> std::vector<T> apeiron::engine::primitive::disk_vertices(fl
   std::vector<glm::vec4> vertices;
 
   for (int i=0; i<=points; ++i) {
-    const float angle = static_cast<float>(i) / points * tau;
+    const float angle = static_cast<float>(i) / static_cast<float>(points) * tau;
     const float p1 = x + radius * std::cos(angle);
     const float p2 = y + radius * std::sin(angle);
     const float p3 = z + radius * std::sin(angle);

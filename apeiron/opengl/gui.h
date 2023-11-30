@@ -15,7 +15,7 @@ public:
   void init();
   void process(SDL_Event* event);
   void create_frame();
-  void render();
+  static void render();
 
 protected:
   SDL_Window* window_;

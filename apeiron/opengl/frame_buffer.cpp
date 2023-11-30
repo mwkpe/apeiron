@@ -137,7 +137,8 @@ void apeiron::opengl::Frame_buffer::init(std::int32_t width, std::int32_t height
   if (depth_texture) {
     glGenTextures(1, &depth_buffer_id_);
     glBindTexture(GL_TEXTURE_2D, depth_buffer_id_);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, nullptr);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT,
+        GL_UNSIGNED_BYTE, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -159,21 +160,9 @@ void apeiron::opengl::Frame_buffer::bind() const
 }
 
 
-void apeiron::opengl::Frame_buffer::unbind() const
-{
-  glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
-
 void apeiron::opengl::Frame_buffer::bind_texture() const
 {
   glBindTexture(GL_TEXTURE_2D, color_buffer_id_);
-}
-
-
-void apeiron::opengl::Frame_buffer::unbind_texture() const
-{
-  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
@@ -185,4 +174,16 @@ void apeiron::opengl::Frame_buffer::blit() const
   glBindFramebuffer(GL_READ_FRAMEBUFFER, frame_buffer_render_id_);
   glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frame_buffer_resolve_id_);
   glBlitFramebuffer(0, 0, width_, height_, 0, 0, width_, height_, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+}
+
+
+void apeiron::opengl::Frame_buffer::unbind()
+{
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+
+void apeiron::opengl::Frame_buffer::unbind_texture()
+{
+  glBindTexture(GL_TEXTURE_2D, 0);
 }

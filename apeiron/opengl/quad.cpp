@@ -1,8 +1,6 @@
 #include "quad.h"
 
 
-#include <vector>
-#include <cstddef>
 #include <glad/glad.h>
 
 
@@ -44,7 +42,7 @@ template<typename T> void apeiron::opengl::Quad::set(float width, float height,
 void apeiron::opengl::Quad::render() const
 {
   glBindVertexArray(vao_);
-  glDrawArrays(GL_TRIANGLES, 0, vertex_count_);
+  glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertex_count_));
 }
 
 

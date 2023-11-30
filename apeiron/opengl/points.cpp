@@ -1,7 +1,6 @@
 #include "points.h"
 
 
-#include <cstddef>
 #include <glad/glad.h>
 
 
@@ -35,7 +34,7 @@ void apeiron::opengl::Points::render() const
   glGetFloatv(GL_POINT_SIZE, &current_size);
   glPointSize(point_size_);
   glBindVertexArray(vao_);
-  glDrawArrays(GL_POINTS, 0, vertex_count_);
+  glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(vertex_count_));
   glPointSize(current_size);
 }
 
@@ -46,6 +45,6 @@ void apeiron::opengl::Points::render(std::uint32_t start, std::uint32_t count) c
   glGetFloatv(GL_POINT_SIZE, &current_size);
   glPointSize(point_size_);
   glBindVertexArray(vao_);
-  glDrawArrays(GL_POINTS, start, count);
+  glDrawArrays(GL_POINTS, static_cast<GLint>(start), static_cast<GLsizei>(count));
   glPointSize(current_size);
 }

@@ -35,20 +35,20 @@ public:
   void set_rotation_rad(float x, float y, float z) { rotation_ = glm::quat{glm::vec3{x, y, z}}; }
   void set_rotation_rad(const glm::vec3& rotation) { rotation_ = glm::quat{rotation}; }
 
-  const Entity* parent() const { return parent_; };
+  [[nodiscard]] const Entity* parent() const { return parent_; };
 
-  glm::vec3 position() const { return position_; }
-  glm::vec3 position2d() const { return glm::vec3{position_.x, 0.0f, position_.z}; }
-  glm::vec3 position(float x, float y, float z) const { return position_ + glm::vec3{x, y, z}; }
-  glm::vec3 position(const glm::vec3& offset) const { return position_ + offset; }
+  [[nodiscard]] glm::vec3 position() const { return position_; }
+  [[nodiscard]] glm::vec3 position2d() const { return glm::vec3{position_.x, 0.0f, position_.z}; }
+  [[nodiscard]] glm::vec3 position(float x, float y, float z) const { return position_ + glm::vec3{x, y, z}; }
+  [[nodiscard]] glm::vec3 position(const glm::vec3& offset) const { return position_ + offset; }
 
-  glm::vec3 origin() const { return origin_; }
-  glm::vec3 rotation_origin() const { return rotation_origin_; }
-  glm::vec3 size() const { return size_; }
-  glm::vec3 scale() const { return scale_; }
-  glm::quat rotation() const { return rotation_; }
-  glm::vec3 rotation_rad() const { return glm::eulerAngles(rotation_); }
-  glm::vec3 rotation_deg() const { return glm::degrees(glm::eulerAngles(rotation_)); }
+  [[nodiscard]] glm::vec3 origin() const { return origin_; }
+  [[nodiscard]] glm::vec3 rotation_origin() const { return rotation_origin_; }
+  [[nodiscard]] glm::vec3 size() const { return size_; }
+  [[nodiscard]] glm::vec3 scale() const { return scale_; }
+  [[nodiscard]] glm::quat rotation() const { return rotation_; }
+  [[nodiscard]] glm::vec3 rotation_rad() const { return glm::eulerAngles(rotation_); }
+  [[nodiscard]] glm::vec3 rotation_deg() const { return glm::degrees(glm::eulerAngles(rotation_)); }
 
   virtual void render() const {}
   virtual void render_bounds() const {}

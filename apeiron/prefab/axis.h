@@ -2,6 +2,7 @@
 #define APEIRON_PREFAB_AXIS_H
 
 
+#include <cstdint>
 #include "apeiron/engine/entity.h"
 #include "apeiron/opengl/cylinder.h"
 
@@ -13,7 +14,7 @@ class Axis final : public engine::Entity
 {
 public:
   Axis() = default;
-  Axis(int points, float radius, float height) : axis_{points, radius, height} {}
+  Axis(std::uint32_t points, float radius, float height) : axis_{points, radius, height} {}
   void init(int points, float radius, float height) { axis_.init(points, radius, height); }
   void render() const override { axis_.render(); }
 

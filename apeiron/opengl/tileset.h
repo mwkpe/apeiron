@@ -18,9 +18,9 @@ public:
       float tile_width = 1.0f, float tile_height = 1.0f, bool flip_y = false);
   void load_texture(std::string_view filename, Pixel_format pixel_format);
   void bind() const;
-  void render(std::uint32_t i) const;
-  float tile_width() const { return tile_width_; }
-  float tile_height() const { return tile_height_; }
+  void render(std::uint32_t i) const override;
+  [[nodiscard]] float tile_width() const { return tile_width_; }
+  [[nodiscard]] float tile_height() const { return tile_height_; }
   Texture& texture() { return texture_; }
 
 private:

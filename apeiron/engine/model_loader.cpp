@@ -17,7 +17,7 @@ template<typename T> T get_vertex(const tinyobj::attrib_t& attrib, const tinyobj
   float z = attrib.vertices[3 * index.vertex_index + 2];
 
   if constexpr (std::is_same<T, apeiron::engine::Vertex_simple>::value) {
-    return {{x, y, z}};
+    return {x, y, z};
   }
 
   [[maybe_unused]] float nx, ny, nz;

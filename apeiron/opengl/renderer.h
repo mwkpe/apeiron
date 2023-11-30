@@ -27,7 +27,7 @@ class Renderer final
 public:
   void init();
   void use();
-  void set_viewport(int x, int y, int w, int h);
+  static void set_viewport(int x, int y, int w, int h);
 
   void use_world_space();
   void use_screen_space();
@@ -44,9 +44,9 @@ public:
   void set_view_projection();
   void set_clip_scene(bool clip_scene);
   void set_clipping_plane(const glm::vec4& plane);
-  void set_wireframe(bool wireframe);
-  void set_depth_test(bool depth_test);
-  void set_blend(bool blend);
+  static void set_wireframe(bool wireframe);
+  static void set_depth_test(bool depth_test);
+  static void set_blend(bool blend);
   void set_colorize(bool colorize);
   void set_invert_color(bool invert);
   void set_desaturate(bool desaturate);
@@ -55,11 +55,11 @@ public:
   void set_light_position(const glm::vec3& position);
   void set_light_color(const glm::vec4& color);
 
-  void clear() const;
-  void clear(float r, float g, float b) const;
-  void clear(const glm::vec3& color) const;
-  void clear(const glm::vec4& color) const;
-  void clear_depth_buffer() const;
+  static void clear();
+  static void clear(float r, float g, float b);
+  static void clear(const glm::vec3& color);
+  static void clear(const glm::vec4& color);
+  static void clear_depth_buffer();
 
   void render(const engine::Entity& entity);
   void render(const engine::Entity& entity, const glm::vec4& color);
@@ -92,16 +92,16 @@ public:
       const glm::vec4& color);
   void render_bounds(const engine::Entity& entity, const glm::vec4& color);
 
-  glm::mat4 view_projection() { return view_projection_; }
-  glm::mat4 inverse_view_projection() { return glm::inverse(view_projection_); }
+  [[nodiscard]] glm::mat4 view_projection() { return view_projection_; }
+  [[nodiscard]] glm::mat4 inverse_view_projection() { return glm::inverse(view_projection_); }
 
   Shader& shader() { return shader_; }
 
 private:
   Shader shader_;
-  glm::mat4 view_;
-  glm::mat4 projection_;
-  glm::mat4 view_projection_;
+  glm::mat4 view_ = glm::mat4{0.0f};
+  glm::mat4 projection_ = glm::mat4{0.0f};
+  glm::mat4 view_projection_ = glm::mat4{0.0f};
 };
 
 

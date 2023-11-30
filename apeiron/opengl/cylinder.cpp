@@ -13,17 +13,17 @@ constexpr float pi = 3.14159f;
 constexpr float tau = 2.0f * pi;
 
 
-std::vector<float> build_vertices(int points, float radius, float height)
+std::vector<float> build_vertices(std::uint32_t points, float radius, float height)
 {
-  const int wall_vertices = (points + 1) * 2 * 3;
-  const int circle_vertices = wall_vertices / 2;
+  const std::uint32_t wall_vertices = (points + 1) * 2 * 3;
+  const std::uint32_t circle_vertices = wall_vertices / 2;
   std::vector<float> cylinder(wall_vertices + circle_vertices * 2);
-  int wall_index = 0;
-  int bottom_circle_index = wall_vertices;
-  int top_circle_index = wall_vertices + circle_vertices;
+  std::uint32_t wall_index = 0;
+  std::uint32_t bottom_circle_index = wall_vertices;
+  std::uint32_t top_circle_index = wall_vertices + circle_vertices;
 
-  for (int i=0; i<=points; ++i) {
-    const float angle = static_cast<float>(i) / points * tau;
+  for (std::uint32_t i=0; i<=points; ++i) {
+    const float angle = static_cast<float>(i) / static_cast<float>(points) * tau;
     const float x = radius * std::cos(angle);
     const float z = radius * std::sin(angle);
     cylinder[wall_index++] = x;
@@ -47,13 +47,13 @@ std::vector<float> build_vertices(int points, float radius, float height)
 }  // namespace
 
 
-apeiron::opengl::Cylinder::Cylinder(int points, float radius, float height)
+apeiron::opengl::Cylinder::Cylinder(std::uint32_t points, float radius, float height)
 {
   init(points, radius, height);
 }
 
 
-void apeiron::opengl::Cylinder::init(int points, float radius, float height)
+void apeiron::opengl::Cylinder::init(std::uint32_t points, float radius, float height)
 {
   points_ = points;
   glGenVertexArrays(1, &vao_);
@@ -64,22 +64,23 @@ void apeiron::opengl::Cylinder::init(int points, float radius, float height)
 }
 
 
-void apeiron::opengl::Cylinder::construct(int points, float radius, float height)
+void apeiron::opengl::Cylinder::construct(std::uint32_t points, float radius, float height)
 {
   points_ = points;
   const auto vertices = build_vertices(points_, radius, height);
   vertex_count_ = static_cast<std::uint32_t>(vertices.size()) / 3;
   glBindVertexArray(vao_);
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(vertices.size() * sizeof(float)),
+      vertices.data(), GL_STATIC_DRAW);
 }
 
 
 void apeiron::opengl::Cylinder::render() const
 {
   glBindVertexArray(vao_);
-  const int wall_vertices = vertex_count_ / 2;
-  const int circle_vertices = wall_vertices / 2;
+  const GLsizei wall_vertices = static_cast<GLsizei>(vertex_count_) / 2;
+  const GLsizei circle_vertices = wall_vertices / 2;
   glDrawArrays(GL_TRIANGLE_STRIP, 0, wall_vertices);  // Walls
   glDrawArrays(GL_TRIANGLE_FAN, wall_vertices, circle_vertices);  // Bottom circle
   glDrawArrays(GL_TRIANGLE_FAN, wall_vertices + circle_vertices, circle_vertices);  // Top circle

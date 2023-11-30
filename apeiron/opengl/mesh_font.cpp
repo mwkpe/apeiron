@@ -29,7 +29,7 @@ void apeiron::opengl::Mesh_font::render(char c) const
 float apeiron::opengl::Mesh_font::letter_position(char c) const
 {
   std::size_t index = c - ascii_offset_;
-  return index * letter_spacing_;
+  return static_cast<float>(index) * letter_spacing_;
 }
 
 

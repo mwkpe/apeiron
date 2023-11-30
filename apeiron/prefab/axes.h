@@ -2,6 +2,7 @@
 #define APEIRON_PREFAB_AXES_H
 
 
+#include <cstdint>
 #include "apeiron/opengl/renderer.h"
 #include "apeiron/prefab/axis.h"
 
@@ -13,7 +14,7 @@ class Axes final
 {
 public:
   Axes() = default;
-  Axes(int points, float radius, float height);
+  Axes(std::uint32_t points, float radius, float height);
   void init(int points, float radius, float height);
   void render(opengl::Renderer& renderer) const;
 

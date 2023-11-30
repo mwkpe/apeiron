@@ -17,12 +17,15 @@ public:
   explicit Light(const opengl::Model* model = nullptr) : model_{model} {}
   void set_color(float r, float g, float b, float a = 1.0f) { color_ = glm::vec4{r, g, b, a}; };
   void set_color(glm::vec4 color) { color_ = color; };
+
   void toggle() { on_ = !on_; }
   void switch_on() { on_ = true; }
   void switch_off() { on_ = false; }
-  bool is_on() const { return on_; }
-  glm::vec4 color() const { return color_; }
-  auto collider() const { return engine::collision::Sphere{position_, 0.5f * scale_.x}; }
+
+  [[nodiscard]] bool is_on() const { return on_; }
+  [[nodiscard]] glm::vec4 color() const { return color_; }
+  [[nodiscard]] auto collider() const { return engine::collision::Sphere{position_, 0.5f * scale_.x}; }
+
   void render() const override { if (model_) for (const auto& mesh : *model_) mesh.render(); }
 
 private:

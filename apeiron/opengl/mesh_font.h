@@ -18,9 +18,9 @@ public:
   template<typename T = engine::Vertex> void load(std::string_view filename,
       float letter_spacing, float letter_height, std::size_t ascii_offset = 32);
   void render(char c) const;
-  float letter_spacing() const { return letter_spacing_; }
-  float letter_height() const { return letter_height_; }
-  float letter_position(char c) const;
+  [[nodiscard]] float letter_spacing() const { return letter_spacing_; }
+  [[nodiscard]] float letter_height() const { return letter_height_; }
+  [[nodiscard]] float letter_position(char c) const;
 
 private:
   std::vector<Triangles> meshes_;

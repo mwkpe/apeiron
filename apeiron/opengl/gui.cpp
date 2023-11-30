@@ -34,6 +34,6 @@ void apeiron::opengl::Gui::render()
 {
   auto& io = ImGui::GetIO();
   ImGui::Render();
-  glViewport(0, 0, static_cast<int>(io.DisplaySize.x), static_cast<int>(io.DisplaySize.y));
+  glViewport(0, 0, static_cast<GLint>(io.DisplaySize.x), static_cast<GLint>(io.DisplaySize.y));
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }

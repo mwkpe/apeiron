@@ -14,8 +14,8 @@ class Points final : public Shape
 {
 public:
   Points() = default;
-  Points(const std::vector<engine::Vertex_simple>& vertices);
-  Points(const std::vector<engine::Vertex_color>& vertices);
+  explicit Points(const std::vector<engine::Vertex_simple>& vertices);
+  explicit Points(const std::vector<engine::Vertex_color>& vertices);
   void set(const std::vector<engine::Vertex_simple>& vertices);
   void set(const std::vector<engine::Vertex_color>& vertices);
   void set_size(float size) { point_size_ = size; }

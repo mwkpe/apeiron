@@ -38,7 +38,7 @@ template<typename T> void apeiron::opengl::Cuboid::set(const glm::vec3& size, co
 void apeiron::opengl::Cuboid::render() const
 {
   glBindVertexArray(vao_);
-  glDrawArrays(GL_TRIANGLES, 0, vertex_count_);
+  glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertex_count_));
 }
 
 

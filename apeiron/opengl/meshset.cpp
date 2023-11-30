@@ -2,187 +2,33 @@
 
 
 #include <algorithm>
-#include <cstdint>
-
 #include <glad/glad.h>
-#include <glm/glm.hpp>
-
-#include "apeiron/engine/error.h"
-#include "apeiron/engine/image_loader.h"
 #include "apeiron/engine/vertex.h"
 
 
-namespace {
-
-
-struct Pixel
+template<typename T> void apeiron::opengl::Meshset::set_data(const std::vector<T>& vertices,
+    Tile_data&& tile_data)
 {
-  auto operator<=>(const Pixel&) const = default;
-  std::uint8_t r;
-  std::uint8_t g;
-  std::uint8_t b;
-  std::uint8_t a;
-};
-
-
-template<typename T> void add_quad(std::vector<T>& vertices, Pixel pixel,
-    float x, float y, float w, float h)
-{
-  const auto r = static_cast<float>(pixel.r) / 255.0f;
-  const auto g = static_cast<float>(pixel.g) / 255.0f;
-  const auto b = static_cast<float>(pixel.b) / 255.0f;
-  const auto a = static_cast<float>(pixel.a) / 255.0f;
-
-  const float z = 0.0f;
-
-  if constexpr (std::is_same<T, apeiron::engine::Vertex>::value) {
-    // First triangle
-    vertices.push_back({{x,   y,   z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {r, g, b, a}});
-    vertices.push_back({{x,   y-h, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {r, g, b, a}});
-    vertices.push_back({{x+w, y-h, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {r, g, b, a}});
-    // Second triangle
-    vertices.push_back({{x+w, y-h, z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {r, g, b, a}});
-    vertices.push_back({{x+w, y,   z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {r, g, b, a}});
-    vertices.push_back({{x,   y,   z}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, {r, g, b, a}});
-  }
-  else if constexpr (std::is_same<T, apeiron::engine::Vertex_color>::value) {
-    // First triangle
-    vertices.push_back({{x,   y,   z}, {r, g, b, a}});
-    vertices.push_back({{x,   y-h, z}, {r, g, b, a}});
-    vertices.push_back({{x+w, y-h, z}, {r, g, b, a}});
-    // Second triangle
-    vertices.push_back({{x+w, y-h, z}, {r, g, b, a}});
-    vertices.push_back({{x+w, y,   z}, {r, g, b, a}});
-    vertices.push_back({{x,   y,   z}, {r, g, b, a}});
-  }
-  else if constexpr (std::is_same<T, apeiron::engine::Vertex_normal_color>::value) {
-    // First triangle
-    vertices.push_back({{x,   y,   z}, {x, y, z}, {r, g, b, a}});
-    vertices.push_back({{x,   y-h, z}, {x, y, z}, {r, g, b, a}});
-    vertices.push_back({{x+w, y-h, z}, {x, y, z}, {r, g, b, a}});
-    // Second triangle
-    vertices.push_back({{x+w, y-h, z}, {x, y, z}, {r, g, b, a}});
-    vertices.push_back({{x+w, y,   z}, {x, y, z}, {r, g, b, a}});
-    vertices.push_back({{x,   y,   z}, {x, y, z}, {r, g, b, a}});
-  }
-}
-
-
-}  // namespace
-
-
-template<typename T> void apeiron::opengl::Meshset::load_from_image(std::string_view filename,
-    std::uint32_t rows,
-    std::uint32_t cols,
-    std::uint32_t index_offset,
-    float tile_width,
-    float tile_height,
-    bool optimize)
-{
-  tile_count_ = cols * rows;
-  index_offset_ = index_offset;
-  tile_width_ = tile_width;
-  tile_height_ = tile_height;
-
-  auto&& [bytes, image_w, image_h, channel_count] = engine::load_image(filename, false);
-
-  if (channel_count != 4)
-    throw engine::Error{"Image must be RGBA: ", filename};
-
-  const std::uint32_t tile_w = image_w / cols;
-  const std::uint32_t tile_h = image_h / rows;
-  const float ps = tile_width_ / tile_w;  // Pixel size normalized
-
-  std::vector<T> vertices;
-
-  auto read_tile = [&,this](std::uint32_t pos, std::uint32_t skip) -> std::uint32_t {
-    float x = -0.5f * tile_width_;
-    float y = 0.5f * tile_height_;
-    std::size_t vertex_count = 0;
-
-    for (std::uint32_t i=0; i<tile_h; i++) {
-      // Read first pixel
-      Pixel last_pixel{bytes[pos], bytes[pos + 1], bytes[pos + 2], bytes[pos + 3]};
-      pos += channel_count;
-      std::uint32_t run_length = 1;
-
-      for (std::uint32_t j=1; j<tile_w; j++) {
-        // Read pixel
-        Pixel current_pixel{bytes[pos], bytes[pos + 1], bytes[pos + 2], bytes[pos + 3]};
-        pos += channel_count;
-
-        // Combine pixels with identical color
-        if (optimize && current_pixel == last_pixel) {
-          run_length++;
-        }
-        else {
-          if (last_pixel.a > 0) {
-            add_quad(vertices, last_pixel, x, y, run_length * ps, ps);
-            vertex_count += 6;
-          }
-
-          x += run_length * ps;
-          last_pixel = current_pixel;
-          run_length = 1;
-        }
-      }
-
-      if (last_pixel.a > 0) {
-        add_quad(vertices, last_pixel, x, y, run_length * ps, ps);
-        vertex_count += 6;
-      }
-
-      x = -0.5f * tile_width_;
-      y -= ps;
-      pos += skip - tile_w * channel_count;
-    }
-
-    return vertex_count;
-  };
-
-  for (std::uint32_t i=0; i<rows * cols; i++) {
-    auto count = read_tile(((i % cols) * tile_w * channel_count) +
-        ((i / cols) * tile_h * image_w * channel_count), image_w * channel_count);
-    
-    if (i == 0)
-      tile_indices_.push_back(0);
-    else
-      tile_indices_.push_back(tile_indices_.back() + vertex_counts_.back());
-
-    vertex_counts_.push_back(count);
-  }
-
   set_buffers(vertices);
+  tile_data_ = std::move(tile_data);
 }
 
 
 template<typename T> void apeiron::opengl::Meshset::set_data(const std::vector<T>& vertices,
-    std::vector<std::uint32_t>&& tile_indices, std::vector<std::uint32_t>&& vertex_counts)
+    const Tile_data& tile_data)
 {
   set_buffers(vertices);
-  tile_indices_ = std::move(tile_indices);
-  vertex_counts_ = std::move(vertex_counts);
-  tile_count_ = tile_indices_.size();
+  tile_data_ = tile_data;
 }
 
 
-template<typename T> void apeiron::opengl::Meshset::set_data(const std::vector<T>& vertices,
-    const std::vector<std::uint32_t>& tile_indices, const std::vector<std::uint32_t>& vertex_counts)
-{
-  set_buffers(vertices);
-  tile_indices_ = tile_indices;
-  vertex_counts_ = vertex_counts;
-  tile_count_ = tile_indices_.size();
-}
-
-
-void apeiron::opengl::Meshset::set_tile_spacing(const Spacing_vector& tile_spacing)
+void apeiron::opengl::Meshset::set_tile_spacing(const std::vector<glm::vec2>& tile_spacing)
 {
   tile_spacing_ = tile_spacing;
 }
 
 
-void apeiron::opengl::Meshset::set_tile_spacing(Spacing_vector&& tile_spacing)
+void apeiron::opengl::Meshset::set_tile_spacing(std::vector<glm::vec2>&& tile_spacing)
 {
   tile_spacing_ = std::move(tile_spacing);
 }
@@ -190,54 +36,44 @@ void apeiron::opengl::Meshset::set_tile_spacing(Spacing_vector&& tile_spacing)
 
 bool apeiron::opengl::Meshset::empty(std::uint32_t index) const
 {
-  if (const std::uint32_t i = index - index_offset_; i < vertex_counts_.size())
-    return vertex_counts_[i] == 0;
+  if (const std::uint32_t i = index - index_offset_; i < tile_data_.size())
+    return std::get<1>(tile_data_[i]) == 0;
 
   return true;
 }
 
 
-std::tuple<float, float> apeiron::opengl::Meshset::tile_spacing(std::uint32_t index) const
+glm::vec2 apeiron::opengl::Meshset::tile_spacing(std::uint32_t index) const
 {
   if (const std::uint32_t i = index - index_offset_; i < tile_spacing_.size())
     return tile_spacing_[i];
 
-  return {tile_width_, tile_height_};
+  return tile_size_;
 }
 
 
 void apeiron::opengl::Meshset::render(std::uint32_t index) const
 {
-  const auto tile_index = std::min(index - index_offset_, tile_count_ - 1);
+  index = std::min(index - index_offset_, static_cast<std::uint32_t>(tile_data_.size()) - 1);
+  auto [tile_index, vertex_count] = tile_data_[index];
   glBindVertexArray(vao_);
-  glDrawArrays(GL_TRIANGLES, tile_indices_[tile_index], vertex_counts_[tile_index]);
+  glDrawArrays(GL_TRIANGLES, static_cast<GLint>(tile_index), static_cast<GLsizei>(vertex_count));
 }
 
 
-template void apeiron::opengl::Meshset::load_from_image<apeiron::engine::Vertex>(
-    std::string_view, std::uint32_t, std::uint32_t, std::uint32_t, float, float, bool);
-template void apeiron::opengl::Meshset::load_from_image<apeiron::engine::Vertex_color>(
-    std::string_view, std::uint32_t, std::uint32_t, std::uint32_t, float, float, bool);
-template void apeiron::opengl::Meshset::load_from_image<apeiron::engine::Vertex_normal_color>(
-    std::string_view, std::uint32_t, std::uint32_t, std::uint32_t, float, float, bool);
-
 template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex>&, 
-    std::vector<std::uint32_t>&&,
-    std::vector<std::uint32_t>&&);
+    apeiron::opengl::Meshset::Tile_data&&);
 template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex>&, 
-    const std::vector<std::uint32_t>&,
-    const std::vector<std::uint32_t>&);
+    const apeiron::opengl::Meshset::Tile_data&);
 
 template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_color>&, 
-    std::vector<std::uint32_t>&&,
-    std::vector<std::uint32_t>&&);
+    apeiron::opengl::Meshset::Tile_data&&);
 template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_color>&, 
-    const std::vector<std::uint32_t>&,
-    const std::vector<std::uint32_t>&);
+    const apeiron::opengl::Meshset::Tile_data&);
 
-template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_normal_color>&, 
-    std::vector<std::uint32_t>&&,
-    std::vector<std::uint32_t>&&);
-template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_normal_color>&, 
-    const std::vector<std::uint32_t>&,
-    const std::vector<std::uint32_t>&);
+template void apeiron::opengl::Meshset::set_data(
+    const std::vector<apeiron::engine::Vertex_normal_color>&, 
+    apeiron::opengl::Meshset::Tile_data&&);
+template void apeiron::opengl::Meshset::set_data(
+    const std::vector<apeiron::engine::Vertex_normal_color>&, 
+    const apeiron::opengl::Meshset::Tile_data&);

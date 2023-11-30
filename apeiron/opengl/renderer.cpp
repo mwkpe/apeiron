@@ -2,7 +2,6 @@
 
 
 #include <glad/glad.h>
-#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
@@ -190,35 +189,35 @@ void apeiron::opengl::Renderer::set_light_color(const glm::vec4& color)
 }
 
 
-void apeiron::opengl::Renderer::clear() const
+void apeiron::opengl::Renderer::clear()
 {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 
-void apeiron::opengl::Renderer::clear(float r, float g, float b) const
+void apeiron::opengl::Renderer::clear(float r, float g, float b)
 {
   glClearColor(r, g, b, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 
-void apeiron::opengl::Renderer::clear(const glm::vec3& color) const
+void apeiron::opengl::Renderer::clear(const glm::vec3& color)
 {
   glClearColor(color.r, color.g, color.b, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 
-void apeiron::opengl::Renderer::clear(const glm::vec4& color) const
+void apeiron::opengl::Renderer::clear(const glm::vec4& color)
 {
   glClearColor(color.r, color.g, color.b, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 
-void apeiron::opengl::Renderer::clear_depth_buffer() const
+void apeiron::opengl::Renderer::clear_depth_buffer()
 {
   glClear(GL_DEPTH_BUFFER_BIT);
 }
@@ -404,7 +403,7 @@ template<typename T> void apeiron::opengl::Renderer::render_text(const T& text,
     if (c == '\n') {
       auto index = static_cast<std::uint32_t>(c);
       offset_x = 0.0f;
-      offset_z += std::get<1>(charset.tile_spacing(index)) * text.text_size() * text.spacing().y;
+      offset_z += charset.tile_spacing(index).y * text.text_size() * text.spacing().y;
     }
     else {
       glm::mat4 model{1.0f};
@@ -415,7 +414,7 @@ template<typename T> void apeiron::opengl::Renderer::render_text(const T& text,
       shader_.set_uniform("model", model);
       auto index = static_cast<std::uint32_t>(c);
       charset.render(index);
-      offset_x += std::get<0>(charset.tile_spacing(index)) * text.text_size() * text.spacing().x;
+      offset_x += charset.tile_spacing(index).x * text.text_size() * text.spacing().x;
     }
   }
 }
@@ -453,7 +452,7 @@ void apeiron::opengl::Renderer::render_screen(const engine::Entity& entity,
 void apeiron::opengl::Renderer::render_screen(const engine::Entity& entity,
     const opengl::Meshset& meshset, std::uint32_t index, const glm::vec4& color, bool colorize)
 {
-    if (colorize) {
+  if (colorize) {
     use_vertex_color_shading();
     set_colorize(true);
   }
@@ -535,16 +534,16 @@ void apeiron::opengl::Renderer::render_screen(const engine::Text& text,
     if (c == '\n') {
       offset_x = 0.0f;
       // Origin is bottom left (see ortho)
-      offset_y -= charset.tile_height() * text.text_size() * text.spacing().y;
+      offset_y -= charset.tile_size().y * text.text_size() * text.spacing().y;
     }
     else if (c == ' ') {
-      offset_x += charset.tile_width() * text.text_size() * text.spacing().x;
+      offset_x += charset.tile_size().x * text.text_size() * text.spacing().x;
     }
     else {
       glm::vec3 position = text.position() + glm::vec3{offset_x, offset_y, 0.0f};
       shader_.set_uniform("translation", position);
       charset.render(c);
-      offset_x += charset.tile_width() * text.text_size() * text.spacing().x;
+      offset_x += charset.tile_size().x * text.text_size() * text.spacing().x;
     }
   }
 }

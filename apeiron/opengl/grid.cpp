@@ -1,9 +1,7 @@
 #include "grid.h"
 
 
-#include <tuple>
 #include <vector>
-#include <cmath>
 #include <glad/glad.h>
 #include "apeiron/engine/vertex.h"
 #include "apeiron/utility/linear_range.h"
@@ -12,7 +10,8 @@
 namespace {
 
 
-auto build_vertices(const glm::vec2& size, std::size_t x_steps, std::size_t y_steps, const glm::vec4& color)
+auto build_vertices(const glm::vec2& size, std::size_t x_steps, std::size_t y_steps,
+    const glm::vec4& color)
 {
   using namespace apeiron::engine;
   using namespace apeiron::utility;
@@ -61,7 +60,7 @@ void apeiron::opengl::Grid::init(const glm::vec2& size, std::size_t x_steps, std
   glGenBuffers(1, &vbo_);
   glBindVertexArray(vao_);
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_color),
+  glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(vertices.size() * sizeof(engine::Vertex_color)),
       vertices.data(), GL_STATIC_DRAW);
   
   // Position
@@ -81,6 +80,6 @@ void apeiron::opengl::Grid::render() const
   float global_width;
   glGetFloatv(GL_LINE_WIDTH, &global_width);
   glLineWidth(line_width_);
-  glDrawArrays(GL_LINES, 0, vertex_count_);
+  glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(vertex_count_));
   glLineWidth(global_width);
 }

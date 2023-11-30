@@ -9,15 +9,19 @@
 namespace apeiron::engine::collision {
 
 
-template <typename T = float> struct Point
+template<typename T = float> struct Point
 {
+  Point() = default;
+  Point(T x, T y) : x{x}, y{y} {}
   T x;
   T y;
 };
 
 
-template <typename T = float> struct Rect
+template<typename T = float> struct Rect
 {
+  Rect() = default;
+  Rect(T x, T y, T w, T h) : x{x}, y{y}, w{w}, h{h} {}
   T x;
   T y;
   T w;
@@ -55,19 +59,19 @@ struct Quad
 };
 
 
-template <typename T> bool intersects(const Rect<T>& a, const Rect<T>& b)
+template<typename T> bool intersects(const Rect<T>& a, const Rect<T>& b)
 {
   return ((a.x + a.w >= b.x && b.x + b.w >= a.x) && (a.y + a.h >= b.y && b.y + b.h >= a.y));
 }
 
 
-template <typename T> bool within(const Point<T>& p, const Rect<T>& r)
+template<typename T> bool within(const Point<T>& p, const Rect<T>& r)
 {
   return p.x > r.x && p.x < r.x + r.w && p.y > r.y && p.y < r.y + r.h;
 }
 
 
-template <typename T> bool within(const Rect<T>& a, const Rect<T>& b)
+template<typename T> bool within(const Rect<T>& a, const Rect<T>& b)
 {
   return a.x > b.x && a.x + a.w < b.x + b.w && a.y > b.y && a.y + a.h < b.y + b.h;
 }

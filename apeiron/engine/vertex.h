@@ -27,7 +27,7 @@ struct Vertex_simple
 {
   Vertex_simple() = default;
   Vertex_simple(float x, float y, float z) : position{x, y, z} {}
-  Vertex_simple(glm::vec3 position) : position{position} {}
+  explicit Vertex_simple(glm::vec3 position) : position{position} {}
   glm::vec3 position;
 };
 

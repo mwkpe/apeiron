@@ -3,7 +3,6 @@
 
 #include <tuple>
 #include <vector>
-#include <cstddef>
 #include <glad/glad.h>
 #include "apeiron/engine/vertex.h"
 
@@ -26,15 +25,15 @@ auto build_wireframe_vertices(glm::vec3 size, glm::vec3 position)
     // Vertices
     {
       // Front
-      {{-w + x, -h + y, l + z}},
-      {{ w + x, -h + y, l + z}},
-      {{ w + x,  h + y, l + z}},
-      {{-w + x,  h + y, l + z}},
+      {-w + x, -h + y, l + z},
+      { w + x, -h + y, l + z},
+      { w + x,  h + y, l + z},
+      {-w + x,  h + y, l + z},
       // Back
-      {{-w + x, -h + y, -l + z}},
-      {{ w + x, -h + y, -l + z}},
-      {{ w + x,  h + y, -l + z}},
-      {{-w + x,  h + y, -l + z}}
+      {-w + x, -h + y, -l + z},
+      { w + x, -h + y, -l + z},
+      { w + x,  h + y, -l + z},
+      {-w + x,  h + y, -l + z}
     },
     // Elements
     {
@@ -116,12 +115,12 @@ void apeiron::opengl::Wire_cuboid::set(glm::vec3 size, glm::vec3 position)
 
   // Vertices
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_simple),
+  glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(vertices.size() * sizeof(engine::Vertex_simple)),
       vertices.data(), GL_STATIC_DRAW);
 
   // Elements
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(std::uint16_t),
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(elements.size() * sizeof(std::uint16_t)),
       elements.data(), GL_STATIC_DRAW);
 
   // Position
@@ -145,12 +144,12 @@ void apeiron::opengl::Wire_cuboid::set(glm::vec3 size, glm::vec4 color, glm::vec
 
   // Vertices
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(engine::Vertex_color),
+  glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(vertices.size() * sizeof(engine::Vertex_color)),
       vertices.data(), GL_STATIC_DRAW);
 
   // Elements
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(std::uint16_t),
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(elements.size() * sizeof(std::uint16_t)),
       elements.data(), GL_STATIC_DRAW);
 
   // Position
@@ -170,7 +169,7 @@ void apeiron::opengl::Wire_cuboid::render() const
   glLineWidth(line_width_);
 
   glBindVertexArray(vao_); 
-  glDrawElements(GL_LINES, element_count_, GL_UNSIGNED_SHORT, nullptr);
+  glDrawElements(GL_LINES, static_cast<GLsizei>(element_count_), GL_UNSIGNED_SHORT, nullptr);
 
   glLineWidth(global_width);
 }

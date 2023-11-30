@@ -13,19 +13,22 @@ namespace apeiron::utility {
 class Timer
 {
 public:
-  Timer(bool autostart = false);
-  Timer(std::string&& name, bool autostart = false);
+  explicit Timer(bool autostart = false);
+  explicit Timer(std::string&& name, bool autostart = false);
+
   template<typename T = std::int64_t> static T system_now();
   template<typename T = std::int64_t> static T high_res_now();
+
   void start();
   void restart(bool print = false);
   void stop(bool print = false);
-  std::uint64_t elapsed_ms() { return elapsed_; }
-  float elapsed_s() { return elapsed_ / 1000.0f; }
+
+  [[nodiscard]] std::uint64_t elapsed_ms() const { return elapsed_; }
+  [[nodiscard]] float elapsed_s() const { return static_cast<float>(elapsed_) / 1000.0f; }
 
 private:
   void print_message();
-  int invokation_ = 0;
+  std::uint32_t invokation_ = 0;
   std::string name_;
   std::chrono::high_resolution_clock::time_point start_;
   std::uint64_t elapsed_ = 0;
@@ -35,7 +38,7 @@ private:
 class Scope_timer
 {
 public:
-  Scope_timer(std::string&& name);
+  explicit Scope_timer(std::string&& name);
   ~Scope_timer();
 
 private:
@@ -47,7 +50,7 @@ private:
 class Duration_timer
 {
 public:
-  Duration_timer(int duration, bool autostart = false);
+  explicit Duration_timer(int duration, bool autostart = false);
   void start();
   bool test();
 

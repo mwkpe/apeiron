@@ -2,6 +2,7 @@
 #define APEIRON_ENGINE_MODEL_LOADER_H
 
 
+#include <cstdint>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -20,7 +21,7 @@ struct Material_data
 template<typename T = Vertex> struct Mesh_data
 {
   std::vector<T> vertices;
-  int material_index = -1;
+  std::int32_t material_index = -1;
 };
 
 

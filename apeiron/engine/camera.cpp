@@ -55,8 +55,8 @@ void apeiron::engine::Camera::move(Direction direction, float distance)
 
 void apeiron::engine::Camera::orient(int dx, int dy, float sensitivity)
 {
-  yaw_ += dx * sensitivity;
-  pitch_ += dy * sensitivity;
+  yaw_ += static_cast<float>(dx) * sensitivity;
+  pitch_ += static_cast<float>(dy) * sensitivity;
   yaw_ = yaw_ > 360.0f ? yaw_ - 360.0f : yaw_ < -360.0f ? yaw_ + 360.0f : yaw_;
   pitch_ = std::clamp(pitch_, -89.0f, 89.0f);
   update();

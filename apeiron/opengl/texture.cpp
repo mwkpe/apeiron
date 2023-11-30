@@ -9,7 +9,7 @@
 namespace {
 
 
-GLenum translate(apeiron::Texture_filter texture_filter)
+GLint translate(apeiron::Texture_filter texture_filter)
 {
   switch (texture_filter) {
     case apeiron::Texture_filter::Nearest: return GL_NEAREST;
@@ -21,7 +21,7 @@ GLenum translate(apeiron::Texture_filter texture_filter)
 }
 
 
-GLenum translate(apeiron::Wrap_mode wrap_mode)
+GLint translate(apeiron::Wrap_mode wrap_mode)
 {
   switch (wrap_mode) {
     case apeiron::Wrap_mode::Repeat: return GL_REPEAT;
@@ -33,7 +33,7 @@ GLenum translate(apeiron::Wrap_mode wrap_mode)
 }
 
 
-GLenum translate(apeiron::Pixel_format pixel_format)
+GLint translate(apeiron::Pixel_format pixel_format)
 {
   switch (pixel_format) {
     case apeiron::Pixel_format::Rgb: return GL_RGB;
@@ -174,7 +174,7 @@ void apeiron::opengl::Texture::create(const std::uint8_t* pixel,
 
 
 void apeiron::opengl::Texture::update(const std::uint8_t* pixel, int width, int height,
-    Pixel_format pixel_format)
+    Pixel_format pixel_format) const
 {
   glBindTexture(GL_TEXTURE_2D, id_);
   if (unpack_alignment_ != 4)

@@ -1,8 +1,6 @@
 #include "triangles.h"
 
 
-#include <cstddef>
-#include <type_traits>
 #include <glad/glad.h>
 
 
@@ -21,14 +19,14 @@ template<typename T> void apeiron::opengl::Triangles::set(const std::vector<T>& 
 void apeiron::opengl::Triangles::render() const
 {
   glBindVertexArray(vao_);
-  glDrawArrays(GL_TRIANGLES, 0, vertex_count_);
+  glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertex_count_));
 }
 
 
 void apeiron::opengl::Triangles::render(std::uint32_t start, std::uint32_t count) const
 {
   glBindVertexArray(vao_);
-  glDrawArrays(GL_TRIANGLES, start, count);
+  glDrawArrays(GL_TRIANGLES, static_cast<GLint>(start), static_cast<GLsizei>(count));
 }
 
 
