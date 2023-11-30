@@ -30,7 +30,7 @@ void apeiron::opengl::Gui::create_frame()
 }
 
 
-void apeiron::opengl::Gui::render()
+void apeiron::opengl::Gui::render() const
 {
   auto& io = ImGui::GetIO();
   ImGui::Render();

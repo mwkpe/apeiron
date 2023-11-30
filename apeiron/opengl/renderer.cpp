@@ -42,7 +42,7 @@ void apeiron::opengl::Renderer::use()
 }
 
 
-void apeiron::opengl::Renderer::set_viewport(int x, int y, int w, int h)
+void apeiron::opengl::Renderer::set_viewport(int x, int y, int w, int h) const
 {
   glViewport(x, y, w, h);
 }
@@ -120,7 +120,7 @@ void apeiron::opengl::Renderer::set_clipping_plane(const glm::vec4& plane)
 }
 
 
-void apeiron::opengl::Renderer::set_wireframe(bool wireframe)
+void apeiron::opengl::Renderer::set_wireframe(bool wireframe) const
 {
   if (wireframe)
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -129,7 +129,7 @@ void apeiron::opengl::Renderer::set_wireframe(bool wireframe)
 }
 
 
-void apeiron::opengl::Renderer::set_depth_test(bool depth_test)
+void apeiron::opengl::Renderer::set_depth_test(bool depth_test) const
 {
   if (depth_test)
     glEnable(GL_DEPTH_TEST);
@@ -138,7 +138,7 @@ void apeiron::opengl::Renderer::set_depth_test(bool depth_test)
 }
 
 
-void apeiron::opengl::Renderer::set_blend(bool blend)
+void apeiron::opengl::Renderer::set_blend(bool blend) const
 {
   if (blend)
     glEnable(GL_BLEND);
@@ -189,35 +189,35 @@ void apeiron::opengl::Renderer::set_light_color(const glm::vec4& color)
 }
 
 
-void apeiron::opengl::Renderer::clear()
+void apeiron::opengl::Renderer::clear() const
 {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 
-void apeiron::opengl::Renderer::clear(float r, float g, float b)
+void apeiron::opengl::Renderer::clear(float r, float g, float b) const
 {
   glClearColor(r, g, b, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 
-void apeiron::opengl::Renderer::clear(const glm::vec3& color)
+void apeiron::opengl::Renderer::clear(const glm::vec3& color) const
 {
   glClearColor(color.r, color.g, color.b, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 
-void apeiron::opengl::Renderer::clear(const glm::vec4& color)
+void apeiron::opengl::Renderer::clear(const glm::vec4& color) const
 {
   glClearColor(color.r, color.g, color.b, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 
-void apeiron::opengl::Renderer::clear_depth_buffer()
+void apeiron::opengl::Renderer::clear_depth_buffer() const
 {
   glClear(GL_DEPTH_BUFFER_BIT);
 }

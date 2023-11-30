@@ -22,11 +22,10 @@ public:
       std::int32_t samples = 1);
 
   void bind() const;
+  void unbind() const;
   void bind_texture() const;
+  void unbind_texture() const;
   void blit() const;
-
-  static void unbind();
-  static void unbind_texture();
 
   [[nodiscard]] std::uint32_t texture_id() const { return color_buffer_id_; }
   [[nodiscard]] std::uint32_t depth_buffer_id() const { return depth_buffer_id_; }

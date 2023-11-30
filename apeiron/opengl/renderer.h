@@ -27,7 +27,7 @@ class Renderer final
 public:
   void init();
   void use();
-  static void set_viewport(int x, int y, int w, int h);
+  void set_viewport(int x, int y, int w, int h) const;
 
   void use_world_space();
   void use_screen_space();
@@ -44,9 +44,9 @@ public:
   void set_view_projection();
   void set_clip_scene(bool clip_scene);
   void set_clipping_plane(const glm::vec4& plane);
-  static void set_wireframe(bool wireframe);
-  static void set_depth_test(bool depth_test);
-  static void set_blend(bool blend);
+  void set_wireframe(bool wireframe) const;
+  void set_depth_test(bool depth_test) const;
+  void set_blend(bool blend) const;
   void set_colorize(bool colorize);
   void set_invert_color(bool invert);
   void set_desaturate(bool desaturate);
@@ -55,11 +55,11 @@ public:
   void set_light_position(const glm::vec3& position);
   void set_light_color(const glm::vec4& color);
 
-  static void clear();
-  static void clear(float r, float g, float b);
-  static void clear(const glm::vec3& color);
-  static void clear(const glm::vec4& color);
-  static void clear_depth_buffer();
+  void clear() const;
+  void clear(float r, float g, float b) const;
+  void clear(const glm::vec3& color) const;
+  void clear(const glm::vec4& color) const;
+  void clear_depth_buffer() const;
 
   void render(const engine::Entity& entity);
   void render(const engine::Entity& entity, const glm::vec4& color);
