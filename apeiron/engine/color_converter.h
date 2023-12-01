@@ -83,6 +83,27 @@ constexpr glm::vec4 as_rgba_norm(std::string_view hex_code)
 }
 
 
+constexpr glm::vec3 as_rgb_norm(std::uint8_t r, std::uint8_t g, std::uint8_t b)
+{
+  return {
+    r / 255.0f,
+    g / 255.0f,
+    b / 255.0f
+  };
+}
+
+
+constexpr glm::vec4 as_rgba_norm(std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a)
+{
+  return {
+    r / 255.0f,
+    g / 255.0f,
+    b / 255.0f,
+    a / 255.0f
+  };
+}
+
+
 }  // namespace apeiron::engine
 
 
