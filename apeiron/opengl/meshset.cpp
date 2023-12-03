@@ -66,6 +66,11 @@ template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engi
 template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex>&, 
     const apeiron::opengl::Meshset::Tile_data&);
 
+template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_simple>&, 
+    apeiron::opengl::Meshset::Tile_data&&);
+template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_simple>&, 
+    const apeiron::opengl::Meshset::Tile_data&);
+
 template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_color>&, 
     apeiron::opengl::Meshset::Tile_data&&);
 template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_color>&, 
