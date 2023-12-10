@@ -86,7 +86,7 @@ void apeiron::opengl::Frame_buffer::delete_buffers()
 
 
 void apeiron::opengl::Frame_buffer::init(std::int32_t width, std::int32_t height,
-    bool depth_texture, std::int32_t samples)
+    bool color_texture, bool depth_texture, std::int32_t samples)
 {
   delete_buffers();
 
@@ -112,7 +112,7 @@ void apeiron::opengl::Frame_buffer::init(std::int32_t width, std::int32_t height
         render_buffer_id_);
   }
 
-  if (samples > 1) {
+  if (color_texture && samples > 1) {
     // Use first frame buffer for rendering to a multisample texture
     glGenTextures(1, &sample_buffer_id_);
     glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, sample_buffer_id_);
@@ -125,13 +125,15 @@ void apeiron::opengl::Frame_buffer::init(std::int32_t width, std::int32_t height
     glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer_resolve_id_);
   }
 
-  // Color buffer
-  glGenTextures(1, &color_buffer_id_);
-  glBindTexture(GL_TEXTURE_2D, color_buffer_id_);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_buffer_id_, 0);
+  if (color_texture) {
+    // Color buffer
+    glGenTextures(1, &color_buffer_id_);
+    glBindTexture(GL_TEXTURE_2D, color_buffer_id_);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_buffer_id_, 0);
+  }
 
   // Depth buffer
   if (depth_texture) {
@@ -145,6 +147,11 @@ void apeiron::opengl::Frame_buffer::init(std::int32_t width, std::int32_t height
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE);
     glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depth_buffer_id_, 0);
+  }
+
+  if (!color_texture) {
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
   }
 
   if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -169,6 +176,12 @@ void apeiron::opengl::Frame_buffer::unbind() const
 void apeiron::opengl::Frame_buffer::bind_texture() const
 {
   glBindTexture(GL_TEXTURE_2D, color_buffer_id_);
+}
+
+
+void apeiron::opengl::Frame_buffer::bind_depth_texture() const
+{
+  glBindTexture(GL_TEXTURE_2D, depth_buffer_id_);
 }
 
 

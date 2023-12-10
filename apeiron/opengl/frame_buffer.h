@@ -18,12 +18,13 @@ public:
   Frame_buffer& operator=(const Frame_buffer&) = delete;
   Frame_buffer& operator=(Frame_buffer&&) noexcept;
 
-  void init(std::int32_t width, std::int32_t height, bool depth_texture = false,
-      std::int32_t samples = 1);
+  void init(std::int32_t width, std::int32_t height, bool color_texture = true,
+      bool depth_texture = false, std::int32_t samples = 1);
 
   void bind() const;
   void unbind() const;
   void bind_texture() const;
+  void bind_depth_texture() const;
   void unbind_texture() const;
   void blit() const;
 
