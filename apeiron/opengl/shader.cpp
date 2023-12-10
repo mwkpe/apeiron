@@ -10,15 +10,15 @@
 namespace {
 
 
-std::string read_file(std::string_view file)
+std::string read_file(std::string_view file_path)
 {
-  if (std::ifstream fs{std::string{file}}; fs.is_open()) {
+  if (std::ifstream fs{std::string{file_path}}; fs.is_open()) {
     std::stringstream ss;
     ss << fs.rdbuf();
     return ss.str();
   }
   else {
-    throw apeiron::engine::Error{std::string{"Could not open shader file: "} + std::string{file}};
+    throw apeiron::engine::Error{"Could not open shader file", file_path};
   }
 }
 
@@ -40,11 +40,13 @@ GLuint create_shader(GLenum type, const std::string& source)
 }
 
 
-GLuint create_program(GLuint vertex_shader, GLuint fragment_shader)
+GLuint create_program(GLuint vertex_shader, GLuint fragment_shader, GLuint geometry_shader = 0)
 {
   auto id = glCreateProgram();
   glAttachShader(id, vertex_shader);
   glAttachShader(id, fragment_shader);
+  if (geometry_shader > 0)
+    glAttachShader(id, geometry_shader);
   glLinkProgram(id);
   int success;
   glGetProgramiv(id, GL_LINK_STATUS, &success);
@@ -62,33 +64,54 @@ GLuint create_program(GLuint vertex_shader, GLuint fragment_shader)
 }  // namespace
 
 
-void apeiron::opengl::Shader::load(std::string_view vertex_shader_file,
-    std::string_view fragment_shader_file)
+void apeiron::opengl::Shader::load(std::string_view vs_file_path, std::string_view fs_file_path,
+    std::string_view gs_file_path)
 {
-  auto vs_source = read_file(vertex_shader_file);
-  auto fs_source = read_file(fragment_shader_file);
+  auto vs_source = read_file(vs_file_path);
+  auto fs_source = read_file(fs_file_path);
   auto vertex_shader = create_shader(GL_VERTEX_SHADER, vs_source);
   auto fragment_shader = create_shader(GL_FRAGMENT_SHADER, fs_source);
-  id_ = create_program(vertex_shader, fragment_shader);
+
+  if (gs_file_path.empty()) {
+    id_ = create_program(vertex_shader, fragment_shader);
+  }
+  else {
+    auto gs_source = read_file(gs_file_path);
+    auto geometry_shader = create_shader(GL_GEOMETRY_SHADER, gs_source);
+
+    id_ = create_program(vertex_shader, fragment_shader, geometry_shader);
+  }
 }
 
 
-void apeiron::opengl::Shader::compose(const std::vector<std::string>& vertex_shader_files,
-      const std::vector<std::string>& fragment_shader_files)
+void apeiron::opengl::Shader::compose(const std::vector<std::string>& vs_files,
+      const std::vector<std::string>& fs_files, const std::vector<std::string>& gs_files)
 {
   std::string vs_source;
-  for (const auto& file : vertex_shader_files) {
+  for (const auto& file : vs_files) {
     vs_source += read_file(file);
   }
 
   std::string fs_source;
-  for (const auto& file : fragment_shader_files) {
+  for (const auto& file : fs_files) {
     fs_source += read_file(file);
   }
 
   auto vertex_shader = create_shader(GL_VERTEX_SHADER, vs_source);
   auto fragment_shader = create_shader(GL_FRAGMENT_SHADER, fs_source);
-  id_ = create_program(vertex_shader, fragment_shader);
+
+  if (gs_files.empty()) {
+    id_ = create_program(vertex_shader, fragment_shader);
+  }
+  else {
+    std::string gs_source;
+    for (const auto& file : gs_files) {
+      gs_source += read_file(file);
+    }
+
+    auto geometry_shader = create_shader(GL_GEOMETRY_SHADER, gs_source);
+    id_ = create_program(vertex_shader, fragment_shader, geometry_shader);
+  }
 }
 
 

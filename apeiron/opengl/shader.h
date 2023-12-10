@@ -14,9 +14,9 @@ namespace apeiron::opengl {
 class Shader final
 {
 public:
-  void load(std::string_view vertex_shader_file, std::string_view fragment_shader_file);
-  void compose(const std::vector<std::string>& vertex_shader_files,
-      const std::vector<std::string>& fragment_shader_files);
+  void load(std::string_view vs_file, std::string_view fs_file, std::string_view gs_file = {});
+  void compose(const std::vector<std::string>& vs_files, const std::vector<std::string>& fs_files,
+      const std::vector<std::string>& gs_files = {});
   void use() const;
   void set_uniform(const char* name, bool value) const;
   void set_uniform(const char* name, std::int32_t value) const;
