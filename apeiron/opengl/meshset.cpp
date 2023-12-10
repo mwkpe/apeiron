@@ -7,18 +7,18 @@
 
 
 template<typename T> void apeiron::opengl::Meshset::set_data(const std::vector<T>& vertices,
-    Tile_data&& tile_data)
+    Index_vector&& indices)
 {
   set_buffers(vertices);
-  tile_data_ = std::move(tile_data);
+  indices_ = std::move(indices);
 }
 
 
 template<typename T> void apeiron::opengl::Meshset::set_data(const std::vector<T>& vertices,
-    const Tile_data& tile_data)
+    const Index_vector& indices)
 {
   set_buffers(vertices);
-  tile_data_ = tile_data;
+  indices_ = indices;
 }
 
 
@@ -36,8 +36,8 @@ void apeiron::opengl::Meshset::set_tile_spacing(std::vector<glm::vec2>&& tile_sp
 
 bool apeiron::opengl::Meshset::empty(std::uint32_t index) const
 {
-  if (const std::uint32_t i = index - index_offset_; i < tile_data_.size())
-    return std::get<1>(tile_data_[i]) == 0;
+  if (const std::uint32_t i = index - index_offset_; i < indices_.size())
+    return std::get<1>(indices_[i]) == 0;
 
   return true;
 }
@@ -54,31 +54,45 @@ glm::vec2 apeiron::opengl::Meshset::tile_spacing(std::uint32_t index) const
 
 void apeiron::opengl::Meshset::render(std::uint32_t index) const
 {
-  index = std::min(index - index_offset_, static_cast<std::uint32_t>(tile_data_.size()) - 1);
-  auto [tile_index, vertex_count] = tile_data_[index];
+  index = std::min(index - index_offset_, static_cast<std::uint32_t>(indices_.size()) - 1);
+  auto [tile_index, vertex_count] = indices_[index];
   glBindVertexArray(vao_);
   glDrawArrays(GL_TRIANGLES, static_cast<GLint>(tile_index), static_cast<GLsizei>(vertex_count));
 }
 
 
+void apeiron::opengl::Meshset::render_points(std::uint32_t index) const
+{
+  index = std::min(index - index_offset_, static_cast<std::uint32_t>(indices_.size()) - 1);
+  auto [tile_index, vertex_count] = indices_[index];
+  glBindVertexArray(vao_);
+  glDrawArrays(GL_POINTS, static_cast<GLint>(tile_index), static_cast<GLsizei>(vertex_count));
+}
+
+
 template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex>&, 
-    apeiron::opengl::Meshset::Tile_data&&);
+    apeiron::opengl::Meshset::Index_vector&&);
 template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex>&, 
-    const apeiron::opengl::Meshset::Tile_data&);
+    const apeiron::opengl::Meshset::Index_vector&);
 
 template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_simple>&, 
-    apeiron::opengl::Meshset::Tile_data&&);
+    apeiron::opengl::Meshset::Index_vector&&);
 template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_simple>&, 
-    const apeiron::opengl::Meshset::Tile_data&);
+    const apeiron::opengl::Meshset::Index_vector&);
 
 template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_color>&, 
-    apeiron::opengl::Meshset::Tile_data&&);
+    apeiron::opengl::Meshset::Index_vector&&);
 template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_color>&, 
-    const apeiron::opengl::Meshset::Tile_data&);
+    const apeiron::opengl::Meshset::Index_vector&);
 
 template void apeiron::opengl::Meshset::set_data(
     const std::vector<apeiron::engine::Vertex_normal_color>&, 
-    apeiron::opengl::Meshset::Tile_data&&);
+    apeiron::opengl::Meshset::Index_vector&&);
 template void apeiron::opengl::Meshset::set_data(
     const std::vector<apeiron::engine::Vertex_normal_color>&, 
-    const apeiron::opengl::Meshset::Tile_data&);
+    const apeiron::opengl::Meshset::Index_vector&);
+
+template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_index>&,
+    apeiron::opengl::Meshset::Index_vector&&);
+template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_index>&,
+    const apeiron::opengl::Meshset::Index_vector&);
