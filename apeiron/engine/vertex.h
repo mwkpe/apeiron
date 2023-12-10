@@ -2,6 +2,7 @@
 #define APEIRON_VERTEX_H
 
 
+#include <cstdint>
 #include <glm/glm.hpp>
 
 
@@ -118,6 +119,14 @@ struct Vertex_normal_texcoords
   glm::vec3 position;
   glm::vec3 normal;
   glm::vec2 texcoords;
+};
+
+
+struct Vertex_index
+{
+  std::uint16_t index;
+  std::uint8_t color;
+  std::uint8_t material;
 };
 
 
