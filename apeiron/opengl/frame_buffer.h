@@ -18,8 +18,9 @@ public:
   Frame_buffer& operator=(const Frame_buffer&) = delete;
   Frame_buffer& operator=(Frame_buffer&&) noexcept;
 
-  void init(std::int32_t width, std::int32_t height, bool color_texture = true,
-      bool depth_texture = false, std::int32_t samples = 1);
+  void init(std::int32_t width, std::int32_t height, std::int32_t samples = 1);
+  void init_depth_buffer(std::int32_t width, std::int32_t height);
+  void init_depth_buffer_3d(std::int32_t width, std::int32_t height);
 
   void bind() const;
   void unbind() const;

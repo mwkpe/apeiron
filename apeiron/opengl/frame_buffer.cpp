@@ -19,6 +19,9 @@ apeiron::opengl::Frame_buffer::Frame_buffer(Frame_buffer&& other) noexcept
   sample_buffer_id_ = other.sample_buffer_id_;
   other.sample_buffer_id_ = 0;
 
+  depth_buffer_id_ = other.depth_buffer_id_;
+  other.depth_buffer_id_ = 0;
+
   render_buffer_id_ = other.render_buffer_id_;
   other.render_buffer_id_ = 0;
 }
@@ -42,6 +45,9 @@ auto apeiron::opengl::Frame_buffer::operator=(Frame_buffer&& other) noexcept -> 
 
   sample_buffer_id_ = other.sample_buffer_id_;
   other.sample_buffer_id_ = 0;
+
+  depth_buffer_id_ = other.depth_buffer_id_;
+  other.depth_buffer_id_ = 0;
 
   render_buffer_id_ = other.render_buffer_id_;
   other.render_buffer_id_ = 0;
@@ -78,6 +84,11 @@ void apeiron::opengl::Frame_buffer::delete_buffers()
     sample_buffer_id_ = 0;
   }
 
+  if (depth_buffer_id_ > 0) {
+    glDeleteTextures(1, &depth_buffer_id_);
+    depth_buffer_id_ = 0;
+  }
+
   if (render_buffer_id_ > 0) {
     glDeleteRenderbuffers(1, &render_buffer_id_);
     render_buffer_id_ = 0;
@@ -86,7 +97,7 @@ void apeiron::opengl::Frame_buffer::delete_buffers()
 
 
 void apeiron::opengl::Frame_buffer::init(std::int32_t width, std::int32_t height,
-    bool color_texture, bool depth_texture, std::int32_t samples)
+    std::int32_t samples)
 {
   delete_buffers();
 
@@ -98,21 +109,19 @@ void apeiron::opengl::Frame_buffer::init(std::int32_t width, std::int32_t height
   glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer_render_id_);
 
   // Render buffer
-  if (!depth_texture) {
-    glGenRenderbuffers(1, &render_buffer_id_);
-    glBindRenderbuffer(GL_RENDERBUFFER, render_buffer_id_);
-    if (samples > 1) {
-      glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, GL_DEPTH24_STENCIL8, width, height);
-    }
-    else {
-      glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
-    }
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER,
-        render_buffer_id_);
+  glGenRenderbuffers(1, &render_buffer_id_);
+  glBindRenderbuffer(GL_RENDERBUFFER, render_buffer_id_);
+  if (samples > 1) {
+    glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, GL_DEPTH24_STENCIL8, width, height);
   }
+  else {
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+  }
+  glBindRenderbuffer(GL_RENDERBUFFER, 0);
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER,
+      render_buffer_id_);
 
-  if (color_texture && samples > 1) {
+  if (samples > 1) {
     // Use first frame buffer for rendering to a multisample texture
     glGenTextures(1, &sample_buffer_id_);
     glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, sample_buffer_id_);
@@ -125,34 +134,82 @@ void apeiron::opengl::Frame_buffer::init(std::int32_t width, std::int32_t height
     glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer_resolve_id_);
   }
 
-  if (color_texture) {
-    // Color buffer
-    glGenTextures(1, &color_buffer_id_);
-    glBindTexture(GL_TEXTURE_2D, color_buffer_id_);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_buffer_id_, 0);
-  }
+  // Color buffer
+  glGenTextures(1, &color_buffer_id_);
+  glBindTexture(GL_TEXTURE_2D, color_buffer_id_);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_buffer_id_, 0);
+
+  if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    throw engine::Error{"Error creating frame buffer"};
+
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+
+void apeiron::opengl::Frame_buffer::init_depth_buffer(std::int32_t width, std::int32_t height)
+{
+  delete_buffers();
+
+  width_ = width;
+  height_ = height;
+
+  // Frame buffer
+  glGenFramebuffers(1, &frame_buffer_render_id_);
+  glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer_render_id_);
 
   // Depth buffer
-  if (depth_texture) {
-    glGenTextures(1, &depth_buffer_id_);
-    glBindTexture(GL_TEXTURE_2D, depth_buffer_id_);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT,
-        GL_UNSIGNED_BYTE, nullptr);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE);
-    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depth_buffer_id_, 0);
-  }
+  glGenTextures(1, &depth_buffer_id_);
+  glBindTexture(GL_TEXTURE_2D, depth_buffer_id_);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT,
+      GL_FLOAT, nullptr);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE);
+  glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depth_buffer_id_, 0);
 
-  if (!color_texture) {
-    glDrawBuffer(GL_NONE);
-    glReadBuffer(GL_NONE);
+  glDrawBuffer(GL_NONE);
+  glReadBuffer(GL_NONE);
+
+  if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    throw engine::Error{"Error creating frame buffer"};
+
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+
+void apeiron::opengl::Frame_buffer::init_depth_buffer_3d(std::int32_t width, std::int32_t height)
+{
+  delete_buffers();
+
+  width_ = width;
+  height_ = height;
+
+  // Frame buffer
+  glGenFramebuffers(1, &frame_buffer_render_id_);
+  glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer_render_id_);
+
+  // Depth buffer
+  glGenTextures(1, &depth_buffer_id_);
+  glBindTexture(GL_TEXTURE_CUBE_MAP, depth_buffer_id_);
+  for (int i=0; i<6; ++i) {
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, width, height, 0,
+        GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
   }
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE);
+  glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depth_buffer_id_, 0);
+
+  glDrawBuffer(GL_NONE);
+  glReadBuffer(GL_NONE);
 
   if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     throw engine::Error{"Error creating frame buffer"};
