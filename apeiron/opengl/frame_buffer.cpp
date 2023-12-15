@@ -182,7 +182,7 @@ void apeiron::opengl::Frame_buffer::init_depth_buffer(std::int32_t width, std::i
 }
 
 
-void apeiron::opengl::Frame_buffer::init_depth_buffer_3d(std::int32_t width, std::int32_t height)
+void apeiron::opengl::Frame_buffer::init_depth_buffer_cube(std::int32_t width, std::int32_t height)
 {
   delete_buffers();
 
@@ -197,15 +197,15 @@ void apeiron::opengl::Frame_buffer::init_depth_buffer_3d(std::int32_t width, std
   glGenTextures(1, &depth_buffer_id_);
   glBindTexture(GL_TEXTURE_CUBE_MAP, depth_buffer_id_);
   for (int i=0; i<6; ++i) {
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, width, height, 0,
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X+i, 0, GL_DEPTH_COMPONENT, width, height, 0,
         GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
   }
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_COMPARE_MODE, GL_NONE);
   glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depth_buffer_id_, 0);
 
   glDrawBuffer(GL_NONE);
@@ -239,6 +239,12 @@ void apeiron::opengl::Frame_buffer::bind_texture() const
 void apeiron::opengl::Frame_buffer::bind_depth_texture() const
 {
   glBindTexture(GL_TEXTURE_2D, depth_buffer_id_);
+}
+
+
+void apeiron::opengl::Frame_buffer::bind_depth_texture_cube() const
+{
+  glBindTexture(GL_TEXTURE_CUBE_MAP, depth_buffer_id_);
 }
 
 

@@ -20,12 +20,13 @@ public:
 
   void init(std::int32_t width, std::int32_t height, std::int32_t samples = 1);
   void init_depth_buffer(std::int32_t width, std::int32_t height);
-  void init_depth_buffer_3d(std::int32_t width, std::int32_t height);
+  void init_depth_buffer_cube(std::int32_t width, std::int32_t height);
 
   void bind() const;
   void unbind() const;
   void bind_texture() const;
   void bind_depth_texture() const;
+  void bind_depth_texture_cube() const;
   void unbind_texture() const;
   void blit() const;
 
