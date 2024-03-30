@@ -38,9 +38,13 @@ public:
   [[nodiscard]] const Entity* parent() const { return parent_; };
 
   [[nodiscard]] glm::vec3 position() const { return position_; }
-  [[nodiscard]] glm::vec3 position2d() const { return glm::vec3{position_.x, 0.0f, position_.z}; }
-  [[nodiscard]] glm::vec3 position(float x, float y, float z) const { return position_ + glm::vec3{x, y, z}; }
+  [[nodiscard]] glm::vec3 position(float x, float y, float z) const { return position_ +
+      glm::vec3{x, y, z}; }
   [[nodiscard]] glm::vec3 position(const glm::vec3& offset) const { return position_ + offset; }
+
+  [[nodiscard]] glm::vec3 position2d() const { return glm::vec3{position_.x, 0.0f, position_.z}; }
+  [[nodiscard]] glm::vec3 position2d(float height) const { return position2d() +
+      glm::vec3{0.0f, height, 0.0f}; }
 
   [[nodiscard]] glm::vec3 origin() const { return origin_; }
   [[nodiscard]] glm::vec3 rotation_origin() const { return rotation_origin_; }

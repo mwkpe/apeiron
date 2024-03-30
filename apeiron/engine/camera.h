@@ -24,6 +24,9 @@ public:
   void set_center(const glm::vec3& center) { center_ = center; }
   void set_world_up(const glm::vec3& world_up) { world_up_ = world_up; }
 
+  void set_pitch(float pitch) { pitch_ = pitch; }
+  void set_yaw(float yaw) { yaw_ = yaw; }
+
   void move(Direction direction, float distances);
   void move(float dx, float dy, float dz) { position_ += glm::vec3{dx, dy, dz}; }
   void isometric_move(float dx, float dy, float dz) { center_ += glm::vec3{dx, dy, dz}; }
