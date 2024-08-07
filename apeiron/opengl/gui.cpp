@@ -25,7 +25,7 @@ void apeiron::opengl::Gui::process(SDL_Event* event)
 void apeiron::opengl::Gui::create_frame()
 {
   ImGui_ImplOpenGL3_NewFrame();
-  ImGui_ImplSDL2_NewFrame(window_);
+  ImGui_ImplSDL2_NewFrame();
   ImGui::NewFrame();
 }
 
