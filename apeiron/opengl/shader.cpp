@@ -163,6 +163,42 @@ void apeiron::opengl::Shader::set_uniform(const char* name, const glm::vec4& vec
 }
 
 
+void apeiron::opengl::Shader::set_uniform(const char* name, const glm::ivec2& vec) const
+{
+  glUniform2iv(glGetUniformLocation(id_, name), 1, &vec[0]);
+}
+
+
+void apeiron::opengl::Shader::set_uniform(const char* name, const glm::ivec3& vec) const
+{
+  glUniform3iv(glGetUniformLocation(id_, name), 1, &vec[0]);
+}
+
+
+void apeiron::opengl::Shader::set_uniform(const char* name, const glm::ivec4& vec) const
+{
+  glUniform4iv(glGetUniformLocation(id_, name), 1, &vec[0]);
+}
+
+
+void apeiron::opengl::Shader::set_uniform(const char* name, const glm::uvec2& vec) const
+{
+  glUniform2uiv(glGetUniformLocation(id_, name), 1, &vec[0]);
+}
+
+
+void apeiron::opengl::Shader::set_uniform(const char* name, const glm::uvec3& vec) const
+{
+  glUniform3uiv(glGetUniformLocation(id_, name), 1, &vec[0]);
+}
+
+
+void apeiron::opengl::Shader::set_uniform(const char* name, const glm::uvec4& vec) const
+{
+  glUniform4uiv(glGetUniformLocation(id_, name), 1, &vec[0]);
+}
+
+
 void apeiron::opengl::Shader::set_uniform(const char* name, const glm::mat4& mat) const
 {
   glUniformMatrix4fv(glGetUniformLocation(id_, name), 1, GL_FALSE, &mat[0][0]);

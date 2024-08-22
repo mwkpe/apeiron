@@ -25,6 +25,12 @@ public:
   void set_uniform(const char* name, const glm::vec2& vec) const;
   void set_uniform(const char* name, const glm::vec3& vec) const;
   void set_uniform(const char* name, const glm::vec4& vec) const;
+  void set_uniform(const char* name, const glm::ivec2& vec) const;
+  void set_uniform(const char* name, const glm::ivec3& vec) const;
+  void set_uniform(const char* name, const glm::ivec4& vec) const;
+  void set_uniform(const char* name, const glm::uvec2& vec) const;
+  void set_uniform(const char* name, const glm::uvec3& vec) const;
+  void set_uniform(const char* name, const glm::uvec4& vec) const;
   void set_uniform(const char* name, const glm::mat4& mat) const;
 
 private:
