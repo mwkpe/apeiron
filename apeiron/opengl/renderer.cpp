@@ -400,7 +400,7 @@ template<typename T> void apeiron::opengl::Renderer::render_text(const T& text,
 
   for (char c : text) {
     if (c == '\n') {
-      auto index = static_cast<std::uint32_t>(c);
+      auto index = static_cast<std::uint32_t>(static_cast<unsigned char>(c));
       offset_x = 0.0f;
       offset_z += charset.tile_spacing(index).y * text.text_size() * text.spacing().y;
     }
@@ -411,7 +411,7 @@ template<typename T> void apeiron::opengl::Renderer::render_text(const T& text,
       apply_rotation(model, text);
       model = glm::scale(model, text.scale());
       shader_.set_uniform("model", model);
-      auto index = static_cast<std::uint32_t>(c);
+      auto index = static_cast<std::uint32_t>(static_cast<unsigned char>(c));
       charset.render(index);
       offset_x += charset.tile_spacing(index).x * text.text_size() * text.spacing().x;
     }
