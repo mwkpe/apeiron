@@ -16,6 +16,8 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/model_loader.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/primitive.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/primitive.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/transform.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/transform.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/text.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/vertex.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/cuboid.cpp
