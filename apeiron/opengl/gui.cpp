@@ -1,17 +1,18 @@
 #include "gui.h"
 
 
+#include <string>
 #include <glad/glad.h>
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_sdl2.h"
 
 
-void apeiron::opengl::Gui::init()
+void apeiron::opengl::Gui::init(std::string_view glsl_version)
 {
   ImGui::CreateContext();
   ImGui_ImplSDL2_InitForOpenGL(window_, context_);
-  ImGui_ImplOpenGL3_Init("#version 330");
+  ImGui_ImplOpenGL3_Init(std::string{glsl_version}.c_str());
   ImGui::StyleColorsDark();
 }
 

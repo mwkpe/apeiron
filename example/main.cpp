@@ -98,7 +98,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
   apeiron::example::Menu menu(window, context);
   try {
     world.init();
-    menu.init();
+    menu.init("#version 460");
     menu.setup(&settings);
   }
   catch (const apeiron::engine::Error& e) {
