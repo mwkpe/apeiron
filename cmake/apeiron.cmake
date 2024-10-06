@@ -1,4 +1,4 @@
-add_library(glad ${CMAKE_CURRENT_LIST_DIR}/../external/glad/src/glad.c)
+add_library(glad ${CMAKE_CURRENT_LIST_DIR}/../external/glad/glad.c)
 
 add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/camera.cpp
@@ -66,7 +66,7 @@ add_library(apeiron
 list(APPEND APEIRON_INCLUDE_DIRECTORIES
     ${CMAKE_CURRENT_LIST_DIR}/../external
     ${CMAKE_CURRENT_LIST_DIR}/../external/glm
-    ${CMAKE_CURRENT_LIST_DIR}/../external/glad/include)
+    ${CMAKE_CURRENT_LIST_DIR}/../external/glad)
 
 include_directories(${APEIRON_INCLUDE_DIRECTORIES})
 target_link_libraries(apeiron glad)
