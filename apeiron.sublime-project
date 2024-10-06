@@ -1,0 +1,29 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+		},
+		{
+			"path": "apeiron\\engine",
+		},
+		{
+			"path": "apeiron\\opengl",
+		},
+		{
+			"path": "apeiron\\prefab",
+		},
+		{
+			"path": "apeiron\\utility",
+		},
+		{
+			"path": "example",
+		},
+		{
+			"path": "assets",
+		},
+		{
+			"path": "cmake-build-release",
+		},
+	],
+}
