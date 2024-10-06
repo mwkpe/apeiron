@@ -1,41 +1,6 @@
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
-#*.obj  # Allow Wavefront OBJ file format
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
 # Libraries
-external/glew/
 external/glm/
 external/SDL2/
-external/nlohmann/
 
 # Build directories
 cmake-build*/
@@ -43,6 +8,7 @@ build*/
 
 # IDE
 .idea/
+*.sublime-workspace
 
 # Assets
 assets/private/
