@@ -28,10 +28,13 @@ public:
   void set_index_offset(std::uint32_t offset) { index_offset_ = offset; }
 
   void render(std::uint32_t index) const override;
+  void render_batched(std::uint32_t count) const;
   void render_points(std::uint32_t index) const;
+  void render_points_batched(std::uint32_t count) const;
 
   [[nodiscard]] std::uint32_t tile_count() const { return indices_.size(); }
-  [[nodiscard]] bool empty(std::uint32_t index) const;
+  [[nodiscard]] bool tile_empty(std::uint32_t index) const;
+  [[nodiscard]] std::tuple<std::uint32_t, std::uint32_t> tile_data(std::uint32_t index) const;
   [[nodiscard]] glm::vec2 tile_size() const { return tile_size_; }
   [[nodiscard]] glm::vec2 tile_spacing(std::uint32_t index) const;
 

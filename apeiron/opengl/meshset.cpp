@@ -34,19 +34,32 @@ void apeiron::opengl::Meshset::set_tile_spacing(std::vector<glm::vec2>&& tile_sp
 }
 
 
-bool apeiron::opengl::Meshset::empty(std::uint32_t index) const
+bool apeiron::opengl::Meshset::tile_empty(std::uint32_t index) const
 {
-  if (const std::uint32_t i = index - index_offset_; i < indices_.size())
+  if (const std::uint32_t i = index - index_offset_; i < indices_.size()) {
     return std::get<1>(indices_[i]) == 0;
+  }
 
   return true;
 }
 
 
+auto apeiron::opengl::Meshset::tile_data(std::uint32_t index) const
+    -> std::tuple<std::uint32_t, std::uint32_t>
+{
+  if (const std::uint32_t i = index - index_offset_; i < indices_.size()) {
+    return indices_[i];
+  }
+
+  return {0, 0};
+}
+
+
 glm::vec2 apeiron::opengl::Meshset::tile_spacing(std::uint32_t index) const
 {
-  if (const std::uint32_t i = index - index_offset_; i < tile_spacing_.size())
+  if (const std::uint32_t i = index - index_offset_; i < tile_spacing_.size()) {
     return tile_spacing_[i];
+  }
 
   return tile_size_;
 }
@@ -61,12 +74,26 @@ void apeiron::opengl::Meshset::render(std::uint32_t index) const
 }
 
 
+void apeiron::opengl::Meshset::render_batched(std::uint32_t count) const
+{
+  glBindVertexArray(vao_);
+  glMultiDrawArraysIndirect(GL_TRIANGLES, nullptr, static_cast<GLint>(count), 0);
+}
+
+
 void apeiron::opengl::Meshset::render_points(std::uint32_t index) const
 {
   index = std::min(index - index_offset_, static_cast<std::uint32_t>(indices_.size()) - 1);
   auto [tile_index, vertex_count] = indices_[index];
   glBindVertexArray(vao_);
   glDrawArrays(GL_POINTS, static_cast<GLint>(tile_index), static_cast<GLsizei>(vertex_count));
+}
+
+
+void apeiron::opengl::Meshset::render_points_batched(std::uint32_t count) const
+{
+  glBindVertexArray(vao_);
+  glMultiDrawArraysIndirect(GL_POINTS, 0, static_cast<GLint>(count), 0);
 }
 
 
