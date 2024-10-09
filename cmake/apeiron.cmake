@@ -20,6 +20,8 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/transform.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/text.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/vertex.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/command_buffer.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/command_buffer.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/cuboid.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/cuboid.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/cylinder.cpp
@@ -42,6 +44,8 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/renderer.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/shader.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/shader.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/shader_storage_buffer.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/shader_storage_buffer.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/shape.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/shape.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/texture.cpp
