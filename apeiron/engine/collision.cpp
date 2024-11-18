@@ -47,6 +47,32 @@ bool apeiron::engine::collision::intersects(const Ray& ray, const Quad& quad)
 }
 
 
+std::optional<glm::vec2> apeiron::engine::collision::intersection_point(const Ray& ray,
+    const Quad& quad)
+{
+  auto width = quad.top_right - quad.top_left;
+  auto height = quad.bottom_left - quad.top_left;
+  auto normal = glm::cross(width, height);
+
+  float angle = glm::dot(glm::normalize(normal), glm::normalize(ray.vector));
+  if (std::abs(angle) < 0.001f)  // 0 is 90 degrees to normal (parallel to quad's plane)
+    return std::nullopt;
+
+  float growth = glm::dot(normal, ray.vector);
+  float scale = glm::dot(-normal, ray.position - quad.top_left) / growth;
+  auto point = ray.position + ray.vector * scale;
+  auto d = point - quad.top_left;
+  float u = glm::dot(d, glm::normalize(width));
+  float v = glm::dot(d, glm::normalize(height));
+
+  if (u >= 0.0f && u <= glm::length(width) && v >= 0.0f && v <= glm::length(height)) {
+    return glm::vec2{u, v};
+  }
+
+  return std::nullopt;
+}
+
+
 std::optional<glm::vec3> apeiron::engine::collision::intersection_point(const Ray& ray,
     const Plane& plane)
 {
