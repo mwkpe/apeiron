@@ -22,17 +22,15 @@ template std::int64_t apeiron::utility::Timer::high_res_now();
 template std::uint64_t apeiron::utility::Timer::high_res_now();
 
 
-apeiron::utility::Timer::Timer(bool autostart)
+apeiron::utility::Timer::Timer()
 {
-  if (autostart)
-    start();
+  start();
 }
 
 
-apeiron::utility::Timer::Timer(std::string&& name, bool autostart) : name_{std::move(name)}
+apeiron::utility::Timer::Timer(std::string_view name) : name_{name}
 {
-  if (autostart)
-    start();
+  start();
 }
 
 
@@ -51,6 +49,14 @@ void apeiron::utility::Timer::restart(bool print)
 }
 
 
+void apeiron::utility::Timer::restart(std::string_view name, bool print)
+{
+  stop(print);
+  name_ = name;
+  start();
+}
+
+
 void apeiron::utility::Timer::stop(bool print)
 {
   const auto duration = std::chrono::high_resolution_clock::now() - start_;
@@ -65,11 +71,11 @@ void apeiron::utility::Timer::print_message()
   std::cout << "[" << invokation_ << "] ";
   if (!name_.empty())
     std::cout << name_ << ": ";
-  std::cout << elapsed_ << "ms" << std::endl;
+  std::cout << elapsed_ << " ms" << std::endl;
 }
 
 
-apeiron::utility::Scope_timer::Scope_timer(std::string&& name) : name_{std::move(name)}
+apeiron::utility::Scope_timer::Scope_timer(std::string_view name) : name_{name}
 {
   start_ = std::chrono::high_resolution_clock::now();
 }
@@ -79,7 +85,7 @@ apeiron::utility::Scope_timer::~Scope_timer()
 {
   const auto duration = std::chrono::high_resolution_clock::now() - start_;
   const auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
-  std::cout << name_ << ": " << ms << "ms" << std::endl;
+  std::cout << name_ << ": " << ms << " ms" << std::endl;
 }
 
 

@@ -4,6 +4,7 @@
 
 #include <cstdint>
 #include <string>
+#include <string_view>
 #include <chrono>
 
 
@@ -13,14 +14,15 @@ namespace apeiron::utility {
 class Timer
 {
 public:
-  explicit Timer(bool autostart = false);
-  explicit Timer(std::string&& name, bool autostart = false);
+  explicit Timer();
+  explicit Timer(std::string_view name);
 
   template<typename T = std::int64_t> static T system_now();
   template<typename T = std::int64_t> static T high_res_now();
 
   void start();
   void restart(bool print = false);
+  void restart(std::string_view name, bool print = false);
   void stop(bool print = false);
 
   [[nodiscard]] std::uint64_t elapsed_ms() const { return elapsed_; }
@@ -38,7 +40,7 @@ private:
 class Scope_timer
 {
 public:
-  explicit Scope_timer(std::string&& name);
+  explicit Scope_timer(std::string_view name);
   ~Scope_timer();
 
 private:
