@@ -9,11 +9,11 @@ template<typename T> auto apeiron::engine::load_font(std::string_view filename,
     const glm::vec3& glyph_size) -> Font<T>
 {
   Font<T> font;
-  auto model_data = engine::load_model<T>(filename);
+  auto model = engine::load_model<T>(filename);
   std::uint32_t index = 0;
 
-  for (const auto& mesh_data : model_data.meshes) {
-    font.glyphs.emplace_back(mesh_data.vertices, index++, glyph_size);
+  for (const auto& mesh : model.meshes) {
+    font.glyphs.emplace_back(mesh.vertices, index++, glyph_size);
   }
 
   return font;

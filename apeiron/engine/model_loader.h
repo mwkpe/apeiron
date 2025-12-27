@@ -12,27 +12,27 @@
 namespace apeiron::engine {
 
 
-struct Material_data
+struct Material
 {
   std::string diffuse_texture_filename;
 };
 
 
-template<typename T = Vertex> struct Mesh_data
+template<typename T = Vertex> struct Mesh
 {
   std::vector<T> vertices;
   std::int32_t material_index = -1;
 };
 
 
-template<typename T = Vertex> struct Model_data
+template<typename T = Vertex> struct Model
 {
-  std::vector<Mesh_data<T>> meshes;
-  std::vector<Material_data> materials;
+  std::vector<Mesh<T>> meshes;
+  std::vector<Material> materials;
 };
 
 
-template<typename T = Vertex> Model_data<T> load_model(std::string_view filename);
+template<typename T = Vertex> Model<T> load_model(std::string_view filename);
 
 
 }  // namespace apeiron::engine

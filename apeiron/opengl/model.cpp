@@ -7,10 +7,10 @@
 
 template<typename T> void apeiron::opengl::Model::load(std::string_view filename)
 {
-  auto model_data = engine::load_model<T>(filename);
+  auto model = engine::load_model<T>(filename);
 
-  for (const auto& mesh_data : model_data.meshes) {
-    meshes_.emplace_back(mesh_data.vertices);
+  for (const auto& mesh : model.meshes) {
+    meshes_.emplace_back(mesh.vertices);
   }
 }
 
