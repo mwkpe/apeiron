@@ -14,8 +14,9 @@ apeiron::opengl::Command_buffer::Command_buffer(Command_buffer&& other) noexcept
 
 auto apeiron::opengl::Command_buffer::operator=(Command_buffer&& other) noexcept -> Command_buffer&
 {
-  if (&other == this)
+  if (&other == this) {
     return *this;
+  }
 
   delete_buffer();
 

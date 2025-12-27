@@ -3,15 +3,15 @@
 
 
 #include <glm/glm.hpp>
-#include "apeiron/engine/vertex.h"
 #include "apeiron/engine/primitive.h"
-#include "apeiron/opengl/shape.h"
+#include "apeiron/engine/vertex.h"
+#include "apeiron/opengl/vertex_array.h"
 
 
 namespace apeiron::opengl {
 
 
-class Quad final : public Shape
+class Quad final : public Vertex_array
 {
 public:
   Quad() = default;

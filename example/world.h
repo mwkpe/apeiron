@@ -4,21 +4,25 @@
 
 #include <cstdint>
 #include <vector>
-#include "apeiron/engine/input.h"
-#include "apeiron/engine/event.h"
+
 #include "apeiron/engine/camera.h"
-#include "apeiron/engine/text.h"
-#include "apeiron/opengl/renderer.h"
+#include "apeiron/engine/event.h"
+#include "apeiron/engine/font.h"
+#include "apeiron/engine/input.h"
+
+#include "apeiron/opengl/cuboid.h"
 #include "apeiron/opengl/frame_buffer.h"
+#include "apeiron/opengl/model.h"
+#include "apeiron/opengl/renderer.h"
 #include "apeiron/opengl/texture.h"
 #include "apeiron/opengl/tileset.h"
-#include "apeiron/opengl/mesh_font.h"
-#include "apeiron/opengl/cuboid.h"
-#include "apeiron/opengl/model.h"
+
 #include "apeiron/prefab/axes.h"
 #include "apeiron/prefab/grid.h"
 #include "apeiron/prefab/light.h"
 #include "apeiron/prefab/teapot.h"
+#include "apeiron/prefab/text.h"
+
 #include "example/settings.h"
 #include "example/cube.h"
 #include "example/cylinder.h"
@@ -54,17 +58,18 @@ private:
   const Settings* settings_;
   opengl::Renderer renderer_;
   opengl::Tileset bitmap_charset_;
-  opengl::Mesh_font mesh_charset_;
+  opengl::Model mesh_charset_;
   opengl::Texture cube_texture_;
   opengl::Cuboid cube_model_;
   opengl::Model bulb_;
   engine::Camera camera_;
-  engine::Text world_text_;
-  engine::Text screen_text_;
+  engine::Font<engine::Vertex_simple> font_;
   prefab::Axes axes_;
   prefab::Grid grid_;
   prefab::Light light_;
   prefab::Teapot teapot_;
+  prefab::Text world_text_;
+  prefab::Text screen_text_;
   Cylinder cylinder_;
   Ground_highlight ground_highlight_;
   Cube cube_;

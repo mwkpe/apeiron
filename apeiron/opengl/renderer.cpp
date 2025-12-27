@@ -2,23 +2,6 @@
 
 
 #include <glad/glad.h>
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/quaternion.hpp>
-
-
-namespace {
-
-
-void apply_rotation(glm::mat4& model, const apeiron::engine::Entity& entity)
-{
-  auto rotation_origin = entity.rotation_origin();
-  model = glm::translate(model, rotation_origin);
-  model *= glm::toMat4(entity.rotation());
-  model = glm::translate(model, -rotation_origin);
-}
-
-
-}  // namespace
 
 
 void apeiron::opengl::Renderer::init()
@@ -224,22 +207,14 @@ void apeiron::opengl::Renderer::clear_depth_buffer() const
 
 void apeiron::opengl::Renderer::render(const engine::Entity& entity)
 {
-  glm::mat4 model{1.0f};
-  model = glm::translate(model, entity.origin() + entity.position());
-  apply_rotation(model, entity);
-  model = glm::scale(model, entity.scale());
-  shader_.set_uniform("model", model);
+  shader_.set_uniform("model", entity.transform().model_matrix());
   entity.render();
 }
 
 
 void apeiron::opengl::Renderer::render(const engine::Entity& entity, const glm::vec4& color)
 {
-  glm::mat4 model{1.0f};
-  model = glm::translate(model, entity.origin() + entity.position());
-  apply_rotation(model, entity);
-  model = glm::scale(model, entity.scale());
-  shader_.set_uniform("model", model);
+  shader_.set_uniform("model", entity.transform().model_matrix());
   shader_.set_uniform("color", color);
   entity.render();
 }
@@ -250,13 +225,7 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity,
 {
   use_texture_shading();
   tileset.bind();
-
-  glm::mat4 model{1.0f};
-  model = glm::translate(model, entity.origin() + entity.position());
-  apply_rotation(model, entity);
-  model = glm::scale(model, entity.scale());
-  shader_.set_uniform("model", model);
-
+  shader_.set_uniform("model", entity.transform().model_matrix());
   tileset.render(index);
 }
 
@@ -265,28 +234,7 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity,
     const opengl::Meshset& meshset, std::uint32_t index)
 {
   use_vertex_color_shading();
-
-  glm::mat4 model{1.0f};
-  model = glm::translate(model, entity.origin() + entity.position());
-  apply_rotation(model, entity);
-  model = glm::scale(model, entity.scale());
-  shader_.set_uniform("model", model);
-
-  meshset.render(index);
-}
-
-
-void apeiron::opengl::Renderer::render(const engine::Entity& entity,
-    const opengl::Meshset& meshset, std::uint32_t index, const glm::vec3& offset)
-{
-  use_vertex_color_shading();
-
-  glm::mat4 model{1.0f};
-  model = glm::translate(model, entity.origin() + entity.position() + offset);
-  apply_rotation(model, entity);
-  model = glm::scale(model, entity.scale());
-  shader_.set_uniform("model", model);
-
+  shader_.set_uniform("model", entity.transform().model_matrix());
   meshset.render(index);
 }
 
@@ -303,134 +251,25 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity,
   }
 
   shader_.set_uniform("color", color);
-
-  glm::mat4 model{1.0f};
-  model = glm::translate(model, entity.origin() + entity.position());
-  apply_rotation(model, entity);
-  model = glm::scale(model, entity.scale());
-  shader_.set_uniform("model", model);
+  shader_.set_uniform("model", entity.transform().model_matrix());
 
   meshset.render(index);
   set_colorize(false);
 }
 
 
-template<typename T> void apeiron::opengl::Renderer::render_text(const T& text,
-    const opengl::Tileset& charset)
-{
-  use_texture_shading();
-  charset.bind();
-
-  float offset = 0.0f;
-  for (char c : text) {
-    glm::mat4 model{1.0f};
-    model = glm::translate(model, text.position() + text.origin() + glm::vec3{offset, 0.0f, 0.0f});
-    apply_rotation(model, text);
-    model = glm::scale(model, text.scale());
-    shader_.set_uniform("model", model);
-    charset.render(c);
-    offset += charset.tile_width() * text.text_size() * text.spacing().x;
-  }
-}
-
-
-template<typename T> void apeiron::opengl::Renderer::render_text(const T& text,
-    const opengl::Tileset& charset, const glm::vec4& color)
-{
-  use_texture_shading();
-  set_colorize(true);
-  shader_.set_uniform("color", color);
-  charset.bind();
-
-  float offset = 0.0f;
-  for (char c : text) {
-    glm::mat4 model{1.0f};
-    model = glm::translate(model, text.position() + text.origin() + glm::vec3{offset, 0.0f, 0.0f});
-    apply_rotation(model, text);
-    model = glm::scale(model, text.scale());
-    shader_.set_uniform("model", model);
-    charset.render(c);
-    offset += charset.tile_width() * text.text_size() * text.spacing().x;
-  }
-
-  set_colorize(false);
-}
-
-
-template<typename T> void apeiron::opengl::Renderer::render_text(const T& text,
-    const opengl::Mesh_font& charset, const glm::vec4& color)
-{
-  use_color_shading();
-  shader_.set_uniform("color", color);
-
-  float offset_x = 0.0f;
-  float offset_z = 0.0f;
-
-  for (char c : text) {
-    if (c == '\n') {
-      offset_x = 0.0f;
-      offset_z += charset.letter_height() * text.text_size() * text.spacing().y;
-    }
-    else if (c == ' ') {
-      offset_x += charset.letter_spacing() * text.text_size() * text.spacing().x;
-    }
-    else {
-      glm::mat4 model{1.0f};
-      float letter_position = charset.letter_position(c) * text.text_size();
-      model = glm::translate(model, text.position() + glm::vec3{offset_x -
-          letter_position, 0.0f, offset_z});
-      apply_rotation(model, text);
-      model = glm::scale(model, text.scale());
-      shader_.set_uniform("model", model);
-      charset.render(c);
-      offset_x += charset.letter_spacing() * text.text_size() * text.spacing().x;
-    }
-  }
-}
-
-
-template<typename T> void apeiron::opengl::Renderer::render_text(const T& text,
-    const opengl::Meshset& charset, const glm::vec4& color)
-{
-  use_color_shading();
-  shader_.set_uniform("color", color);
-
-  float offset_x = 0.0f;
-  float offset_z = 0.0f;
-
-  for (char c : text) {
-    if (c == '\n') {
-      auto index = static_cast<std::uint32_t>(static_cast<unsigned char>(c));
-      offset_x = 0.0f;
-      offset_z += charset.tile_spacing(index).y * text.text_size() * text.spacing().y;
-    }
-    else {
-      glm::mat4 model{1.0f};
-      model = glm::translate(model, text.position() + text.origin() +
-          glm::vec3{offset_x, 0.0f, offset_z});
-      apply_rotation(model, text);
-      model = glm::scale(model, text.scale());
-      shader_.set_uniform("model", model);
-      auto index = static_cast<std::uint32_t>(static_cast<unsigned char>(c));
-      charset.render(index);
-      offset_x += charset.tile_spacing(index).x * text.text_size() * text.spacing().x;
-    }
-  }
-}
-
-
 void apeiron::opengl::Renderer::render_screen(const engine::Entity& entity)
 {
-  shader_.set_uniform("translation", entity.position());
-  shader_.set_uniform("scale", entity.scale());
+  shader_.set_uniform("translation", entity.transform().position());
+  shader_.set_uniform("scale", entity.transform().scale());
   entity.render();
 }
 
 
 void apeiron::opengl::Renderer::render_screen(const engine::Entity& entity, const glm::vec4& color)
 {
-  shader_.set_uniform("translation", entity.position());
-  shader_.set_uniform("scale", entity.scale());
+  shader_.set_uniform("translation", entity.transform().position());
+  shader_.set_uniform("scale", entity.transform().scale());
   shader_.set_uniform("color", color);
   entity.render();
 }
@@ -441,8 +280,8 @@ void apeiron::opengl::Renderer::render_screen(const engine::Entity& entity,
 {
   use_vertex_color_shading();
 
-  shader_.set_uniform("translation", entity.position());
-  shader_.set_uniform("scale", entity.scale());
+  shader_.set_uniform("translation", entity.transform().position());
+  shader_.set_uniform("scale", entity.transform().scale());
 
   meshset.render(index);
 }
@@ -460,120 +299,9 @@ void apeiron::opengl::Renderer::render_screen(const engine::Entity& entity,
   }
 
   shader_.set_uniform("color", color);
-  shader_.set_uniform("translation", entity.position());
-  shader_.set_uniform("scale", entity.scale());
+  shader_.set_uniform("translation", entity.transform().position());
+  shader_.set_uniform("scale", entity.transform().scale());
 
   meshset.render(index);
   set_colorize(false);
 }
-
-
-void apeiron::opengl::Renderer::render_screen(const engine::Text& text,
-    const opengl::Tileset& charset, const glm::vec4& color)
-{
-  use_texture_shading();
-  charset.bind();
-  set_colorize(true);
-  shader_.set_uniform("color", color);
-  shader_.set_uniform("scale", glm::vec3{text.text_size(), text.text_size(), 1.0f});
-
-  float offset = 0.0f;
-  auto pos = text.position();
-
-  for (char c : text) {
-    shader_.set_uniform("translation", glm::vec3{pos.x + offset, pos.y, pos.z});
-    charset.render(c);
-    offset += charset.tile_width() * text.text_size() * text.spacing().x;
-  }
-  set_colorize(false);
-}
-
-
-void apeiron::opengl::Renderer::render_screen(const engine::Text& text,
-    const opengl::Mesh_font& charset, const glm::vec4& color)
-{
-  use_color_shading();
-  shader_.set_uniform("color", color);
-  shader_.set_uniform("scale", glm::vec3{text.text_size(), text.text_size(), 1.0f});
-
-  float offset_x = 0.0f;
-  float offset_y = 0.0f;
-
-  for (char c : text) {
-    if (c == '\n') {
-      offset_x = 0.0f;
-      // Origin is bottom left (see ortho)
-      offset_y -= charset.letter_height() * text.text_size() * text.spacing().y;
-    }
-    else if (c == ' ') {
-      offset_x += charset.letter_spacing() * text.text_size() * text.spacing().x;
-    }
-    else {
-      float letter_position = charset.letter_position(c) * text.text_size();
-      glm::vec3 position = text.position() + glm::vec3{offset_x - letter_position, offset_y, 0.0f};
-      shader_.set_uniform("translation", position);
-      charset.render(c);
-      offset_x += charset.letter_spacing() * text.text_size() * text.spacing().x;
-    }
-  }
-}
-
-
-void apeiron::opengl::Renderer::render_screen(const engine::Text& text,
-    const opengl::Meshset& charset, const glm::vec4& color)
-{
-  use_color_shading();
-  shader_.set_uniform("color", color);
-  shader_.set_uniform("scale", glm::vec3{text.text_size(), text.text_size(), 1.0f});
-
-  float offset_x = 0.0f;
-  float offset_y = 0.0f;
-
-  for (char c : text) {
-    if (c == '\n') {
-      offset_x = 0.0f;
-      // Origin is bottom left (see ortho)
-      offset_y -= charset.tile_size().y * text.text_size() * text.spacing().y;
-    }
-    else if (c == ' ') {
-      offset_x += charset.tile_size().x * text.text_size() * text.spacing().x;
-    }
-    else {
-      glm::vec3 position = text.position() + glm::vec3{offset_x, offset_y, 0.0f};
-      shader_.set_uniform("translation", position);
-      charset.render(c);
-      offset_x += charset.tile_size().x * text.text_size() * text.spacing().x;
-    }
-  }
-}
-
-
-void apeiron::opengl::Renderer::render_bounds(const engine::Entity& entity, const glm::vec4& color)
-{
-  glm::mat4 model{1.0f};
-  model = glm::translate(model, entity.origin() + entity.position());
-  apply_rotation(model, entity);
-  model = glm::scale(model, entity.scale());
-  shader_.set_uniform("model", model);
-  shader_.set_uniform("color", color);
-  entity.render_bounds();
-}
-
-
-template void apeiron::opengl::Renderer::render_text(const engine::Text& text,
-    const opengl::Tileset& charset);
-template void apeiron::opengl::Renderer::render_text(const engine::Text& text,
-    const opengl::Tileset& charset, const glm::vec4& color);
-template void apeiron::opengl::Renderer::render_text(const engine::Text& text,
-    const opengl::Mesh_font& charset, const glm::vec4& color);
-template void apeiron::opengl::Renderer::render_text(const engine::Text& text,
-    const opengl::Meshset& charset, const glm::vec4& color);
-
-template void apeiron::opengl::Renderer::render_text(const engine::Text_observer& text,
-    const opengl::Tileset& charset);
-template void apeiron::opengl::Renderer::render_text(const engine::Text_observer& text,
-    const opengl::Tileset& charset, const glm::vec4& color);
-template void apeiron::opengl::Renderer::render_text(const engine::Text_observer& text,
-    const opengl::Mesh_font& charset, const glm::vec4& color);
-template void apeiron::opengl::Renderer::render_text(const engine::Text_observer& text,
-    const opengl::Meshset& charset, const glm::vec4& color);

@@ -9,6 +9,8 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/entity.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/error.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/event.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/font.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/font.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/input.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/image_loader.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/image_loader.h
@@ -18,7 +20,6 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/primitive.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/transform.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/transform.h
-    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/text.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/vertex.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/command_buffer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/command_buffer.h
@@ -30,8 +31,6 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/frame_buffer.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/grid.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/grid.h
-    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/mesh_font.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/mesh_font.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/meshset.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/meshset.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/model.cpp
@@ -46,21 +45,21 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/shader.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/shader_storage_buffer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/shader_storage_buffer.h
-    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/shape.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/shape.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/texture.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/texture.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/tileset.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/tileset.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/triangles.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/triangles.h
-    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/wire_cuboid.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/wire_cuboid.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/vertex_array.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/vertex_array.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/axis.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/axes.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/axes.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/grid.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/grid.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/text.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/text.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/light.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/teapot.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/utility/linear_range.h
@@ -73,4 +72,5 @@ list(APPEND APEIRON_INCLUDE_DIRECTORIES
     ${CMAKE_CURRENT_LIST_DIR}/../external/glad)
 
 include_directories(${APEIRON_INCLUDE_DIRECTORIES})
+target_compile_definitions(apeiron PRIVATE GLM_ENABLE_EXPERIMENTAL)
 target_link_libraries(apeiron glad)

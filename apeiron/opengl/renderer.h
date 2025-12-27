@@ -10,13 +10,10 @@
 #include <glm/glm.hpp>
 
 #include "apeiron/engine/entity.h"
-#include "apeiron/engine/text.h"
-
-#include "apeiron/opengl/mesh_font.h"
 #include "apeiron/opengl/meshset.h"
 #include "apeiron/opengl/shader.h"
-#include "apeiron/opengl/shape.h"
 #include "apeiron/opengl/tileset.h"
+#include "apeiron/opengl/vertex_array.h"
 
 
 namespace apeiron::opengl {
@@ -66,17 +63,7 @@ public:
   void render(const engine::Entity& entity, const opengl::Tileset& tileset, std::uint32_t index);
   void render(const engine::Entity& entity, const opengl::Meshset& meshset, std::uint32_t index);
   void render(const engine::Entity& entity, const opengl::Meshset& meshset, std::uint32_t index,
-      const glm::vec3& offset);
-  void render(const engine::Entity& entity, const opengl::Meshset& meshset, std::uint32_t index,
       const glm::vec4& color, bool colorize = false);
-
-  template<typename T> void render_text(const T& text, const opengl::Tileset& charset);
-  template<typename T> void render_text(const T& text, const opengl::Tileset& charset,
-      const glm::vec4& color);
-  template<typename T> void render_text(const T& text, const opengl::Mesh_font& charset,
-      const glm::vec4& color);
-  template<typename T> void render_text(const T& text, const opengl::Meshset& charset,
-      const glm::vec4& color);
 
   void render_screen(const engine::Entity& entity);
   void render_screen(const engine::Entity& entity, const glm::vec4& color);
@@ -84,13 +71,6 @@ public:
       std::uint32_t index);
   void render_screen(const engine::Entity& entity, const opengl::Meshset& meshset,
       std::uint32_t index, const glm::vec4& color, bool colorize = false);
-  void render_screen(const engine::Text& text, const opengl::Tileset& charset,
-      const glm::vec4& color);
-  void render_screen(const engine::Text& text, const opengl::Mesh_font& charset,
-      const glm::vec4& color);
-  void render_screen(const engine::Text& text, const opengl::Meshset& charset,
-      const glm::vec4& color);
-  void render_bounds(const engine::Entity& entity, const glm::vec4& color);
 
   [[nodiscard]] glm::mat4 view_projection() { return view_projection_; }
   [[nodiscard]] glm::mat4 inverse_view_projection() { return glm::inverse(view_projection_); }

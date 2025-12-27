@@ -17,8 +17,9 @@ apeiron::opengl::Shader_storage_buffer::Shader_storage_buffer(Shader_storage_buf
 auto apeiron::opengl::Shader_storage_buffer::operator=(Shader_storage_buffer&& other) noexcept
     -> Shader_storage_buffer&
 {
-  if (&other == this)
+  if (&other == this) {
     return *this;
+  }
 
   delete_buffer();
 

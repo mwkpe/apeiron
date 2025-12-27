@@ -7,9 +7,9 @@ apeiron::prefab::Axes::Axes(std::uint32_t points, float radius, float height) :
     z_axis_{points, radius, height}
 {
   // Rotate so +z goes outside the screen, -z into the screen
-  z_axis_.set_rotation_deg(90.0f, 0.0f, 0.0f);
+  z_axis_.transform().set_rotation_deg(90.0f, 0.0f, 0.0f);
   // Rotate so -x goes to the left and +x goes to the right
-  x_axis_.set_rotation_deg(0.0f, 0.0f, -90.0f);
+  x_axis_.transform().set_rotation_deg(0.0f, 0.0f, -90.0f);
   // Y is up axis, cylinder is already build in this orientation
 }
 
@@ -21,9 +21,9 @@ void apeiron::prefab::Axes::init(int points, float radius, float height)
   z_axis_.init(points, radius, height);
 
   // Rotate so +z goes outside the screen, -z into the screen
-  z_axis_.set_rotation_deg(90.0f, 0.0f, 0.0f);
+  z_axis_.transform().set_rotation_deg(90.0f, 0.0f, 0.0f);
   // Rotate so -x goes to the left and +x goes to the right
-  x_axis_.set_rotation_deg(0.0f, 0.0f, -90.0f);
+  x_axis_.transform().set_rotation_deg(0.0f, 0.0f, -90.0f);
   // Y is up axis, cylinder is already build in this orientation
 }
 

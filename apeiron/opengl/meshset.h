@@ -3,46 +3,53 @@
 
 
 #include <cstdint>
-#include <tuple>
+#include <optional>
 #include <vector>
 #include <glm/glm.hpp>
-#include "apeiron/opengl/shape.h"
+#include "apeiron/opengl/vertex_array.h"
 
 
 namespace apeiron::opengl {
 
 
-class Meshset final : public Shape
+struct Meshset_entry
+{
+  std::uint32_t first_vertex;
+  std::uint32_t vertex_count;
+  glm::vec3 size;
+};
+
+
+class Meshset final : public Vertex_array
 {
 public:
-  using Index_vector = std::vector<std::tuple<std::uint32_t, std::uint32_t>>;
+  template<typename T> void set_data(const std::vector<T>& vertices,
+      std::vector<Meshset_entry>&& entries, Usage_hint hint = Usage_hint::Static);
+  template<typename T> void set_data(const std::vector<T>& vertices,
+      const std::vector<Meshset_entry>& entries, Usage_hint hint = Usage_hint::Static);
 
-  Meshset() = default;
+  template<typename T> void update_data(const std::vector<T>& vertices,
+      std::vector<Meshset_entry>&& entries);
+  template<typename T> void update_data(const std::vector<T>& vertices,
+      const std::vector<Meshset_entry>& entries);
 
-  template<typename T> void set_data(const std::vector<T>& vertices, Index_vector&& indices);
-  template<typename T> void set_data(const std::vector<T>& vertices, const Index_vector& indices);
-
-  void set_tile_size(const glm::vec2& tile_size) { tile_size_ = tile_size; }
-  void set_tile_spacing(const std::vector<glm::vec2>& tile_spacing);
-  void set_tile_spacing(std::vector<glm::vec2>&& tile_spacing);
   void set_index_offset(std::uint32_t offset) { index_offset_ = offset; }
 
+  void render() const override;
   void render(std::uint32_t index) const override;
   void render_batched(std::uint32_t count) const;
   void render_points(std::uint32_t index) const;
   void render_points_batched(std::uint32_t count) const;
 
-  [[nodiscard]] std::uint32_t tile_count() const { return indices_.size(); }
-  [[nodiscard]] bool tile_empty(std::uint32_t index) const;
-  [[nodiscard]] std::tuple<std::uint32_t, std::uint32_t> tile_data(std::uint32_t index) const;
-  [[nodiscard]] glm::vec2 tile_size() const { return tile_size_; }
-  [[nodiscard]] glm::vec2 tile_spacing(std::uint32_t index) const;
+  [[nodiscard]] bool is_empty() const { return entries_.empty(); }
+  [[nodiscard]] bool is_empty(std::uint32_t index) const;
+  [[nodiscard]] std::uint32_t entry_count() const { return entries_.size(); }
+  [[nodiscard]] std::optional<Meshset_entry> entry_at(std::uint32_t index) const;
 
 private:
-  Index_vector indices_;
-  std::vector<glm::vec2> tile_spacing_;
+  std::vector<Meshset_entry> entries_;
+  std::uint32_t vertex_count_ = 0;
   std::uint32_t index_offset_ = 0;
-  glm::vec2 tile_size_ = glm::vec2{1.0f};
 };
 
 

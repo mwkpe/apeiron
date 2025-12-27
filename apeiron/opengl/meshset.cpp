@@ -7,70 +7,79 @@
 
 
 template<typename T> void apeiron::opengl::Meshset::set_data(const std::vector<T>& vertices,
-    Index_vector&& indices)
+    std::vector<Meshset_entry>&& entries, Usage_hint hint)
 {
-  set_buffers(vertices);
-  indices_ = std::move(indices);
+  vertex_count_ = vertices.size();
+  entries_ = std::move(entries);
+  set_buffers(vertices, hint);
 }
 
 
 template<typename T> void apeiron::opengl::Meshset::set_data(const std::vector<T>& vertices,
-    const Index_vector& indices)
+    const std::vector<Meshset_entry>& entries, Usage_hint hint)
 {
-  set_buffers(vertices);
-  indices_ = indices;
+  vertex_count_ = vertices.size();
+  entries_ = entries;
+  set_buffers(vertices, hint);
 }
 
 
-void apeiron::opengl::Meshset::set_tile_spacing(const std::vector<glm::vec2>& tile_spacing)
+template<typename T> void apeiron::opengl::Meshset::update_data(const std::vector<T>& vertices,
+    std::vector<Meshset_entry>&& entries)
 {
-  tile_spacing_ = tile_spacing;
+  vertex_count_ = vertices.size();
+  entries_ = std::move(entries);
+  update_buffers(vertices);
 }
 
 
-void apeiron::opengl::Meshset::set_tile_spacing(std::vector<glm::vec2>&& tile_spacing)
+template<typename T> void apeiron::opengl::Meshset::update_data(const std::vector<T>& vertices,
+    const std::vector<Meshset_entry>& entries)
 {
-  tile_spacing_ = std::move(tile_spacing);
+  vertex_count_ = vertices.size();
+  entries_ = entries;
+  update_buffers(vertices);
 }
 
 
-bool apeiron::opengl::Meshset::tile_empty(std::uint32_t index) const
+bool apeiron::opengl::Meshset::is_empty(std::uint32_t index) const
 {
-  if (const std::uint32_t i = index - index_offset_; i < indices_.size()) {
-    return std::get<1>(indices_[i]) == 0;
+  if (auto entry = entry_at(index); entry) {
+    return entry->vertex_count == 0;
   }
 
   return true;
 }
 
 
-auto apeiron::opengl::Meshset::tile_data(std::uint32_t index) const
-    -> std::tuple<std::uint32_t, std::uint32_t>
+auto apeiron::opengl::Meshset::entry_at(std::uint32_t index) const -> std::optional<Meshset_entry>
 {
-  if (const std::uint32_t i = index - index_offset_; i < indices_.size()) {
-    return indices_[i];
+  if (index < index_offset_) {
+    return std::nullopt;
   }
 
-  return {0, 0};
+  if (const std::uint32_t i = index - index_offset_; i < entries_.size()) {
+    return entries_[i];
+  }
+
+  return std::nullopt;
 }
 
 
-glm::vec2 apeiron::opengl::Meshset::tile_spacing(std::uint32_t index) const
+void apeiron::opengl::Meshset::render() const
 {
-  if (const std::uint32_t i = index - index_offset_; i < tile_spacing_.size()) {
-    return tile_spacing_[i];
-  }
-
-  return tile_size_;
+  glBindVertexArray(vao_);
+  glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertex_count_));
 }
 
 
 void apeiron::opengl::Meshset::render(std::uint32_t index) const
 {
-  index = std::min(index - index_offset_, static_cast<std::uint32_t>(indices_.size()) - 1);
-  auto [tile_index, vertex_count] = indices_[index];
-  glBindVertexArray(vao_);
-  glDrawArrays(GL_TRIANGLES, static_cast<GLint>(tile_index), static_cast<GLsizei>(vertex_count));
+  if (auto entry = entry_at(index); entry) {
+    glBindVertexArray(vao_);
+    glDrawArrays(GL_TRIANGLES, static_cast<GLint>(entry->first_vertex),
+        static_cast<GLsizei>(entry->vertex_count));
+  }
 }
 
 
@@ -83,10 +92,11 @@ void apeiron::opengl::Meshset::render_batched(std::uint32_t count) const
 
 void apeiron::opengl::Meshset::render_points(std::uint32_t index) const
 {
-  index = std::min(index - index_offset_, static_cast<std::uint32_t>(indices_.size()) - 1);
-  auto [tile_index, vertex_count] = indices_[index];
-  glBindVertexArray(vao_);
-  glDrawArrays(GL_POINTS, static_cast<GLint>(tile_index), static_cast<GLsizei>(vertex_count));
+  if (auto entry = entry_at(index); entry) {
+    glBindVertexArray(vao_);
+    glDrawArrays(GL_POINTS, static_cast<GLint>(entry->first_vertex),
+        static_cast<GLsizei>(entry->vertex_count));
+  }
 }
 
 
@@ -97,29 +107,55 @@ void apeiron::opengl::Meshset::render_points_batched(std::uint32_t count) const
 }
 
 
-template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex>&, 
-    apeiron::opengl::Meshset::Index_vector&&);
-template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex>&, 
-    const apeiron::opengl::Meshset::Index_vector&);
+using apeiron::engine::Vertex;
+using apeiron::engine::Vertex_simple;
+using apeiron::engine::Vertex_normal;
+using apeiron::engine::Vertex_color;
+using apeiron::engine::Vertex_texcoords;
+using apeiron::engine::Vertex_normal_color;
+using apeiron::engine::Vertex_normal_texcoords;
+using apeiron::engine::Vertex_index;
+using apeiron::opengl::Usage_hint;
 
-template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_simple>&, 
-    apeiron::opengl::Meshset::Index_vector&&);
-template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_simple>&, 
-    const apeiron::opengl::Meshset::Index_vector&);
 
-template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_color>&, 
-    apeiron::opengl::Meshset::Index_vector&&);
-template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_color>&, 
-    const apeiron::opengl::Meshset::Index_vector&);
+namespace apeiron::opengl {
 
-template void apeiron::opengl::Meshset::set_data(
-    const std::vector<apeiron::engine::Vertex_normal_color>&, 
-    apeiron::opengl::Meshset::Index_vector&&);
-template void apeiron::opengl::Meshset::set_data(
-    const std::vector<apeiron::engine::Vertex_normal_color>&, 
-    const apeiron::opengl::Meshset::Index_vector&);
 
-template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_index>&,
-    apeiron::opengl::Meshset::Index_vector&&);
-template void apeiron::opengl::Meshset::set_data(const std::vector<apeiron::engine::Vertex_index>&,
-    const apeiron::opengl::Meshset::Index_vector&);
+template void Meshset::set_data(const std::vector<Vertex>&, std::vector<Meshset_entry>&&, Usage_hint);
+template void Meshset::set_data(const std::vector<Vertex_simple>&, std::vector<Meshset_entry>&&, Usage_hint);
+template void Meshset::set_data(const std::vector<Vertex_color>&, std::vector<Meshset_entry>&&, Usage_hint);
+template void Meshset::set_data(const std::vector<Vertex_normal>&, std::vector<Meshset_entry>&&, Usage_hint);
+template void Meshset::set_data(const std::vector<Vertex_texcoords>&, std::vector<Meshset_entry>&&, Usage_hint);
+template void Meshset::set_data(const std::vector<Vertex_normal_color>&, std::vector<Meshset_entry>&&, Usage_hint);
+template void Meshset::set_data(const std::vector<Vertex_normal_texcoords>&, std::vector<Meshset_entry>&&, Usage_hint);
+template void Meshset::set_data(const std::vector<Vertex_index>&, std::vector<Meshset_entry>&&, Usage_hint);
+
+template void Meshset::set_data(const std::vector<Vertex>&, const std::vector<Meshset_entry>&, Usage_hint);
+template void Meshset::set_data(const std::vector<Vertex_simple>&, const std::vector<Meshset_entry>&, Usage_hint);
+template void Meshset::set_data(const std::vector<Vertex_normal>&, const std::vector<Meshset_entry>&, Usage_hint);
+template void Meshset::set_data(const std::vector<Vertex_color>&, const std::vector<Meshset_entry>&, Usage_hint);
+template void Meshset::set_data(const std::vector<Vertex_texcoords>&, const std::vector<Meshset_entry>&, Usage_hint);
+template void Meshset::set_data(const std::vector<Vertex_normal_color>&, const std::vector<Meshset_entry>&, Usage_hint);
+template void Meshset::set_data(const std::vector<Vertex_normal_texcoords>&, const std::vector<Meshset_entry>&, Usage_hint);
+template void Meshset::set_data(const std::vector<Vertex_index>&, const std::vector<Meshset_entry>&, Usage_hint);
+
+template void Meshset::update_data(const std::vector<Vertex>&, std::vector<Meshset_entry>&&);
+template void Meshset::update_data(const std::vector<Vertex_simple>&, std::vector<Meshset_entry>&&);
+template void Meshset::update_data(const std::vector<Vertex_normal>&, std::vector<Meshset_entry>&&);
+template void Meshset::update_data(const std::vector<Vertex_color>&, std::vector<Meshset_entry>&&);
+template void Meshset::update_data(const std::vector<Vertex_texcoords>&, std::vector<Meshset_entry>&&);
+template void Meshset::update_data(const std::vector<Vertex_normal_color>&, std::vector<Meshset_entry>&&);
+template void Meshset::update_data(const std::vector<Vertex_normal_texcoords>&, std::vector<Meshset_entry>&&);
+template void Meshset::update_data(const std::vector<Vertex_index>&, std::vector<Meshset_entry>&&);
+
+template void Meshset::update_data(const std::vector<Vertex>&, const std::vector<Meshset_entry>&);
+template void Meshset::update_data(const std::vector<Vertex_simple>&, const std::vector<Meshset_entry>&);
+template void Meshset::update_data(const std::vector<Vertex_normal>&, const std::vector<Meshset_entry>&);
+template void Meshset::update_data(const std::vector<Vertex_color>&, const std::vector<Meshset_entry>&);
+template void Meshset::update_data(const std::vector<Vertex_texcoords>&, const std::vector<Meshset_entry>&);
+template void Meshset::update_data(const std::vector<Vertex_normal_color>&, const std::vector<Meshset_entry>&);
+template void Meshset::update_data(const std::vector<Vertex_normal_texcoords>&, const std::vector<Meshset_entry>&);
+template void Meshset::update_data(const std::vector<Vertex_index>&, const std::vector<Meshset_entry>&);
+
+
+}  // namespace apeiron::opengl

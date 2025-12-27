@@ -4,13 +4,13 @@
 
 #include <vector>
 #include "apeiron/engine/vertex.h"
-#include "apeiron/opengl/shape.h"
+#include "apeiron/opengl/vertex_array.h"
 
 
 namespace apeiron::opengl {
 
 
-class Triangles final : public Shape
+class Triangles final : public Vertex_array
 {
 public:
   Triangles() = default;

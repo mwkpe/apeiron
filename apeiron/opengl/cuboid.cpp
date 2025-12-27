@@ -42,11 +42,27 @@ void apeiron::opengl::Cuboid::render() const
 }
 
 
-template void apeiron::opengl::Cuboid::set<apeiron::engine::Vertex>(const glm::vec3&, const glm::vec3&);
-template void apeiron::opengl::Cuboid::set<apeiron::engine::Vertex>(const glm::vec3&, const glm::vec4&, const glm::vec3&);
-template void apeiron::opengl::Cuboid::set<apeiron::engine::Vertex_simple>(const glm::vec3&, const glm::vec3&);
-template void apeiron::opengl::Cuboid::set<apeiron::engine::Vertex_normal>(const glm::vec3&, const glm::vec3&);
-template void apeiron::opengl::Cuboid::set<apeiron::engine::Vertex_color>(const glm::vec3&, const glm::vec4&, const glm::vec3&);
-template void apeiron::opengl::Cuboid::set<apeiron::engine::Vertex_texcoords>(const glm::vec3&, const glm::vec3&);
-template void apeiron::opengl::Cuboid::set<apeiron::engine::Vertex_normal_color>(const glm::vec3&, const glm::vec4&, const glm::vec3&);
-template void apeiron::opengl::Cuboid::set<apeiron::engine::Vertex_normal_texcoords>(const glm::vec3&, const glm::vec3&);
+using apeiron::engine::Vertex;
+using apeiron::engine::Vertex_simple;
+using apeiron::engine::Vertex_normal;
+using apeiron::engine::Vertex_color;
+using apeiron::engine::Vertex_texcoords;
+using apeiron::engine::Vertex_normal_color;
+using apeiron::engine::Vertex_normal_texcoords;
+using apeiron::engine::Vertex_index;
+
+
+namespace apeiron::opengl {
+
+
+template void Cuboid::set<Vertex>(const glm::vec3&, const glm::vec3&);
+template void Cuboid::set<Vertex>(const glm::vec3&, const glm::vec4&, const glm::vec3&);
+template void Cuboid::set<Vertex_simple>(const glm::vec3&, const glm::vec3&);
+template void Cuboid::set<Vertex_normal>(const glm::vec3&, const glm::vec3&);
+template void Cuboid::set<Vertex_color>(const glm::vec3&, const glm::vec4&, const glm::vec3&);
+template void Cuboid::set<Vertex_texcoords>(const glm::vec3&, const glm::vec3&);
+template void Cuboid::set<Vertex_normal_color>(const glm::vec3&, const glm::vec4&, const glm::vec3&);
+template void Cuboid::set<Vertex_normal_texcoords>(const glm::vec3&, const glm::vec3&);
+
+
+}  // namespace apeiron::opengl

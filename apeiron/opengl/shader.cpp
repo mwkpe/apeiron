@@ -25,17 +25,20 @@ std::string read_file(std::string_view file_path)
 
 GLuint create_shader(GLenum type, const std::string& source)
 {
-  auto id = glCreateShader(type);
   const char* src = source.c_str();
+  auto id = glCreateShader(type);
   glShaderSource(id, 1, &src, nullptr);
   glCompileShader(id);
+
   int success;
   glGetShaderiv(id, GL_COMPILE_STATUS, &success);
+
   if (!success) {
     char log[512];
     glGetShaderInfoLog(id, 512, nullptr, log);
     throw apeiron::engine::Error{log};
   }
+
   return id;
 }
 
@@ -45,18 +48,25 @@ GLuint create_program(GLuint vertex_shader, GLuint fragment_shader, GLuint geome
   auto id = glCreateProgram();
   glAttachShader(id, vertex_shader);
   glAttachShader(id, fragment_shader);
-  if (geometry_shader > 0)
+
+  if (geometry_shader > 0) {
     glAttachShader(id, geometry_shader);
+  }
+
   glLinkProgram(id);
+
   int success;
   glGetProgramiv(id, GL_LINK_STATUS, &success);
+
   if (!success) {
     char log[512];
     glGetProgramInfoLog(id, 512, nullptr, log);
     throw apeiron::engine::Error{log};
   }
+
   glDeleteShader(vertex_shader);
   glDeleteShader(fragment_shader);
+
   return id;
 }
 

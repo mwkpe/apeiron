@@ -13,6 +13,7 @@ auto apeiron::engine::collision::screen_raycast(float norm_x, float norm_y,
   auto far_world = inv_view_projection * far;
   near_world /= near_world.w;
   far_world /= far_world.w;
+
   return {glm::vec3{near_world}, glm::vec3{far_world - near_world}};
 }
 
@@ -32,8 +33,11 @@ bool apeiron::engine::collision::intersects(const Ray& ray, const Quad& quad)
   auto normal = glm::cross(width, height);
 
   float angle = glm::dot(glm::normalize(normal), glm::normalize(ray.vector));
-  if (std::abs(angle) < 0.001f)  // 0 is 90 degrees to normal (parallel to quad's plane)
+
+  // 0 is 90 degrees to normal (parallel to quad's plane)
+  if (std::abs(angle) < 0.001f) {
     return false;
+  }
 
   float growth = glm::dot(normal, ray.vector);
   float scale = glm::dot(-normal, ray.position - quad.top_left) / growth;
@@ -55,8 +59,11 @@ std::optional<glm::vec2> apeiron::engine::collision::intersection_point(const Ra
   auto normal = glm::cross(width, height);
 
   float angle = glm::dot(glm::normalize(normal), glm::normalize(ray.vector));
-  if (std::abs(angle) < 0.001f)  // 0 is 90 degrees to normal (parallel to quad's plane)
+
+  // 0 is 90 degrees to normal (parallel to quad's plane)
+  if (std::abs(angle) < 0.001f) { 
     return std::nullopt;
+  }
 
   float growth = glm::dot(normal, ray.vector);
   float scale = glm::dot(-normal, ray.position - quad.top_left) / growth;
@@ -77,9 +84,14 @@ std::optional<glm::vec3> apeiron::engine::collision::intersection_point(const Ra
     const Plane& plane)
 {
   float angle = glm::dot(glm::normalize(plane.normal), glm::normalize(ray.vector));
-  if (std::abs(angle) < 0.001f)  // 0 is 90 degrees to normal (parallel to plane)
+
+  // 0 is 90 degrees to normal (parallel to plane)
+  if (std::abs(angle) < 0.001f) {
     return std::nullopt;
+  }
+
   float growth = glm::dot(plane.normal, ray.vector);
   float scale = glm::dot(-plane.normal, ray.position - plane.origin) / growth;
+
   return ray.position + ray.vector * scale;
 }

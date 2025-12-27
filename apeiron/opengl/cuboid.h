@@ -4,13 +4,13 @@
 
 #include <glm/glm.hpp>
 #include "apeiron/engine/vertex.h"
-#include "apeiron/opengl/shape.h"
+#include "apeiron/opengl/vertex_array.h"
 
 
 namespace apeiron::opengl {
 
 
-class Cuboid final : public Shape
+class Cuboid final : public Vertex_array
 {
 public:
   Cuboid() = default;

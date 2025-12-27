@@ -1441,29 +1441,35 @@ template<typename T> std::vector<T> apeiron::engine::primitive::disk_vertices(fl
 }
 
 
-template std::vector<apeiron::engine::Vertex> apeiron::engine::primitive::quad_vertices(float, float, apeiron::engine::Face, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex> apeiron::engine::primitive::quad_vertices(float, float, const glm::vec4&, apeiron::engine::Face, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex> apeiron::engine::primitive::quad_vertices(float, float, const glm::mat4&, apeiron::engine::Face, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex_simple> apeiron::engine::primitive::quad_vertices(float, float, apeiron::engine::Face, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex_normal> apeiron::engine::primitive::quad_vertices(float, float, apeiron::engine::Face, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex_color> apeiron::engine::primitive::quad_vertices(float, float, const glm::vec4&, apeiron::engine::Face, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex_color> apeiron::engine::primitive::quad_vertices(float, float, const glm::mat4&, apeiron::engine::Face, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex_texcoords> apeiron::engine::primitive::quad_vertices(float, float, apeiron::engine::Face, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex_normal_color> apeiron::engine::primitive::quad_vertices(float, float, const glm::vec4&, apeiron::engine::Face, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex_normal_texcoords> apeiron::engine::primitive::quad_vertices(float, float, apeiron::engine::Face, const glm::vec3&);
+namespace apeiron::engine::primitive {
 
-template std::vector<apeiron::engine::Vertex> apeiron::engine::primitive::cuboid_vertices(const glm::vec3&, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex> apeiron::engine::primitive::cuboid_vertices(const glm::vec3&, const glm::vec4&, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex_simple> apeiron::engine::primitive::cuboid_vertices(const glm::vec3&, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex_normal> apeiron::engine::primitive::cuboid_vertices(const glm::vec3&, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex_color> apeiron::engine::primitive::cuboid_vertices(const glm::vec3&, const glm::vec4&, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex_texcoords> apeiron::engine::primitive::cuboid_vertices(const glm::vec3&, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex_normal_color> apeiron::engine::primitive::cuboid_vertices(const glm::vec3&, const glm::vec4&, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex_normal_texcoords> apeiron::engine::primitive::cuboid_vertices(const glm::vec3&, const glm::vec3&);
 
-template std::vector<apeiron::engine::Vertex> apeiron::engine::primitive::disk_vertices(float, int, apeiron::engine::Face, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex> apeiron::engine::primitive::disk_vertices(float, int, const glm::vec4&, apeiron::engine::Face, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex_simple> apeiron::engine::primitive::disk_vertices(float, int, apeiron::engine::Face, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex_normal> apeiron::engine::primitive::disk_vertices(float, int, apeiron::engine::Face, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex_color> apeiron::engine::primitive::disk_vertices(float, int, const glm::vec4&, apeiron::engine::Face, const glm::vec3&);
-template std::vector<apeiron::engine::Vertex_normal_color> apeiron::engine::primitive::disk_vertices(float, int, const glm::vec4&, apeiron::engine::Face, const glm::vec3&);
+template std::vector<Vertex> quad_vertices(float, float, Face, const glm::vec3&);
+template std::vector<Vertex> quad_vertices(float, float, const glm::vec4&, Face, const glm::vec3&);
+template std::vector<Vertex> quad_vertices(float, float, const glm::mat4&, Face, const glm::vec3&);
+template std::vector<Vertex_simple> quad_vertices(float, float, Face, const glm::vec3&);
+template std::vector<Vertex_normal> quad_vertices(float, float, Face, const glm::vec3&);
+template std::vector<Vertex_color> quad_vertices(float, float, const glm::vec4&, Face, const glm::vec3&);
+template std::vector<Vertex_color> quad_vertices(float, float, const glm::mat4&, Face, const glm::vec3&);
+template std::vector<Vertex_texcoords> quad_vertices(float, float, Face, const glm::vec3&);
+template std::vector<Vertex_normal_color> quad_vertices(float, float, const glm::vec4&, Face, const glm::vec3&);
+template std::vector<Vertex_normal_texcoords> quad_vertices(float, float, Face, const glm::vec3&);
+
+template std::vector<Vertex> cuboid_vertices(const glm::vec3&, const glm::vec3&);
+template std::vector<Vertex> cuboid_vertices(const glm::vec3&, const glm::vec4&, const glm::vec3&);
+template std::vector<Vertex_simple> cuboid_vertices(const glm::vec3&, const glm::vec3&);
+template std::vector<Vertex_normal> cuboid_vertices(const glm::vec3&, const glm::vec3&);
+template std::vector<Vertex_color> cuboid_vertices(const glm::vec3&, const glm::vec4&, const glm::vec3&);
+template std::vector<Vertex_texcoords> cuboid_vertices(const glm::vec3&, const glm::vec3&);
+template std::vector<Vertex_normal_color> cuboid_vertices(const glm::vec3&, const glm::vec4&, const glm::vec3&);
+template std::vector<Vertex_normal_texcoords> cuboid_vertices(const glm::vec3&, const glm::vec3&);
+
+template std::vector<Vertex> disk_vertices(float, int, Face, const glm::vec3&);
+template std::vector<Vertex> disk_vertices(float, int, const glm::vec4&, Face, const glm::vec3&);
+template std::vector<Vertex_simple> disk_vertices(float, int, Face, const glm::vec3&);
+template std::vector<Vertex_normal> disk_vertices(float, int, Face, const glm::vec3&);
+template std::vector<Vertex_color> disk_vertices(float, int, const glm::vec4&, Face, const glm::vec3&);
+template std::vector<Vertex_normal_color> disk_vertices(float, int, const glm::vec4&, Face, const glm::vec3&);
+
+
+}  // namespace apeiron::engine

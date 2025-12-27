@@ -4,14 +4,14 @@
 
 #include <cstdint>
 #include <string_view>
-#include "apeiron/opengl/shape.h"
 #include "apeiron/opengl/texture.h"
+#include "apeiron/opengl/vertex_array.h"
 
 
 namespace apeiron::opengl {
 
 
-class Tileset final : public Shape
+class Tileset final : public Vertex_array
 {
 public:
   Tileset(std::uint32_t cols, std::uint32_t rows, std::uint32_t index_offset = 0,

@@ -1,192 +1,216 @@
 #include "transform.h"
 
 
-#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
 
 namespace {
 
 
-inline void apply_rotation(glm::mat4& model, const apeiron::engine::Rotation_component& component)
+inline void apply_rotation(glm::mat4& model, const glm::vec3& pivot, const glm::quat& q)
 {
-  model = glm::translate(model, component.origin);
-  model *= glm::toMat4(component.rotation);
-  model = glm::translate(model, -component.origin);
+  model = glm::translate(model, pivot);
+  model *= glm::toMat4(q);
+  model = glm::translate(model, -pivot);
 }
 
 
 }  // namespace
 
 
-void apeiron::engine::Transform::reset_transform()
+auto apeiron::engine::Transform::reset() -> Transform&
 {
   reset_origin();
   reset_position();
   reset_scale();
   reset_rotation();
+
+  return *this;
 }
 
 
-void apeiron::engine::Transform::reset_origin()
+auto apeiron::engine::Transform::reset_origin() -> Transform&
 {
-  origin = glm::vec3{0.0f, 0.0f, 0.0f};
+  origin_ = glm::vec3{0.0f, 0.0f, 0.0f};
+  has_changed_ = true;
+  return *this;
 }
 
 
-void apeiron::engine::Transform::reset_position()
+auto apeiron::engine::Transform::reset_position() -> Transform&
 {
-  position = glm::vec3{0.0f, 0.0f, 0.0f};
+  position_ = glm::vec3{0.0f, 0.0f, 0.0f};
+  has_changed_ = true;
+  return *this;
 }
 
 
-void apeiron::engine::Transform::reset_scale()
+auto apeiron::engine::Transform::reset_scale() -> Transform&
 {
-  scale = glm::vec3{1.0f, 1.0f, 1.0f};
+  scale_ = glm::vec3{1.0f, 1.0f, 1.0f};
+  has_changed_ = true;
+  return *this;
 }
 
 
-void apeiron::engine::Transform::reset_rotation()
+auto apeiron::engine::Transform::reset_rotation() -> Transform&
 {
-  rotation_x = {};
-  rotation_y = {};
-  rotation_z = {};
+  rotation_x_ = {};
+  rotation_y_ = {};
+  rotation_z_ = {};
+
+  has_changed_ = true;
+  return *this;
 }
 
 
-void apeiron::engine::Transform::set_rotation(const glm::quat& rotation)
+auto apeiron::engine::Transform::set_origin(float x, float y, float z) -> Transform&
 {
-  auto euler = glm::eulerAngles(rotation);
-  rotation_x.rotation = glm::quat{glm::vec3{euler.x, 0.0f, 0.0f}};
-  rotation_y.rotation = glm::quat{glm::vec3{0.0f, euler.y, 0.0f}};
-  rotation_z.rotation = glm::quat{glm::vec3{0.0f, 0.0f, euler.z}};
+  origin_ = glm::vec3{x, y, z};
+  has_changed_ = true;
+  return *this;
 }
 
 
-void apeiron::engine::Transform::set_rotation_deg(float x, float y, float z)
+auto apeiron::engine::Transform::set_origin(const glm::vec3& origin) -> Transform&
 {
-  rotation_x.rotation = glm::quat{glm::vec3{glm::radians(x), 0.0f, 0.0f}};
-  rotation_y.rotation = glm::quat{glm::vec3{0.0f, glm::radians(y), 0.0f}};
-  rotation_z.rotation = glm::quat{glm::vec3{0.0f, 0.0f, glm::radians(z)}};
+  origin_ = origin;
+  has_changed_ = true;
+  return *this;
 }
 
 
-void apeiron::engine::Transform::set_rotation_deg(const glm::vec3& rotation)
+auto apeiron::engine::Transform::set_position(float x, float y, float z) -> Transform&
 {
-  rotation_x.rotation = glm::quat{glm::vec3{glm::radians(rotation.x), 0.0f, 0.0f}};
-  rotation_y.rotation = glm::quat{glm::vec3{0.0f, glm::radians(rotation.y), 0.0f}};
-  rotation_z.rotation = glm::quat{glm::vec3{0.0f, 0.0f, glm::radians(rotation.z)}};
+  position_ = glm::vec3{x, y, z};
+  has_changed_ = true;
+  return *this;
 }
 
 
-void apeiron::engine::Transform::set_rotation_rad(float x, float y, float z)
+auto apeiron::engine::Transform::set_position(const glm::vec3& position) -> Transform&
 {
-  rotation_x.rotation = glm::quat{glm::vec3{x, 0.0f, 0.0f}};
-  rotation_y.rotation = glm::quat{glm::vec3{0.0f, y, 0.0f}};
-  rotation_z.rotation = glm::quat{glm::vec3{0.0f, 0.0f, z}};
+  position_ = position;
+  has_changed_ = true;
+  return *this;
 }
 
 
-void apeiron::engine::Transform::set_rotation_rad(const glm::vec3& rotation)
+auto apeiron::engine::Transform::set_scale(float x, float y, float z) -> Transform&
 {
-  rotation_x.rotation = glm::quat{glm::vec3{rotation.x, 0.0f, 0.0f}};
-  rotation_y.rotation = glm::quat{glm::vec3{0.0f, rotation.y, 0.0f}};
-  rotation_z.rotation = glm::quat{glm::vec3{0.0f, 0.0f, rotation.z}};
+  scale_ = glm::vec3{x, y, z};
+  has_changed_ = true;
+  return *this;
 }
 
 
-void apeiron::engine::Transform::set_rotation_origin(Rotation_axis axis, float x, float y, float z)
+auto apeiron::engine::Transform::set_scale(const glm::vec3& scale) -> Transform&
+{
+  scale_ = scale;
+  has_changed_ = true;
+  return *this;
+}
+
+
+auto apeiron::engine::Transform::set_rotation_deg(float x, float y, float z) -> Transform&
+{
+  rotation_x_.angle_rad = glm::radians(x);
+  rotation_y_.angle_rad = glm::radians(y);
+  rotation_z_.angle_rad = glm::radians(z);
+
+  has_changed_ = true;
+  return *this;
+}
+
+
+auto apeiron::engine::Transform::set_rotation_deg(const glm::vec3& rotation) -> Transform&
+{
+  rotation_x_.angle_rad = glm::radians(rotation.x);
+  rotation_y_.angle_rad = glm::radians(rotation.y);
+  rotation_z_.angle_rad = glm::radians(rotation.z);
+
+  has_changed_ = true;
+  return *this;
+}
+
+
+auto apeiron::engine::Transform::set_rotation_rad(float x, float y, float z) -> Transform&
+{
+  rotation_x_.angle_rad = x;
+  rotation_y_.angle_rad = y;
+  rotation_z_.angle_rad = z;
+
+  has_changed_ = true;
+  return *this;
+}
+
+
+auto apeiron::engine::Transform::set_rotation_rad(const glm::vec3& rotation) -> Transform&
+{
+  rotation_x_.angle_rad = rotation.x;
+  rotation_y_.angle_rad = rotation.y;
+  rotation_z_.angle_rad = rotation.z;
+
+  has_changed_ = true;
+  return *this;
+}
+
+
+auto apeiron::engine::Transform::set_rotation_pivot(Rotation_axis axis, float x, float y, float z)
+    -> Transform&
 {
   switch (axis) {
-    case Rotation_axis::X: rotation_x.origin = glm::vec3{x, y, z}; break;
-    case Rotation_axis::Y: rotation_y.origin = glm::vec3{x, y, z}; break;
-    case Rotation_axis::Z: rotation_z.origin = glm::vec3{x, y, z}; break;
+    case Rotation_axis::X: rotation_x_.pivot = glm::vec3{x, y, z}; break;
+    case Rotation_axis::Y: rotation_y_.pivot = glm::vec3{x, y, z}; break;
+    case Rotation_axis::Z: rotation_z_.pivot = glm::vec3{x, y, z}; break;
   }
+
+  has_changed_ = true;
+  return *this;
 }
 
 
-void apeiron::engine::Transform::set_rotation_origin(Rotation_axis axis, const glm::vec3& origin)
+auto apeiron::engine::Transform::set_rotation_pivot(Rotation_axis axis, const glm::vec3& pivot)
+    -> Transform&
 {
   switch (axis) {
-    case Rotation_axis::X: rotation_x.origin = origin; break;
-    case Rotation_axis::Y: rotation_y.origin = origin; break;
-    case Rotation_axis::Z: rotation_z.origin = origin; break;
+    case Rotation_axis::X: rotation_x_.pivot = pivot; break;
+    case Rotation_axis::Y: rotation_y_.pivot = pivot; break;
+    case Rotation_axis::Z: rotation_z_.pivot = pivot; break;
   }
+
+  has_changed_ = true;
+
+  return *this;
 }
 
 
-glm::mat4 apeiron::engine::Transform::model_matrix() const
+auto apeiron::engine::Transform::set_rotation_order(Rotation_order rotation_order) -> Transform&
 {
-  glm::mat4 model{1.0f};
-  model = glm::translate(model, origin + position);
-
-  switch (rotation_order) {
-    case Rotation_order::XYZ: {
-      apply_rotation(model, rotation_x);
-      apply_rotation(model, rotation_y);
-      apply_rotation(model, rotation_z);
-    }
-    break;
-    case Rotation_order::XZY: {
-      apply_rotation(model, rotation_x);
-      apply_rotation(model, rotation_z);
-      apply_rotation(model, rotation_y);
-    }
-    break;
-    case Rotation_order::YXZ: {
-      apply_rotation(model, rotation_y);
-      apply_rotation(model, rotation_x);
-      apply_rotation(model, rotation_z);
-    }
-    break;
-    case Rotation_order::YZX: {
-      apply_rotation(model, rotation_y);
-      apply_rotation(model, rotation_z);
-      apply_rotation(model, rotation_x);
-    }
-    break;
-    case Rotation_order::ZXY: {
-      apply_rotation(model, rotation_z);
-      apply_rotation(model, rotation_x);
-      apply_rotation(model, rotation_y);
-    }
-    break;
-    case Rotation_order::ZYX: {
-      apply_rotation(model, rotation_z);
-      apply_rotation(model, rotation_y);
-      apply_rotation(model, rotation_x);
-    }
-    break;
-  }
-
-  model = glm::scale(model, scale);
-
-  return model;
+  rotation_order_ = rotation_order;
+  has_changed_ = true;
+  return *this;
 }
 
 
 glm::vec3 apeiron::engine::Transform::rotation_rad() const
 {
-  return glm::vec3{glm::eulerAngles(rotation_x.rotation).x,
-      glm::eulerAngles(rotation_y.rotation).y,
-      glm::eulerAngles(rotation_z.rotation).z};
+  return glm::vec3{rotation_x_.angle_rad, rotation_y_.angle_rad, rotation_z_.angle_rad};
 }
 
 
 glm::vec3 apeiron::engine::Transform::rotation_deg() const
 {
-  return glm::degrees(glm::vec3{glm::eulerAngles(rotation_x.rotation).x,
-      glm::eulerAngles(rotation_y.rotation).y,
-      glm::eulerAngles(rotation_z.rotation).z});
+  return glm::degrees(rotation_rad());
 }
 
 
 float apeiron::engine::Transform::rotation_rad(Rotation_axis axis) const
 {
   switch (axis) {
-    case Rotation_axis::X: return glm::eulerAngles(rotation_x.rotation).x;
-    case Rotation_axis::Y: return glm::eulerAngles(rotation_y.rotation).y;
-    case Rotation_axis::Z: return glm::eulerAngles(rotation_z.rotation).z;
+    case Rotation_axis::X: return rotation_x_.angle_rad;
+    case Rotation_axis::Y: return rotation_y_.angle_rad;
+    case Rotation_axis::Z: return rotation_z_.angle_rad;
   }
 
   return 0.0f;
@@ -195,11 +219,68 @@ float apeiron::engine::Transform::rotation_rad(Rotation_axis axis) const
 
 float apeiron::engine::Transform::rotation_deg(Rotation_axis axis) const
 {
-  switch (axis) {
-    case Rotation_axis::X: return glm::degrees(glm::eulerAngles(rotation_x.rotation).x);
-    case Rotation_axis::Y: return glm::degrees(glm::eulerAngles(rotation_y.rotation).y);
-    case Rotation_axis::Z: return glm::degrees(glm::eulerAngles(rotation_z.rotation).z);
+  return glm::degrees(rotation_rad(axis));
+}
+
+
+const glm::mat4& apeiron::engine::Transform::model_matrix() const
+{
+  if (has_changed_) {
+    recompute();
   }
 
-  return 0.0f;
+  return model_matrix_;
+}
+
+
+void apeiron::engine::Transform::recompute() const
+{
+  model_matrix_ = glm::mat4{1.0f};
+  model_matrix_ = glm::translate(model_matrix_, origin_ + position_);
+
+  const glm::quat qx = glm::angleAxis(rotation_x_.angle_rad, glm::vec3{1,0,0});
+  const glm::quat qy = glm::angleAxis(rotation_y_.angle_rad, glm::vec3{0,1,0});
+  const glm::quat qz = glm::angleAxis(rotation_z_.angle_rad, glm::vec3{0,0,1});
+
+  switch (rotation_order_) {
+    case Rotation_order::XYZ: {
+      apply_rotation(model_matrix_, rotation_x_.pivot * scale_, qx);
+      apply_rotation(model_matrix_, rotation_y_.pivot * scale_, qy);
+      apply_rotation(model_matrix_, rotation_z_.pivot * scale_, qz);
+    }
+    break;
+    case Rotation_order::XZY: {
+      apply_rotation(model_matrix_, rotation_x_.pivot * scale_, qx);
+      apply_rotation(model_matrix_, rotation_z_.pivot * scale_, qz);
+      apply_rotation(model_matrix_, rotation_y_.pivot * scale_, qy);
+    }
+    break;
+    case Rotation_order::YXZ: {
+      apply_rotation(model_matrix_, rotation_y_.pivot * scale_, qy);
+      apply_rotation(model_matrix_, rotation_x_.pivot * scale_, qx);
+      apply_rotation(model_matrix_, rotation_z_.pivot * scale_, qz);
+    }
+    break;
+    case Rotation_order::YZX: {
+      apply_rotation(model_matrix_, rotation_y_.pivot * scale_, qy);
+      apply_rotation(model_matrix_, rotation_z_.pivot * scale_, qz);
+      apply_rotation(model_matrix_, rotation_x_.pivot * scale_, qx);
+    }
+    break;
+    case Rotation_order::ZXY: {
+      apply_rotation(model_matrix_, rotation_z_.pivot * scale_, qz);
+      apply_rotation(model_matrix_, rotation_x_.pivot * scale_, qx);
+      apply_rotation(model_matrix_, rotation_y_.pivot * scale_, qy);
+    }
+    break;
+    case Rotation_order::ZYX: {
+      apply_rotation(model_matrix_, rotation_z_.pivot * scale_, qz);
+      apply_rotation(model_matrix_, rotation_y_.pivot * scale_, qy);
+      apply_rotation(model_matrix_, rotation_x_.pivot * scale_, qx);
+    }
+    break;
+  }
+
+  model_matrix_ = glm::scale(model_matrix_, scale_);
+  has_changed_ = false;
 }

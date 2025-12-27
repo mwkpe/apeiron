@@ -19,6 +19,7 @@ void apeiron::engine::Camera::setup(float pitch, float yaw, glm::vec3 position)
   up_ = world_up_;
   pitch_ = pitch;
   yaw_ = yaw;
+
   update();
 }
 
@@ -28,6 +29,7 @@ void apeiron::engine::Camera::setup_orbit(float pitch, float yaw, float distance
   pitch_ = pitch;
   yaw_ = yaw;
   distance_ = distance;
+
   update_orbit();
 }
 
@@ -90,6 +92,7 @@ void apeiron::engine::Camera::orient(std::int32_t dx, std::int32_t dy, float sen
   pitch_ += static_cast<float>(dy) * sensitivity;
   yaw_ = yaw_ > 360.0f ? yaw_ - 360.0f : yaw_ < -360.0f ? yaw_ + 360.0f : yaw_;
   pitch_ = std::clamp(pitch_, -89.0f, 89.0f);
+
   update();
 }
 
@@ -100,6 +103,7 @@ void apeiron::engine::Camera::orbit(std::int32_t dx, std::int32_t dy, float sens
   yaw_ = yaw_ > 360.0f ? yaw_ - 360.0f : yaw_ < -360.0f ? yaw_ + 360.0f : yaw_;
   pitch_ += static_cast<float>(dy) * sensitivity;
   pitch_ = std::clamp(pitch_, -89.0f, 89.0f);
+
   update_orbit();
 }
 

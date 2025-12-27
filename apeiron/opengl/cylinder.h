@@ -3,13 +3,13 @@
 
 
 #include <cstdint>
-#include "apeiron/opengl/shape.h"
+#include "apeiron/opengl/vertex_array.h"
 
 
 namespace apeiron::opengl {
 
 
-class Cylinder final : public Shape
+class Cylinder final : public Vertex_array
 {
 public:
   Cylinder() = default;

@@ -3,13 +3,13 @@
 
 
 #include <glm/glm.hpp>
-#include "apeiron/opengl/shape.h"
+#include "apeiron/opengl/vertex_array.h"
 
 
 namespace apeiron::opengl {
 
 
-class Grid final : public Shape
+class Grid final : public Vertex_array
 {
 public:
   Grid() = default;

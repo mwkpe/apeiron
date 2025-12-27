@@ -24,7 +24,8 @@ public:
 
   [[nodiscard]] bool is_on() const { return on_; }
   [[nodiscard]] glm::vec4 color() const { return color_; }
-  [[nodiscard]] auto collider() const { return engine::collision::Sphere{position_, 0.5f * scale_.x}; }
+  [[nodiscard]] auto collider() const { return engine::collision::Sphere{
+      transform().position(), 0.5f * transform().scale().x}; }
 
   void render() const override { if (model_) for (const auto& mesh : *model_) mesh.render(); }
 

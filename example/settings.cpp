@@ -12,8 +12,9 @@ using namespace std::string_literals;
 auto apeiron::example::load_settings(std::string_view filename) -> Settings
 {
   std::ifstream fs{std::string{filename}};
-  if (!fs.is_open())
+  if (!fs.is_open()) {
     throw engine::Warning{std::string{"Could not open settings file: "} + std::string{filename}};
+  }
 
   toml::table t;
   try {

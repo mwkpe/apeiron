@@ -46,13 +46,30 @@ void apeiron::opengl::Quad::render() const
 }
 
 
-template void apeiron::opengl::Quad::set<apeiron::engine::Vertex>(float, float, apeiron::engine::Face, const glm::vec3&);
-template void apeiron::opengl::Quad::set<apeiron::engine::Vertex>(float, float, const glm::vec4&, apeiron::engine::Face, const glm::vec3&);
-template void apeiron::opengl::Quad::set<apeiron::engine::Vertex>(float, float, const glm::mat4&, apeiron::engine::Face, const glm::vec3&);
-template void apeiron::opengl::Quad::set<apeiron::engine::Vertex_simple>(float, float, apeiron::engine::Face, const glm::vec3&);
-template void apeiron::opengl::Quad::set<apeiron::engine::Vertex_normal>(float, float, apeiron::engine::Face, const glm::vec3&);
-template void apeiron::opengl::Quad::set<apeiron::engine::Vertex_color>(float, float, const glm::vec4&, apeiron::engine::Face, const glm::vec3&);
-template void apeiron::opengl::Quad::set<apeiron::engine::Vertex_color>(float, float, const glm::mat4&, apeiron::engine::Face, const glm::vec3&);
-template void apeiron::opengl::Quad::set<apeiron::engine::Vertex_texcoords>(float, float, apeiron::engine::Face, const glm::vec3&);
-template void apeiron::opengl::Quad::set<apeiron::engine::Vertex_normal_color>(float, float, const glm::vec4&, apeiron::engine::Face, const glm::vec3&);
-template void apeiron::opengl::Quad::set<apeiron::engine::Vertex_normal_texcoords>(float, float, apeiron::engine::Face, const glm::vec3&);
+using apeiron::engine::Face;
+using apeiron::engine::Vertex;
+using apeiron::engine::Vertex_simple;
+using apeiron::engine::Vertex_normal;
+using apeiron::engine::Vertex_color;
+using apeiron::engine::Vertex_texcoords;
+using apeiron::engine::Vertex_normal_color;
+using apeiron::engine::Vertex_normal_texcoords;
+using apeiron::engine::Vertex_index;
+
+
+namespace apeiron::opengl {
+
+
+template void Quad::set<Vertex>(float, float, Face, const glm::vec3&);
+template void Quad::set<Vertex>(float, float, const glm::vec4&, Face, const glm::vec3&);
+template void Quad::set<Vertex>(float, float, const glm::mat4&, Face, const glm::vec3&);
+template void Quad::set<Vertex_simple>(float, float, Face, const glm::vec3&);
+template void Quad::set<Vertex_normal>(float, float, Face, const glm::vec3&);
+template void Quad::set<Vertex_color>(float, float, const glm::vec4&, Face, const glm::vec3&);
+template void Quad::set<Vertex_color>(float, float, const glm::mat4&, Face, const glm::vec3&);
+template void Quad::set<Vertex_texcoords>(float, float, Face, const glm::vec3&);
+template void Quad::set<Vertex_normal_color>(float, float, const glm::vec4&, Face, const glm::vec3&);
+template void Quad::set<Vertex_normal_texcoords>(float, float, Face, const glm::vec3&);
+
+
+}  // namespace apeiron::opengl
