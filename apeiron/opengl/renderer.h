@@ -2,9 +2,7 @@
 #define APEIRON_OPENGL_RENDERER_H
 
 
-// This is just the default/example renderer. Ideally you write your own, or better, use a proper
-// library. It's neither complete nor consistent in some aspects. Some render functions may expect
-// certain perspective, camera and object configurations to work properly.
+// This is just a default/example renderer
 
 
 #include <glm/glm.hpp>

@@ -87,10 +87,12 @@ void apeiron::opengl::Renderer::set_view_projection()
 
 void apeiron::opengl::Renderer::set_clip_scene(bool clip_scene)
 {
-  if (clip_scene)
+  if (clip_scene) {
     glEnable(GL_CLIP_DISTANCE0);
-  else
+  }
+  else {
     glDisable(GL_CLIP_DISTANCE0);
+  }
 
   shader_.set_uniform("clip_scene", clip_scene);
 }
@@ -104,28 +106,34 @@ void apeiron::opengl::Renderer::set_clipping_plane(const glm::vec4& plane)
 
 void apeiron::opengl::Renderer::set_wireframe(bool wireframe) const
 {
-  if (wireframe)
+  if (wireframe) {
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  else
+  }
+  else {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  }
 }
 
 
 void apeiron::opengl::Renderer::set_depth_test(bool depth_test) const
 {
-  if (depth_test)
+  if (depth_test) {
     glEnable(GL_DEPTH_TEST);
-  else
+  }
+  else {
     glDisable(GL_DEPTH_TEST);
+  }
 }
 
 
 void apeiron::opengl::Renderer::set_blend(bool blend) const
 {
-  if (blend)
+  if (blend) {
     glEnable(GL_BLEND);
-  else
+  }
+  else {
     glDisable(GL_BLEND);
+  }
 }
 
 
