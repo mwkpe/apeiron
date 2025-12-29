@@ -7,7 +7,6 @@
 #include "tiny_obj_loader.h"
 
 #include "apeiron/engine/error.h"
-#include "apeiron/utility/timer.h"
 
 
 namespace {
@@ -93,8 +92,6 @@ template<typename T> T get_vertex(const tinyobj::attrib_t& attrib, const tinyobj
 
 template<typename T> auto apeiron::engine::load_model(std::string_view filename) -> Model<T>
 {
-  utility::Scope_timer timer{std::string{filename}};
-
   tinyobj::attrib_t attrib;
   std::vector<tinyobj::shape_t> shapes;
   std::vector<tinyobj::material_t> materials;
