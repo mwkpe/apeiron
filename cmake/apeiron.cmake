@@ -75,7 +75,7 @@ find_package(glm CONFIG QUIET)
 if (NOT TARGET glm::glm)
   add_library(glm INTERFACE)
   add_library(glm::glm ALIAS glm)
-  target_include_directories(glm INTERFACE ${CMAKE_CURRENT_LIST_DIR}/../external/glm)
+  target_include_directories(glm INTERFACE ${CMAKE_CURRENT_LIST_DIR}/../external/public/glm)
 endif ()
 
 target_compile_definitions(apeiron PUBLIC GLM_ENABLE_EXPERIMENTAL)
