@@ -15,7 +15,6 @@
 #include "apeiron/opengl/model.h"
 #include "apeiron/opengl/renderer.h"
 #include "apeiron/opengl/texture.h"
-#include "apeiron/opengl/tileset.h"
 
 #include "apeiron/prefab/axes.h"
 #include "apeiron/prefab/grid.h"
@@ -46,18 +45,17 @@ public:
   void operator()(const apeiron::engine::Key_up_event& event);
   void operator()(const apeiron::engine::Mouse_button_down_event& event);
   void operator()(const apeiron::engine::Mouse_button_up_event& event);
-  void operator()(const apeiron::engine::Mouse_motion_event& event);
   void operator()(const apeiron::engine::Mouse_wheel_event& event);
-  void operator()(const apeiron::engine::Controller_button_down_event& event);
-  void operator()(const apeiron::engine::Controller_button_up_event& event);
-  void operator()(const apeiron::engine::Controller_axis_motion_event& event);
+  void operator()(const apeiron::engine::Mouse_motion_event& event);
+  void operator()(const apeiron::engine::Gamepad_button_down_event& event);
+  void operator()(const apeiron::engine::Gamepad_button_up_event& event);
+  void operator()(const apeiron::engine::Gamepad_axis_motion_event& event);
 
 private:
   void update_camera(float delta_time, const engine::Input* input);
 
   const Settings* settings_;
   opengl::Renderer renderer_;
-  opengl::Tileset bitmap_charset_;
   opengl::Model mesh_charset_;
   opengl::Texture cube_texture_;
   opengl::Cuboid cube_model_;

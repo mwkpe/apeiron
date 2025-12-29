@@ -5,7 +5,7 @@
   #define WIN32_LEAN_AND_MEAN
   #include <windows.h>
 #endif
-#include "SDL2/SDL.h"
+#include <SDL3/SDL.h>
 #include <glad/glad.h>
 #include "apeiron/engine/error.h"
 #include "apeiron/engine/event.h"
@@ -60,17 +60,17 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
   SDL_Init(SDL_INIT_VIDEO);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
   SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, settings.msaa_samples);
 
-  auto* window = SDL_CreateWindow("apeiron", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-      settings.window_width, settings.window_height, SDL_WINDOW_OPENGL);
+  auto* window = SDL_CreateWindow("apeiron", settings.window_width, settings.window_height,
+      SDL_WINDOW_OPENGL);
   auto context = SDL_GL_CreateContext(window);
   auto quit_sdl = [&]{
-    SDL_GL_DeleteContext(context);
+    SDL_GL_DestroyContext(context);
     SDL_DestroyWindow(window);
     SDL_Quit();
   };
@@ -82,17 +82,12 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     return 1;
   }
 
-//  if (glewIsSupported("GL_EXT_texture_filter_anisotropic")) {
-//    GLint max_anisotropy = 1;
-//    glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &max_anisotropy);
-//    if (max_anisotropy > 1)
-//      settings.af_samples = max_anisotropy;
-//  }
-
-  if (settings.vsync)
+  if (settings.vsync) {
     SDL_GL_SetSwapInterval(1);
-  else
+  }
+  else {
     SDL_GL_SetSwapInterval(0);
+  }
 
   apeiron::example::World world(&settings);
   apeiron::example::Menu menu(window, context);
@@ -135,23 +130,23 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       if (settings.show_menu) {
         menu.process(&event);
       }
-      settings.quit = event.type == SDL_QUIT;
+      settings.quit = event.type == SDL_EVENT_QUIT;
       switch (event.type) {
-        case SDL_KEYDOWN: {
-          switch (event.key.keysym.sym) {
+        case SDL_EVENT_KEY_DOWN: {
+          switch (event.key.key) {
             case SDLK_ESCAPE:
               settings.quit = true;
               break;
             case SDLK_F1:
               settings.show_menu = !settings.show_menu;
               if (settings.show_menu) {
-                SDL_CaptureMouse(SDL_FALSE);
-                SDL_SetRelativeMouseMode(SDL_FALSE);
+                SDL_CaptureMouse(false);
+                SDL_SetWindowRelativeMouseMode(window, false);
               }
               else {
                 SDL_GetRelativeMouseState(nullptr, nullptr);  // Prevent erroneous movement
-                SDL_CaptureMouse(SDL_TRUE);
-                SDL_SetRelativeMouseMode(SDL_TRUE);
+                SDL_CaptureMouse(true);
+                SDL_SetWindowRelativeMouseMode(window, true);
               }
               break;
             case SDLK_F4:
@@ -168,27 +163,27 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
             default:;
           }
         } break;
-        case SDL_MOUSEMOTION: {
+        case SDL_EVENT_MOUSE_MOTION: {
           if (!menu.has_mouse()) {
             events.emplace_back(apeiron::engine::Mouse_motion_event{event.motion.x, event.motion.y,
                 event.motion.xrel, event.motion.yrel});
           }
         } break;
-        case SDL_MOUSEBUTTONUP: {
+        case SDL_EVENT_MOUSE_BUTTON_UP: {
           if (!menu.has_mouse()) {
             events.emplace_back(apeiron::engine::Mouse_button_up_event{
                 apeiron::engine::get_mouse_button(event.button.button),
                 event.button.x, event.button.y});
           }
         } break;
-        case SDL_MOUSEBUTTONDOWN: {
+        case SDL_EVENT_MOUSE_BUTTON_DOWN: {
           if (!menu.has_mouse()) {
               events.emplace_back(apeiron::engine::Mouse_button_down_event{
                   apeiron::engine::get_mouse_button(event.button.button),
                   event.button.x, event.button.y});
           }
         } break;
-        case SDL_MOUSEWHEEL: {
+        case SDL_EVENT_MOUSE_WHEEL: {
           if (!menu.has_mouse()) {
             events.emplace_back(apeiron::engine::Mouse_wheel_event{event.wheel.x, event.wheel.y});
           }

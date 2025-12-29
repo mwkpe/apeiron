@@ -20,12 +20,12 @@ enum class Mouse_button : std::uint8_t
   Unknown
 };
 
-enum class Controller_button : std::uint8_t
+enum class Gamepad_button : std::uint8_t
 {
-  A,
-  B,
-  X,
-  Y,
+  South,
+  East,
+  West,
+  North,
   Back,
   Guide,
   Start,
@@ -38,22 +38,27 @@ enum class Controller_button : std::uint8_t
   Dpad_left,
   Dpad_right,
   Misc1,
-  Paddle1,
-  Paddle2,
-  Paddle3,
-  Paddle4,
+  Right_paddle1,
+  Left_paddle1,
+  Right_paddle2,
+  Left_paddle2,
   Touchpad,
+  Misc2,
+  Misc3,
+  Misc4,
+  Misc5,
+  Misc6,
   Unknown
 };
 
-enum class Controller_axis : std::uint8_t
+enum class Gamepad_axis : std::uint8_t
 {
   Left_x,
   Left_y,
   Right_x,
   Right_y,
-  Trigger_left,
-  Trigger_right,
+  Left_trigger,
+  Right_trigger,
   Unknown
 };
 
@@ -72,45 +77,45 @@ struct Key_up_event
 
 struct Mouse_motion_event
 {
-  std::int32_t x;
-  std::int32_t y;
-  std::int32_t x_rel;
-  std::int32_t y_rel;
+  float x;
+  float y;
+  float x_rel;
+  float y_rel;
 };
 
 struct Mouse_button_down_event
 {
   Mouse_button button;
-  std::int32_t x;
-  std::int32_t y; 
+  float x;
+  float y; 
 };
 
 struct Mouse_button_up_event
 {
   Mouse_button button;
-  std::int32_t x;
-  std::int32_t y; 
+  float x;
+  float y; 
 };
 
 struct Mouse_wheel_event
 {
-  std::int32_t x;
-  std::int32_t y;
+  float x;
+  float y;
 };
 
-struct Controller_button_down_event
+struct Gamepad_button_down_event
 {
-  Controller_button button;
+  Gamepad_button button;
 };
 
-struct Controller_button_up_event
+struct Gamepad_button_up_event
 {
-  Controller_button button;
+  Gamepad_button button;
 };
 
-struct Controller_axis_motion_event
+struct Gamepad_axis_motion_event
 {
-  Controller_axis axis;
+  Gamepad_axis axis;
   float value;
 };
 
@@ -122,9 +127,9 @@ using Event = std::variant<
     Mouse_button_down_event,
     Mouse_button_up_event,
     Mouse_wheel_event,
-    Controller_button_down_event,
-    Controller_button_up_event,
-    Controller_axis_motion_event>;
+    Gamepad_button_down_event,
+    Gamepad_button_up_event,
+    Gamepad_axis_motion_event>;
 
 using Event_queue = std::vector<Event>;
 

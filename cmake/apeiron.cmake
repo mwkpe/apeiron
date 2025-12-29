@@ -1,6 +1,7 @@
-add_library(glad ${CMAKE_CURRENT_LIST_DIR}/../external/glad/glad.c)
+add_library(glad STATIC ${CMAKE_CURRENT_LIST_DIR}/../external/public/glad/source/glad.c)
+target_include_directories(glad PUBLIC ${CMAKE_CURRENT_LIST_DIR}/../external/public/glad/include)
 
-add_library(apeiron
+add_library(apeiron STATIC
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/camera.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/camera.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/collision.cpp
@@ -66,11 +67,16 @@ add_library(apeiron
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/utility/timer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/utility/timer.h)
 
-list(APPEND APEIRON_INCLUDE_DIRECTORIES
-    ${CMAKE_CURRENT_LIST_DIR}/../external
-    ${CMAKE_CURRENT_LIST_DIR}/../external/glm
-    ${CMAKE_CURRENT_LIST_DIR}/../external/glad)
+target_include_directories(apeiron PUBLIC ${CMAKE_CURRENT_LIST_DIR}/..
+    PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../external/private)
 
-include_directories(${APEIRON_INCLUDE_DIRECTORIES})
-target_compile_definitions(apeiron PRIVATE GLM_ENABLE_EXPERIMENTAL)
-target_link_libraries(apeiron glad)
+find_package(glm CONFIG QUIET)
+
+if (NOT TARGET glm::glm)
+  add_library(glm INTERFACE)
+  add_library(glm::glm ALIAS glm)
+  target_include_directories(glm INTERFACE ${CMAKE_CURRENT_LIST_DIR}/../external/glm)
+endif ()
+
+target_compile_definitions(apeiron PUBLIC GLM_ENABLE_EXPERIMENTAL)
+target_link_libraries(apeiron PUBLIC glad glm::glm)

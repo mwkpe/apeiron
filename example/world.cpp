@@ -2,13 +2,10 @@
 
 
 #include <random>
-#include <iostream>
-#include <glm/gtc/matrix_transform.hpp>
 #include "apeiron/engine/collision.h"
 
 
 apeiron::example::World::World(const Settings* settings) : settings_{settings},
-      bitmap_charset_{16, 8, 32, 0.5f, 1.0f},
       camera_{-45.0f, -125.0f, {10.0f, 15.0f, 10.0f}},
       axes_{16, 0.01f, 25.0f},
       grid_{{48.0f, 48.0f}, 48, 48, {0.25f, 0.25f, 0.25f, 1.0f}, 1.0f},
@@ -29,11 +26,9 @@ void apeiron::example::World::init()
   auto aspect_ratio = static_cast<float>(settings_->window_width) / settings_->window_height;
   renderer_.preset_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 500.0f));
 
-  bitmap_charset_.load_texture("assets/fonts/bitmap/roboto_mono.png", Pixel_format::Rgba);
-  // Letter spacing and height must be measured for now, values taken from roboto_mono.toml
-  mesh_charset_.load("assets/fonts/mesh/roboto_mono.obj");
   cube_texture_.load("assets/textures/ab_crate_a.png", Pixel_format::Rgba);
 
+  // Letter spacing and height must be measured for now, values taken from roboto_mono.toml
   font_ = engine::load_font<engine::Vertex_simple>("assets/fonts/mesh/roboto_mono.obj",
       glm::vec3{0.16259f, 0.297f, 0.0f});
 
@@ -130,7 +125,8 @@ void apeiron::example::World::update(float time, float delta_time,
   }
 
   // Teapot rotation
-  teapot_.transform().set_rotation_rad(frame_time_ * glm::radians(120.0f) * glm::vec3{0.0f, 0.2f, 0.0f});
+  teapot_.transform()
+      .set_rotation_rad(frame_time_ * glm::radians(120.0f) * glm::vec3{0.0f, 0.2f, 0.0f});
 
   // Text
   if (world_text_ != settings_->text) {
@@ -226,33 +222,6 @@ void apeiron::example::World::render()
 }
 
 
-void apeiron::example::World::operator()([[maybe_unused]] const engine::Mouse_motion_event& event)
-{
-  if (settings_->show_menu) {
-    using namespace engine::collision;
-
-    float norm_x = static_cast<float>(event.x) / settings_->window_width * 2.0f - 1.0f;
-    float norm_y = -(static_cast<float>(event.y) / settings_->window_height * 2.0f - 1.0f);
-    Ray ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
-    Quad quad{{0.0f, 0.0f, 0.0f}, {2.0f, 0.0f, 0.0f}, {2.0f, 0.0f, 2.0f}, {0.0f, 0.0f, 2.0f}};
-    Plane plane{{0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};
-
-    ground_highlight_.set_visible(false);
-
-    if (auto point = intersection_point(ray, plane)) {
-      if (point->x > -24.0f && point->x < 24.0f && point->z > -24.0f && point->z < 24.0f) {
-        ground_highlight_.transform().set_position(std::floor(point->x) + 0.5f, 0.0f, std::floor(point->z) + 0.5f);
-        ground_highlight_.set_visible(true);
-      }
-    }
-
-    if (intersects(ray, quad)) {
-      light_.switch_on();
-    }
-  }
-}
-
-
 void apeiron::example::World::operator()([[maybe_unused]] const apeiron::engine::Key_down_event& event)
 {
 }
@@ -267,8 +236,8 @@ void apeiron::example::World::operator()(const engine::Mouse_button_down_event& 
 {
   if (event.button == engine::Mouse_button::Left) {
     using namespace engine::collision;
-    float norm_x = static_cast<float>(event.x) / settings_->window_width * 2.0f - 1.0f;
-    float norm_y = -(static_cast<float>(event.y) / settings_->window_height * 2.0f - 1.0f);
+    float norm_x = event.x / settings_->window_width * 2.0f - 1.0f;
+    float norm_y = (event.y / settings_->window_height * 2.0f - 1.0f) * -1.0f;
     auto ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
 
     if (intersects(ray, light_.collider())) {
@@ -288,16 +257,44 @@ void apeiron::example::World::operator()([[maybe_unused]] const engine::Mouse_wh
 }
 
 
-void apeiron::example::World::operator()([[maybe_unused]] const apeiron::engine::Controller_button_down_event& event)
+void apeiron::example::World::operator()([[maybe_unused]] const engine::Mouse_motion_event& event)
+{
+  if (settings_->show_menu) {
+    using namespace engine::collision;
+
+    float norm_x = event.x / settings_->window_width * 2.0f - 1.0f;
+    float norm_y = (event.y / settings_->window_height * 2.0f - 1.0f) * -1.0f;
+    Ray ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
+    Quad quad{{0.0f, 0.0f, 0.0f}, {2.0f, 0.0f, 0.0f}, {2.0f, 0.0f, 2.0f}, {0.0f, 0.0f, 2.0f}};
+    Plane plane{{0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};
+
+    ground_highlight_.set_visible(false);
+
+    if (auto point = intersection_point(ray, plane)) {
+      if (point->x > -24.0f && point->x < 24.0f && point->z > -24.0f && point->z < 24.0f) {
+        ground_highlight_.transform()
+            .set_position(std::floor(point->x) + 0.5f, 0.0f, std::floor(point->z) + 0.5f);
+        ground_highlight_.set_visible(true);
+      }
+    }
+
+    if (intersects(ray, quad)) {
+      light_.switch_on();
+    }
+  }
+}
+
+
+void apeiron::example::World::operator()([[maybe_unused]] const apeiron::engine::Gamepad_button_down_event& event)
 {
 }
 
 
-void apeiron::example::World::operator()([[maybe_unused]] const apeiron::engine::Controller_button_up_event& event)
+void apeiron::example::World::operator()([[maybe_unused]] const apeiron::engine::Gamepad_button_up_event& event)
 {
 }
 
 
-void apeiron::example::World::operator()([[maybe_unused]] const apeiron::engine::Controller_axis_motion_event& event)
+void apeiron::example::World::operator()([[maybe_unused]] const apeiron::engine::Gamepad_axis_motion_event& event)
 {
 }

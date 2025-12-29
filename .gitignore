@@ -1,6 +1,6 @@
 # Libraries
 external/glm/
-external/SDL2/
+external/SDL3/
 
 # Build directories
 cmake-build*/

@@ -20,10 +20,10 @@ struct Input
   bool mouse_right = false;
   bool mouse_side1 = false;
   bool mouse_side2 = false;
-  int mouse_x_abs = 0;
-  int mouse_x_rel = 0;
-  int mouse_y_abs = 0;
-  int mouse_y_rel = 0;
+  float mouse_x_abs = 0.0f;
+  float mouse_x_rel = 0.0f;
+  float mouse_y_abs = 0.0f;
+  float mouse_y_rel = 0.0f;
 };
 
 

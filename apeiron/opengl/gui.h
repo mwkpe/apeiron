@@ -3,7 +3,7 @@
 
 
 #include <string_view>
-#include "SDL2/SDL.h"
+#include <SDL3/SDL.h>
 
 
 namespace apeiron::opengl {
