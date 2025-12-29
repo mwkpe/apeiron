@@ -166,6 +166,8 @@ void apeiron::example::World::render()
   frame_++;
   auto color = settings_->main_color;
 
+  renderer_.clear(0.1f, 0.1f, 0.1f);
+
   renderer_.use_world_space();
   renderer_.preset_view(camera_.perspective_view());
   renderer_.set_view_projection();

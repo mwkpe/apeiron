@@ -69,6 +69,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
   auto* window = SDL_CreateWindow("apeiron", settings.window_width, settings.window_height,
       SDL_WINDOW_OPENGL);
   auto context = SDL_GL_CreateContext(window);
+
   auto quit_sdl = [&]{
     SDL_GL_DestroyContext(context);
     SDL_DestroyWindow(window);
@@ -91,6 +92,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
   apeiron::example::World world(&settings);
   apeiron::example::Menu menu(window, context);
+
   try {
     world.init();
     menu.init("#version 460");
@@ -103,34 +105,36 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     return 1;
   }
 
-  auto frame_timer = [&settings, last_ticks = SDL_GetTicks()](bool benchmarking) mutable {
-    auto current_ticks = SDL_GetTicks();
+  auto frame_timer = [&settings, last_ticks = SDL_GetTicksNS()] mutable {
+    auto current_ticks = SDL_GetTicksNS();
     auto elapsed = current_ticks - last_ticks;
-    if (auto target = 1000u / settings.max_fps; !benchmarking && settings.limit_fps && elapsed < target) {
-      SDL_Delay(target - elapsed);
-      current_ticks = SDL_GetTicks();
+
+    if (auto target = 1'000'000'000ull / settings.max_fps; settings.limit_fps && elapsed < target) {
+      SDL_DelayPrecise(target - elapsed);
+      current_ticks = SDL_GetTicksNS();
       elapsed = current_ticks - last_ticks;
     }
+
     last_ticks = current_ticks;
     return elapsed;
   };
 
-  bool benchmarking = false;
-  float benchmark_start_time = 0;
-  int benchmark_total_frames = 0;
   std::vector<apeiron::engine::Event> events;
 
   while (!settings.quit) {
-    auto elapsed = frame_timer(benchmarking);  // May also delay and hence limits fps
-    float delta_time = static_cast<float>(elapsed) / 1000.0f;
+    auto elapsed = frame_timer();  // May also delay and hence limits fps
+    float delta_time = static_cast<float>(elapsed) / 1000'000'000.0f;
     auto time = static_cast<float>(SDL_GetTicks()) / 1000.0f;
 
     SDL_Event event;
+
     while (SDL_PollEvent(&event)) {
       if (settings.show_menu) {
         menu.process(&event);
       }
+
       settings.quit = event.type == SDL_EVENT_QUIT;
+
       switch (event.type) {
         case SDL_EVENT_KEY_DOWN: {
           switch (event.key.key) {
@@ -139,6 +143,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
               break;
             case SDLK_F1:
               settings.show_menu = !settings.show_menu;
+
               if (settings.show_menu) {
                 SDL_CaptureMouse(false);
                 SDL_SetWindowRelativeMouseMode(window, false);
@@ -152,15 +157,6 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
             case SDLK_F4:
               settings.wireframe = !settings.wireframe;
               break;
-            case SDLK_F6:
-              if (!benchmarking) {
-                benchmarking = true;
-                benchmark_start_time = time;
-                benchmark_total_frames = 0;
-                std::cout << "Benchmark started... (takes 10s)" << std::endl;
-              }
-              break;
-            default:;
           }
         } break;
         case SDL_EVENT_MOUSE_MOTION: {
@@ -201,24 +197,14 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     world.render();
+
     if (settings.show_menu) {
       menu.build(&settings, time);
       menu.render();
     }
 
     SDL_GL_SwapWindow(window);
-
-    if (benchmarking) {
-      benchmark_total_frames++;
-      if (time > benchmark_start_time + 10.0f) {
-        benchmarking = false;
-        std::cout << "Benchmark result: " << benchmark_total_frames / 10 << " fps" << std::endl;
-      }
-    }
   }
 
   quit_sdl();
