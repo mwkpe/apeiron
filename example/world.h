@@ -24,7 +24,6 @@
 
 #include "example/settings.h"
 #include "example/cube.h"
-#include "example/cylinder.h"
 #include "example/ground_highlight.h"
 
 
@@ -68,7 +67,6 @@ private:
   prefab::Teapot teapot_;
   prefab::Text world_text_;
   prefab::Text screen_text_;
-  Cylinder cylinder_;
   Ground_highlight ground_highlight_;
   Cube cube_;
   std::vector<Cube> cubes_;

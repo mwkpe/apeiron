@@ -6,11 +6,10 @@
 
 
 apeiron::example::World::World(const Settings* settings) : settings_{settings},
-      camera_{-45.0f, -125.0f, {10.0f, 15.0f, 10.0f}},
-      axes_{16, 0.01f, 25.0f},
-      grid_{{48.0f, 48.0f}, 48, 48, {0.25f, 0.25f, 0.25f, 1.0f}, 1.0f},
+      camera_{-45.0f, -130.0f, {10.0f, 15.0f, 10.0f}},
+      axes_{8, 0.01f, 5.0f},
+      grid_{{28.0f, 28.0f}, 28, 28, {0.25f, 0.25f, 0.25f, 1.0f}, 1.0f},
       light_{&bulb_},
-      cylinder_{static_cast<std::uint32_t>(settings_->cylinder_points), 0.0f, 0.0f, 1.0f},
       cube_{&cube_model_, 0.0f, 0.0f, 0.0f}
 {
 }
@@ -32,12 +31,12 @@ void apeiron::example::World::init()
   font_ = engine::load_font<engine::Vertex_simple>("assets/fonts/mesh/roboto_mono.obj",
       glm::vec3{0.16259f, 0.297f, 0.0f});
 
-  world_text_.init("Hello world!", font_, apeiron::opengl::Usage_hint::Dynamic);
+  world_text_.init(settings_->world_text, font_, apeiron::opengl::Usage_hint::Dynamic);
   world_text_.transform().set_position(2.5f, 2.5f, 0.0f).set_scale(glm::vec3{5.0f});
 
-  screen_text_.init("Hello screen!", font_, apeiron::opengl::Usage_hint::Dynamic);
+  screen_text_.init(settings_->screen_text, font_, apeiron::opengl::Usage_hint::Dynamic);
   screen_text_.transform().set_position(100.0f, 100.0f, 0.0f)
-      .set_scale(glm::vec3{200.0f})
+      .set_scale(glm::vec3{300.0f})
       .set_rotation_deg(-90.0f, 0.0f, 0.0f);
 
   cube_model_.set<engine::Vertex_normal_texcoords>({1.0f, 1.0f, 1.0f});
@@ -47,7 +46,7 @@ void apeiron::example::World::init()
   grid_.transform().set_rotation_deg(-90.0f, 0.0f, 0.0f);
 
   light_.transform().set_scale(0.3f, 0.3f, 0.3f)
-      .set_position(0.0f, 8.0f, -settings_->light_distance);
+      .set_position(0.0f, 8.0f, -settings_->light_position_z);
   light_.set_color(1.0f, 1.0f, 1.0f);
   light_.switch_on();
 
@@ -55,14 +54,12 @@ void apeiron::example::World::init()
       .set_origin(0.0f, 1.271f / 2.0f, 0.0f)  // Offset model origin to center
       .set_rotation_deg(0.0f, -45.0f, 0.0f);
 
-  cylinder_.transform().set_position(5.0f, 1.5f, -5.0f);
+  std::mt19937 rng{0x102df640};
+  std::uniform_real_distribution<float> dist{0.0f, 28.0f};
+  auto rotation = [&rng, &dist](float factor = 1.0f){ return (dist(rng) * 0.1f - 1.4f) * factor; };
+  auto position = [&rng, &dist]{ return dist(rng) - 14.0f; };
 
-  std::mt19937 rng{0x102df64d};
-  std::uniform_real_distribution<float> dist(0.0f, 50.0f);
-  auto rotation = [&rng, &dist](float factor = 1.0f){ return (dist(rng) / 25.0f - 1.0f) * factor; };
-  auto position = [&rng, &dist]{ return dist(rng) - 25.0f; };
-
-  for (int i=0; i<50; ++i) {
+  for (int i=0; i<100; ++i) {
     switch (i % 3) {
       case 0: cubes_.emplace_back(&cube_model_, 0.0f, rotation(0.2f), rotation());
         break;
@@ -98,21 +95,13 @@ void apeiron::example::World::update(float time, float delta_time,
   }
 
   // Light
-  light_.transform().set_position(0.0f, 8.0f, -settings_->light_distance);
+  light_.transform().set_position(0.0f, 8.0f, -settings_->light_position_z);
 
   if (settings_->lighting && light_.is_on()) {
     light_.set_color(settings_->main_color);
   }
   else {
     light_.set_color(0.3f, 0.3f, 0.3f, 1.0f);
-  }
-
-  // Cylinder
-  cylinder_.transform().set_rotation_deg(frame_time_ * 360.0f * settings_->cylinder_revs *
-      cylinder_.rotation_magnitudes());
-
-  if (cylinder_.points() != static_cast<std::uint32_t>(settings_->cylinder_points)) {
-    cylinder_.rebuild(settings_->cylinder_points);
   }
 
   // Cubes
@@ -129,9 +118,12 @@ void apeiron::example::World::update(float time, float delta_time,
       .set_rotation_rad(frame_time_ * glm::radians(120.0f) * glm::vec3{0.0f, 0.2f, 0.0f});
 
   // Text
-  if (world_text_ != settings_->text) {
-    world_text_.update(settings_->text, font_);
-    screen_text_.update(settings_->text, font_);
+  if (world_text_ != settings_->world_text) {
+    world_text_.update(settings_->world_text, font_);
+  }
+
+  if (screen_text_ != settings_->screen_text) {
+    screen_text_.update(settings_->screen_text, font_);
   }
 }
 
@@ -188,11 +180,9 @@ void apeiron::example::World::render()
 
   renderer_.use_color_shading();
 
-  if (ground_highlight_.visible()) {
+  if (settings_->show_ground_highlight && ground_highlight_.visible()) {
     renderer_.render(ground_highlight_, color);
   }
-
-  renderer_.render(cylinder_, color);
 
   if (settings_->show_light) {
     renderer_.set_lighting(false);

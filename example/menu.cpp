@@ -84,21 +84,23 @@ void apeiron::example::Menu::build(example::Settings* settings, float time)
     ImGui::Checkbox("Vsync (req. restart)", &settings->vsync);
     ImGui::Checkbox("Limit framerate", &settings->limit_fps);
     ImGui::SliderInt("Max FPS", &settings->max_fps, 30, 240);
-    ImGui::Checkbox("Wireframe (F2)", &settings->wireframe);
+    ImGui::Checkbox("Wireframe (F4)", &settings->wireframe);
     ImGui::Text("World");
     ImGui::Checkbox("Lighting", &settings->lighting);
     ImGui::SameLine();
-    ImGui::Checkbox("Show Position", &settings->show_light);
-    ImGui::SliderFloat("Position (m)", &settings->light_distance, -25.0f, 25.0f);
+    ImGui::Checkbox("Show light", &settings->show_light);
+    ImGui::SliderFloat("Light position Z", &settings->light_position_z, -25.0f, 25.0f);
     ImGui::Checkbox("Show cubes", &settings->show_cubes);
     ImGui::SameLine();
     ImGui::Checkbox("Rotate", &settings->rotate_cubes);
-    ImGui::SliderInt("Cylinder Detail", &settings->cylinder_points, 1, 64);
-    ImGui::SliderFloat("Cylinder Rev/s", &settings->cylinder_revs, 0.1f, 1.0f);
-    char buffer[64];
-    std::memcpy(buffer, settings->text.data(), 64);
-    ImGui::InputText("Text", buffer, IM_ARRAYSIZE(buffer));
-    settings->text = std::string{buffer};
+    char world_buffer[64];
+    std::memcpy(world_buffer, settings->world_text.data(), 64);
+    ImGui::InputText("World text", world_buffer, IM_ARRAYSIZE(world_buffer));
+    settings->world_text = std::string{world_buffer};
+    char screen_buffer[64];
+    std::memcpy(screen_buffer, settings->screen_text.data(), 64);
+    ImGui::InputText("Screen text", screen_buffer, IM_ARRAYSIZE(screen_buffer));
+    settings->screen_text = std::string{screen_buffer};
     ImGui::Text("Camera");
     ImGui::SliderFloat("Speed (m/s)", &settings->camera_speed, 0.0f, 20.0f);
     ImGui::SliderFloat("Sensitivity", &settings->camera_sensitivity, 0.0f, 0.1f);
@@ -127,6 +129,7 @@ void apeiron::example::Menu::build(example::Settings* settings, float time)
       set_main_color(ImGui::GetStyle(), ImVec4{0.0f, 1.0f, 0.25f, 1.0f});
       settings->main_color = glm::vec4{0.0f, 1.0f, 0.25f, 1.0f};
     }
+    ImGui::Dummy({0.0f, 8.0f});
     if (ImGui::Button("Quit"))
       settings->quit = true;
     ImGui::End();
