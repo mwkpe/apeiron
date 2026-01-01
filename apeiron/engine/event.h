@@ -65,13 +65,13 @@ enum class Gamepad_axis : std::uint8_t
 
 struct Key_down_event
 {
-  std::int32_t keycode;
+  std::uint32_t keycode;
   std::uint16_t keymod;
 };
 
 struct Key_up_event
 {
-  std::int32_t keycode;
+  std::uint32_t keycode;
   std::uint16_t keymod;
 };
 
