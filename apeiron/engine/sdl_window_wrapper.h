@@ -19,7 +19,7 @@ public:
   Sdl_window_wrapper& operator=(const Sdl_window_wrapper&) = delete;
   Sdl_window_wrapper& operator=(Sdl_window_wrapper&& other) noexcept;
 
-  void init(std::string_view title, int width, int height, bool fullscreen,
+  void init(std::string_view title, int init_flags, int width, int height, bool fullscreen,
       int gl_major, int gl_minor, bool gl_core, bool vsync, int msaa_samples);
 
   SDL_Window* sdl_window() { return window_; }

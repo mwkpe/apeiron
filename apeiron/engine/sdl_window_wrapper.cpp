@@ -48,10 +48,12 @@ auto apeiron::engine::Sdl_window_wrapper::operator=(Sdl_window_wrapper&& other) 
 }
 
 
-void apeiron::engine::Sdl_window_wrapper::init(std::string_view title, int width, int height,
-    bool fullscreen, int gl_major, int gl_minor, bool gl_core, bool vsync, int msaa_samples)
+void apeiron::engine::Sdl_window_wrapper::init(std::string_view title, int init_flags,
+    int width, int height, bool fullscreen,
+    int gl_major, int gl_minor, bool gl_core,
+    bool vsync, int msaa_samples)
 {
-  SDL_Init(SDL_INIT_VIDEO);
+  SDL_Init(init_flags);
 
   if (gl_core) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);

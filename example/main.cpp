@@ -24,7 +24,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
   try {
     settings = apeiron::example::load_settings("settings.toml");
-    window.init("apeiron", 1280, 720, false, 4, 6, true, false, settings.msaa_samples);
+    window.init("apeiron", SDL_INIT_VIDEO, 1280, 720, false, 4, 6, true, false,
+        settings.msaa_samples);
   }
   catch (const apeiron::engine::Warning& w) {
     std::cout << w.what() << std::endl;
