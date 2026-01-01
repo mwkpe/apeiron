@@ -93,6 +93,7 @@ void apeiron::example::Menu::build(example::Settings* settings, float time_s)
     ImGui::Checkbox("Show cubes", &settings->show_cubes);
     ImGui::SameLine();
     ImGui::Checkbox("Rotate", &settings->rotate_cubes);
+    ImGui::Checkbox("Show ground highlight", &settings->show_ground_highlight);
     char world_buffer[64];
     std::memcpy(world_buffer, settings->world_text.data(), 64);
     ImGui::InputText("World text", world_buffer, IM_ARRAYSIZE(world_buffer));
