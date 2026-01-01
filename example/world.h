@@ -40,17 +40,18 @@ public:
   void render();
 
   // Event handling
-  void operator()(const apeiron::engine::Key_down_event& event);
-  void operator()(const apeiron::engine::Key_up_event& event);
-  void operator()(const apeiron::engine::Mouse_button_down_event& event);
-  void operator()(const apeiron::engine::Mouse_button_up_event& event);
-  void operator()(const apeiron::engine::Mouse_wheel_event& event);
-  void operator()(const apeiron::engine::Mouse_motion_event& event);
-  void operator()(const apeiron::engine::Gamepad_button_down_event& event);
-  void operator()(const apeiron::engine::Gamepad_button_up_event& event);
-  void operator()(const apeiron::engine::Gamepad_axis_motion_event& event);
+  template<typename T> void operator()(const T& event)
+  {
+    if constexpr (requires { this->handle_event(event); }) {
+      this->handle_event(event);
+    }
+  }
 
 private:
+  // Event handling
+  void handle_event(const apeiron::engine::Mouse_button_down_event& event);
+  void handle_event(const apeiron::engine::Mouse_motion_event& event);
+
   void update_camera(float delta_time, const engine::Input* input);
 
   const Settings* settings_;

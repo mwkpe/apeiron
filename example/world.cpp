@@ -214,17 +214,7 @@ void apeiron::example::World::render()
 }
 
 
-void apeiron::example::World::operator()([[maybe_unused]] const apeiron::engine::Key_down_event& event)
-{
-}
-
-
-void apeiron::example::World::operator()([[maybe_unused]] const apeiron::engine::Key_up_event& event)
-{
-}
-
-
-void apeiron::example::World::operator()(const engine::Mouse_button_down_event& event)
+void apeiron::example::World::handle_event(const engine::Mouse_button_down_event& event)
 {
   if (event.button == engine::Mouse_button::Left) {
     using namespace engine::collision;
@@ -239,17 +229,7 @@ void apeiron::example::World::operator()(const engine::Mouse_button_down_event& 
 }
 
 
-void apeiron::example::World::operator()([[maybe_unused]] const engine::Mouse_button_up_event& event)
-{
-}
-
-
-void apeiron::example::World::operator()([[maybe_unused]] const engine::Mouse_wheel_event& event)
-{
-}
-
-
-void apeiron::example::World::operator()([[maybe_unused]] const engine::Mouse_motion_event& event)
+void apeiron::example::World::handle_event(const engine::Mouse_motion_event& event)
 {
   if (settings_->show_menu) {
     using namespace engine::collision;
@@ -257,7 +237,6 @@ void apeiron::example::World::operator()([[maybe_unused]] const engine::Mouse_mo
     float norm_x = event.x / settings_->window_width * 2.0f - 1.0f;
     float norm_y = (event.y / settings_->window_height * 2.0f - 1.0f) * -1.0f;
     Ray ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
-    Quad quad{{0.0f, 0.0f, 0.0f}, {2.0f, 0.0f, 0.0f}, {2.0f, 0.0f, 2.0f}, {0.0f, 0.0f, 2.0f}};
     Plane plane{{0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};
 
     ground_highlight_.set_visible(false);
@@ -269,24 +248,5 @@ void apeiron::example::World::operator()([[maybe_unused]] const engine::Mouse_mo
         ground_highlight_.set_visible(true);
       }
     }
-
-    if (intersects(ray, quad)) {
-      light_.switch_on();
-    }
   }
-}
-
-
-void apeiron::example::World::operator()([[maybe_unused]] const apeiron::engine::Gamepad_button_down_event& event)
-{
-}
-
-
-void apeiron::example::World::operator()([[maybe_unused]] const apeiron::engine::Gamepad_button_up_event& event)
-{
-}
-
-
-void apeiron::example::World::operator()([[maybe_unused]] const apeiron::engine::Gamepad_axis_motion_event& event)
-{
 }
