@@ -71,14 +71,14 @@ void apeiron::example::Menu::setup(example::Settings* settings)
 }
 
 
-void apeiron::example::Menu::build(example::Settings* settings, float time)
+void apeiron::example::Menu::build(example::Settings* settings, float time_s)
 {
   auto& io = ImGui::GetIO();
 
   create_frame();
   {
     ImGui::Begin("Debug view (F1)");
-    ImGui::Text("Time: %.2f", time);
+    ImGui::Text("Time: %.2f", time_s);
     ImGui::Text("Framerate: %.0f fps", io.Framerate);
     ImGui::Text("Frametime: %.3f ms", 1000.0f / io.Framerate);
     ImGui::Checkbox("Vsync (req. restart)", &settings->vsync);

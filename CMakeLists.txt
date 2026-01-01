@@ -23,7 +23,6 @@ add_executable(apeiron_example
     example/menu.cpp
     example/menu.h
     example/cube.h
-    example/cylinder.h
     example/ground_highlight.h
     example/world.cpp
     example/world.h)

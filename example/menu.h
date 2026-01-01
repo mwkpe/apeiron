@@ -14,7 +14,7 @@ class Menu final : public opengl::Gui
 public:
   Menu(SDL_Window* window, SDL_GLContext context) : opengl::Gui{window, context} {}
   void setup(example::Settings* settings);
-  void build(example::Settings* settings, float time);
+  void build(example::Settings* settings, float time_s);
   [[nodiscard]] bool has_mouse() const { return has_mouse_; }
 
 private:

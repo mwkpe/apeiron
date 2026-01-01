@@ -19,6 +19,9 @@ add_library(apeiron STATIC
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/model_loader.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/primitive.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/primitive.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/sdl_input.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/sdl_window_wrapper.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/sdl_window_wrapper.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/transform.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/transform.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/vertex.h
