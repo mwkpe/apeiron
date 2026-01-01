@@ -9,7 +9,7 @@
 namespace {
 
 
-GLint translate(apeiron::Texture_filter texture_filter)
+GLint as_gl(apeiron::Texture_filter texture_filter)
 {
   switch (texture_filter) {
     case apeiron::Texture_filter::Nearest: return GL_NEAREST;
@@ -21,7 +21,7 @@ GLint translate(apeiron::Texture_filter texture_filter)
 }
 
 
-GLint translate(apeiron::Wrap_mode wrap_mode)
+GLint as_gl(apeiron::Wrap_mode wrap_mode)
 {
   switch (wrap_mode) {
     case apeiron::Wrap_mode::Repeat: return GL_REPEAT;
@@ -33,7 +33,7 @@ GLint translate(apeiron::Wrap_mode wrap_mode)
 }
 
 
-GLint translate(apeiron::Pixel_format pixel_format)
+GLint as_gl(apeiron::Pixel_format pixel_format)
 {
   switch (pixel_format) {
     case apeiron::Pixel_format::Rgb: return GL_RGB;
@@ -65,11 +65,13 @@ apeiron::opengl::Texture::Texture(Texture&& other) noexcept
 
 auto apeiron::opengl::Texture::operator=(Texture&& other) noexcept -> Texture&
 {
-  if (&other == this)
+  if (&other == this) {
     return *this;
+  }
 
-  if (id_ > 0)
+  if (id_ > 0) {
     glDeleteTextures(1, &id_);
+  }
 
   id_ = other.id_;
   other.id_ = 0;
@@ -87,8 +89,9 @@ auto apeiron::opengl::Texture::operator=(Texture&& other) noexcept -> Texture&
 
 apeiron::opengl::Texture::~Texture()
 {
-  if (id_ > 0)
+  if (id_ > 0) {
     glDeleteTextures(1, &id_);
+  }
 }
 
 
@@ -114,14 +117,16 @@ void apeiron::opengl::Texture::load(std::string_view filename, Pixel_format pixe
     case Pixel_format::Rgb:
     [[fallthrough]];
     case Pixel_format::Bgr:
-      if (channel_count != 3)
+      if (channel_count != 3) {
         throw engine::Error{"Image format error"};
+      }
     break;
     case Pixel_format::Rgba:
     [[fallthrough]];
     case Pixel_format::Bgra:
-      if (channel_count != 4)
+      if (channel_count != 4) {
         throw engine::Error{"Image format error"};
+      }
     break;
   }
 
@@ -140,36 +145,39 @@ void apeiron::opengl::Texture::create(const std::uint8_t* pixel,
   glGenTextures(1, &id_);
   glBindTexture(GL_TEXTURE_2D, id_);
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, translate(wrap_mode_s_));
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, translate(wrap_mode_t_));
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, translate(min_filter_));
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, translate(mag_filter_));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, as_gl(wrap_mode_s_));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, as_gl(wrap_mode_t_));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, as_gl(min_filter_));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, as_gl(mag_filter_));
 
-  if (anisotropy_level_ > 1)
+  if (anisotropy_level_ > 1) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy_level_);
+  }
 
-  if (unpack_alignment_ != 4)
+  if (unpack_alignment_ != 4) {
     glPixelStorei(GL_UNPACK_ALIGNMENT, unpack_alignment_);
+  }
 
   switch (pixel_format) {
     case Pixel_format::Rgb:
     [[fallthrough]];
     case Pixel_format::Bgr:
       glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0,
-          translate(pixel_format), GL_UNSIGNED_BYTE, pixel);
+          as_gl(pixel_format), GL_UNSIGNED_BYTE, pixel);
     break;
     case Pixel_format::Rgba:
     [[fallthrough]];
     case Pixel_format::Bgra:
       glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0,
-          translate(pixel_format), GL_UNSIGNED_BYTE, pixel);
+          as_gl(pixel_format), GL_UNSIGNED_BYTE, pixel);
     break;
   }
 
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);  // Set back to default
 
-  if (generate_mipmap_)
+  if (generate_mipmap_) {
     glGenerateMipmap(GL_TEXTURE_2D);
+  }
 }
 
 
@@ -177,10 +185,13 @@ void apeiron::opengl::Texture::update(const std::uint8_t* pixel, int width, int 
     Pixel_format pixel_format) const
 {
   glBindTexture(GL_TEXTURE_2D, id_);
-  if (unpack_alignment_ != 4)
+
+  if (unpack_alignment_ != 4) {
     glPixelStorei(GL_UNPACK_ALIGNMENT, unpack_alignment_);
+  }
+
   glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height,
-      translate(pixel_format), GL_UNSIGNED_BYTE, pixel);
+      as_gl(pixel_format), GL_UNSIGNED_BYTE, pixel);
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);  // Set back to default
 }
 

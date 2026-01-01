@@ -65,16 +65,16 @@ void apeiron::engine::Camera::move(Direction direction, float distance)
   switch (direction) {
     case Direction::Forward:
       position_ += front_ * distance;
-      break;
+    break;
     case Direction::Backward:
       position_ -= front_ * distance;
-      break;
+    break;
     case Direction::Left:
       position_ -= glm::normalize(glm::cross(front_, world_up_)) * distance;
-      break;
+    break;
     case Direction::Right:
       position_ += glm::normalize(glm::cross(front_, world_up_)) * distance;
-      break;
+    break;
   }
 }
 

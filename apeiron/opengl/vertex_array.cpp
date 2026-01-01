@@ -28,7 +28,7 @@ template<typename T> concept index_vertex = requires(T v) {
 };
 
 
-GLenum to_gl(apeiron::opengl::Usage_hint hint)
+GLenum as_gl(apeiron::opengl::Usage_hint hint)
 {
   switch (hint) {
     case apeiron::opengl::Usage_hint::Static: return GL_STATIC_DRAW;
@@ -123,7 +123,7 @@ template<typename T> void apeiron::opengl::Vertex_array::set_buffers(const std::
 
   vertex_size_ = sizeof(T);
   vertex_count_ = vertices.size();
-  usage_hint_ = to_gl(hint);
+  usage_hint_ = as_gl(hint);
   const auto stride = static_cast<int>(vertex_size_);
 
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);

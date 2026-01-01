@@ -25,13 +25,13 @@ void main()
   switch (color_mode) {
     case 0:
       object_color = texture(texture2d, texcoord);
-      break;
+    break;
     case 1:
       object_color = vertex_color;
-      break;
+    break;
     case 2:
       object_color = color;
-      break;
+    break;
     default:
       object_color = vec4(1.0, 0.0, 1.0, 1.0);
   }

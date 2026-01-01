@@ -40,6 +40,7 @@ void main()
     vec3 pos = a_position * scale + translation;
     gl_Position = projection * vec4(pos, 1.0);
   }
+
   texcoord = a_texcoord;
   vertex_color = a_color;
 }

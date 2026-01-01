@@ -12,14 +12,17 @@ namespace apeiron::engine::detail {
 
 constexpr std::uint8_t as_decimal(const char c)
 {
-  if (c >= '0' && c <= '9')
+  if (c >= '0' && c <= '9') {
     return c - '0';
+  }
 
-  if (c >= 'A' && c <= 'F')
+  if (c >= 'A' && c <= 'F') {
     return c - 'A' + 10;
+  }
 
-  if (c >= 'a' && c <= 'f')
+  if (c >= 'a' && c <= 'f') {
     return c - 'a' + 10;
+  }
 
   return 255;
 }
@@ -33,8 +36,9 @@ namespace apeiron::engine {
 
 constexpr glm::vec3 as_rgb(std::string_view hex_code)
 {
-  if (hex_code.size() < 7 || hex_code[0] != '#')
+  if (hex_code.size() < 7 || hex_code[0] != '#') {
     return {0xff, 0xff, 0xff};
+  }
 
   return {
       detail::as_decimal(hex_code[1]) << 4 | detail::as_decimal(hex_code[2]),
@@ -46,8 +50,9 @@ constexpr glm::vec3 as_rgb(std::string_view hex_code)
 
 constexpr glm::vec4 as_rgba(std::string_view hex_code)
 {
-  if (hex_code.size() < 9 || hex_code[0] != '#')
+  if (hex_code.size() < 9 || hex_code[0] != '#') {
     return {0xff, 0xff, 0xff, 0xff};
+  }
 
   return {
       detail::as_decimal(hex_code[1]) << 4 | detail::as_decimal(hex_code[2]),
@@ -106,8 +111,9 @@ constexpr glm::vec4 as_rgba_norm(std::uint8_t r, std::uint8_t g, std::uint8_t b,
 
 constexpr std::uint32_t as_rgb_uint(std::string_view hex_code)
 {
-  if (hex_code.size() < 7 || hex_code[0] != '#')
+  if (hex_code.size() < 7 || hex_code[0] != '#') {
     return 0xff << 24 | 0xff << 16 | 0xff << 8 | 0x0;
+  }
 
   auto r = detail::as_decimal(hex_code[1]) << 4 | detail::as_decimal(hex_code[2]);
   auto g = detail::as_decimal(hex_code[3]) << 4 | detail::as_decimal(hex_code[4]);
@@ -124,8 +130,9 @@ constexpr std::uint32_t as_rgb_uint(std::string_view hex_code)
 
 constexpr std::uint32_t as_rgba_uint(std::string_view hex_code)
 {
-  if (hex_code.size() < 9 || hex_code[0] != '#')
+  if (hex_code.size() < 9 || hex_code[0] != '#') {
     return 0xff << 24 | 0xff << 16 | 0xff << 8 | 0xff;
+  }
 
   auto r = detail::as_decimal(hex_code[1]) << 4 | detail::as_decimal(hex_code[2]);
   auto g = detail::as_decimal(hex_code[3]) << 4 | detail::as_decimal(hex_code[4]);
