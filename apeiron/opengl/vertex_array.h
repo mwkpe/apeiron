@@ -5,12 +5,10 @@
 #include <cstdint>
 #include <vector>
 #include "apeiron/engine/vertex.h"
+#include "apeiron/opengl/enums.h"
 
 
 namespace apeiron::opengl {
-
-
-enum class Usage_hint { Static, Dynamic, Stream};
 
 
 class Vertex_array

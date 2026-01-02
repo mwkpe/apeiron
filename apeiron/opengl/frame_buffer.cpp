@@ -29,8 +29,9 @@ apeiron::opengl::Frame_buffer::Frame_buffer(Frame_buffer&& other) noexcept
 
 auto apeiron::opengl::Frame_buffer::operator=(Frame_buffer&& other) noexcept -> Frame_buffer&
 {
-  if (&other == this)
+  if (&other == this) {
     return *this;
+  }
 
   delete_buffers();
 
@@ -97,7 +98,7 @@ void apeiron::opengl::Frame_buffer::delete_buffers()
 
 
 void apeiron::opengl::Frame_buffer::init(std::int32_t width, std::int32_t height,
-    std::int32_t samples)
+    std::int32_t samples, Texture_filter filter)
 {
   delete_buffers();
 
@@ -140,8 +141,8 @@ void apeiron::opengl::Frame_buffer::init(std::int32_t width, std::int32_t height
   glGenTextures(1, &color_buffer_id_);
   glBindTexture(GL_TEXTURE_2D, color_buffer_id_);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, as_gl(filter));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, as_gl(filter));
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_buffer_id_, 0);
 
   if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {

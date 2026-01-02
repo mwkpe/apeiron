@@ -28,18 +28,6 @@ template<typename T> concept index_vertex = requires(T v) {
 };
 
 
-GLenum as_gl(apeiron::opengl::Usage_hint hint)
-{
-  switch (hint) {
-    case apeiron::opengl::Usage_hint::Static: return GL_STATIC_DRAW;
-    case apeiron::opengl::Usage_hint::Dynamic: return GL_DYNAMIC_DRAW;
-    case apeiron::opengl::Usage_hint::Stream: return GL_STREAM_DRAW;
-  }
-
-  return GL_STATIC_DRAW;
-}
-
-
 }  // namespace
 
 

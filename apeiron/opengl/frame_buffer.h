@@ -3,6 +3,7 @@
 
 
 #include <cstdint>
+#include "apeiron/opengl/enums.h"
 
 
 namespace apeiron::opengl {
@@ -18,7 +19,8 @@ public:
   Frame_buffer& operator=(const Frame_buffer&) = delete;
   Frame_buffer& operator=(Frame_buffer&&) noexcept;
 
-  void init(std::int32_t width, std::int32_t height, std::int32_t samples = 1);
+  void init(std::int32_t width, std::int32_t height, std::int32_t samples = 1,
+      Texture_filter filter = Texture_filter::Linear);
   void init_depth_buffer(std::int32_t width, std::int32_t height);
   void init_depth_buffer_cube(std::int32_t width, std::int32_t height);
 

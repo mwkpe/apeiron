@@ -25,7 +25,7 @@ void apeiron::example::World::init()
   auto aspect_ratio = static_cast<float>(settings_->window_width) / settings_->window_height;
   renderer_.preset_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 500.0f));
 
-  cube_texture_.load("assets/textures/ab_crate_a.png", Pixel_format::Rgba);
+  cube_texture_.load("assets/textures/ab_crate_a.png", apeiron::opengl::Pixel_format::Rgba);
 
   // Letter spacing and height must be measured for now, values taken from roboto_mono.toml
   font_ = engine::load_font<engine::Vertex_simple>("assets/fonts/mesh/roboto_mono.obj",

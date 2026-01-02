@@ -6,49 +6,6 @@
 #include "apeiron/engine/image_loader.h"
 
 
-namespace {
-
-
-GLint as_gl(apeiron::Texture_filter texture_filter)
-{
-  switch (texture_filter) {
-    case apeiron::Texture_filter::Nearest: return GL_NEAREST;
-    case apeiron::Texture_filter::Linear:
-    [[fallthrough]];
-    default:
-      return GL_LINEAR;
-  }
-}
-
-
-GLint as_gl(apeiron::Wrap_mode wrap_mode)
-{
-  switch (wrap_mode) {
-    case apeiron::Wrap_mode::Repeat: return GL_REPEAT;
-    case apeiron::Wrap_mode::Clamp_to_edge:
-    [[fallthrough]];
-    default:
-      return GL_CLAMP_TO_EDGE;
-  }
-}
-
-
-GLint as_gl(apeiron::Pixel_format pixel_format)
-{
-  switch (pixel_format) {
-    case apeiron::Pixel_format::Rgb: return GL_RGB;
-    case apeiron::Pixel_format::Rgba: return GL_RGBA;
-    case apeiron::Pixel_format::Bgr: return GL_BGR;
-    case apeiron::Pixel_format::Bgra: return GL_BGRA;
-  }
-
-  return 0;
-}
-
-
-}  // namespace
-
-
 apeiron::opengl::Texture::Texture(Texture&& other) noexcept
 {
   id_ = other.id_;

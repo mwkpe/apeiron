@@ -4,17 +4,7 @@
 
 #include <cstdint>
 #include <string_view>
-
-
-namespace apeiron {
-
-
-enum class Texture_filter { Linear, Nearest };
-enum class Wrap_mode { Clamp_to_edge, Repeat };
-enum class Pixel_format { Rgb, Rgba, Bgr, Bgra };
-
-
-}  // apeiron
+#include "apeiron/opengl/enums.h"
 
 
 namespace apeiron::opengl {

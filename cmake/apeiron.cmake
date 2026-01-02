@@ -31,6 +31,8 @@ add_library(apeiron STATIC
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/cuboid.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/cylinder.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/cylinder.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/enums.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/enums.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/frame_buffer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/frame_buffer.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/grid.cpp
