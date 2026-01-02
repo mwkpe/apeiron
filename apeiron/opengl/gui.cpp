@@ -2,7 +2,6 @@
 
 
 #include <string>
-#include <glad/glad.h>
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_sdl3.h"
@@ -33,8 +32,6 @@ void apeiron::opengl::Gui::create_frame()
 
 void apeiron::opengl::Gui::render() const
 {
-  auto& io = ImGui::GetIO();
   ImGui::Render();
-  glViewport(0, 0, static_cast<GLint>(io.DisplaySize.x), static_cast<GLint>(io.DisplaySize.y));
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
