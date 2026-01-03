@@ -14,11 +14,13 @@ class Grid final : public engine::Entity
 {
 public:
   Grid() = default;
-  Grid(const glm::vec2& size, std::size_t x_steps, std::size_t y_steps,
-      const glm::vec4& color, float line_width = 1.0f);
-  void init(const glm::vec2& size, std::size_t x_steps, std::size_t y_steps,
-      const glm::vec4& color, float line_width = 1.0f);
-  void render() const override { grid_.render(); }
+  Grid(const glm::vec2& size, const glm::uvec2& cells,
+      const glm::vec4& color, bool edge = true, float line_width = 1.0f);
+  void init(const glm::vec2& size, const glm::uvec2& cells,
+      const glm::vec4& color, bool edge = true, float line_width = 1.0f);
+  [[nodiscard]] glm::vec2 size() const { return grid_.size(); }
+  [[nodiscard]] glm::uvec2 cells() const { return grid_.cells(); }
+  void render() const override { grid_.render(); };
 
 private:
   opengl::Grid grid_;

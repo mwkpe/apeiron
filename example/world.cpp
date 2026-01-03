@@ -8,7 +8,7 @@
 apeiron::example::World::World(const Settings* settings) : settings_{settings},
       camera_{-45.0f, -130.0f, {10.0f, 15.0f, 10.0f}},
       axes_{8, 0.01f, 5.0f},
-      grid_{{28.0f, 28.0f}, 28, 28, {0.25f, 0.25f, 0.25f, 1.0f}, 1.0f},
+      grid_{{28.0f, 28.0f}, {28, 28}, {0.25f, 0.25f, 0.25f, 1.0f}},
       light_{&bulb_},
       cube_{&cube_model_, 0.0f, 0.0f, 0.0f}
 {

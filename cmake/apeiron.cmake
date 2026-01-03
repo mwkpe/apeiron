@@ -68,7 +68,6 @@ add_library(apeiron STATIC
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/text.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/light.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/teapot.h
-    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/utility/linear_range.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/utility/timer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/utility/timer.h)
 

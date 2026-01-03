@@ -1,15 +1,15 @@
 #include "grid.h"
 
 
-apeiron::prefab::Grid::Grid(const glm::vec2& size, std::size_t x_steps,
-    std::size_t y_steps, const glm::vec4& color, float line_width) :
-    grid_{size, x_steps, y_steps, color, line_width}
+apeiron::prefab::Grid::Grid(const glm::vec2& size, const glm::uvec2& cells,
+    const glm::vec4& color, bool edge, float line_width)
+    : grid_{size, cells, color, edge, line_width}
 {
 }
 
 
-void apeiron::prefab::Grid::init(const glm::vec2& size, std::size_t x_steps,
-    std::size_t y_steps, const glm::vec4& color, float line_width)
+void apeiron::prefab::Grid::init(const glm::vec2& size, const glm::uvec2& cells,
+    const glm::vec4& color, bool edge, float line_width)
 {
-  grid_.init(size, x_steps, y_steps, color, line_width);
+  grid_.init(size, cells, color, edge, line_width);
 }
