@@ -242,7 +242,7 @@ void apeiron::example::World::handle_event(const engine::Mouse_motion_event& eve
     ground_highlight_.set_visible(false);
 
     if (auto point = intersection_point(ray, plane)) {
-      if (point->x > -24.0f && point->x < 24.0f && point->z > -24.0f && point->z < 24.0f) {
+      if (point->x > -14.0f && point->x < 14.0f && point->z > -14.0f && point->z < 14.0f) {
         ground_highlight_.transform()
             .set_position(std::floor(point->x) + 0.5f, 0.0f, std::floor(point->z) + 0.5f);
         ground_highlight_.set_visible(true);
