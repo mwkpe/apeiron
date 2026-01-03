@@ -14,8 +14,13 @@ namespace apeiron::utility {
 class Timer
 {
 public:
-  explicit Timer();
-  explicit Timer(std::string_view name);
+  Timer() = default;
+  explicit Timer(bool autostart);
+  Timer(std::string_view name, bool autostart = false);
+  Timer(const Timer&) = delete;
+  Timer(Timer&& other) = delete;
+  Timer& operator=(const Timer&) = delete;
+  Timer& operator=(Timer&& other) = delete;
 
   template<typename T = std::int64_t> static T system_now();
   template<typename T = std::int64_t> static T high_res_now();
@@ -29,11 +34,12 @@ public:
   [[nodiscard]] float elapsed_s() const { return static_cast<float>(elapsed_) / 1000.0f; }
 
 private:
-  void print_message();
-  std::uint32_t invokation_ = 0;
+  void print_message() const;
+  std::uint32_t invocation_ = 0;
   std::string name_;
-  std::chrono::high_resolution_clock::time_point start_;
+  std::chrono::steady_clock::time_point start_;
   std::uint64_t elapsed_ = 0;
+  bool running_ = false;
 };
 
 
@@ -42,23 +48,14 @@ class Scope_timer
 public:
   explicit Scope_timer(std::string_view name);
   ~Scope_timer();
+  Scope_timer(const Scope_timer&) = delete;
+  Scope_timer(Scope_timer&&) = delete;
+  Scope_timer& operator=(const Scope_timer&) = delete;
+  Scope_timer& operator=(Scope_timer&&) = delete;
 
 private:
   std::string name_;
-  std::chrono::high_resolution_clock::time_point start_;
-};
-
-
-class Duration_timer
-{
-public:
-  explicit Duration_timer(int duration, bool autostart = false);
-  void start();
-  bool test();
-
-private:
-  int duration_;
-  std::chrono::high_resolution_clock::time_point start_;
+  std::chrono::steady_clock::time_point start_;
 };
 
 
