@@ -75,6 +75,10 @@ apeiron::opengl::Grid::Grid(const glm::vec2& size, const glm::uvec2& cells,
 void apeiron::opengl::Grid::init(const glm::vec2& size, const glm::uvec2& cells,
     const glm::vec4& color, bool edge, float line_width)
 {
+  if (cells.x == 0 || cells.y == 0 || (!edge && (cells.x < 2 || cells.y < 2))) {
+    return;
+  }
+
   size_ = size;
   line_width_ = line_width;
 
