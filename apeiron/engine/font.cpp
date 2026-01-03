@@ -10,10 +10,13 @@ template<typename T> auto apeiron::engine::load_font(std::string_view filename,
 {
   Font<T> font;
   auto model = engine::load_model<T>(filename);
-  std::uint32_t index = 0;
 
-  for (const auto& mesh : model.meshes) {
-    font.glyphs.emplace_back(mesh.vertices, index++, glyph_size);
+  // Empty glyph for space character (model contains placeholder)
+  font.glyphs.emplace_back(std::vector<T>{}, 0, glyph_size);
+
+  // Skip over placeholder for space character
+  for (std::size_t i=1; i<model.meshes.size(); ++i) {
+    font.glyphs.emplace_back(model.meshes[i].vertices, i, glyph_size);
   }
 
   return font;

@@ -7,7 +7,9 @@
 namespace {
 
 
-constexpr auto is_printable_ascii = std::views::filter([](const auto& c) { return c > 21 && c < 127; });
+// Excluding DEL (127)
+constexpr auto is_printable_ascii = std::views::filter(
+    [](const auto& c) { return c > 31 && c < 127; });
 
 
 void add_glyph(auto& vertices, auto& entries, const auto& glyph, const glm::vec3& pos)
@@ -16,18 +18,15 @@ void add_glyph(auto& vertices, auto& entries, const auto& glyph, const glm::vec3
 
   entry.first_vertex = entries.empty() ? 0 :
       entries.back().first_vertex + entries.back().vertex_count;
-  entry.vertex_count = glyph.index > 0 ? glyph.vertices.size() : 0;
+  entry.vertex_count = glyph.vertices.size();
   entry.size = glyph.size;
 
   entries.push_back(entry);
 
-  // Ignore space character
-  if (glyph.index > 0) {
-    for (auto v : glyph.vertices) {
-      float offset = static_cast<float>(glyph.index) * glyph.size.x;
-      v.position.x += pos.x - offset;
-      vertices.push_back(v);
-    }
+  for (auto v : glyph.vertices) {
+    float offset = static_cast<float>(glyph.index) * glyph.size.x;
+    v.position.x += pos.x - offset;
+    vertices.push_back(v);
   }
 }
 

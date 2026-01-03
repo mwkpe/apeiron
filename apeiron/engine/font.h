@@ -2,6 +2,7 @@
 #define APEIRON_ENGINE_FONT_H
 
 
+#include <cstdint>
 #include <string_view>
 #include <glm/glm.hpp>
 #include "apeiron/engine/vertex.h"
