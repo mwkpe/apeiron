@@ -18,7 +18,7 @@ std::string read_file(std::string_view file_path)
     return ss.str();
   }
   else {
-    throw apeiron::engine::Error{"Could not open shader file", file_path};
+    throw apeiron::engine::Error::format("Could not open shader file: {}", file_path);
   }
 }
 
