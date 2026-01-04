@@ -24,22 +24,6 @@ template std::int64_t apeiron::utility::Timer::high_res_now();
 template std::uint64_t apeiron::utility::Timer::high_res_now();
 
 
-apeiron::utility::Timer::Timer(bool autostart)
-{
-  if (autostart) {
-    start();
-  }
-}
-
-
-apeiron::utility::Timer::Timer(std::string_view name, bool autostart) : name_{name}
-{
-  if (autostart) {
-    start();
-  }
-}
-
-
 void apeiron::utility::Timer::start()
 {
   invocation_++;

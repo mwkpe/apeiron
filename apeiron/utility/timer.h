@@ -15,8 +15,7 @@ class Timer
 {
 public:
   Timer() = default;
-  explicit Timer(bool autostart);
-  Timer(std::string_view name, bool autostart = false);
+  explicit Timer(std::string_view name) : name_{name} {}
   Timer(const Timer&) = delete;
   Timer(Timer&& other) = delete;
   Timer& operator=(const Timer&) = delete;
