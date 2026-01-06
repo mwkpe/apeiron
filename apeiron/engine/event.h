@@ -75,14 +75,6 @@ struct Key_up_event
   std::uint16_t keymod;
 };
 
-struct Mouse_motion_event
-{
-  float x;
-  float y;
-  float x_rel;
-  float y_rel;
-};
-
 struct Mouse_button_down_event
 {
   Mouse_button button;
@@ -101,6 +93,14 @@ struct Mouse_wheel_event
 {
   float x;
   float y;
+};
+
+struct Mouse_motion_event
+{
+  float x;
+  float y;
+  float x_rel;
+  float y_rel;
 };
 
 struct Gamepad_button_down_event

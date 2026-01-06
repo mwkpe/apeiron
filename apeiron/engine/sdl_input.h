@@ -4,15 +4,16 @@
 
 #include <cstdint>
 #include <SDL3/SDL.h>
+#include "apeiron/engine/event.h"
 #include "apeiron/engine/input.h"
 
 
 namespace apeiron::engine {
 
 
-inline apeiron::engine::Input get_input_state()
+inline Input get_input_state()
 {
-  apeiron::engine::Input input;
+  Input input;
   const bool* kb_state = SDL_GetKeyboardState(nullptr);
 
   input.forward = kb_state[SDL_SCANCODE_UP] || kb_state[SDL_SCANCODE_E];
@@ -34,7 +35,7 @@ inline apeiron::engine::Input get_input_state()
 }
 
 
-inline apeiron::engine::Mouse_button get_mouse_button(std::uint8_t button)
+inline Mouse_button get_mouse_button(std::uint8_t button)
 {
   using namespace apeiron::engine;
 
@@ -51,7 +52,7 @@ inline apeiron::engine::Mouse_button get_mouse_button(std::uint8_t button)
 }
 
 
-inline apeiron::engine::Gamepad_button get_controller_button(SDL_GamepadButton button)
+inline Gamepad_button get_controller_button(SDL_GamepadButton button)
 {
   using namespace apeiron::engine;
 
@@ -89,7 +90,7 @@ inline apeiron::engine::Gamepad_button get_controller_button(SDL_GamepadButton b
 }
 
 
-inline apeiron::engine::Gamepad_axis get_controller_axis(SDL_GamepadAxis axis)
+inline Gamepad_axis get_controller_axis(SDL_GamepadAxis axis)
 {
   using namespace apeiron::engine;
 
@@ -104,6 +105,53 @@ inline apeiron::engine::Gamepad_axis get_controller_axis(SDL_GamepadAxis axis)
   }
 
   return Gamepad_axis::Unknown;
+}
+
+
+void get_input_events(const SDL_Event& sdl_event, Event_queue& events, bool process_mouse_input)
+{
+  switch (sdl_event.type) {
+    case SDL_EVENT_KEY_DOWN: {
+      if (sdl_event.key.repeat == 0) {
+        events.emplace_back(Key_down_event{sdl_event.key.key, sdl_event.key.mod});
+      }
+    }
+    break;
+    case SDL_EVENT_KEY_UP: {
+      events.emplace_back(Key_up_event{sdl_event.key.key, sdl_event.key.mod});
+    }
+    break;
+    case SDL_EVENT_MOUSE_MOTION: {
+      if (process_mouse_input) {
+        events.emplace_back(Mouse_motion_event{sdl_event.motion.x, sdl_event.motion.y,
+            sdl_event.motion.xrel, sdl_event.motion.yrel});
+      }
+    }
+    break;
+    case SDL_EVENT_MOUSE_BUTTON_DOWN: {
+      if (process_mouse_input) {
+        events.emplace_back(Mouse_button_down_event{
+            get_mouse_button(sdl_event.button.button),
+            sdl_event.button.x,
+            sdl_event.button.y});
+      }
+    }
+    break;
+    case SDL_EVENT_MOUSE_BUTTON_UP: {
+      if (process_mouse_input) {
+        events.emplace_back(Mouse_button_up_event{
+            get_mouse_button(sdl_event.button.button),
+            sdl_event.button.x,
+            sdl_event.button.y});
+      }
+    }
+    break;
+    case SDL_EVENT_MOUSE_WHEEL: {
+      events.emplace_back(Mouse_wheel_event{sdl_event.wheel.x, sdl_event.wheel.y});
+    }
+    break;
+    default:;
+  }
 }
 
 

@@ -33,6 +33,11 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     window.init("apeiron", SDL_INIT_VIDEO, 1280, 720, false, 4, 6, true, false,
         settings.msaa_samples);
 
+    glCullFace(GL_BACK);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+
     std::cout << "Video driver: " << SDL_GetCurrentVideoDriver() << std::endl;
   }
   catch (const apeiron::engine::Error& e) {
@@ -77,12 +82,15 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     float delta_time_s = static_cast<float>(elapsed_ticks) / 1000'000'000.0f;
     auto time_s = static_cast<float>(SDL_GetTicks()) / 1000.0f;
 
+    events.clear();
     SDL_Event event;
 
     while (SDL_PollEvent(&event)) {
       if (settings.show_menu) {
         menu.process(&event);
       }
+
+      apeiron::engine::get_input_events(event, events, !menu.has_mouse());
 
       settings.quit = event.type == SDL_EVENT_QUIT;
 
@@ -110,44 +118,12 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
               break;
           }
         } break;
-        case SDL_EVENT_MOUSE_MOTION: {
-          if (!menu.has_mouse()) {
-            events.emplace_back(apeiron::engine::Mouse_motion_event{event.motion.x, event.motion.y,
-                event.motion.xrel, event.motion.yrel});
-          }
-        } break;
-        case SDL_EVENT_MOUSE_BUTTON_UP: {
-          if (!menu.has_mouse()) {
-            events.emplace_back(apeiron::engine::Mouse_button_up_event{
-                apeiron::engine::get_mouse_button(event.button.button),
-                event.button.x, event.button.y});
-          }
-        } break;
-        case SDL_EVENT_MOUSE_BUTTON_DOWN: {
-          if (!menu.has_mouse()) {
-              events.emplace_back(apeiron::engine::Mouse_button_down_event{
-                  apeiron::engine::get_mouse_button(event.button.button),
-                  event.button.x, event.button.y});
-          }
-        } break;
-        case SDL_EVENT_MOUSE_WHEEL: {
-          if (!menu.has_mouse()) {
-            events.emplace_back(apeiron::engine::Mouse_wheel_event{event.wheel.x, event.wheel.y});
-          }
-        } break;
-        default:;
       }
     }
 
     auto input = apeiron::engine::get_input_state();
+
     world.update(time_s, delta_time_s, events, &input);
-    events.clear();
-
-    glCullFace(GL_BACK);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-
     world.render();
 
     if (settings.show_menu) {
