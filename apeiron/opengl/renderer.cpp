@@ -15,6 +15,12 @@ void apeiron::opengl::Renderer::init()
   shader_.set_uniform("clip_scene", false);
   shader_.set_uniform("color_mode", 0xFF);
   shader_.set_uniform("texture2d", 0);
+
+  glCullFace(GL_BACK);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_CULL_FACE);
 }
 
 
@@ -24,9 +30,40 @@ void apeiron::opengl::Renderer::use()
 }
 
 
-void apeiron::opengl::Renderer::set_viewport(int x, int y, int w, int h) const
+void apeiron::opengl::Renderer::set_gl_viewport(std::int32_t x, std::int32_t y,
+    std::int32_t w, std::int32_t h)
 {
   glViewport(x, y, w, h);
+}
+
+
+void apeiron::opengl::Renderer::set_gl_frame_buffer(std::int32_t id)
+{
+  glBindFramebuffer(GL_FRAMEBUFFER, id);
+}
+
+
+void apeiron::opengl::Renderer::set_gl_wireframe(bool wireframe)
+{
+  if (wireframe) {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  }
+  else {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  }
+}
+
+
+void apeiron::opengl::Renderer::set_gl_color_mask(bool r, bool g, bool b, bool a)
+{
+  glColorMask(r, g, b, a);
+}
+
+
+void apeiron::opengl::Renderer::gl_clear(float r, float g, float b)
+{
+  glClearColor(r, g, b, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 
@@ -85,58 +122,6 @@ void apeiron::opengl::Renderer::set_view_projection()
 }
 
 
-void apeiron::opengl::Renderer::set_clip_scene(bool clip_scene)
-{
-  if (clip_scene) {
-    glEnable(GL_CLIP_DISTANCE0);
-  }
-  else {
-    glDisable(GL_CLIP_DISTANCE0);
-  }
-
-  shader_.set_uniform("clip_scene", clip_scene);
-}
-
-
-void apeiron::opengl::Renderer::set_clipping_plane(const glm::vec4& plane)
-{
-  shader_.set_uniform("clipping_plane", plane);
-}
-
-
-void apeiron::opengl::Renderer::set_wireframe(bool wireframe) const
-{
-  if (wireframe) {
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  }
-  else {
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-  }
-}
-
-
-void apeiron::opengl::Renderer::set_depth_test(bool depth_test) const
-{
-  if (depth_test) {
-    glEnable(GL_DEPTH_TEST);
-  }
-  else {
-    glDisable(GL_DEPTH_TEST);
-  }
-}
-
-
-void apeiron::opengl::Renderer::set_blend(bool blend) const
-{
-  if (blend) {
-    glEnable(GL_BLEND);
-  }
-  else {
-    glDisable(GL_BLEND);
-  }
-}
-
-
 void apeiron::opengl::Renderer::set_colorize(bool colorize)
 {
   shader_.set_uniform("colorize", colorize);
@@ -155,9 +140,9 @@ void apeiron::opengl::Renderer::set_desaturate(bool desaturate)
 }
 
 
-void apeiron::opengl::Renderer::set_desaturation_factor(float desaturation_factor)
+void apeiron::opengl::Renderer::set_desaturation_strength(float strength)
 {
-  shader_.set_uniform("desaturation_factor", desaturation_factor);
+  shader_.set_uniform("desaturation_strength", strength);
 }
 
 
@@ -176,40 +161,6 @@ void apeiron::opengl::Renderer::set_light_position(const glm::vec3& position)
 void apeiron::opengl::Renderer::set_light_color(const glm::vec4& color)
 {
   shader_.set_uniform("light_color", color);
-}
-
-
-void apeiron::opengl::Renderer::clear() const
-{
-  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-}
-
-
-void apeiron::opengl::Renderer::clear(float r, float g, float b) const
-{
-  glClearColor(r, g, b, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-}
-
-
-void apeiron::opengl::Renderer::clear(const glm::vec3& color) const
-{
-  glClearColor(color.r, color.g, color.b, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-}
-
-
-void apeiron::opengl::Renderer::clear(const glm::vec4& color) const
-{
-  glClearColor(color.r, color.g, color.b, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-}
-
-
-void apeiron::opengl::Renderer::clear_depth_buffer() const
-{
-  glClear(GL_DEPTH_BUFFER_BIT);
 }
 
 

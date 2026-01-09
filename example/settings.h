@@ -18,6 +18,8 @@ struct Settings
   bool vsync = false;
   bool limit_fps = true;
   bool lighting = true;
+  bool invert_color = false;
+  bool desaturate = false;
   bool show_light = true;
   bool show_ground_highlight = false;
   bool show_cubes = false;
@@ -30,6 +32,7 @@ struct Settings
   float camera_speed = 10.0f;
   float camera_sensitivity = 0.02f;
   float light_position_z = -4.0f;
+  float desaturation_strength = 0.0f;
   glm::vec4 main_color = {1.0f, 1.0f, 1.0f, 1.0f};
   std::string world_text = "Hello world!";
   std::string screen_text = "Hello screen!";

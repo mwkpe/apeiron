@@ -130,6 +130,9 @@ void apeiron::example::Menu::build(example::Settings* settings, float time_s)
       set_main_color(ImGui::GetStyle(), ImVec4{0.0f, 1.0f, 0.25f, 1.0f});
       settings->main_color = glm::vec4{0.0f, 1.0f, 0.25f, 1.0f};
     }
+    ImGui::Checkbox("Invert", &settings->invert_color);
+    ImGui::Checkbox("Desaturate", &settings->desaturate);
+    ImGui::SliderFloat("Strength", &settings->desaturation_strength, 0.0f, 1.0f);
     ImGui::Dummy({0.0f, 8.0f});
     if (ImGui::Button("Quit"))
       settings->quit = true;

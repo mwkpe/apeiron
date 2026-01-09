@@ -8,11 +8,10 @@ std::int32_t apeiron::opengl::as_gl(Texture_filter texture_filter)
 {
   switch (texture_filter) {
     case Texture_filter::Nearest: return GL_NEAREST;
-    case Texture_filter::Linear:
-    [[fallthrough]];
-    default:
-      return GL_LINEAR;
+    case Texture_filter::Linear: return GL_LINEAR;
   }
+
+  return GL_LINEAR;
 }
 
 
@@ -20,11 +19,10 @@ std::int32_t apeiron::opengl::as_gl(Wrap_mode wrap_mode)
 {
   switch (wrap_mode) {
     case Wrap_mode::Repeat: return GL_REPEAT;
-    case Wrap_mode::Clamp_to_edge:
-    [[fallthrough]];
-    default:
-      return GL_CLAMP_TO_EDGE;
+    case Wrap_mode::Clamp_to_edge: return GL_CLAMP_TO_EDGE;
   }
+
+  return GL_CLAMP_TO_EDGE;
 }
 
 

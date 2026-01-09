@@ -22,13 +22,19 @@ class Renderer final
 public:
   void init();
   void use();
-  void set_viewport(int x, int y, int w, int h) const;
+
+  // OpenGL
+  static void set_gl_viewport(std::int32_t x, std::int32_t y, std::int32_t w, std::int32_t h);
+  static void set_gl_frame_buffer(std::int32_t id);
+  static void set_gl_wireframe(bool wireframe);
+  static void set_gl_color_mask(bool r, bool g, bool b, bool a);
+  static void gl_clear(float r, float g, float b);
 
   void use_world_space();
   void use_screen_space();
   void use_texture_shading();
-  void use_color_shading();
   void use_vertex_color_shading();
+  void use_color_shading();
 
   void preset_view(const glm::mat4& view) { view_ = view; }
   void preset_projection(const glm::mat4& projection) { projection_ = projection; }
@@ -37,24 +43,15 @@ public:
   void set_projection(const glm::mat4& projection);
   void set_ortho_projection(float width, float height);
   void set_view_projection();
-  void set_clip_scene(bool clip_scene);
-  void set_clipping_plane(const glm::vec4& plane);
-  void set_wireframe(bool wireframe) const;
-  void set_depth_test(bool depth_test) const;
-  void set_blend(bool blend) const;
+
   void set_colorize(bool colorize);
   void set_invert_color(bool invert);
   void set_desaturate(bool desaturate);
-  void set_desaturation_factor(float desaturation_factor);
+  void set_desaturation_strength(float strength);
+
   void set_lighting(bool lighting);
   void set_light_position(const glm::vec3& position);
   void set_light_color(const glm::vec4& color);
-
-  void clear() const;
-  void clear(float r, float g, float b) const;
-  void clear(const glm::vec3& color) const;
-  void clear(const glm::vec4& color) const;
-  void clear_depth_buffer() const;
 
   void render(const engine::Entity& entity);
   void render(const engine::Entity& entity, const glm::vec4& color);

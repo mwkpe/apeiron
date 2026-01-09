@@ -33,11 +33,6 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     window.init("apeiron", SDL_INIT_VIDEO, 1280, 720, false, 4, 6, true, false,
         settings.msaa_samples);
 
-    glCullFace(GL_BACK);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-
     std::cout << "Video driver: " << SDL_GetCurrentVideoDriver() << std::endl;
   }
   catch (const apeiron::engine::Error& e) {

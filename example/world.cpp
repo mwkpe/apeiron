@@ -20,6 +20,7 @@ void apeiron::example::World::init()
   renderer_.init();
   renderer_.set_ortho_projection(static_cast<float>(settings_->window_width),
       static_cast<float>(settings_->window_height));
+  renderer_.set_gl_viewport(0, 0, settings_->window_width, settings_->window_height);
 
   renderer_.use_world_space();
   auto aspect_ratio = static_cast<float>(settings_->window_width) / settings_->window_height;
@@ -158,15 +159,21 @@ void apeiron::example::World::render()
   frame_++;
   auto color = settings_->main_color;
 
-  renderer_.clear(0.06f, 0.06f, 0.06f);
+  renderer_.gl_clear(0.06f, 0.06f, 0.06f);
 
   renderer_.use_world_space();
   renderer_.preset_view(camera_.perspective_view());
   renderer_.set_view_projection();
 
-  renderer_.set_wireframe(settings_->wireframe);
+  renderer_.set_gl_wireframe(settings_->wireframe);
   renderer_.set_lighting(false);
   renderer_.set_colorize(false);
+  renderer_.set_invert_color(settings_->invert_color);
+  renderer_.set_desaturate(settings_->desaturate);
+
+  if (settings_->desaturate) {
+    renderer_.set_desaturation_strength(settings_->desaturation_strength);
+  }
 
   if (settings_->lighting) {
     renderer_.set_light_color(light_.color());
@@ -186,9 +193,9 @@ void apeiron::example::World::render()
 
   if (settings_->show_light) {
     renderer_.set_lighting(false);
-    renderer_.set_wireframe(true);
+    renderer_.set_gl_wireframe(true);
     renderer_.render(light_, light_.color());
-    renderer_.set_wireframe(settings_->wireframe);
+    renderer_.set_gl_wireframe(settings_->wireframe);
   }
 
   renderer_.set_lighting(settings_->lighting && light_.is_on());
