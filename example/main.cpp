@@ -31,7 +31,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
   try {
     window.init("apeiron", SDL_INIT_VIDEO, settings.window_width, settings.window_height,
-        false, 4, 6, true, false, settings.msaa_samples);
+        false, 4, 6, true, settings.vsync, settings.msaa_samples);
 
     std::cout << "Video driver: " << SDL_GetCurrentVideoDriver() << std::endl;
   }
