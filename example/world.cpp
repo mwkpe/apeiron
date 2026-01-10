@@ -159,7 +159,12 @@ void apeiron::example::World::render()
   frame_++;
   auto color = settings_->main_color;
 
-  renderer_.gl_clear(0.06f, 0.06f, 0.06f);
+  if (settings_->invert_color) {
+    renderer_.gl_clear(0.94f, 0.94f, 0.94f);
+  }
+  else {
+    renderer_.gl_clear(0.06f, 0.06f, 0.06f);
+  }
 
   renderer_.use_world_space();
   renderer_.preset_view(camera_.perspective_view());
