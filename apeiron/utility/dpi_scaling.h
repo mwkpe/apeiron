@@ -2,6 +2,8 @@
 #define APEIRON_UTILITY_DPI_SCALING_H
 
 
+#include <memory>
+
 #ifdef _WIN32
   #define WIN32_LEAN_AND_MEAN
   #include <windows.h>
