@@ -14,7 +14,10 @@ add_library(apeiron-gui-sdl3-opengl3
     ${CMAKE_CURRENT_LIST_DIR}/../external/public/imgui/imgui_widgets.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../external/public/imgui/imstb_rectpack.h
     ${CMAKE_CURRENT_LIST_DIR}/../external/public/imgui/imstb_textedit.h
-    ${CMAKE_CURRENT_LIST_DIR}/../external/public/imgui/imstb_truetype.h 
+    ${CMAKE_CURRENT_LIST_DIR}/../external/public/imgui/imstb_truetype.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/sdl_input.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/sdl_window_wrapper.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/sdl_window_wrapper.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/gui.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/gui.h)
 
@@ -27,14 +30,15 @@ if (NOT TARGET SDL3::SDL3)
 
     add_library(SDL3::SDL3 UNKNOWN IMPORTED)
     set_target_properties(SDL3::SDL3 PROPERTIES
-        IMPORTED_LOCATION "${_SDL3_ROOT}/lib/libSDL3.dll.a"
+        IMPORTED_IMPLIB "${_SDL3_ROOT}/lib/libSDL3.dll.a"
+        IMPORTED_LOCATION "${_SDL3_ROOT}/bin/SDL3.dll"
         INTERFACE_INCLUDE_DIRECTORIES "${_SDL3_ROOT}/include")
   else ()
     message(FATAL_ERROR "SDL3 not found")
   endif ()
 endif ()
 
-target_include_directories(apeiron-gui-sdl3-opengl3 PUBLIC
+target_include_directories(apeiron-gui-sdl3-opengl3 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/..
     ${CMAKE_CURRENT_LIST_DIR}/../external/public/imgui
     ${CMAKE_CURRENT_LIST_DIR}/../external/public)
 
