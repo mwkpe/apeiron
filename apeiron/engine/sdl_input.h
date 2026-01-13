@@ -108,29 +108,30 @@ inline Gamepad_axis get_controller_axis(SDL_GamepadAxis axis)
 }
 
 
-void get_input_events(const SDL_Event& sdl_event, Event_queue& events, bool process_mouse_input)
+void add_input_event(const SDL_Event& sdl_event, Event_queue& engine_events,
+    bool process_mouse_input)
 {
   switch (sdl_event.type) {
     case SDL_EVENT_KEY_DOWN: {
       if (sdl_event.key.repeat == 0) {
-        events.emplace_back(Key_down_event{sdl_event.key.key, sdl_event.key.mod});
+        engine_events.emplace_back(Key_down_event{sdl_event.key.key, sdl_event.key.mod});
       }
     }
     break;
     case SDL_EVENT_KEY_UP: {
-      events.emplace_back(Key_up_event{sdl_event.key.key, sdl_event.key.mod});
+      engine_events.emplace_back(Key_up_event{sdl_event.key.key, sdl_event.key.mod});
     }
     break;
     case SDL_EVENT_MOUSE_MOTION: {
       if (process_mouse_input) {
-        events.emplace_back(Mouse_motion_event{sdl_event.motion.x, sdl_event.motion.y,
+        engine_events.emplace_back(Mouse_motion_event{sdl_event.motion.x, sdl_event.motion.y,
             sdl_event.motion.xrel, sdl_event.motion.yrel});
       }
     }
     break;
     case SDL_EVENT_MOUSE_BUTTON_DOWN: {
       if (process_mouse_input) {
-        events.emplace_back(Mouse_button_down_event{
+        engine_events.emplace_back(Mouse_button_down_event{
             get_mouse_button(sdl_event.button.button),
             sdl_event.button.x,
             sdl_event.button.y});
@@ -139,7 +140,7 @@ void get_input_events(const SDL_Event& sdl_event, Event_queue& events, bool proc
     break;
     case SDL_EVENT_MOUSE_BUTTON_UP: {
       if (process_mouse_input) {
-        events.emplace_back(Mouse_button_up_event{
+        engine_events.emplace_back(Mouse_button_up_event{
             get_mouse_button(sdl_event.button.button),
             sdl_event.button.x,
             sdl_event.button.y});
@@ -147,7 +148,7 @@ void get_input_events(const SDL_Event& sdl_event, Event_queue& events, bool proc
     }
     break;
     case SDL_EVENT_MOUSE_WHEEL: {
-      events.emplace_back(Mouse_wheel_event{sdl_event.wheel.x, sdl_event.wheel.y});
+      engine_events.emplace_back(Mouse_wheel_event{sdl_event.wheel.x, sdl_event.wheel.y});
     }
     break;
     default:;

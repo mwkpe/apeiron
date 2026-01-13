@@ -70,28 +70,28 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     return elapsed_ticks;
   };
 
-  std::vector<apeiron::engine::Event> events;
+  std::vector<apeiron::engine::Event> engine_events;
 
   while (!settings.quit) {
     auto elapsed_ticks = frame_timer();  // May also delay and hence limits fps
     float delta_time_s = static_cast<float>(elapsed_ticks) / 1000'000'000.0f;
     auto time_s = static_cast<float>(SDL_GetTicks()) / 1000.0f;
 
-    events.clear();
-    SDL_Event event;
+    engine_events.clear();
+    SDL_Event sdl_event;
 
-    while (SDL_PollEvent(&event)) {
+    while (SDL_PollEvent(&sdl_event)) {
       if (settings.show_menu) {
-        menu.process(&event);
+        menu.process(&sdl_event);
       }
 
-      apeiron::engine::get_input_events(event, events, !menu.has_mouse());
+      apeiron::engine::add_input_event(sdl_event, engine_events, !menu.has_mouse());
 
-      settings.quit = event.type == SDL_EVENT_QUIT;
+      settings.quit = sdl_event.type == SDL_EVENT_QUIT;
 
-      switch (event.type) {
+      switch (sdl_event.type) {
         case SDL_EVENT_KEY_DOWN: {
-          switch (event.key.key) {
+          switch (sdl_event.key.key) {
             case SDLK_ESCAPE:
               settings.quit = true;
               break;
@@ -118,7 +118,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     auto input = apeiron::engine::get_input_state();
 
-    world.update(time_s, delta_time_s, events, &input);
+    world.update(time_s, delta_time_s, engine_events, &input);
     world.render();
 
     if (settings.show_menu) {
