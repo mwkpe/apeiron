@@ -21,7 +21,7 @@ class Renderer final
 {
 public:
   void init();
-  void use();
+  void use() const;
 
   // OpenGL
   static void set_gl_viewport(std::int32_t x, std::int32_t y, std::int32_t w, std::int32_t h);
@@ -67,8 +67,8 @@ public:
   void render_screen(const engine::Entity& entity, const opengl::Meshset& meshset,
       std::uint32_t index, const glm::vec4& color, bool colorize = false);
 
-  [[nodiscard]] glm::mat4 view_projection() { return view_projection_; }
-  [[nodiscard]] glm::mat4 inverse_view_projection() { return glm::inverse(view_projection_); }
+  [[nodiscard]] const glm::mat4& view_projection() const { return view_projection_; }
+  [[nodiscard]] glm::mat4 inverse_view_projection() const { return glm::inverse(view_projection_); }
 
   Shader& shader() { return shader_; }
 

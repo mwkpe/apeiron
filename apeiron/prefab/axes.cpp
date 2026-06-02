@@ -3,7 +3,8 @@
 
 
 apeiron::prefab::Axes::Axes(std::uint32_t points, float radius, float height) :
-    x_axis_{points, radius, height}, y_axis_{points, radius, height},
+    x_axis_{points, radius, height},
+    y_axis_{points, radius, height},
     z_axis_{points, radius, height}
 {
   // Rotate so +z goes outside the screen, -z into the screen

@@ -24,7 +24,7 @@ void apeiron::opengl::Renderer::init()
 }
 
 
-void apeiron::opengl::Renderer::use()
+void apeiron::opengl::Renderer::use() const
 {
   shader_.use();
 }
