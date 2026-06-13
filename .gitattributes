@@ -8,10 +8,15 @@
 *.hpp text
 *.fs text
 *.vs text
+*.py text
 *.md text
 *.obj text
 *.mtl text
 *.json text
+*.txt text
+*.gdb text
+*.natstepfilter text
+*.natvis text
 
 # Declare files that will always have CRLF line endings on checkout
 *.sln text eol=crlf
