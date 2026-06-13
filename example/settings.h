@@ -15,6 +15,7 @@ struct Settings
   bool quit = false;
   bool show_menu = true;
   bool wireframe = false;
+  bool fullscreen = false;
   bool vsync = false;
   bool limit_fps = true;
   bool lighting = true;
@@ -26,6 +27,10 @@ struct Settings
   bool rotate_cubes = true;
   int window_width = 1280;
   int window_height = 720;
+  int point_width = 1280;
+  int point_height = 720;
+  int render_width = 1280;
+  int render_height = 720;
   int msaa_samples = 4;
   int af_samples = 1;
   int max_fps = 120;

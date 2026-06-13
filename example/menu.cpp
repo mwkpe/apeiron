@@ -77,10 +77,8 @@ void apeiron::example::Menu::build(example::Settings* settings, float time_s)
 
   create_frame();
   {
-    ImGui::Begin("Debug view (F1)");
-    ImGui::Text("Time: %.2f", time_s);
-    ImGui::Text("Framerate: %.0f fps", io.Framerate);
-    ImGui::Text("Frametime: %.3f ms", 1000.0f / io.Framerate);
+    ImGui::Begin("Options (F1)");
+    ImGui::Checkbox("Fullscreen (req. restart)", &settings->fullscreen);
     ImGui::Checkbox("Vsync (req. restart)", &settings->vsync);
     ImGui::Checkbox("Limit framerate", &settings->limit_fps);
     ImGui::SliderInt("Max FPS", &settings->max_fps, 30, 240);
@@ -136,6 +134,14 @@ void apeiron::example::Menu::build(example::Settings* settings, float time_s)
     ImGui::Dummy({0.0f, 8.0f});
     if (ImGui::Button("Quit"))
       settings->quit = true;
+    ImGui::End();
+
+    ImGui::Begin("Status");
+    ImGui::Text("Window point size: %i x %i", settings->point_width, settings->point_height);
+    ImGui::Text("Window pixel size: %i x %i", settings->render_width, settings->render_height);
+    ImGui::Text("Runtime: %.0f s", time_s);
+    ImGui::Text("Framerate: %.0f fps", io.Framerate);
+    ImGui::Text("Frametime: %.2f ms", 1000.0f / io.Framerate);
     ImGui::End();
   }
 

@@ -16,8 +16,8 @@ add_library(apeiron-gui-sdl3-opengl3
     ${CMAKE_CURRENT_LIST_DIR}/../external/public/imgui/imstb_textedit.h
     ${CMAKE_CURRENT_LIST_DIR}/../external/public/imgui/imstb_truetype.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/sdl_input.h
-    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/sdl_window_wrapper.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/sdl_window_wrapper.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/window_wrapper.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/window_wrapper.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/gui.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/gui.h)
 

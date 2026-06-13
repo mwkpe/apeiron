@@ -1,14 +1,12 @@
 #include <iostream>
 
 #include <SDL3/SDL.h>
-#include <glad/glad.h>
 
 #include "apeiron/engine/error.h"
 #include "apeiron/engine/event.h"
 #include "apeiron/engine/input.h"
 #include "apeiron/engine/sdl_input.h"
-#include "apeiron/engine/sdl_window_wrapper.h"
-#include "apeiron/utility/dpi_scaling.h"
+#include "apeiron/engine/window_wrapper.h"
 
 #include "example/settings.h"
 #include "example/menu.h"
@@ -17,10 +15,8 @@
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
-  apeiron::utility::disable_dpi_scaling();
-
   apeiron::example::Settings settings;
-  apeiron::engine::Sdl_window_wrapper window;
+  apeiron::engine::Window_wrapper window;
 
   try {
     settings = apeiron::example::load_settings("settings.toml");
@@ -30,8 +26,25 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
   }
 
   try {
-    window.init("apeiron", SDL_INIT_VIDEO, settings.window_width, settings.window_height,
-        false, 4, 6, true, settings.vsync, settings.msaa_samples);
+    apeiron::engine::Window_settings window_settings{
+        "apeiron",
+        SDL_INIT_VIDEO,
+        settings.window_width,
+        settings.window_height,
+        settings.fullscreen,
+        false,
+        settings.msaa_samples,
+        4,
+        6,
+        true
+    };
+
+    auto window_attributes = window.init(window_settings);
+
+    settings.point_width = window_attributes.point_width;
+    settings.point_height = window_attributes.point_height;
+    settings.render_width = window_attributes.render_width;
+    settings.render_height = window_attributes.render_height;
 
     std::cout << "Video driver: " << SDL_GetCurrentVideoDriver() << std::endl;
   }
@@ -59,7 +72,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     auto current_ticks = SDL_GetTicksNS();
     auto elapsed_ticks = current_ticks - last_ticks;
 
-    if (auto target = 1'000'000'000ull / settings.max_fps; settings.limit_fps
+    if (const auto target = 1'000'000'000ull / settings.max_fps; settings.limit_fps
         && elapsed_ticks < target) {
       SDL_DelayPrecise(target - elapsed_ticks);
       current_ticks = SDL_GetTicksNS();
@@ -94,7 +107,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
           switch (sdl_event.key.key) {
             case SDLK_ESCAPE:
               settings.quit = true;
-              break;
+            break;
             case SDLK_F1:
               settings.show_menu = !settings.show_menu;
 
@@ -107,12 +120,15 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
                 SDL_CaptureMouse(true);
                 SDL_SetWindowRelativeMouseMode(window.sdl_window(), true);
               }
-              break;
+            break;
             case SDLK_F4:
               settings.wireframe = !settings.wireframe;
-              break;
+            break;
+            default:;
           }
-        } break;
+        }
+        break;
+        default:;
       }
     }
 

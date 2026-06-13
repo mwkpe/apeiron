@@ -6,11 +6,11 @@
 
 
 apeiron::example::World::World(const Settings* settings) : settings_{settings},
-      camera_{-45.0f, -130.0f, {10.0f, 15.0f, 10.0f}},
-      axes_{8, 0.01f, 5.0f},
-      grid_{{28.0f, 28.0f}, {28, 28}, {0.25f, 0.25f, 0.25f, 1.0f}},
-      light_{&bulb_},
-      cube_{&cube_model_, 0.0f, 0.0f, 0.0f}
+    camera_{-45.0f, -130.0f, {10.0f, 15.0f, 10.0f}},
+    axes_{8, 0.01f, 5.0f},
+    grid_{{28.0f, 28.0f}, {28, 28}, {0.25f, 0.25f, 0.25f, 1.0f}},
+    light_{&bulb_},
+    cube_{&cube_model_, 0.0f, 0.0f, 0.0f}
 {
 }
 
@@ -18,12 +18,12 @@ apeiron::example::World::World(const Settings* settings) : settings_{settings},
 void apeiron::example::World::init()
 {
   renderer_.init();
-  renderer_.set_ortho_projection(static_cast<float>(settings_->window_width),
-      static_cast<float>(settings_->window_height));
-  renderer_.set_gl_viewport(0, 0, settings_->window_width, settings_->window_height);
+  renderer_.set_ortho_projection(static_cast<float>(settings_->render_width),
+      static_cast<float>(settings_->render_height));
+  renderer_.set_gl_viewport(0, 0, settings_->render_width, settings_->render_height);
 
   renderer_.use_world_space();
-  auto aspect_ratio = static_cast<float>(settings_->window_width) / settings_->window_height;
+  auto aspect_ratio = static_cast<float>(settings_->render_width) / settings_->render_height;
   renderer_.preset_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 500.0f));
 
   cube_texture_.load("assets/textures/ab_crate_a.png", apeiron::opengl::Pixel_format::Rgba);
@@ -230,8 +230,8 @@ void apeiron::example::World::handle_event(const engine::Mouse_button_down_event
 {
   if (event.button == engine::Mouse_button::Left) {
     using namespace engine::collision;
-    float norm_x = event.x / settings_->window_width * 2.0f - 1.0f;
-    float norm_y = (event.y / settings_->window_height * 2.0f - 1.0f) * -1.0f;
+    float norm_x = event.x / settings_->point_width * 2.0f - 1.0f;
+    float norm_y = (event.y / settings_->point_height * 2.0f - 1.0f) * -1.0f;
     auto ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
 
     if (intersects(ray, light_.collider())) {
@@ -246,8 +246,8 @@ void apeiron::example::World::handle_event(const engine::Mouse_motion_event& eve
   if (settings_->show_menu) {
     using namespace engine::collision;
 
-    float norm_x = event.x / settings_->window_width * 2.0f - 1.0f;
-    float norm_y = (event.y / settings_->window_height * 2.0f - 1.0f) * -1.0f;
+    float norm_x = event.x / settings_->point_width * 2.0f - 1.0f;
+    float norm_y = (event.y / settings_->point_height * 2.0f - 1.0f) * -1.0f;
     Ray ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
     Plane plane{{0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};
 

@@ -13,6 +13,7 @@ void apeiron::opengl::Gui::init(std::string_view glsl_version)
   ImGui_ImplSDL3_InitForOpenGL(window_, context_);
   ImGui_ImplOpenGL3_Init(std::string{glsl_version}.c_str());
   ImGui::StyleColorsDark();
+  ImGui::GetIO().Fonts->AddFontDefaultVector();
 }
 
 
