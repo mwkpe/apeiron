@@ -1,5 +1,6 @@
 #include "window_wrapper.h"
 
+
 #include <iostream>
 #include <cmath>
 #include <glad/glad.h>
@@ -117,11 +118,8 @@ auto apeiron::engine::Window_wrapper::init(const Window_settings& settings)
     throw Error{"Failed to initialize OpenGL context"};
   }
 
-  if (settings.vsync) {
-    SDL_GL_SetSwapInterval(1);
-  }
-  else {
-    SDL_GL_SetSwapInterval(0);
+  if (!SDL_GL_SetSwapInterval(settings.vsync ? 1 : 0)) {
+    std::cerr << "Setting swap interval failed: " << SDL_GetError() << std::endl;
   }
 
   return {point_width, point_height, render_width, render_height, density};

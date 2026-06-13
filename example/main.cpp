@@ -32,7 +32,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
         settings.window_width,
         settings.window_height,
         settings.fullscreen,
-        false,
+        settings.vsync,
         settings.msaa_samples,
         4,
         6,
