@@ -32,6 +32,7 @@ auto apeiron::example::load_settings(std::string_view filename) -> Settings
   settings.window_height = t["window_height"].value_or(settings.window_height);
   settings.msaa_samples = t["msaa_samples"].value_or(settings.msaa_samples);
   settings.max_fps = t["max_fps"].value_or(settings.max_fps);
+  settings.limit_fps = t["limit_fps"].value_or(settings.limit_fps);
   settings.fullscreen = t["fullscreen"].value_or(settings.fullscreen);
   settings.vsync = t["vsync"].value_or(settings.vsync);
 
@@ -47,6 +48,7 @@ void apeiron::example::save_settings(const Settings& settings, std::string_view 
   t.insert("window_height", settings.window_height);
   t.insert("msaa_samples", settings.msaa_samples);
   t.insert("max_fps", settings.max_fps);
+  t.insert("limit_fps", settings.limit_fps);
   t.insert("fullscreen", settings.fullscreen);
   t.insert("vsync", settings.vsync);
 
