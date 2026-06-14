@@ -50,8 +50,7 @@ auto apeiron::engine::Window_wrapper::operator=(Window_wrapper&& other) noexcept
 }
 
 
-auto apeiron::engine::Window_wrapper::init(const Window_settings& settings)
-    -> Window_attributes
+void apeiron::engine::Window_wrapper::init(const Window_settings& settings)
 {
   SDL_Init(settings.init_flags);
 
@@ -76,6 +75,9 @@ auto apeiron::engine::Window_wrapper::init(const Window_settings& settings)
 
   if (settings.fullscreen) {
     window_flags |= SDL_WINDOW_FULLSCREEN;
+  }
+  else {
+    window_flags |= SDL_WINDOW_RESIZABLE;
   }
 
   window_ = SDL_CreateWindow(settings.title.data(), settings.width, settings.height, window_flags);
@@ -121,6 +123,21 @@ auto apeiron::engine::Window_wrapper::init(const Window_settings& settings)
   if (!SDL_GL_SetSwapInterval(settings.vsync ? 1 : 0)) {
     std::cerr << "Setting swap interval failed: " << SDL_GetError() << std::endl;
   }
+}
+
+
+auto apeiron::engine::Window_wrapper::attributes() const -> Window_attributes
+{
+  float density;
+  int point_width;
+  int point_height;
+  int render_width;
+  int render_height;
+
+  SDL_SyncWindow(window_);
+  SDL_GetWindowSize(window_, &point_width, &point_height);
+  SDL_GetWindowSizeInPixels(window_, &render_width, &render_height);
+  SDL_GetWindowPixelDensity(window_);
 
   return {point_width, point_height, render_width, render_height, density};
 }

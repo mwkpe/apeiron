@@ -18,13 +18,7 @@ apeiron::example::World::World(const Settings* settings) : settings_{settings},
 void apeiron::example::World::init()
 {
   renderer_.init();
-  renderer_.set_ortho_projection(static_cast<float>(settings_->render_width),
-      static_cast<float>(settings_->render_height));
-  renderer_.set_gl_viewport(0, 0, settings_->render_width, settings_->render_height);
-
-  renderer_.use_world_space();
-  auto aspect_ratio = static_cast<float>(settings_->render_width) / settings_->render_height;
-  renderer_.preset_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 500.0f));
+  update_view();
 
   cube_texture_.load("assets/textures/ab_crate_a.png", apeiron::opengl::Pixel_format::Rgba);
 
@@ -77,6 +71,17 @@ void apeiron::example::World::init()
   cube_.transform().set_position(-5.0f, 1.5f, -4.0f)
       .set_rotation_deg(0.0f, 15.0f, 0.0f)
       .set_scale(3.0f, 3.0f, 3.0f);
+}
+
+
+void apeiron::example::World::update_view()
+{
+  renderer_.set_ortho_projection(static_cast<float>(settings_->render_width),
+      static_cast<float>(settings_->render_height));
+  renderer_.set_gl_viewport(0, 0, settings_->render_width, settings_->render_height);
+
+  auto aspect_ratio = static_cast<float>(settings_->render_width) / settings_->render_height;
+  renderer_.preset_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 500.0f));
 }
 
 

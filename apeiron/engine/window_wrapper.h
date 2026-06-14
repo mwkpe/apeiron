@@ -46,7 +46,8 @@ public:
   Window_wrapper& operator=(const Window_wrapper&) = delete;
   Window_wrapper& operator=(Window_wrapper&& other) noexcept;
 
-  Window_attributes init(const Window_settings& settings);
+  void init(const Window_settings& settings);
+  Window_attributes attributes() const;
 
   SDL_Window* sdl_window() { return window_; }
   SDL_GLContext gl_context() { return context_; }

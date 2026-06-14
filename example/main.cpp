@@ -26,7 +26,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
   }
 
   try {
-    apeiron::engine::Window_settings window_settings{
+    window.init({
         "apeiron",
         SDL_INIT_VIDEO,
         settings.window_width,
@@ -37,14 +37,14 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
         4,
         6,
         true
-    };
+    });
 
-    auto window_attributes = window.init(window_settings);
+    auto a = window.attributes();
 
-    settings.point_width = window_attributes.point_width;
-    settings.point_height = window_attributes.point_height;
-    settings.render_width = window_attributes.render_width;
-    settings.render_height = window_attributes.render_height;
+    settings.point_width = a.point_width;
+    settings.point_height = a.point_height;
+    settings.render_width = a.render_width;
+    settings.render_height = a.render_height;
 
     std::cout << "Video driver: " << SDL_GetCurrentVideoDriver() << std::endl;
   }
@@ -92,6 +92,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     engine_events.clear();
     SDL_Event sdl_event;
+    bool window_changed = false;
 
     while (SDL_PollEvent(&sdl_event)) {
       if (settings.show_menu) {
@@ -99,7 +100,6 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       }
 
       apeiron::engine::add_input_event(sdl_event, engine_events, !menu.has_mouse());
-
       settings.quit = sdl_event.type == SDL_EVENT_QUIT;
 
       switch (sdl_event.type) {
@@ -128,8 +128,23 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
           }
         }
         break;
+        case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED:
+        case SDL_EVENT_WINDOW_RESIZED:
+        case SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED:
+          window_changed = true;
         default:;
       }
+    }
+
+    if (window_changed) {
+      auto a = window.attributes();
+      settings.point_width = a.point_width;
+      settings.point_height = a.point_height;
+      settings.render_width = a.render_width;
+      settings.render_height = a.render_height;
+
+      world.update_view();
+      window_changed = false;
     }
 
     auto input = apeiron::engine::get_input_state();
