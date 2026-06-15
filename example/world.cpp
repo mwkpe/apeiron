@@ -22,7 +22,6 @@ void apeiron::example::World::init()
 
   cube_texture_.load("assets/textures/ab_crate_a.png", apeiron::opengl::Pixel_format::Rgba);
 
-  // Letter spacing and height must be measured for now, values taken from roboto_mono.toml
   font_ = engine::load_font<engine::Vertex_normal>("assets/fonts/scientifica.json");
 
   world_text_.init(settings_->world_text, font_, apeiron::opengl::Usage_hint::Dynamic);
@@ -32,7 +31,6 @@ void apeiron::example::World::init()
   screen_text_.transform().set_position(100.0f, 100.0f, 0.0f)
       .set_scale(glm::vec3{100.0f})
       .set_rotation_deg(-90.0f, 0.0f, 0.0f);
-
   cube_model_.set<engine::Vertex_normal_texcoords>({1.0f, 1.0f, 1.0f});
   bulb_.load("assets/models/sphere_med_poly.obj");
   teapot_.load_model();
