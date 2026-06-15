@@ -128,7 +128,7 @@ void apeiron::engine::Window_wrapper::init(const Window_settings& settings)
 
 auto apeiron::engine::Window_wrapper::attributes() const -> Window_attributes
 {
-  float density;
+  float density = SDL_GetWindowPixelDensity(window_);
   int point_width;
   int point_height;
   int render_width;
@@ -137,7 +137,6 @@ auto apeiron::engine::Window_wrapper::attributes() const -> Window_attributes
   SDL_SyncWindow(window_);
   SDL_GetWindowSize(window_, &point_width, &point_height);
   SDL_GetWindowSizeInPixels(window_, &render_width, &render_height);
-  SDL_GetWindowPixelDensity(window_);
 
   return {point_width, point_height, render_width, render_height, density};
 }
