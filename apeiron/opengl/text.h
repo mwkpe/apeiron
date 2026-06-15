@@ -1,5 +1,5 @@
-#ifndef APEIRON_PREFAB_TEXT_H
-#define APEIRON_PREFAB_TEXT_H
+#ifndef APEIRON_OPENGL_TEXT_H
+#define APEIRON_OPENGL_TEXT_H
 
 
 #include <string>
@@ -13,7 +13,7 @@
 #include "apeiron/opengl/meshset.h"
 
 
-namespace apeiron::prefab {
+namespace apeiron::opengl {
 
 
 class Text final : public engine::Entity
@@ -31,11 +31,11 @@ public:
 
 private:
   std::string text_;
-  opengl::Meshset meshset_;
+  Meshset meshset_;
 };
 
 
-}  // namespace apeiron::prefab
+}  // namespace apeiron::opengl
 
 
-#endif  // APEIRON_PREFAB_TEXT_H
+#endif  // APEIRON_OPENGL_TEXT_H

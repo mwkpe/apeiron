@@ -48,6 +48,8 @@ add_library(apeiron STATIC
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/shader.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/shader_storage_buffer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/shader_storage_buffer.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/text.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/text.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/texture.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/texture.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/tileset.cpp
@@ -61,8 +63,6 @@ add_library(apeiron STATIC
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/axes.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/grid.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/grid.h
-    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/text.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/text.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/light.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/teapot.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/utility/timer.cpp

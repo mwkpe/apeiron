@@ -48,26 +48,26 @@ void create_text(auto& vertices, auto& entries, auto& font, std::string_view tex
 }  // namespace
 
 
-template<typename T> void apeiron::prefab::Text::init(std::string_view text,
+template<typename T> void apeiron::opengl::Text::init(std::string_view text,
     const engine::Font<T>& font, opengl::Usage_hint hint)
 {
   text_ = text;
 
   std::vector<T> vertices;
-  std::vector<apeiron::opengl::Meshset_entry> entries;
+  std::vector<Meshset_entry> entries;
   create_text(vertices, entries, font, text);
 
   meshset_.set_data(vertices, std::move(entries), hint);
 }
 
 
-template<typename T> void apeiron::prefab::Text::update(std::string_view text,
+template<typename T> void apeiron::opengl::Text::update(std::string_view text,
     const engine::Font<T>& font)
 {
   text_ = text;
 
   std::vector<T> vertices;
-  std::vector<apeiron::opengl::Meshset_entry> entries;
+  std::vector<Meshset_entry> entries;
   create_text(vertices, entries, font, text);
 
   meshset_.update_data(vertices, std::move(entries));
@@ -78,31 +78,25 @@ using apeiron::engine::Vertex;
 using apeiron::engine::Vertex_simple;
 using apeiron::engine::Vertex_normal;
 using apeiron::engine::Vertex_color;
-using apeiron::engine::Vertex_texcoords;
 using apeiron::engine::Vertex_normal_color;
-using apeiron::engine::Vertex_normal_texcoords;
 using apeiron::opengl::Usage_hint;
 
 
-namespace apeiron::prefab {
+namespace apeiron::opengl {
 
 
 template void Text::init(std::string_view, const engine::Font<Vertex>&, Usage_hint);
 template void Text::init(std::string_view, const engine::Font<Vertex_simple>&, Usage_hint);
 template void Text::init(std::string_view, const engine::Font<Vertex_normal>&, Usage_hint);
 template void Text::init(std::string_view, const engine::Font<Vertex_color>&, Usage_hint);
-template void Text::init(std::string_view, const engine::Font<Vertex_texcoords>&, Usage_hint);
 template void Text::init(std::string_view, const engine::Font<Vertex_normal_color>&, Usage_hint);
-template void Text::init(std::string_view, const engine::Font<Vertex_normal_texcoords>&, Usage_hint);
 
 
 template void Text::update(std::string_view, const engine::Font<Vertex>&);
 template void Text::update(std::string_view, const engine::Font<Vertex_simple>&);
 template void Text::update(std::string_view, const engine::Font<Vertex_normal>&);
 template void Text::update(std::string_view, const engine::Font<Vertex_color>&);
-template void Text::update(std::string_view, const engine::Font<Vertex_texcoords>&);
 template void Text::update(std::string_view, const engine::Font<Vertex_normal_color>&);
-template void Text::update(std::string_view, const engine::Font<Vertex_normal_texcoords>&);
 
 
-}  // namespace apeiron::prefab
+}  // namespace apeiron::opengl

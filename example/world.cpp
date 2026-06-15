@@ -24,7 +24,7 @@ void apeiron::example::World::init()
   font_ = engine::load_font<engine::Vertex_normal>("assets/fonts/scientifica.json");
 
   world_text_.init(settings_->world_text, font_, apeiron::opengl::Usage_hint::Dynamic);
-  world_text_.transform().set_position(1.0f, 0.1f, -1.0f).set_scale(glm::vec3{2.0f});
+  world_text_.transform().set_position(1.0f, 0.0f, -1.0f).set_scale(glm::vec3{2.0f});
 
   screen_text_.init(settings_->screen_text, font_, apeiron::opengl::Usage_hint::Dynamic);
   screen_text_.transform().set_position(100.0f, 100.0f, 0.0f)
@@ -35,7 +35,7 @@ void apeiron::example::World::init()
   bulb_.load("assets/models/sphere_med_poly.obj");
   teapot_.load_model();
 
-  grid_.transform().set_rotation_deg(-90.0f, 0.0f, 0.0f);
+  grid_.transform().set_position(0.0f, -0.001f, 0.0f).set_rotation_deg(-90.0f, 0.0f, 0.0f);
 
   light_.transform().set_scale(0.3f, 0.3f, 0.3f)
       .set_position(0.0f, 8.0f, -settings_->light_position_z);

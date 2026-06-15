@@ -14,13 +14,13 @@
 #include "apeiron/opengl/frame_buffer.h"
 #include "apeiron/opengl/model.h"
 #include "apeiron/opengl/renderer.h"
+#include "apeiron/opengl/text.h"
 #include "apeiron/opengl/texture.h"
 
 #include "apeiron/prefab/axes.h"
 #include "apeiron/prefab/grid.h"
 #include "apeiron/prefab/light.h"
 #include "apeiron/prefab/teapot.h"
-#include "apeiron/prefab/text.h"
 
 #include "example/settings.h"
 #include "example/cube.h"
@@ -61,14 +61,14 @@ private:
   opengl::Texture cube_texture_;
   opengl::Cuboid cube_model_;
   opengl::Model bulb_;
+  opengl::Text world_text_;
+  opengl::Text screen_text_;
   engine::Camera camera_;
   engine::Font<engine::Vertex_normal> font_;
   prefab::Axes axes_;
   prefab::Grid grid_;
   prefab::Light light_;
   prefab::Teapot teapot_;
-  prefab::Text world_text_;
-  prefab::Text screen_text_;
   Ground_highlight ground_highlight_;
   Cube cube_;
   std::vector<Cube> cubes_;
