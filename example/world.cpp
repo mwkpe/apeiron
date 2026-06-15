@@ -31,7 +31,7 @@ void apeiron::example::World::init()
       .set_scale(glm::vec3{100.0f})
       .set_rotation_deg(-90.0f, 0.0f, 0.0f);
 
-   cube_model_.set<engine::Vertex_normal_texcoords>({1.0f, 1.0f, 1.0f});
+  cube_model_.set<engine::Vertex_normal_texcoords>({1.0f, 1.0f, 1.0f});
   bulb_.load("assets/models/sphere_med_poly.obj");
   teapot_.load_model();
 
