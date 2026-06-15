@@ -41,6 +41,7 @@ struct Settings
   glm::vec4 main_color = {1.0f, 1.0f, 1.0f, 1.0f};
   std::string world_text = "Hello world!";
   std::string screen_text = "Hello screen!";
+  std::string video_driver;
 };
 
 

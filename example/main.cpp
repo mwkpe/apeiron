@@ -45,8 +45,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     settings.point_height = a.point_height;
     settings.render_width = a.render_width;
     settings.render_height = a.render_height;
-
-    std::cout << "Video driver: " << SDL_GetCurrentVideoDriver() << std::endl;
+    settings.video_driver = SDL_GetCurrentVideoDriver();
   }
   catch (const apeiron::engine::Error& e) {
     std::cerr << e.what() << std::endl;

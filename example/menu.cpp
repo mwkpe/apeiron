@@ -137,6 +137,7 @@ void apeiron::example::Menu::build(example::Settings* settings, float time_s)
     ImGui::End();
 
     ImGui::Begin("Status");
+    ImGui::Text("Video driver: %s", settings->video_driver.c_str());
     ImGui::Text("Window point size: %i x %i", settings->point_width, settings->point_height);
     ImGui::Text("Window pixel size: %i x %i", settings->render_width, settings->render_height);
     ImGui::Text("Runtime: %.0f s", time_s);
