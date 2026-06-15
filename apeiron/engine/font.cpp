@@ -36,8 +36,8 @@ template<typename T> auto apeiron::engine::load_font(std::string_view filepath) 
 
     const auto query = [&glyph_data](std::string_view codepoint)
         -> std::tuple<std::uint32_t, float> {
-      const auto& gm = glyph_data.at(codepoint);
-      return {gm.at("codepoint").get<std::uint32_t>(), gm.at("advance").get<float>()};
+      const auto& d = glyph_data.at(codepoint);
+      return {d.at("codepoint").get<std::uint32_t>(), d.at("advance").get<float>()};
     };
 
     // Empty glyph for space character
