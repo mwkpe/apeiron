@@ -19,13 +19,11 @@ void add_glyph(auto& vertices, auto& entries, const auto& glyph, const glm::vec3
   entry.first_vertex = entries.empty() ? 0 :
       entries.back().first_vertex + entries.back().vertex_count;
   entry.vertex_count = glyph.vertices.size();
-  entry.size = glyph.size;
 
   entries.push_back(entry);
 
   for (auto v : glyph.vertices) {
-    float offset = static_cast<float>(glyph.index) * glyph.size.x;
-    v.position.x += pos.x - offset;
+    v.position.x += pos.x;
     vertices.push_back(v);
   }
 }
@@ -41,7 +39,7 @@ void create_text(auto& vertices, auto& entries, auto& font, std::string_view tex
 
     if (index < font.glyphs.size()) {
       add_glyph(vertices, entries, font.glyphs[index], pos);
-      pos.x += entries.back().size.x;
+      pos.x += font.glyphs[index].advance;
     }
   }
 }

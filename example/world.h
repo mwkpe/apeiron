@@ -62,7 +62,7 @@ private:
   opengl::Cuboid cube_model_;
   opengl::Model bulb_;
   engine::Camera camera_;
-  engine::Font<engine::Vertex_simple> font_;
+  engine::Font<engine::Vertex_normal> font_;
   prefab::Axes axes_;
   prefab::Grid grid_;
   prefab::Light light_;

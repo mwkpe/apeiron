@@ -23,15 +23,14 @@ void apeiron::example::World::init()
   cube_texture_.load("assets/textures/ab_crate_a.png", apeiron::opengl::Pixel_format::Rgba);
 
   // Letter spacing and height must be measured for now, values taken from roboto_mono.toml
-  font_ = engine::load_font<engine::Vertex_simple>("assets/fonts/mesh/roboto_mono.obj",
-      glm::vec3{0.16259f, 0.297f, 0.0f});
+  font_ = engine::load_font<engine::Vertex_normal>("assets/fonts/scientifica.json");
 
   world_text_.init(settings_->world_text, font_, apeiron::opengl::Usage_hint::Dynamic);
-  world_text_.transform().set_position(2.5f, 2.5f, 0.0f).set_scale(glm::vec3{5.0f});
+  world_text_.transform().set_position(1.0f, 0.1f, -1.0f).set_scale(glm::vec3{2.0f});
 
   screen_text_.init(settings_->screen_text, font_, apeiron::opengl::Usage_hint::Dynamic);
   screen_text_.transform().set_position(100.0f, 100.0f, 0.0f)
-      .set_scale(glm::vec3{300.0f})
+      .set_scale(glm::vec3{100.0f})
       .set_rotation_deg(-90.0f, 0.0f, 0.0f);
 
   cube_model_.set<engine::Vertex_normal_texcoords>({1.0f, 1.0f, 1.0f});
@@ -223,10 +222,10 @@ void apeiron::example::World::render()
   }
 
   renderer_.use_color_shading();
-  renderer_.set_lighting(false);
   renderer_.render(world_text_, color);
 
   renderer_.use_screen_space();
+  renderer_.set_lighting(false);
   renderer_.render_screen(screen_text_, color);
 }
 

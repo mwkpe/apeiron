@@ -20,6 +20,7 @@ struct Material
 
 template<typename T = Vertex> struct Mesh
 {
+  std::string name;
   std::vector<T> vertices;
   std::int32_t material_index = -1;
 };
@@ -32,7 +33,7 @@ template<typename T = Vertex> struct Model
 };
 
 
-template<typename T = Vertex> Model<T> load_model(std::string_view filename);
+template<typename T = Vertex> Model<T> load_model(std::string_view filepath);
 
 
 }  // namespace apeiron::engine

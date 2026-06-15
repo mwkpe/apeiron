@@ -90,7 +90,7 @@ template<typename T> T get_vertex(const tinyobj::attrib_t& attrib, const tinyobj
 }  // namespace
 
 
-template<typename T> auto apeiron::engine::load_model(std::string_view filename) -> Model<T>
+template<typename T> auto apeiron::engine::load_model(std::string_view filepath) -> Model<T>
 {
   tinyobj::attrib_t attrib;
   std::vector<tinyobj::shape_t> shapes;
@@ -99,7 +99,7 @@ template<typename T> auto apeiron::engine::load_model(std::string_view filename)
   std::string warning;
 
   if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warning, &error,
-      std::string{filename}.c_str(), nullptr, true, true)) {
+      std::string{filepath}.c_str(), nullptr, true, true)) {
     throw engine::Error{error};
   }
 
@@ -111,6 +111,7 @@ template<typename T> auto apeiron::engine::load_model(std::string_view filename)
 
   for (const auto& shape : shapes) {
     Mesh<T> mesh;
+    mesh.name = shape.name;
     std::size_t index_offset = 0;
 
     for (std::size_t f=0; f<shape.mesh.num_face_vertices.size(); ++f) {
@@ -133,13 +134,13 @@ template<typename T> auto apeiron::engine::load_model(std::string_view filename)
 namespace apeiron::engine {
 
 
-template auto load_model(std::string_view filename) -> Model<Vertex>;
-template auto load_model(std::string_view filename) -> Model<Vertex_simple>;
-template auto load_model(std::string_view filename) -> Model<Vertex_normal>;
-template auto load_model(std::string_view filename) -> Model<Vertex_color>;
-template auto load_model(std::string_view filename) -> Model<Vertex_texcoords>;
-template auto load_model(std::string_view filename) -> Model<Vertex_normal_color>;
-template auto load_model(std::string_view filename) -> Model<Vertex_normal_texcoords>;
+template auto load_model(std::string_view filepath) -> Model<Vertex>;
+template auto load_model(std::string_view filepath) -> Model<Vertex_simple>;
+template auto load_model(std::string_view filepath) -> Model<Vertex_normal>;
+template auto load_model(std::string_view filepath) -> Model<Vertex_color>;
+template auto load_model(std::string_view filepath) -> Model<Vertex_texcoords>;
+template auto load_model(std::string_view filepath) -> Model<Vertex_normal_color>;
+template auto load_model(std::string_view filepath) -> Model<Vertex_normal_texcoords>;
 
 
 }  // namespace apeiron::engine
