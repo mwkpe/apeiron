@@ -1,5 +1,5 @@
-#ifndef APEIRON_ENGINE_SDL_WINDOW_WRAPPER_H
-#define APEIRON_ENGINE_SDL_WINDOW_WRAPPER_H
+#ifndef APEIRON_ENGINE_WINDOW_WRAPPER_H
+#define APEIRON_ENGINE_WINDOW_WRAPPER_H
 
 
 #include <string>
@@ -63,4 +63,4 @@ private:
 }  // namespace apeiron::engine
 
 
-#endif  // APEIRON_ENGINE_SDL_WINDOW_WRAPPER_H
+#endif  // APEIRON_ENGINE_WINDOW_WRAPPER_H
