@@ -18,6 +18,7 @@ struct Window_settings
   int width = 1280;
   int height = 720;
   bool ignore_scaling = false;
+  bool resizable = false;
   bool fullscreen = false;
   bool vsync = false;
   int msaa_samples = 1;

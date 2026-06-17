@@ -76,7 +76,7 @@ void apeiron::engine::Window_wrapper::init(const Window_settings& settings)
   if (settings.fullscreen) {
     window_flags |= SDL_WINDOW_FULLSCREEN;
   }
-  else {
+  else if (settings.resizable) {
     window_flags |= SDL_WINDOW_RESIZABLE;
   }
 

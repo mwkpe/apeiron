@@ -35,6 +35,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
         .width = settings.window_width,
         .height = settings.window_height,
         .ignore_scaling = true,
+        .resizable = true,
         .fullscreen = settings.fullscreen,
         .vsync = settings.vsync,
         .msaa_samples = settings.msaa_samples,
