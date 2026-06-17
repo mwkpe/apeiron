@@ -8,4 +8,4 @@ Apeiron (*ápeiros*, “infinite, boundless”) is ironically just a small rende
 
 Apeiron is using [glad](https://github.com/Dav1dde/glad), [tinyobjloader](https://github.com/syoyo/tinyobjloader), [stb_image.h](https://github.com/nothings/stb), [nlohmann/json](https://github.com/nlohmann/json), [toml++](https://marzer.github.io/tomlplusplus/) (example project), and [dear imgui](https://github.com/ocornut/imgui) which are all part of the repo. Additional requirements are [glm](https://github.com/g-truc/glm) and [SDL3](https://www.libsdl.org/). For Windows add them to the external/public directory (or make find_package work). For Unix-like systems make sure SDL3 and GLM are installed.
 
-Fonts used is [Ark Pixel](https://github.com/TakWolf/ark-pixel-font).
+Font used is [Ark Pixel](https://github.com/TakWolf/ark-pixel-font).
