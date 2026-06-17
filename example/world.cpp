@@ -232,8 +232,8 @@ void apeiron::example::World::handle_event(const engine::Mouse_button_down_event
 {
   if (event.button == engine::Mouse_button::Left) {
     using namespace engine::collision;
-    float norm_x = event.x / settings_->point_width * 2.0f - 1.0f;
-    float norm_y = (event.y / settings_->point_height * 2.0f - 1.0f) * -1.0f;
+    float norm_x = event.x / settings_->logical_width * 2.0f - 1.0f;
+    float norm_y = (event.y / settings_->logical_height * 2.0f - 1.0f) * -1.0f;
     auto ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
 
     if (intersects(ray, light_.collider())) {
@@ -248,8 +248,8 @@ void apeiron::example::World::handle_event(const engine::Mouse_motion_event& eve
   if (settings_->show_menu) {
     using namespace engine::collision;
 
-    float norm_x = event.x / settings_->point_width * 2.0f - 1.0f;
-    float norm_y = (event.y / settings_->point_height * 2.0f - 1.0f) * -1.0f;
+    float norm_x = event.x / settings_->logical_width * 2.0f - 1.0f;
+    float norm_y = (event.y / settings_->logical_height * 2.0f - 1.0f) * -1.0f;
     Ray ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
     Plane plane{{0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};
 

@@ -13,23 +13,24 @@ namespace apeiron::engine {
 
 struct Window_settings
 {
-  std::string title;
-  int init_flags;
-  int width;
-  int height;
-  bool fullscreen;
-  bool vsync;
-  int msaa_samples;
-  int gl_major;
-  int gl_minor;
-  bool gl_core;
+  std::string title = "Unknown";
+  int init_flags = SDL_INIT_VIDEO;
+  int width = 1280;
+  int height = 720;
+  bool ignore_scaling = false;
+  bool fullscreen = false;
+  bool vsync = false;
+  int msaa_samples = 1;
+  int gl_major = 3;
+  int gl_minor = 3;
+  bool gl_core = true;
 };
 
 
 struct Window_attributes
 {
-  int point_width;
-  int point_height;
+  int logical_width;
+  int logical_height;
   int render_width;
   int render_height;
   float scale;

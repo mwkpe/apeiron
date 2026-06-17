@@ -27,8 +27,8 @@ struct Settings
   bool rotate_cubes = true;
   int window_width = 1280;
   int window_height = 720;
-  int point_width = 1280;
-  int point_height = 720;
+  int logical_width = 1280;
+  int logical_height = 720;
   int render_width = 1280;
   int render_height = 720;
   int msaa_samples = 4;

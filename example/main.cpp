@@ -25,24 +25,28 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     std::cout << w.what() << std::endl;
   }
 
+  const int gl_major = 3;
+  const int gl_minor = 3;
+
   try {
     window.init({
-        "apeiron",
-        SDL_INIT_VIDEO,
-        settings.window_width,
-        settings.window_height,
-        settings.fullscreen,
-        settings.vsync,
-        settings.msaa_samples,
-        4,
-        6,
-        true
+        .title = "apeiron",
+        .init_flags = SDL_INIT_VIDEO,
+        .width = settings.window_width,
+        .height = settings.window_height,
+        .ignore_scaling = true,
+        .fullscreen = settings.fullscreen,
+        .vsync = settings.vsync,
+        .msaa_samples = settings.msaa_samples,
+        .gl_major = gl_major,
+        .gl_minor = gl_minor,
+        .gl_core = true
     });
 
     auto a = window.attributes();
 
-    settings.point_width = a.point_width;
-    settings.point_height = a.point_height;
+    settings.logical_width = a.logical_width;
+    settings.logical_height = a.logical_height;
     settings.render_width = a.render_width;
     settings.render_height = a.render_height;
     settings.video_driver = SDL_GetCurrentVideoDriver();
@@ -58,7 +62,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
   try {
     world.init();
-    menu.init("#version 460");
+    menu.init(gl_major, gl_minor);
     menu.setup(&settings);
   }
   catch (const apeiron::engine::Error& e) {
@@ -137,8 +141,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     if (window_changed) {
       auto a = window.attributes();
-      settings.point_width = a.point_width;
-      settings.point_height = a.point_height;
+      settings.logical_width = a.logical_width;
+      settings.logical_height = a.logical_height;
       settings.render_width = a.render_width;
       settings.render_height = a.render_height;
 

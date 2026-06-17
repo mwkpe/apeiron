@@ -86,27 +86,23 @@ void apeiron::engine::Window_wrapper::init(const Window_settings& settings)
     throw Error{"Failed to create SDL window"};
   }
 
-  int point_width = settings.width;
-  int point_height = settings.height;
+  int logical_width = settings.width;
+  int logical_height = settings.height;
   int render_width = settings.width;
   int render_height = settings.height;
-
-  // Make window the desired pixel size
   float density = SDL_GetWindowPixelDensity(window_);
 
   if (settings.fullscreen) {
     SDL_SyncWindow(window_);
     SDL_GetWindowSizeInPixels(window_, &render_width, &render_height);
-    point_width = std::lround(static_cast<float>(render_width) / density);
-    point_height = std::lround(static_cast<float>(render_height) / density);
+    SDL_GetWindowSize(window_, &logical_width, &logical_height);
   }
-  else if (density > 1.0f) {
-    point_width = std::lround(static_cast<float>(settings.width) / density);
-    point_height = std::lround(static_cast<float>(settings.height) / density);
-    SDL_SetWindowSize(window_, point_width, point_height);
+  else if (settings.ignore_scaling && density > 1.0f) {
+    // Set logical size so that the resulting pixel size is roughly the requested size
+    logical_width = std::lround(static_cast<float>(settings.width) / density);
+    logical_height = std::lround(static_cast<float>(settings.height) / density);
+    SDL_SetWindowSize(window_, logical_width, logical_height);
     SDL_SyncWindow(window_);
-
-    // Make render size the actual pixel size of the window
     SDL_GetWindowSizeInPixels(window_, &render_width, &render_height);
   }
 
@@ -129,14 +125,14 @@ void apeiron::engine::Window_wrapper::init(const Window_settings& settings)
 auto apeiron::engine::Window_wrapper::attributes() const -> Window_attributes
 {
   float density = SDL_GetWindowPixelDensity(window_);
-  int point_width;
-  int point_height;
+  int logical_width;
+  int logical_height;
   int render_width;
   int render_height;
 
   SDL_SyncWindow(window_);
-  SDL_GetWindowSize(window_, &point_width, &point_height);
+  SDL_GetWindowSize(window_, &logical_width, &logical_height);
   SDL_GetWindowSizeInPixels(window_, &render_width, &render_height);
 
-  return {point_width, point_height, render_width, render_height, density};
+  return {logical_width, logical_height, render_width, render_height, density};
 }
