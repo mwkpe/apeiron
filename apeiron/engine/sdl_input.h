@@ -16,10 +16,10 @@ inline Input get_input_state()
   Input input;
   const bool* kb_state = SDL_GetKeyboardState(nullptr);
 
-  input.forward = kb_state[SDL_SCANCODE_UP] || kb_state[SDL_SCANCODE_E];
-  input.backward = kb_state[SDL_SCANCODE_DOWN] || kb_state[SDL_SCANCODE_D];
-  input.left = kb_state[SDL_SCANCODE_LEFT] || kb_state[SDL_SCANCODE_S];
-  input.right = kb_state[SDL_SCANCODE_RIGHT] || kb_state[SDL_SCANCODE_F];
+  input.forward = kb_state[SDL_SCANCODE_UP] || kb_state[SDL_SCANCODE_W];
+  input.backward = kb_state[SDL_SCANCODE_DOWN] || kb_state[SDL_SCANCODE_S];
+  input.left = kb_state[SDL_SCANCODE_LEFT] || kb_state[SDL_SCANCODE_A];
+  input.right = kb_state[SDL_SCANCODE_RIGHT] || kb_state[SDL_SCANCODE_D];
 
   input.action1 = kb_state[SDL_SCANCODE_LSHIFT];
   input.action2 = kb_state[SDL_SCANCODE_H];
