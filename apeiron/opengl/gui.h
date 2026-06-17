@@ -13,7 +13,7 @@ class Gui
 {
 public:
   Gui(SDL_Window* window, SDL_GLContext context) : window_{window}, context_{context} {}
-  void init(std::string_view glsl_version);  // E.g.: "#version 330" or "#version 460"
+  void init(int gl_major, int gl_minor);
   void process(SDL_Event* event);
   void create_frame();
   void render() const;

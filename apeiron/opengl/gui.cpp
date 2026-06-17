@@ -1,17 +1,18 @@
 #include "gui.h"
 
 
+#include <format>
 #include <string>
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_sdl3.h"
 
 
-void apeiron::opengl::Gui::init(std::string_view glsl_version)
+void apeiron::opengl::Gui::init(int gl_major, int gl_minor)
 {
   ImGui::CreateContext();
   ImGui_ImplSDL3_InitForOpenGL(window_, context_);
-  ImGui_ImplOpenGL3_Init(std::string{glsl_version}.c_str());
+  ImGui_ImplOpenGL3_Init(std::format("#version {}{}0", gl_major, gl_minor).c_str());
   ImGui::StyleColorsDark();
   ImGui::GetIO().Fonts->AddFontDefaultVector();
 }
