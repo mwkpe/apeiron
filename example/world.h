@@ -64,7 +64,8 @@ private:
   opengl::Text world_text_;
   opengl::Text screen_text_;
   engine::Camera camera_;
-  engine::Font<engine::Vertex_normal> font_;
+  engine::Font<engine::Vertex_simple> scientifica_;
+  engine::Font<engine::Vertex_normal> inter_;
   prefab::Axes axes_;
   prefab::Grid grid_;
   prefab::Light light_;
