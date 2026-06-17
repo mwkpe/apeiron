@@ -53,7 +53,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     settings.video_driver = SDL_GetCurrentVideoDriver();
   }
   catch (const apeiron::engine::Error& e) {
-    std::cerr << e.what() << std::endl;
+    std::cerr << e.what() << '\n';
+    std::cerr << "Press key to continue..." << std::endl;
     std::cin.ignore();
     return 1;
   }
@@ -67,7 +68,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     menu.setup(&settings);
   }
   catch (const apeiron::engine::Error& e) {
-    std::cerr << e.what() << std::endl;
+    std::cerr << e.what() << '\n';
+    std::cerr << "Press key to continue..." << std::endl;
     std::cin.ignore();
     return 1;
   }
