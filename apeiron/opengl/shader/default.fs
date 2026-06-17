@@ -1,4 +1,4 @@
-#version 460 core
+#version 330 core
 
 uniform int color_mode;
 uniform int light_mode;
