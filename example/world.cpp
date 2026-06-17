@@ -21,14 +21,14 @@ void apeiron::example::World::init()
   update_view();
 
   cube_texture_.load("assets/textures/test_pattern.png", apeiron::opengl::Pixel_format::Rgb);
+  font_ = engine::load_font<engine::Vertex_normal>("assets/font/ark-pixel.json");
 
-  scientifica_ = engine::load_font<engine::Vertex_simple>("assets/fonts/scientifica/scientifica.json");
-  inter_ = engine::load_font<engine::Vertex_normal>("assets/fonts/inter/inter-regular.json");
+  world_text_.init(settings_->world_text, font_, apeiron::opengl::Usage_hint::Dynamic);
+  world_text_.transform().set_position(-1.5f, 0.0f, -3.5f)
+      //.set_rotation_deg(-45.0f, 0.0f, 0.0f)
+      .set_scale(glm::vec3{2.0f});
 
-  world_text_.init(settings_->world_text, inter_, apeiron::opengl::Usage_hint::Dynamic);
-  world_text_.transform().set_position(-1.0f, 0.0f, -3.5f).set_scale(glm::vec3{2.0f});
-
-  screen_text_.init(settings_->screen_text, scientifica_, apeiron::opengl::Usage_hint::Dynamic);
+  screen_text_.init(settings_->screen_text, font_, apeiron::opengl::Usage_hint::Dynamic);
   screen_text_.transform().set_position(120.0f, 120.0f, 0.0f)
       .set_scale(glm::vec3{100.0f})
       .set_rotation_deg(-90.0f, 0.0f, 0.0f);
@@ -124,11 +124,11 @@ void apeiron::example::World::update(float time, float delta_time,
 
   // Text
   if (world_text_ != settings_->world_text) {
-    world_text_.update(settings_->world_text, inter_);
+    world_text_.update(settings_->world_text, font_);
   }
 
   if (screen_text_ != settings_->screen_text) {
-    screen_text_.update(settings_->screen_text, scientifica_);
+    screen_text_.update(settings_->screen_text, font_);
   }
 }
 

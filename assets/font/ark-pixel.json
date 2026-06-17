@@ -1,18 +1,18 @@
 {
-  "name": "Scientifica",
-  "model": "scientifica.obj",
-  "line_height": 1.0,
-  "ascender": 0.818,
-  "descender": -0.182,
+  "name": "Ark Pixel",
+  "model": "ark-pixel.obj",
+  "line_height": 1.4,
+  "ascender": 1.1,
+  "descender": -0.3,
   "glyphs": {
     "U+0020": {
       "codepoint": 32,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": null
     },
     "U+0021": {
       "codepoint": 33,
-      "advance": 0.455,
+      "advance": 0.4,
       "object": "U+0021",
       "vertex_offset": 1,
       "vertex_count": 8,
@@ -20,7 +20,7 @@
     },
     "U+0022": {
       "codepoint": 34,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0022",
       "vertex_offset": 9,
       "vertex_count": 8,
@@ -28,7 +28,7 @@
     },
     "U+0023": {
       "codepoint": 35,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0023",
       "vertex_offset": 17,
       "vertex_count": 32,
@@ -36,729 +36,729 @@
     },
     "U+0024": {
       "codepoint": 36,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0024",
       "vertex_offset": 49,
-      "vertex_count": 20,
-      "triangle_count": 18
+      "vertex_count": 44,
+      "triangle_count": 34
     },
     "U+0025": {
       "codepoint": 37,
-      "advance": 0.455,
+      "advance": 0.8,
       "object": "U+0025",
-      "vertex_offset": 69,
-      "vertex_count": 24,
-      "triangle_count": 12
+      "vertex_offset": 93,
+      "vertex_count": 52,
+      "triangle_count": 26
     },
     "U+0026": {
       "codepoint": 38,
-      "advance": 0.455,
+      "advance": 0.7,
       "object": "U+0026",
-      "vertex_offset": 93,
-      "vertex_count": 32,
+      "vertex_offset": 145,
+      "vertex_count": 38,
       "triangle_count": 20
     },
     "U+0027": {
       "codepoint": 39,
-      "advance": 0.455,
+      "advance": 0.4,
       "object": "U+0027",
-      "vertex_offset": 125,
+      "vertex_offset": 183,
       "vertex_count": 4,
       "triangle_count": 2
     },
     "U+0028": {
       "codepoint": 40,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0028",
-      "vertex_offset": 129,
+      "vertex_offset": 187,
       "vertex_count": 20,
       "triangle_count": 10
     },
     "U+0029": {
       "codepoint": 41,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0029",
-      "vertex_offset": 149,
+      "vertex_offset": 207,
       "vertex_count": 20,
       "triangle_count": 10
     },
     "U+002A": {
       "codepoint": 42,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+002A",
-      "vertex_offset": 169,
+      "vertex_offset": 227,
       "vertex_count": 28,
       "triangle_count": 18
     },
     "U+002B": {
       "codepoint": 43,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+002B",
-      "vertex_offset": 197,
+      "vertex_offset": 255,
       "vertex_count": 12,
       "triangle_count": 10
     },
     "U+002C": {
       "codepoint": 44,
-      "advance": 0.455,
+      "advance": 0.4,
       "object": "U+002C",
-      "vertex_offset": 209,
+      "vertex_offset": 267,
       "vertex_count": 8,
       "triangle_count": 4
     },
     "U+002D": {
       "codepoint": 45,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+002D",
-      "vertex_offset": 217,
+      "vertex_offset": 275,
       "vertex_count": 4,
       "triangle_count": 2
     },
     "U+002E": {
       "codepoint": 46,
-      "advance": 0.455,
+      "advance": 0.4,
       "object": "U+002E",
-      "vertex_offset": 221,
+      "vertex_offset": 279,
       "vertex_count": 4,
       "triangle_count": 2
     },
     "U+002F": {
       "codepoint": 47,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+002F",
-      "vertex_offset": 225,
+      "vertex_offset": 283,
       "vertex_count": 16,
       "triangle_count": 8
     },
     "U+0030": {
       "codepoint": 48,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0030",
-      "vertex_offset": 241,
+      "vertex_offset": 299,
       "vertex_count": 24,
       "triangle_count": 16
     },
     "U+0031": {
       "codepoint": 49,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0031",
-      "vertex_offset": 265,
+      "vertex_offset": 323,
       "vertex_count": 12,
       "triangle_count": 10
     },
     "U+0032": {
       "codepoint": 50,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0032",
-      "vertex_offset": 277,
+      "vertex_offset": 335,
       "vertex_count": 26,
       "triangle_count": 14
     },
     "U+0033": {
       "codepoint": 51,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0033",
-      "vertex_offset": 303,
-      "vertex_count": 26,
+      "vertex_offset": 361,
+      "vertex_count": 28,
       "triangle_count": 14
     },
     "U+0034": {
       "codepoint": 52,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0034",
-      "vertex_offset": 329,
-      "vertex_count": 14,
+      "vertex_offset": 389,
+      "vertex_count": 16,
       "triangle_count": 12
     },
     "U+0035": {
       "codepoint": 53,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0035",
-      "vertex_offset": 343,
-      "vertex_count": 20,
-      "triangle_count": 12
+      "vertex_offset": 405,
+      "vertex_count": 16,
+      "triangle_count": 10
     },
     "U+0036": {
       "codepoint": 54,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0036",
-      "vertex_offset": 363,
+      "vertex_offset": 421,
       "vertex_count": 24,
       "triangle_count": 14
     },
     "U+0037": {
       "codepoint": 55,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0037",
-      "vertex_offset": 387,
+      "vertex_offset": 445,
       "vertex_count": 14,
       "triangle_count": 8
     },
     "U+0038": {
       "codepoint": 56,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0038",
-      "vertex_offset": 401,
+      "vertex_offset": 459,
       "vertex_count": 28,
       "triangle_count": 14
     },
     "U+0039": {
       "codepoint": 57,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0039",
-      "vertex_offset": 429,
+      "vertex_offset": 487,
       "vertex_count": 24,
       "triangle_count": 14
     },
     "U+003A": {
       "codepoint": 58,
-      "advance": 0.455,
+      "advance": 0.4,
       "object": "U+003A",
-      "vertex_offset": 453,
+      "vertex_offset": 511,
       "vertex_count": 8,
       "triangle_count": 4
     },
     "U+003B": {
       "codepoint": 59,
-      "advance": 0.455,
+      "advance": 0.4,
       "object": "U+003B",
-      "vertex_offset": 461,
+      "vertex_offset": 519,
       "vertex_count": 12,
       "triangle_count": 6
     },
     "U+003C": {
       "codepoint": 60,
-      "advance": 0.455,
+      "advance": 0.4,
       "object": "U+003C",
-      "vertex_offset": 473,
+      "vertex_offset": 531,
       "vertex_count": 20,
       "triangle_count": 10
     },
     "U+003D": {
       "codepoint": 61,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+003D",
-      "vertex_offset": 493,
+      "vertex_offset": 551,
       "vertex_count": 8,
       "triangle_count": 4
     },
     "U+003E": {
       "codepoint": 62,
-      "advance": 0.455,
+      "advance": 0.4,
       "object": "U+003E",
-      "vertex_offset": 501,
+      "vertex_offset": 559,
       "vertex_count": 20,
       "triangle_count": 10
     },
     "U+003F": {
       "codepoint": 63,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+003F",
-      "vertex_offset": 521,
+      "vertex_offset": 579,
       "vertex_count": 24,
       "triangle_count": 12
     },
     "U+0040": {
       "codepoint": 64,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0040",
-      "vertex_offset": 545,
-      "vertex_count": 18,
-      "triangle_count": 10
+      "vertex_offset": 603,
+      "vertex_count": 24,
+      "triangle_count": 16
     },
     "U+0041": {
       "codepoint": 65,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0041",
-      "vertex_offset": 563,
-      "vertex_count": 16,
+      "vertex_offset": 627,
+      "vertex_count": 20,
       "triangle_count": 12
     },
     "U+0042": {
       "codepoint": 66,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0042",
-      "vertex_offset": 579,
+      "vertex_offset": 647,
       "vertex_count": 20,
       "triangle_count": 14
     },
     "U+0043": {
       "codepoint": 67,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0043",
-      "vertex_offset": 599,
+      "vertex_offset": 667,
       "vertex_count": 20,
       "triangle_count": 10
     },
     "U+0044": {
       "codepoint": 68,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0044",
-      "vertex_offset": 619,
+      "vertex_offset": 687,
       "vertex_count": 12,
       "triangle_count": 8
     },
     "U+0045": {
       "codepoint": 69,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0045",
-      "vertex_offset": 631,
+      "vertex_offset": 699,
       "vertex_count": 12,
       "triangle_count": 10
     },
     "U+0046": {
       "codepoint": 70,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0046",
-      "vertex_offset": 643,
+      "vertex_offset": 711,
       "vertex_count": 10,
       "triangle_count": 8
     },
     "U+0047": {
       "codepoint": 71,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0047",
-      "vertex_offset": 653,
-      "vertex_count": 22,
+      "vertex_offset": 721,
+      "vertex_count": 20,
       "triangle_count": 12
     },
     "U+0048": {
       "codepoint": 72,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0048",
-      "vertex_offset": 675,
+      "vertex_offset": 741,
       "vertex_count": 12,
       "triangle_count": 10
     },
     "U+0049": {
       "codepoint": 73,
-      "advance": 0.455,
+      "advance": 0.4,
       "object": "U+0049",
-      "vertex_offset": 687,
+      "vertex_offset": 753,
       "vertex_count": 12,
       "triangle_count": 10
     },
     "U+004A": {
       "codepoint": 74,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+004A",
-      "vertex_offset": 699,
+      "vertex_offset": 765,
       "vertex_count": 12,
-      "triangle_count": 8
+      "triangle_count": 6
     },
     "U+004B": {
       "codepoint": 75,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+004B",
-      "vertex_offset": 711,
-      "vertex_count": 24,
-      "triangle_count": 14
+      "vertex_offset": 777,
+      "vertex_count": 32,
+      "triangle_count": 18
     },
     "U+004C": {
       "codepoint": 76,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+004C",
-      "vertex_offset": 735,
+      "vertex_offset": 809,
       "vertex_count": 6,
       "triangle_count": 4
     },
     "U+004D": {
       "codepoint": 77,
-      "advance": 0.455,
+      "advance": 0.8,
       "object": "U+004D",
-      "vertex_offset": 741,
-      "vertex_count": 12,
-      "triangle_count": 10
+      "vertex_offset": 815,
+      "vertex_count": 28,
+      "triangle_count": 18
     },
     "U+004E": {
       "codepoint": 78,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+004E",
-      "vertex_offset": 753,
-      "vertex_count": 16,
-      "triangle_count": 12
+      "vertex_offset": 843,
+      "vertex_count": 20,
+      "triangle_count": 14
     },
     "U+004F": {
       "codepoint": 79,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+004F",
-      "vertex_offset": 769,
+      "vertex_offset": 863,
       "vertex_count": 16,
       "triangle_count": 8
     },
     "U+0050": {
       "codepoint": 80,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0050",
-      "vertex_offset": 785,
+      "vertex_offset": 879,
       "vertex_count": 14,
       "triangle_count": 10
     },
     "U+0051": {
       "codepoint": 81,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0051",
-      "vertex_offset": 799,
-      "vertex_count": 22,
-      "triangle_count": 12
+      "vertex_offset": 893,
+      "vertex_count": 28,
+      "triangle_count": 14
     },
     "U+0052": {
       "codepoint": 82,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0052",
-      "vertex_offset": 821,
-      "vertex_count": 18,
-      "triangle_count": 12
+      "vertex_offset": 921,
+      "vertex_count": 20,
+      "triangle_count": 14
     },
     "U+0053": {
       "codepoint": 83,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0053",
-      "vertex_offset": 839,
+      "vertex_offset": 941,
       "vertex_count": 28,
       "triangle_count": 14
     },
     "U+0054": {
       "codepoint": 84,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0054",
-      "vertex_offset": 867,
+      "vertex_offset": 969,
       "vertex_count": 8,
       "triangle_count": 6
     },
     "U+0055": {
       "codepoint": 85,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0055",
-      "vertex_offset": 875,
-      "vertex_count": 10,
+      "vertex_offset": 977,
+      "vertex_count": 12,
       "triangle_count": 6
     },
     "U+0056": {
       "codepoint": 86,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0056",
-      "vertex_offset": 885,
-      "vertex_count": 12,
-      "triangle_count": 6
+      "vertex_offset": 989,
+      "vertex_count": 20,
+      "triangle_count": 10
     },
     "U+0057": {
       "codepoint": 87,
-      "advance": 0.455,
+      "advance": 0.8,
       "object": "U+0057",
-      "vertex_offset": 897,
-      "vertex_count": 12,
-      "triangle_count": 10
+      "vertex_offset": 1009,
+      "vertex_count": 28,
+      "triangle_count": 14
     },
     "U+0058": {
       "codepoint": 88,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0058",
-      "vertex_offset": 909,
-      "vertex_count": 20,
-      "triangle_count": 10
+      "vertex_offset": 1037,
+      "vertex_count": 36,
+      "triangle_count": 18
     },
     "U+0059": {
       "codepoint": 89,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0059",
-      "vertex_offset": 929,
-      "vertex_count": 18,
-      "triangle_count": 12
+      "vertex_offset": 1073,
+      "vertex_count": 20,
+      "triangle_count": 10
     },
     "U+005A": {
       "codepoint": 90,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+005A",
-      "vertex_offset": 947,
-      "vertex_count": 20,
-      "triangle_count": 12
+      "vertex_offset": 1093,
+      "vertex_count": 24,
+      "triangle_count": 14
     },
     "U+005B": {
       "codepoint": 91,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+005B",
-      "vertex_offset": 967,
+      "vertex_offset": 1117,
       "vertex_count": 8,
       "triangle_count": 6
     },
     "U+005C": {
       "codepoint": 92,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+005C",
-      "vertex_offset": 975,
+      "vertex_offset": 1125,
       "vertex_count": 16,
       "triangle_count": 8
     },
     "U+005D": {
       "codepoint": 93,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+005D",
-      "vertex_offset": 991,
+      "vertex_offset": 1141,
       "vertex_count": 8,
       "triangle_count": 6
     },
     "U+005E": {
       "codepoint": 94,
-      "advance": 0.455,
+      "advance": 0.4,
       "object": "U+005E",
-      "vertex_offset": 999,
-      "vertex_count": 20,
-      "triangle_count": 10
+      "vertex_offset": 1149,
+      "vertex_count": 12,
+      "triangle_count": 6
     },
     "U+005F": {
       "codepoint": 95,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+005F",
-      "vertex_offset": 1019,
+      "vertex_offset": 1161,
       "vertex_count": 4,
       "triangle_count": 2
     },
     "U+0060": {
       "codepoint": 96,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0060",
-      "vertex_offset": 1023,
-      "vertex_count": 12,
-      "triangle_count": 6
+      "vertex_offset": 1165,
+      "vertex_count": 8,
+      "triangle_count": 4
     },
     "U+0061": {
       "codepoint": 97,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0061",
-      "vertex_offset": 1035,
+      "vertex_offset": 1173,
       "vertex_count": 18,
       "triangle_count": 12
     },
     "U+0062": {
       "codepoint": 98,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0062",
-      "vertex_offset": 1053,
+      "vertex_offset": 1191,
       "vertex_count": 14,
       "triangle_count": 10
     },
     "U+0063": {
       "codepoint": 99,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0063",
-      "vertex_offset": 1067,
+      "vertex_offset": 1205,
       "vertex_count": 20,
       "triangle_count": 10
     },
     "U+0064": {
       "codepoint": 100,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0064",
-      "vertex_offset": 1087,
+      "vertex_offset": 1225,
       "vertex_count": 14,
       "triangle_count": 10
     },
     "U+0065": {
       "codepoint": 101,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0065",
-      "vertex_offset": 1101,
+      "vertex_offset": 1239,
       "vertex_count": 18,
       "triangle_count": 12
     },
     "U+0066": {
       "codepoint": 102,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0066",
-      "vertex_offset": 1119,
+      "vertex_offset": 1257,
       "vertex_count": 16,
       "triangle_count": 12
     },
     "U+0067": {
       "codepoint": 103,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0067",
-      "vertex_offset": 1135,
+      "vertex_offset": 1273,
       "vertex_count": 18,
       "triangle_count": 12
     },
     "U+0068": {
       "codepoint": 104,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0068",
-      "vertex_offset": 1153,
+      "vertex_offset": 1291,
       "vertex_count": 12,
       "triangle_count": 8
     },
     "U+0069": {
       "codepoint": 105,
-      "advance": 0.455,
+      "advance": 0.4,
       "object": "U+0069",
-      "vertex_offset": 1165,
+      "vertex_offset": 1303,
       "vertex_count": 14,
-      "triangle_count": 8
+      "triangle_count": 10
     },
     "U+006A": {
       "codepoint": 106,
-      "advance": 0.455,
+      "advance": 0.4,
       "object": "U+006A",
-      "vertex_offset": 1179,
+      "vertex_offset": 1317,
       "vertex_count": 14,
       "triangle_count": 8
     },
     "U+006B": {
       "codepoint": 107,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+006B",
-      "vertex_offset": 1193,
+      "vertex_offset": 1331,
       "vertex_count": 24,
       "triangle_count": 14
     },
     "U+006C": {
       "codepoint": 108,
-      "advance": 0.455,
+      "advance": 0.4,
       "object": "U+006C",
-      "vertex_offset": 1217,
-      "vertex_count": 10,
+      "vertex_offset": 1355,
+      "vertex_count": 8,
       "triangle_count": 6
     },
     "U+006D": {
       "codepoint": 109,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+006D",
-      "vertex_offset": 1227,
-      "vertex_count": 12,
+      "vertex_offset": 1363,
+      "vertex_count": 18,
       "triangle_count": 10
     },
     "U+006E": {
       "codepoint": 110,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+006E",
-      "vertex_offset": 1239,
+      "vertex_offset": 1381,
       "vertex_count": 10,
       "triangle_count": 6
     },
     "U+006F": {
       "codepoint": 111,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+006F",
-      "vertex_offset": 1249,
+      "vertex_offset": 1391,
       "vertex_count": 16,
       "triangle_count": 8
     },
     "U+0070": {
       "codepoint": 112,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0070",
-      "vertex_offset": 1265,
+      "vertex_offset": 1407,
       "vertex_count": 14,
       "triangle_count": 10
     },
     "U+0071": {
       "codepoint": 113,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0071",
-      "vertex_offset": 1279,
+      "vertex_offset": 1421,
       "vertex_count": 14,
       "triangle_count": 10
     },
     "U+0072": {
       "codepoint": 114,
-      "advance": 0.455,
+      "advance": 0.4,
       "object": "U+0072",
-      "vertex_offset": 1293,
-      "vertex_count": 10,
-      "triangle_count": 6
+      "vertex_offset": 1435,
+      "vertex_count": 12,
+      "triangle_count": 8
     },
     "U+0073": {
       "codepoint": 115,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0073",
-      "vertex_offset": 1303,
+      "vertex_offset": 1447,
       "vertex_count": 20,
       "triangle_count": 10
     },
     "U+0074": {
       "codepoint": 116,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0074",
-      "vertex_offset": 1323,
+      "vertex_offset": 1467,
       "vertex_count": 16,
       "triangle_count": 12
     },
     "U+0075": {
       "codepoint": 117,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+0075",
-      "vertex_offset": 1339,
+      "vertex_offset": 1483,
       "vertex_count": 10,
       "triangle_count": 6
     },
     "U+0076": {
       "codepoint": 118,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0076",
-      "vertex_offset": 1349,
-      "vertex_count": 12,
-      "triangle_count": 6
+      "vertex_offset": 1493,
+      "vertex_count": 20,
+      "triangle_count": 10
     },
     "U+0077": {
       "codepoint": 119,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0077",
-      "vertex_offset": 1361,
-      "vertex_count": 12,
+      "vertex_offset": 1513,
+      "vertex_count": 20,
       "triangle_count": 10
     },
     "U+0078": {
       "codepoint": 120,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0078",
-      "vertex_offset": 1373,
-      "vertex_count": 20,
-      "triangle_count": 10
+      "vertex_offset": 1533,
+      "vertex_count": 36,
+      "triangle_count": 18
     },
     "U+0079": {
       "codepoint": 121,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+0079",
-      "vertex_offset": 1393,
-      "vertex_count": 16,
-      "triangle_count": 10
+      "vertex_offset": 1569,
+      "vertex_count": 24,
+      "triangle_count": 12
     },
     "U+007A": {
       "codepoint": 122,
-      "advance": 0.455,
+      "advance": 0.5,
       "object": "U+007A",
-      "vertex_offset": 1409,
+      "vertex_offset": 1593,
       "vertex_count": 18,
       "triangle_count": 12
     },
     "U+007B": {
       "codepoint": 123,
-      "advance": 0.455,
+      "advance": 0.7,
       "object": "U+007B",
-      "vertex_offset": 1427,
+      "vertex_offset": 1611,
       "vertex_count": 20,
       "triangle_count": 10
     },
     "U+007C": {
       "codepoint": 124,
-      "advance": 0.455,
+      "advance": 0.4,
       "object": "U+007C",
-      "vertex_offset": 1447,
+      "vertex_offset": 1631,
       "vertex_count": 4,
       "triangle_count": 2
     },
     "U+007D": {
       "codepoint": 125,
-      "advance": 0.455,
+      "advance": 0.7,
       "object": "U+007D",
-      "vertex_offset": 1451,
+      "vertex_offset": 1635,
       "vertex_count": 20,
       "triangle_count": 10
     },
     "U+007E": {
       "codepoint": 126,
-      "advance": 0.455,
+      "advance": 0.6,
       "object": "U+007E",
-      "vertex_offset": 1471,
+      "vertex_offset": 1655,
       "vertex_count": 20,
       "triangle_count": 10
     }
