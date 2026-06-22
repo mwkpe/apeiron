@@ -6,7 +6,8 @@
 #include "apeiron/engine/event.h"
 #include "apeiron/engine/input.h"
 #include "apeiron/engine/sdl_input.h"
-#include "apeiron/engine/window_wrapper.h"
+
+#include "apeiron/opengl/window.h"
 
 #include "example/settings.h"
 #include "example/menu.h"
@@ -16,7 +17,7 @@
 int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
   apeiron::example::Settings settings;
-  apeiron::engine::Window_wrapper window;
+  apeiron::opengl::Window window;
 
   try {
     settings = apeiron::example::load_settings("settings.toml");

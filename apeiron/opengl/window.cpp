@@ -1,4 +1,4 @@
-#include "window_wrapper.h"
+#include "window.h"
 
 
 #include <iostream>
@@ -7,23 +7,23 @@
 #include "apeiron/engine/error.h"
 
 
-apeiron::engine::Window_wrapper::~Window_wrapper()
+apeiron::opengl::Window::~Window()
 {
   if (context_) {
     SDL_GL_DestroyContext(context_);
     context_ = nullptr;
   }
-  
+
   if (window_) {
     SDL_DestroyWindow(window_);
     window_ = nullptr;
   }
-    
+
   SDL_Quit();
 }
 
 
-apeiron::engine::Window_wrapper::Window_wrapper(Window_wrapper&& other) noexcept
+apeiron::opengl::Window::Window(Window&& other) noexcept
 {
   window_ = other.window_;
   context_ = other.context_;
@@ -33,8 +33,8 @@ apeiron::engine::Window_wrapper::Window_wrapper(Window_wrapper&& other) noexcept
 }
 
 
-auto apeiron::engine::Window_wrapper::operator=(Window_wrapper&& other) noexcept
-    -> Window_wrapper&
+auto apeiron::opengl::Window::operator=(Window&& other) noexcept
+    -> Window&
 {
   if (&other == this) {
     return *this;
@@ -50,14 +50,14 @@ auto apeiron::engine::Window_wrapper::operator=(Window_wrapper&& other) noexcept
 }
 
 
-void apeiron::engine::Window_wrapper::init(const Window_settings& settings)
+void apeiron::opengl::Window::init(const Window_settings& settings)
 {
   SDL_Init(settings.init_flags);
 
   if (settings.gl_core) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
   }
-  
+
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, settings.gl_major);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, settings.gl_minor);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -83,7 +83,7 @@ void apeiron::engine::Window_wrapper::init(const Window_settings& settings)
   window_ = SDL_CreateWindow(settings.title.data(), settings.width, settings.height, window_flags);
 
   if (!window_) {
-    throw Error{"Failed to create SDL window"};
+    throw engine::Error{"Failed to create SDL window"};
   }
 
   int logical_width = settings.width;
@@ -109,11 +109,11 @@ void apeiron::engine::Window_wrapper::init(const Window_settings& settings)
   context_ = SDL_GL_CreateContext(window_);
 
   if (!context_) {
-    throw Error{"Failed to create OpenGL context"};
+    throw engine::Error{"Failed to create OpenGL context"};
   }
 
   if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
-    throw Error{"Failed to initialize OpenGL context"};
+    throw engine::Error{"Failed to initialize OpenGL context"};
   }
 
   if (!SDL_GL_SetSwapInterval(settings.vsync ? 1 : 0)) {
@@ -122,9 +122,8 @@ void apeiron::engine::Window_wrapper::init(const Window_settings& settings)
 }
 
 
-auto apeiron::engine::Window_wrapper::attributes() const -> Window_attributes
+auto apeiron::opengl::Window::attributes() const -> Window_attributes
 {
-  float density = SDL_GetWindowPixelDensity(window_);
   int logical_width;
   int logical_height;
   int render_width;
@@ -134,5 +133,6 @@ auto apeiron::engine::Window_wrapper::attributes() const -> Window_attributes
   SDL_GetWindowSize(window_, &logical_width, &logical_height);
   SDL_GetWindowSizeInPixels(window_, &render_width, &render_height);
 
-  return {logical_width, logical_height, render_width, render_height, density};
+  return {logical_width, logical_height, render_width, render_height,
+      SDL_GetWindowPixelDensity(window_), SDL_GetWindowDisplayScale(window_)};
 }

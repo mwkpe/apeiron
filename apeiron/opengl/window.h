@@ -1,5 +1,5 @@
-#ifndef APEIRON_ENGINE_WINDOW_WRAPPER_H
-#define APEIRON_ENGINE_WINDOW_WRAPPER_H
+#ifndef APEIRON_OPENGL_WINDOW_H
+#define APEIRON_OPENGL_WINDOW_H
 
 
 #include <string>
@@ -8,7 +8,7 @@
 #include <SDL3/SDL.h>
 
 
-namespace apeiron::engine {
+namespace apeiron::opengl {
 
 
 struct Window_settings
@@ -34,19 +34,20 @@ struct Window_attributes
   int logical_height;
   int render_width;
   int render_height;
+  float density;
   float scale;
 };
 
 
-class Window_wrapper final
+class Window final
 {
 public:
-  Window_wrapper() = default;
-  ~Window_wrapper();
-  Window_wrapper(const Window_wrapper&) = delete;
-  Window_wrapper(Window_wrapper&& other) noexcept;
-  Window_wrapper& operator=(const Window_wrapper&) = delete;
-  Window_wrapper& operator=(Window_wrapper&& other) noexcept;
+  Window() = default;
+  ~Window();
+  Window(const Window&) = delete;
+  Window(Window&& other) noexcept;
+  Window& operator=(const Window&) = delete;
+  Window& operator=(Window&& other) noexcept;
 
   void init(const Window_settings& settings);
   Window_attributes attributes() const;
@@ -60,7 +61,7 @@ private:
 };
 
 
-}  // namespace apeiron::engine
+}  // namespace apeiron::opengl
 
 
-#endif  // APEIRON_ENGINE_WINDOW_WRAPPER_H
+#endif  // APEIRON_OPENGL_WINDOW_H
