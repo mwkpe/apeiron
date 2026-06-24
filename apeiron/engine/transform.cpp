@@ -156,13 +156,13 @@ auto apeiron::engine::Transform::set_rotation_rad(const glm::vec3& rotation) -> 
 }
 
 
-auto apeiron::engine::Transform::set_rotation_pivot(Rotation_axis axis, float x, float y, float z)
+auto apeiron::engine::Transform::set_rotation_pivot(Axis axis, float x, float y, float z)
     -> Transform&
 {
   switch (axis) {
-    case Rotation_axis::X: rotation_x_.pivot = glm::vec3{x, y, z}; break;
-    case Rotation_axis::Y: rotation_y_.pivot = glm::vec3{x, y, z}; break;
-    case Rotation_axis::Z: rotation_z_.pivot = glm::vec3{x, y, z}; break;
+    case Axis::X: rotation_x_.pivot = glm::vec3{x, y, z}; break;
+    case Axis::Y: rotation_y_.pivot = glm::vec3{x, y, z}; break;
+    case Axis::Z: rotation_z_.pivot = glm::vec3{x, y, z}; break;
   }
 
   has_changed_ = true;
@@ -170,13 +170,13 @@ auto apeiron::engine::Transform::set_rotation_pivot(Rotation_axis axis, float x,
 }
 
 
-auto apeiron::engine::Transform::set_rotation_pivot(Rotation_axis axis, const glm::vec3& pivot)
+auto apeiron::engine::Transform::set_rotation_pivot(Axis axis, const glm::vec3& pivot)
     -> Transform&
 {
   switch (axis) {
-    case Rotation_axis::X: rotation_x_.pivot = pivot; break;
-    case Rotation_axis::Y: rotation_y_.pivot = pivot; break;
-    case Rotation_axis::Z: rotation_z_.pivot = pivot; break;
+    case Axis::X: rotation_x_.pivot = pivot; break;
+    case Axis::Y: rotation_y_.pivot = pivot; break;
+    case Axis::Z: rotation_z_.pivot = pivot; break;
   }
 
   has_changed_ = true;
@@ -185,7 +185,7 @@ auto apeiron::engine::Transform::set_rotation_pivot(Rotation_axis axis, const gl
 }
 
 
-auto apeiron::engine::Transform::set_rotation_order(Rotation_order rotation_order) -> Transform&
+auto apeiron::engine::Transform::set_rotation_order(Axis_order rotation_order) -> Transform&
 {
   rotation_order_ = rotation_order;
   has_changed_ = true;
@@ -205,19 +205,19 @@ glm::vec3 apeiron::engine::Transform::rotation_deg() const
 }
 
 
-float apeiron::engine::Transform::rotation_rad(Rotation_axis axis) const
+float apeiron::engine::Transform::rotation_rad(Axis axis) const
 {
   switch (axis) {
-    case Rotation_axis::X: return rotation_x_.angle_rad;
-    case Rotation_axis::Y: return rotation_y_.angle_rad;
-    case Rotation_axis::Z: return rotation_z_.angle_rad;
+    case Axis::X: return rotation_x_.angle_rad;
+    case Axis::Y: return rotation_y_.angle_rad;
+    case Axis::Z: return rotation_z_.angle_rad;
   }
 
   return 0.0f;
 }
 
 
-float apeiron::engine::Transform::rotation_deg(Rotation_axis axis) const
+float apeiron::engine::Transform::rotation_deg(Axis axis) const
 {
   return glm::degrees(rotation_rad(axis));
 }
@@ -243,37 +243,37 @@ void apeiron::engine::Transform::recompute() const
   const glm::quat qz = glm::angleAxis(rotation_z_.angle_rad, glm::vec3{0,0,1});
 
   switch (rotation_order_) {
-    case Rotation_order::XYZ: {
+    case Axis_order::XYZ: {
       apply_rotation(model_matrix_, rotation_x_.pivot * scale_, qx);
       apply_rotation(model_matrix_, rotation_y_.pivot * scale_, qy);
       apply_rotation(model_matrix_, rotation_z_.pivot * scale_, qz);
     }
     break;
-    case Rotation_order::XZY: {
+    case Axis_order::XZY: {
       apply_rotation(model_matrix_, rotation_x_.pivot * scale_, qx);
       apply_rotation(model_matrix_, rotation_z_.pivot * scale_, qz);
       apply_rotation(model_matrix_, rotation_y_.pivot * scale_, qy);
     }
     break;
-    case Rotation_order::YXZ: {
+    case Axis_order::YXZ: {
       apply_rotation(model_matrix_, rotation_y_.pivot * scale_, qy);
       apply_rotation(model_matrix_, rotation_x_.pivot * scale_, qx);
       apply_rotation(model_matrix_, rotation_z_.pivot * scale_, qz);
     }
     break;
-    case Rotation_order::YZX: {
+    case Axis_order::YZX: {
       apply_rotation(model_matrix_, rotation_y_.pivot * scale_, qy);
       apply_rotation(model_matrix_, rotation_z_.pivot * scale_, qz);
       apply_rotation(model_matrix_, rotation_x_.pivot * scale_, qx);
     }
     break;
-    case Rotation_order::ZXY: {
+    case Axis_order::ZXY: {
       apply_rotation(model_matrix_, rotation_z_.pivot * scale_, qz);
       apply_rotation(model_matrix_, rotation_x_.pivot * scale_, qx);
       apply_rotation(model_matrix_, rotation_y_.pivot * scale_, qy);
     }
     break;
-    case Rotation_order::ZYX: {
+    case Axis_order::ZYX: {
       apply_rotation(model_matrix_, rotation_z_.pivot * scale_, qz);
       apply_rotation(model_matrix_, rotation_y_.pivot * scale_, qy);
       apply_rotation(model_matrix_, rotation_x_.pivot * scale_, qx);
