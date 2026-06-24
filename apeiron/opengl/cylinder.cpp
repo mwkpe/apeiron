@@ -9,70 +9,168 @@
 namespace {
 
 
-constexpr float pi = 3.14159f;
-constexpr float tau = 2.0f * pi;
-
-
-std::vector<float> build_vertices(std::uint32_t points, float radius, float height)
+std::vector<apeiron::engine::Vertex_simple> build_vertices(std::uint32_t points, float radius,
+    float height, apeiron::engine::Axis axis)
 {
-  const std::uint32_t wall_vertices = (points + 1) * 2 * 3;
-  const std::uint32_t circle_vertices = wall_vertices / 2;
-  std::vector<float> cylinder(wall_vertices + circle_vertices * 2);
-  std::uint32_t wall_index = 0;
-  std::uint32_t bottom_circle_index = wall_vertices;
-  std::uint32_t top_circle_index = wall_vertices + circle_vertices;
+  constexpr float pi = 3.14159f;
+  constexpr float tau = 2.0f * pi;
+
+  std::vector<apeiron::engine::Vertex_simple> vertices;
+  vertices.reserve((points + 1) * 4);
+
+  const float r = radius;
+  const float h = height / 2.0f;
 
   for (std::uint32_t i=0; i<=points; ++i) {
-    const float angle = static_cast<float>(i) / static_cast<float>(points) * tau;
-    const float x = radius * std::cos(angle);
-    const float z = radius * std::sin(angle);
-    cylinder[wall_index++] = x;
-    cylinder[wall_index++] = -height / 2.0f;
-    cylinder[wall_index++] = z;
-    cylinder[wall_index++] = x;
-    cylinder[wall_index++] = height / 2.0f;
-    cylinder[wall_index++] = z;
-    cylinder[bottom_circle_index++] = x;
-    cylinder[bottom_circle_index++] = -height / 2.0f;
-    cylinder[bottom_circle_index++] = z;
-    cylinder[top_circle_index++] = radius * std::cos(tau - angle);
-    cylinder[top_circle_index++] = height / 2.0f;
-    cylinder[top_circle_index++] = radius * std::sin(tau - angle);
+    const float a = static_cast<float>(i) / static_cast<float>(points) * tau;
+    const float ca = r * std::cos(a);
+    const float sa = r * std::sin(a);
+
+    switch (axis) {
+      case apeiron::engine::Axis::X:
+        vertices.emplace_back(h, ca, sa);
+        vertices.emplace_back(-h, ca, sa);
+      break;
+      case apeiron::engine::Axis::Y:
+        vertices.emplace_back(ca, -h, sa);
+        vertices.emplace_back(ca, h, sa);
+      break;
+      case apeiron::engine::Axis::Z:
+        vertices.emplace_back(ca, sa, h);
+        vertices.emplace_back(ca, sa, -h);
+      break;
+    }
   }
 
-  return cylinder;
+  for (std::uint32_t i=0; i<=points; ++i) {
+    const float a = static_cast<float>(i) / static_cast<float>(points) * tau;
+    const float ca = r * std::cos(a);
+    const float sa = r * std::sin(a);
+
+    switch (axis) {
+      case apeiron::engine::Axis::X:
+        vertices.emplace_back(h, ca, sa);
+      break;
+      case apeiron::engine::Axis::Y:
+        vertices.emplace_back(ca, -h, sa);
+      break;
+      case apeiron::engine::Axis::Z:
+        vertices.emplace_back(ca, sa, h);
+      break;
+    }
+  }
+
+  for (std::uint32_t i=0; i<=points; ++i) {
+    const float a = tau - static_cast<float>(i) / static_cast<float>(points) * tau;
+    const float ca = r * std::cos(a);
+    const float sa = r * std::sin(a);
+
+    switch (axis) {
+      case apeiron::engine::Axis::X:
+        vertices.emplace_back(-h, ca, sa);
+      break;
+      case apeiron::engine::Axis::Y:
+        vertices.emplace_back(ca, h, sa);
+      break;
+      case apeiron::engine::Axis::Z:
+        vertices.emplace_back(ca, sa, -h);
+      break;
+    }
+  }
+
+  return vertices;
+}
+
+
+std::vector<apeiron::engine::Vertex_color> build_vertices(std::uint32_t points, float radius,
+    float height, apeiron::engine::Axis axis, const glm::vec4& color)
+{
+  constexpr float pi = 3.14159f;
+  constexpr float tau = 2.0f * pi;
+
+  std::vector<apeiron::engine::Vertex_color> vertices;
+  vertices.reserve((points + 1) * 4);
+
+  const float r = radius;
+  const float h = height / 2.0f;
+
+  for (std::uint32_t i=0; i<=points; ++i) {
+    const float a = static_cast<float>(i) / static_cast<float>(points) * tau;
+    const float ca = r * std::cos(a);
+    const float sa = r * std::sin(a);
+
+    switch (axis) {
+    case apeiron::engine::Axis::X:
+        vertices.emplace_back(glm::vec3{h, ca, sa}, color);
+        vertices.emplace_back(glm::vec3{-h, ca, sa}, color);
+      break;
+      case apeiron::engine::Axis::Y:
+        vertices.emplace_back(glm::vec3{ca, -h, sa}, color);
+        vertices.emplace_back(glm::vec3{ca, h, sa}, color);
+      break;
+      case apeiron::engine::Axis::Z:
+        vertices.emplace_back(glm::vec3{ca, sa, h}, color);
+        vertices.emplace_back(glm::vec3{ca, sa, -h}, color);
+      break;
+    }
+  }
+
+  for (std::uint32_t i=0; i<=points; ++i) {
+    const float a = static_cast<float>(i) / static_cast<float>(points) * tau;
+    const float ca = r * std::cos(a);
+    const float sa = r * std::sin(a);
+
+    switch (axis) {
+      case apeiron::engine::Axis::X:
+        vertices.emplace_back(glm::vec3{h, ca, sa}, color);
+      break;
+      case apeiron::engine::Axis::Y:
+        vertices.emplace_back(glm::vec3{ca, -h, sa}, color);
+      break;
+      case apeiron::engine::Axis::Z:
+        vertices.emplace_back(glm::vec3{ca, sa, h}, color);
+      break;
+    }
+  }
+
+  for (std::uint32_t i=0; i<=points; ++i) {
+    const float a = tau - static_cast<float>(i) / static_cast<float>(points) * tau;
+    const float ca = r * std::cos(a);
+    const float sa = r * std::sin(a);
+
+    switch (axis) {
+      case apeiron::engine::Axis::X:
+        vertices.emplace_back(glm::vec3{-h, ca, sa}, color);
+      break;
+      case apeiron::engine::Axis::Y:
+        vertices.emplace_back(glm::vec3{ca, h, sa}, color);
+      break;
+      case apeiron::engine::Axis::Z:
+        vertices.emplace_back(glm::vec3{ca, sa, -h}, color);
+      break;
+    }
+  }
+
+  return vertices;
 }
 
 
 }  // namespace
 
 
-apeiron::opengl::Cylinder::Cylinder(std::uint32_t points, float radius, float height)
+void apeiron::opengl::Cylinder::init(std::uint32_t points, float radius,
+    float height, engine::Axis axis)
 {
-  init(points, radius, height);
+  const auto vertices = build_vertices(points, radius, height, axis);
+  set_buffers(vertices);
 }
 
 
-void apeiron::opengl::Cylinder::init(std::uint32_t points, float radius, float height)
+void apeiron::opengl::Cylinder::init(std::uint32_t points, float radius, float height,
+    engine::Axis axis, const glm::vec4& color)
 {
-  points_ = points;
-  glGenVertexArrays(1, &vao_);
-  glGenBuffers(1, &vbo_);
-  construct(points_, radius, height);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void*>(0));
-  glEnableVertexAttribArray(0);
-}
-
-
-void apeiron::opengl::Cylinder::construct(std::uint32_t points, float radius, float height)
-{
-  points_ = points;
-  const auto vertices = build_vertices(points_, radius, height);
-  vertex_count_ = static_cast<std::uint32_t>(vertices.size()) / 3;
-  glBindVertexArray(vao_);
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(vertices.size() * sizeof(float)),
-      vertices.data(), GL_STATIC_DRAW);
+  const auto vertices = build_vertices(points, radius, height, axis, color);
+  set_buffers(vertices);
 }
 
 
@@ -80,8 +178,8 @@ void apeiron::opengl::Cylinder::render() const
 {
   glBindVertexArray(vao_);
   const GLsizei wall_vertices = static_cast<GLsizei>(vertex_count_) / 2;
-  const GLsizei circle_vertices = wall_vertices / 2;
-  glDrawArrays(GL_TRIANGLE_STRIP, 0, wall_vertices);  // Walls
-  glDrawArrays(GL_TRIANGLE_FAN, wall_vertices, circle_vertices);  // Bottom circle
-  glDrawArrays(GL_TRIANGLE_FAN, wall_vertices + circle_vertices, circle_vertices);  // Top circle
+  const GLsizei disk_vertices = wall_vertices / 2;
+  glDrawArrays(GL_TRIANGLE_STRIP, 0, wall_vertices);
+  glDrawArrays(GL_TRIANGLE_FAN, wall_vertices, disk_vertices);
+  glDrawArrays(GL_TRIANGLE_FAN, wall_vertices + disk_vertices, disk_vertices);
 }

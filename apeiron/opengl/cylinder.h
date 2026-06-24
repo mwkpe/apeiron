@@ -3,6 +3,8 @@
 
 
 #include <cstdint>
+#include <glm/glm.hpp>
+#include "apeiron/engine/enums.h"
 #include "apeiron/opengl/vertex_array.h"
 
 
@@ -12,15 +14,11 @@ namespace apeiron::opengl {
 class Cylinder final : public Vertex_array
 {
 public:
-  Cylinder() = default;
-  explicit Cylinder(std::uint32_t points, float radius = 0.5f, float height = 1.0f);
-  void init(std::uint32_t points, float radius = 0.5f, float height = 1.0f);
-  void construct(std::uint32_t points, float radius = 0.5f, float height = 1.0f);
-  [[nodiscard]] std::uint32_t points() const { return points_; }
-  void render() const override;
+  void init(std::uint32_t points, float radius, float height, engine::Axis axis);
+  void init(std::uint32_t points, float radius, float height, engine::Axis axis,
+      const glm::vec4& color);
 
-private:
-  std::uint32_t points_ = 8;
+  void render() const override;
 };
 
 
