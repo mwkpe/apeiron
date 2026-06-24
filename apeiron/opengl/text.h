@@ -2,8 +2,10 @@
 #define APEIRON_OPENGL_TEXT_H
 
 
+#include <span>
 #include <string>
 #include <string_view>
+#include <tuple>
 
 #include <glm/glm.hpp>
 
@@ -31,6 +33,28 @@ public:
 
 private:
   std::string text_;
+  Meshset meshset_;
+};
+
+
+struct Text_part
+{
+  std::string text;
+  glm::vec3 offset;
+};
+
+
+class Multi_text final : public engine::Entity
+{
+public:
+  template<typename T = engine::Vertex> void init(std::span<Text_part> text_parts,
+      const engine::Font<T>& font, opengl::Usage_hint hint = opengl::Usage_hint::Static);
+  template<typename T = engine::Vertex> void update(std::span<Text_part> text_parts,
+      const engine::Font<T>& font);
+
+  void render() const override { meshset_.render(); }
+
+private:
   Meshset meshset_;
 };
 

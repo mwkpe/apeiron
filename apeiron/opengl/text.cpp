@@ -23,18 +23,19 @@ void add_glyph(auto& vertices, auto& entries, const auto& glyph, const glm::vec3
   entries.push_back(entry);
 
   for (auto v : glyph.vertices) {
-    v.position.x += pos.x;
+    v.position += pos;
     vertices.push_back(v);
   }
 }
 
 
-void create_text(auto& vertices, auto& entries, auto& font, std::string_view text)
+void create_text(auto& vertices, auto& entries, auto& font, std::string_view text,
+    const glm::vec3& offset = glm::vec3{0.0f}, const glm::vec3& scale = glm::vec3{1.0f})
 {
-  static const std::uint32_t ascii_offset = 32;
-  glm::vec3 pos{0.0f};
+  auto pos = glm::vec3{0.0f} + offset / scale;
 
   for (char c : text | is_printable_ascii) {
+    constexpr std::uint32_t ascii_offset = 32;
     std::uint32_t index = static_cast<std::uint32_t>(c) - ascii_offset;
 
     if (index < font.glyphs.size()) {
@@ -57,7 +58,7 @@ template<typename T> void apeiron::opengl::Text::init(std::string_view text,
   std::vector<Meshset_entry> entries;
   create_text(vertices, entries, font, text);
 
-  meshset_.set_data(vertices, std::move(entries), hint);
+  meshset_.init(vertices, std::move(entries), hint);
 }
 
 
@@ -70,7 +71,35 @@ template<typename T> void apeiron::opengl::Text::update(std::string_view text,
   std::vector<Meshset_entry> entries;
   create_text(vertices, entries, font, text);
 
-  meshset_.update_data(vertices, std::move(entries));
+  meshset_.update(vertices, std::move(entries));
+}
+
+
+template<typename T> void apeiron::opengl::Multi_text::init(std::span<Text_part> text_parts,
+    const engine::Font<T>& font, opengl::Usage_hint hint)
+{
+  std::vector<T> vertices;
+  std::vector<Meshset_entry> entries;
+
+  for (const auto& part : text_parts) {
+    create_text(vertices, entries, font, part.text, part.offset, transform().scale());
+  }
+
+  meshset_.init(vertices, std::move(entries), hint);
+}
+
+
+template<typename T> void apeiron::opengl::Multi_text::update(std::span<Text_part> text_parts,
+    const engine::Font<T>& font)
+{
+  std::vector<T> vertices;
+  std::vector<Meshset_entry> entries;
+
+  for (const auto& part : text_parts) {
+    create_text(vertices, entries, font, part.text, part.offset, transform().scale());
+  }
+
+  meshset_.update(vertices, std::move(entries));
 }
 
 
@@ -91,12 +120,23 @@ template void Text::init(std::string_view, const engine::Font<Vertex_normal>&, U
 template void Text::init(std::string_view, const engine::Font<Vertex_color>&, Usage_hint);
 template void Text::init(std::string_view, const engine::Font<Vertex_normal_color>&, Usage_hint);
 
+template void Multi_text::init(std::span<Text_part>, const engine::Font<Vertex>&, Usage_hint);
+template void Multi_text::init(std::span<Text_part>, const engine::Font<Vertex_simple>&, Usage_hint);
+template void Multi_text::init(std::span<Text_part>, const engine::Font<Vertex_normal>&, Usage_hint);
+template void Multi_text::init(std::span<Text_part>, const engine::Font<Vertex_color>&, Usage_hint);
+template void Multi_text::init(std::span<Text_part>, const engine::Font<Vertex_normal_color>&, Usage_hint);
 
 template void Text::update(std::string_view, const engine::Font<Vertex>&);
 template void Text::update(std::string_view, const engine::Font<Vertex_simple>&);
 template void Text::update(std::string_view, const engine::Font<Vertex_normal>&);
 template void Text::update(std::string_view, const engine::Font<Vertex_color>&);
 template void Text::update(std::string_view, const engine::Font<Vertex_normal_color>&);
+
+template void Multi_text::update(std::span<Text_part>, const engine::Font<Vertex>&);
+template void Multi_text::update(std::span<Text_part>, const engine::Font<Vertex_simple>&);
+template void Multi_text::update(std::span<Text_part>, const engine::Font<Vertex_normal>&);
+template void Multi_text::update(std::span<Text_part>, const engine::Font<Vertex_color>&);
+template void Multi_text::update(std::span<Text_part>, const engine::Font<Vertex_normal_color>&);
 
 
 }  // namespace apeiron::opengl
