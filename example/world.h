@@ -17,9 +17,10 @@
 #include "apeiron/opengl/text.h"
 #include "apeiron/opengl/texture.h"
 
-#include "apeiron/prefab/axes.h"
+#include "apeiron/prefab/xy_axes.h"
 #include "apeiron/prefab/grid.h"
 #include "apeiron/prefab/light.h"
+#include "apeiron/prefab/origin.h"
 #include "apeiron/prefab/teapot.h"
 
 #include "example/settings.h"
@@ -63,9 +64,11 @@ private:
   opengl::Model bulb_;
   opengl::Text world_text_;
   opengl::Text screen_text_;
+  opengl::Multi_text axes_legend_;
   engine::Camera camera_;
   engine::Font<engine::Vertex_normal> font_;
-  prefab::Axes axes_;
+  prefab::Xy_axes xy_axes_;
+  prefab::Origin origin_;
   prefab::Grid grid_;
   prefab::Light light_;
   prefab::Teapot teapot_;

@@ -7,7 +7,6 @@
 
 apeiron::example::World::World(const Settings* settings) : settings_{settings},
     camera_{-42.0f, -130.0f, {10.0f, 15.0f, 10.0f}},
-    axes_{8, 0.01f, 5.0f},
     grid_{{28.0f, 28.0f}, {28, 28}, {0.25f, 0.25f, 0.25f, 1.0f}},
     light_{&bulb_},
     cube_{&cube_model_, 0.0f, 0.0f, 0.0f}
@@ -23,21 +22,25 @@ void apeiron::example::World::init()
   cube_texture_.load("assets/textures/test_pattern.png", apeiron::opengl::Pixel_format::Rgb);
   font_ = engine::load_font<engine::Vertex_normal>("assets/font/ark-pixel.json");
 
-  world_text_.init(settings_->world_text, font_, apeiron::opengl::Usage_hint::Dynamic);
+  grid_.transform().set_position(0.0f, -0.001f, 0.0f).set_rotation_deg(-90.0f, 0.0f, 0.0f);
+  origin_.init_rgb(8, 0.015f, 4.0f - 0.025f);
+  xy_axes_.init({28, 28}, 0.025f, font_, 0.25f);
+  xy_axes_.transform().set_rotation_deg(-90.0f, 0.0f, 0.0f);  // Rotate into xz plane
+  xy_axes_.tick_labels().transform().set_rotation_deg(-90.0f, 0.0f, 0.0f);
+
   world_text_.transform().set_position(-1.5f, 0.0f, -3.5f)
       //.set_rotation_deg(-45.0f, 0.0f, 0.0f)
       .set_scale(glm::vec3{2.0f});
+  world_text_.init(settings_->world_text, font_, apeiron::opengl::Usage_hint::Dynamic);
 
-  screen_text_.init(settings_->screen_text, font_, apeiron::opengl::Usage_hint::Dynamic);
   screen_text_.transform().set_position(120.0f, 120.0f, 0.0f)
       .set_scale(glm::vec3{100.0f})
       .set_rotation_deg(-90.0f, 0.0f, 0.0f);
+  screen_text_.init(settings_->screen_text, font_, apeiron::opengl::Usage_hint::Dynamic);
 
   cube_model_.set<engine::Vertex_normal_texcoords>({1.0f, 1.0f, 1.0f});
   bulb_.load("assets/models/sphere_med_poly.obj");
   teapot_.load_model();
-
-  grid_.transform().set_position(0.0f, -0.001f, 0.0f).set_rotation_deg(-90.0f, 0.0f, 0.0f);
 
   light_.transform().set_scale(0.3f, 0.3f, 0.3f)
       .set_position(0.0f, 8.0f, -settings_->light_position_z);
@@ -189,12 +192,15 @@ void apeiron::example::World::render()
     renderer_.set_light_position(light_.transform().position());
   }
 
-  axes_.render(renderer_);
-
   renderer_.use_vertex_color_shading();
   renderer_.render(grid_);
 
+  renderer_.use_vertex_color_shading();
+  renderer_.render(origin_);
+
   renderer_.use_color_shading();
+  renderer_.render(xy_axes_, color);
+  renderer_.render(xy_axes_.tick_labels(), color);
 
   if (settings_->show_ground_highlight && ground_highlight_.visible()) {
     renderer_.render(ground_highlight_, color);
@@ -224,8 +230,8 @@ void apeiron::example::World::render()
   renderer_.use_color_shading();
   renderer_.render(world_text_, color);
 
-  renderer_.use_screen_space();
   renderer_.set_lighting(false);
+  renderer_.use_screen_space();
   renderer_.render_screen(screen_text_, color);
 }
 
