@@ -8,6 +8,7 @@ add_library(apeiron STATIC
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/collision.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/color_converter.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/entity.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/enums.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/error.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/event.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/font.cpp
@@ -34,6 +35,8 @@ add_library(apeiron STATIC
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/frame_buffer.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/grid.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/grid.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/mesh.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/mesh.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/meshset.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/meshset.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/model.cpp
@@ -58,13 +61,14 @@ add_library(apeiron STATIC
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/triangles.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/vertex_array.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/vertex_array.h
-    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/axis.h
-    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/axes.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/axes.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/grid.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/grid.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/light.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/origin.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/origin.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/teapot.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/xy_axes.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/prefab/xy_axes.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/utility/timer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/utility/timer.h)
 
