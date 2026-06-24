@@ -6,37 +6,33 @@
 #include "apeiron/engine/vertex.h"
 
 
-template<typename T> void apeiron::opengl::Meshset::set_data(const std::vector<T>& vertices,
+template<typename T> void apeiron::opengl::Meshset::init(const std::vector<T>& vertices,
     std::vector<Meshset_entry>&& entries, Usage_hint hint)
 {
-  vertex_count_ = vertices.size();
   entries_ = std::move(entries);
   set_buffers(vertices, hint);
 }
 
 
-template<typename T> void apeiron::opengl::Meshset::set_data(const std::vector<T>& vertices,
+template<typename T> void apeiron::opengl::Meshset::init(const std::vector<T>& vertices,
     const std::vector<Meshset_entry>& entries, Usage_hint hint)
 {
-  vertex_count_ = vertices.size();
   entries_ = entries;
   set_buffers(vertices, hint);
 }
 
 
-template<typename T> void apeiron::opengl::Meshset::update_data(const std::vector<T>& vertices,
+template<typename T> void apeiron::opengl::Meshset::update(const std::vector<T>& vertices,
     std::vector<Meshset_entry>&& entries)
 {
-  vertex_count_ = vertices.size();
   entries_ = std::move(entries);
   update_buffers(vertices);
 }
 
 
-template<typename T> void apeiron::opengl::Meshset::update_data(const std::vector<T>& vertices,
+template<typename T> void apeiron::opengl::Meshset::update(const std::vector<T>& vertices,
     const std::vector<Meshset_entry>& entries)
 {
-  vertex_count_ = vertices.size();
   entries_ = entries;
   update_buffers(vertices);
 }
@@ -121,41 +117,41 @@ using apeiron::opengl::Usage_hint;
 namespace apeiron::opengl {
 
 
-template void Meshset::set_data(const std::vector<Vertex>&, std::vector<Meshset_entry>&&, Usage_hint);
-template void Meshset::set_data(const std::vector<Vertex_simple>&, std::vector<Meshset_entry>&&, Usage_hint);
-template void Meshset::set_data(const std::vector<Vertex_color>&, std::vector<Meshset_entry>&&, Usage_hint);
-template void Meshset::set_data(const std::vector<Vertex_normal>&, std::vector<Meshset_entry>&&, Usage_hint);
-template void Meshset::set_data(const std::vector<Vertex_texcoords>&, std::vector<Meshset_entry>&&, Usage_hint);
-template void Meshset::set_data(const std::vector<Vertex_normal_color>&, std::vector<Meshset_entry>&&, Usage_hint);
-template void Meshset::set_data(const std::vector<Vertex_normal_texcoords>&, std::vector<Meshset_entry>&&, Usage_hint);
-template void Meshset::set_data(const std::vector<Vertex_index>&, std::vector<Meshset_entry>&&, Usage_hint);
+template void Meshset::init(const std::vector<Vertex>&, std::vector<Meshset_entry>&&, Usage_hint);
+template void Meshset::init(const std::vector<Vertex_simple>&, std::vector<Meshset_entry>&&, Usage_hint);
+template void Meshset::init(const std::vector<Vertex_color>&, std::vector<Meshset_entry>&&, Usage_hint);
+template void Meshset::init(const std::vector<Vertex_normal>&, std::vector<Meshset_entry>&&, Usage_hint);
+template void Meshset::init(const std::vector<Vertex_texcoords>&, std::vector<Meshset_entry>&&, Usage_hint);
+template void Meshset::init(const std::vector<Vertex_normal_color>&, std::vector<Meshset_entry>&&, Usage_hint);
+template void Meshset::init(const std::vector<Vertex_normal_texcoords>&, std::vector<Meshset_entry>&&, Usage_hint);
+template void Meshset::init(const std::vector<Vertex_index>&, std::vector<Meshset_entry>&&, Usage_hint);
 
-template void Meshset::set_data(const std::vector<Vertex>&, const std::vector<Meshset_entry>&, Usage_hint);
-template void Meshset::set_data(const std::vector<Vertex_simple>&, const std::vector<Meshset_entry>&, Usage_hint);
-template void Meshset::set_data(const std::vector<Vertex_normal>&, const std::vector<Meshset_entry>&, Usage_hint);
-template void Meshset::set_data(const std::vector<Vertex_color>&, const std::vector<Meshset_entry>&, Usage_hint);
-template void Meshset::set_data(const std::vector<Vertex_texcoords>&, const std::vector<Meshset_entry>&, Usage_hint);
-template void Meshset::set_data(const std::vector<Vertex_normal_color>&, const std::vector<Meshset_entry>&, Usage_hint);
-template void Meshset::set_data(const std::vector<Vertex_normal_texcoords>&, const std::vector<Meshset_entry>&, Usage_hint);
-template void Meshset::set_data(const std::vector<Vertex_index>&, const std::vector<Meshset_entry>&, Usage_hint);
+template void Meshset::init(const std::vector<Vertex>&, const std::vector<Meshset_entry>&, Usage_hint);
+template void Meshset::init(const std::vector<Vertex_simple>&, const std::vector<Meshset_entry>&, Usage_hint);
+template void Meshset::init(const std::vector<Vertex_normal>&, const std::vector<Meshset_entry>&, Usage_hint);
+template void Meshset::init(const std::vector<Vertex_color>&, const std::vector<Meshset_entry>&, Usage_hint);
+template void Meshset::init(const std::vector<Vertex_texcoords>&, const std::vector<Meshset_entry>&, Usage_hint);
+template void Meshset::init(const std::vector<Vertex_normal_color>&, const std::vector<Meshset_entry>&, Usage_hint);
+template void Meshset::init(const std::vector<Vertex_normal_texcoords>&, const std::vector<Meshset_entry>&, Usage_hint);
+template void Meshset::init(const std::vector<Vertex_index>&, const std::vector<Meshset_entry>&, Usage_hint);
 
-template void Meshset::update_data(const std::vector<Vertex>&, std::vector<Meshset_entry>&&);
-template void Meshset::update_data(const std::vector<Vertex_simple>&, std::vector<Meshset_entry>&&);
-template void Meshset::update_data(const std::vector<Vertex_normal>&, std::vector<Meshset_entry>&&);
-template void Meshset::update_data(const std::vector<Vertex_color>&, std::vector<Meshset_entry>&&);
-template void Meshset::update_data(const std::vector<Vertex_texcoords>&, std::vector<Meshset_entry>&&);
-template void Meshset::update_data(const std::vector<Vertex_normal_color>&, std::vector<Meshset_entry>&&);
-template void Meshset::update_data(const std::vector<Vertex_normal_texcoords>&, std::vector<Meshset_entry>&&);
-template void Meshset::update_data(const std::vector<Vertex_index>&, std::vector<Meshset_entry>&&);
+template void Meshset::update(const std::vector<Vertex>&, std::vector<Meshset_entry>&&);
+template void Meshset::update(const std::vector<Vertex_simple>&, std::vector<Meshset_entry>&&);
+template void Meshset::update(const std::vector<Vertex_normal>&, std::vector<Meshset_entry>&&);
+template void Meshset::update(const std::vector<Vertex_color>&, std::vector<Meshset_entry>&&);
+template void Meshset::update(const std::vector<Vertex_texcoords>&, std::vector<Meshset_entry>&&);
+template void Meshset::update(const std::vector<Vertex_normal_color>&, std::vector<Meshset_entry>&&);
+template void Meshset::update(const std::vector<Vertex_normal_texcoords>&, std::vector<Meshset_entry>&&);
+template void Meshset::update(const std::vector<Vertex_index>&, std::vector<Meshset_entry>&&);
 
-template void Meshset::update_data(const std::vector<Vertex>&, const std::vector<Meshset_entry>&);
-template void Meshset::update_data(const std::vector<Vertex_simple>&, const std::vector<Meshset_entry>&);
-template void Meshset::update_data(const std::vector<Vertex_normal>&, const std::vector<Meshset_entry>&);
-template void Meshset::update_data(const std::vector<Vertex_color>&, const std::vector<Meshset_entry>&);
-template void Meshset::update_data(const std::vector<Vertex_texcoords>&, const std::vector<Meshset_entry>&);
-template void Meshset::update_data(const std::vector<Vertex_normal_color>&, const std::vector<Meshset_entry>&);
-template void Meshset::update_data(const std::vector<Vertex_normal_texcoords>&, const std::vector<Meshset_entry>&);
-template void Meshset::update_data(const std::vector<Vertex_index>&, const std::vector<Meshset_entry>&);
+template void Meshset::update(const std::vector<Vertex>&, const std::vector<Meshset_entry>&);
+template void Meshset::update(const std::vector<Vertex_simple>&, const std::vector<Meshset_entry>&);
+template void Meshset::update(const std::vector<Vertex_normal>&, const std::vector<Meshset_entry>&);
+template void Meshset::update(const std::vector<Vertex_color>&, const std::vector<Meshset_entry>&);
+template void Meshset::update(const std::vector<Vertex_texcoords>&, const std::vector<Meshset_entry>&);
+template void Meshset::update(const std::vector<Vertex_normal_color>&, const std::vector<Meshset_entry>&);
+template void Meshset::update(const std::vector<Vertex_normal_texcoords>&, const std::vector<Meshset_entry>&);
+template void Meshset::update(const std::vector<Vertex_index>&, const std::vector<Meshset_entry>&);
 
 
 }  // namespace apeiron::opengl

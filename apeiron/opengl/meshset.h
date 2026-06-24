@@ -23,14 +23,14 @@ struct Meshset_entry
 class Meshset final : public Vertex_array
 {
 public:
-  template<typename T> void set_data(const std::vector<T>& vertices,
+  template<typename T> void init(const std::vector<T>& vertices,
       std::vector<Meshset_entry>&& entries, Usage_hint hint = Usage_hint::Static);
-  template<typename T> void set_data(const std::vector<T>& vertices,
+  template<typename T> void init(const std::vector<T>& vertices,
       const std::vector<Meshset_entry>& entries, Usage_hint hint = Usage_hint::Static);
 
-  template<typename T> void update_data(const std::vector<T>& vertices,
+  template<typename T> void update(const std::vector<T>& vertices,
       std::vector<Meshset_entry>&& entries);
-  template<typename T> void update_data(const std::vector<T>& vertices,
+  template<typename T> void update(const std::vector<T>& vertices,
       const std::vector<Meshset_entry>& entries);
 
   void set_index_offset(std::uint32_t offset) { index_offset_ = offset; }
@@ -48,7 +48,6 @@ public:
 
 private:
   std::vector<Meshset_entry> entries_;
-  std::uint32_t vertex_count_ = 0;
   std::uint32_t index_offset_ = 0;
 };
 
