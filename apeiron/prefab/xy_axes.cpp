@@ -43,10 +43,9 @@ auto build_axes(const glm::uvec2& size, float width)
       if (i != 0) {
         vertices.append_range(primitive::quad_vertices<Vertex_simple>(width, width * 2.0f,
             Face::Front, {static_cast<float>(i), width * 1.5f, 0.0f}));
-      }
-
-      text_parts.emplace_back(std::to_string(i),
+        text_parts.emplace_back(std::to_string(i),
           glm::vec3{static_cast<float>(i) + 0.05f, 0.1f, 0.0f});
+      }
     }
   }
 

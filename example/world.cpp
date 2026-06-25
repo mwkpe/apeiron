@@ -23,17 +23,16 @@ void apeiron::example::World::init()
   font_ = engine::load_font<engine::Vertex_normal>("assets/font/ark-pixel.json");
 
   grid_.transform().set_position(0.0f, -0.001f, 0.0f).set_rotation_deg(-90.0f, 0.0f, 0.0f);
-  origin_.init_rgb(8, 0.015f, 4.0f - 0.025f);
+  origin_.init_rgb(8, 0.015f, 1.0f - 0.025f);
   xy_axes_.init({28, 28}, 0.025f, font_, 0.25f);
   xy_axes_.transform().set_rotation_deg(-90.0f, 0.0f, 0.0f);  // Rotate into xz plane
   xy_axes_.tick_labels().transform().set_rotation_deg(-90.0f, 0.0f, 0.0f);
 
-  world_text_.transform().set_position(-1.5f, 0.0f, -3.5f)
-      //.set_rotation_deg(-45.0f, 0.0f, 0.0f)
+  world_text_.transform().set_position(1.5f, 0.0f, -3.5f)
       .set_scale(glm::vec3{2.0f});
   world_text_.init(settings_->world_text, font_, apeiron::opengl::Usage_hint::Dynamic);
 
-  screen_text_.transform().set_position(120.0f, 120.0f, 0.0f)
+  screen_text_.transform().set_position(640.0f, 120.0f, 0.0f)
       .set_scale(glm::vec3{100.0f})
       .set_rotation_deg(-90.0f, 0.0f, 0.0f);
   screen_text_.init(settings_->screen_text, font_, apeiron::opengl::Usage_hint::Dynamic);
