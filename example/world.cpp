@@ -24,7 +24,7 @@ void apeiron::example::World::init()
 
   grid_.transform().set_position(0.0f, -0.001f, 0.0f).set_rotation_deg(-90.0f, 0.0f, 0.0f);
   origin_.init_rgb(8, 0.015f, 1.0f - 0.025f);
-  xy_axes_.init({28, 28}, 0.025f, font_, 0.25f);
+  xy_axes_.init({28, 28}, 0.025f, true, font_, 0.25f);
   xy_axes_.transform().set_rotation_deg(-90.0f, 0.0f, 0.0f);  // Rotate into xz plane
   xy_axes_.tick_labels().transform().set_rotation_deg(-90.0f, 0.0f, 0.0f);
 

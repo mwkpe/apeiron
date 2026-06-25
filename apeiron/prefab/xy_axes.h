@@ -16,8 +16,8 @@ namespace apeiron::prefab {
 class Xy_axes final : public engine::Entity
 {
 public:
-  template<typename T> void init(const glm::uvec2& size, float width, const engine::Font<T>& font,
-      float font_scale);
+  template<typename T> void init(const glm::uvec2& size, float width, bool invert_y,
+      const engine::Font<T>& font, float font_scale);
   void render() const override { axes_.render(); }
   opengl::Multi_text& tick_labels() { return tick_labels_; }
 

@@ -12,7 +12,7 @@
 namespace {
 
 
-auto build_axes(const glm::uvec2& size, float width)
+auto build_axes(const glm::uvec2& size, float width, bool invert_y = false)
 {
   using namespace apeiron::engine;
 
@@ -51,15 +51,16 @@ auto build_axes(const glm::uvec2& size, float width)
 
   // Ticks y
   {
-    int first = -static_cast<int>(size.x) / 2;
-    int last = static_cast<int>(size.x) / 2;
+    int first = -static_cast<int>(size.y) / 2;
+    int last = static_cast<int>(size.y) / 2;
 
     for (int i=first; i<=last; ++i) {
       if (i != 0) {
         vertices.append_range(primitive::quad_vertices<Vertex_simple>(width * 2.0f, width,
             Face::Front, {width * 1.5f, static_cast<float>(i), 0.0f}));
-        text_parts.emplace_back(std::to_string(i),
-            glm::vec3{0.1f, static_cast<float>(i) + 0.05f, 0.0f});
+
+        float pos = invert_y ? -static_cast<float>(i) + 0.05f : static_cast<float>(i) + 0.05f;
+        text_parts.emplace_back(std::to_string(i), glm::vec3{0.1f, pos, 0.0f});
       }
     }
   }
@@ -72,13 +73,13 @@ auto build_axes(const glm::uvec2& size, float width)
 
 
 template<typename T> void apeiron::prefab::Xy_axes::init(const glm::uvec2& size, float width,
-    const engine::Font<T>& font, float font_scale)
+    bool invert_y, const engine::Font<T>& font, float font_scale)
 {
   if (size.x < 2 || size.y < 2) {
     return;
   }
 
-  auto [vertices, text_parts] = build_axes(size, width);
+  auto [vertices, text_parts] = build_axes(size, width, invert_y);
   axes_.init(vertices);
 
   tick_labels_.transform().set_scale(glm::vec3{font_scale});
@@ -89,11 +90,11 @@ template<typename T> void apeiron::prefab::Xy_axes::init(const glm::uvec2& size,
 namespace apeiron::prefab {
 
 
-template void Xy_axes::init(const glm::uvec2& size, float, const engine::Font<engine::Vertex>&, float);
-template void Xy_axes::init(const glm::uvec2& size, float, const engine::Font<engine::Vertex_simple>&, float);
-template void Xy_axes::init(const glm::uvec2& size, float, const engine::Font<engine::Vertex_normal>&, float);
-template void Xy_axes::init(const glm::uvec2& size, float, const engine::Font<engine::Vertex_color>&, float);
-template void Xy_axes::init(const glm::uvec2& size, float, const engine::Font<engine::Vertex_normal_color>&, float);
+template void Xy_axes::init(const glm::uvec2& size, float, bool, const engine::Font<engine::Vertex>&, float);
+template void Xy_axes::init(const glm::uvec2& size, float, bool, const engine::Font<engine::Vertex_simple>&, float);
+template void Xy_axes::init(const glm::uvec2& size, float, bool, const engine::Font<engine::Vertex_normal>&, float);
+template void Xy_axes::init(const glm::uvec2& size, float, bool, const engine::Font<engine::Vertex_color>&, float);
+template void Xy_axes::init(const glm::uvec2& size, float, bool, const engine::Font<engine::Vertex_normal_color>&, float);
 
 
 }  // namespace apeiron::prefab
