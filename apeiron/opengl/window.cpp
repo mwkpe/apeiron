@@ -86,26 +86,15 @@ void apeiron::opengl::Window::init(const Window_settings& settings)
     throw engine::Error{"Failed to create SDL window"};
   }
 
-  int logical_width = settings.width;
-  int logical_height = settings.height;
-  int render_width = settings.width;
-  int render_height = settings.height;
-  float density = SDL_GetWindowPixelDensity(window_);
-
-  if (settings.fullscreen) {
-    SDL_SyncWindow(window_);
-    SDL_GetWindowSizeInPixels(window_, &render_width, &render_height);
-    SDL_GetWindowSize(window_, &logical_width, &logical_height);
-  }
-  else if (settings.ignore_scaling && density > 1.0f) {
+  if (float density = SDL_GetWindowPixelDensity(window_);
+      !settings.fullscreen && settings.ignore_scaling && SDL_GetWindowPixelDensity(window_) > 1.0f) {
     // Set logical size so that the resulting pixel size is roughly the requested size
-    logical_width = std::lround(static_cast<float>(settings.width) / density);
-    logical_height = std::lround(static_cast<float>(settings.height) / density);
+    const auto logical_width = std::lround(static_cast<float>(settings.width) / density);
+    const auto logical_height = std::lround(static_cast<float>(settings.height) / density);
     SDL_SetWindowSize(window_, logical_width, logical_height);
-    SDL_SyncWindow(window_);
-    SDL_GetWindowSizeInPixels(window_, &render_width, &render_height);
   }
 
+  SDL_SyncWindow(window_);
   context_ = SDL_GL_CreateContext(window_);
 
   if (!context_) {
@@ -126,13 +115,13 @@ auto apeiron::opengl::Window::attributes() const -> Window_attributes
 {
   int logical_width;
   int logical_height;
-  int render_width;
-  int render_height;
+  int pixel_width;
+  int pixel_height;
 
   SDL_SyncWindow(window_);
   SDL_GetWindowSize(window_, &logical_width, &logical_height);
-  SDL_GetWindowSizeInPixels(window_, &render_width, &render_height);
+  SDL_GetWindowSizeInPixels(window_, &pixel_width, &pixel_height);
 
-  return {logical_width, logical_height, render_width, render_height,
+  return {logical_width, logical_height, pixel_width, pixel_height,
       SDL_GetWindowPixelDensity(window_), SDL_GetWindowDisplayScale(window_)};
 }

@@ -16,6 +16,7 @@ struct Settings
   bool show_menu = true;
   bool wireframe = false;
   bool fullscreen = false;
+  bool ignore_scaling = false;
   bool vsync = false;
   bool limit_fps = true;
   bool lighting = true;

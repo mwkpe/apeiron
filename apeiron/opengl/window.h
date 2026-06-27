@@ -32,8 +32,8 @@ struct Window_attributes
 {
   int logical_width;
   int logical_height;
-  int render_width;
-  int render_height;
+  int pixel_width;
+  int pixel_height;
   float density;
   float scale;
 };

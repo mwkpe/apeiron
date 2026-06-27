@@ -35,7 +35,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
         .init_flags = SDL_INIT_VIDEO,
         .width = settings.window_width,
         .height = settings.window_height,
-        .ignore_scaling = true,
+        .ignore_scaling = settings.ignore_scaling,
         .resizable = true,
         .fullscreen = settings.fullscreen,
         .vsync = settings.vsync,
@@ -49,8 +49,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     settings.logical_width = a.logical_width;
     settings.logical_height = a.logical_height;
-    settings.render_width = a.render_width;
-    settings.render_height = a.render_height;
+    settings.render_width = a.pixel_width;
+    settings.render_height = a.pixel_height;
     settings.video_driver = SDL_GetCurrentVideoDriver();
   }
   catch (const apeiron::engine::Error& e) {
@@ -147,8 +147,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       auto a = window.attributes();
       settings.logical_width = a.logical_width;
       settings.logical_height = a.logical_height;
-      settings.render_width = a.render_width;
-      settings.render_height = a.render_height;
+      settings.render_width = a.pixel_width;
+      settings.render_height = a.pixel_height;
 
       world.update_view();
       window_changed = false;

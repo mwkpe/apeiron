@@ -34,6 +34,7 @@ auto apeiron::example::load_settings(std::string_view filename) -> Settings
   settings.max_fps = t["max_fps"].value_or(settings.max_fps);
   settings.limit_fps = t["limit_fps"].value_or(settings.limit_fps);
   settings.fullscreen = t["fullscreen"].value_or(settings.fullscreen);
+  settings.ignore_scaling = t["ignore_scaling"].value_or(settings.ignore_scaling);
   settings.vsync = t["vsync"].value_or(settings.vsync);
 
   return settings;
@@ -50,6 +51,7 @@ void apeiron::example::save_settings(const Settings& settings, std::string_view 
   t.insert("max_fps", settings.max_fps);
   t.insert("limit_fps", settings.limit_fps);
   t.insert("fullscreen", settings.fullscreen);
+  t.insert("ignore_scaling", settings.ignore_scaling);
   t.insert("vsync", settings.vsync);
 
   if (std::ofstream fs{std::string{filename}, std::ios::binary}; fs.is_open()) {
