@@ -40,7 +40,7 @@ public:
   Transform& set_rotation_rad(const glm::vec3& rotation);
 
   Transform& set_rotation_pivot(Axis axis, float x, float y, float z);
-  Transform& set_rotation_pivot(Axis axis, const glm::vec3& origin);
+  Transform& set_rotation_pivot(Axis axis, const glm::vec3& pivot);
 
   Transform& set_rotation_order(Axis_order rotation_order);
 
