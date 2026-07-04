@@ -236,7 +236,7 @@ const glm::mat4& apeiron::engine::Transform::model_matrix() const
 void apeiron::engine::Transform::recompute() const
 {
   model_matrix_ = glm::mat4{1.0f};
-  model_matrix_ = glm::translate(model_matrix_, origin_ + position_);
+  model_matrix_ = glm::translate(model_matrix_, position_ + origin_ * scale_);
 
   const glm::quat qx = glm::angleAxis(rotation_x_.angle_rad, glm::vec3{1,0,0});
   const glm::quat qy = glm::angleAxis(rotation_y_.angle_rad, glm::vec3{0,1,0});
