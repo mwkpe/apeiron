@@ -14,10 +14,16 @@ class Camera
 public:
   enum class Direction { Forward, Backward, Left, Right };
 
-  explicit Camera(float pitch = 0.0f, float yaw = 0.0f,
-      glm::vec3 position = glm::vec3{0.0f, 0.0f, 0.0f});
+  explicit Camera(float pitch, float yaw = 0.0f,
+      const glm::vec3& position = glm::vec3{0.0f, 0.0f, 0.0f});
+  Camera(const glm::vec3& front, const glm::vec3& up,
+      const glm::vec3& position = glm::vec3{0.0f, 0.0f, 0.0f});
+
   void setup(float pitch = 0.0f, float yaw = 0.0f,
-      glm::vec3 position = glm::vec3{0.0f, 0.0f, 0.0f});
+      const glm::vec3& position = glm::vec3{0.0f, 0.0f, 0.0f});
+  void setup(const glm::vec3& front, const glm::vec3& up,
+      const glm::vec3& position = glm::vec3{0.0f, 0.0f, 0.0f});
+
   void setup_orbit(float pitch, float yaw, float distance);
 
   void update();

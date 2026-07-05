@@ -5,22 +5,42 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 
-apeiron::engine::Camera::Camera(float pitch, float yaw, glm::vec3 position)
+apeiron::engine::Camera::Camera(float pitch, float yaw, const glm::vec3& position)
 {
   setup(pitch, yaw, position);
 }
 
 
-void apeiron::engine::Camera::setup(float pitch, float yaw, glm::vec3 position)
+apeiron::engine::Camera::Camera(const glm::vec3& front, const glm::vec3& up,
+    const glm::vec3& position)
+{
+  setup(front, up, position);
+}
+
+
+void apeiron::engine::Camera::setup(float pitch, float yaw, const glm::vec3& position)
 {
   position_ = position;
   front_ = glm::vec3{0.0f, 0.0f, -1.0f};
-  world_up_ = glm::vec3{0.0f, 1.0f, 0.0f};
-  up_ = world_up_;
   pitch_ = pitch;
   yaw_ = yaw;
 
   update();
+}
+
+
+void apeiron::engine::Camera::setup(const glm::vec3& front, const glm::vec3& up,
+    const glm::vec3& position)
+{
+  position_ = position;
+  front_ = glm::normalize(front);
+  up_ = glm::normalize(up);
+
+  right_ = glm::normalize(glm::cross(front_, up_));
+  up_ = glm::normalize(glm::cross(right_, front_));
+
+  pitch_ = glm::degrees(std::asin(front_.y));
+  yaw_ = glm::degrees(std::atan2(front_.z, front_.x));
 }
 
 
