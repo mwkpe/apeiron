@@ -37,7 +37,7 @@ void apeiron::example::World::init()
       .set_rotation_deg(-90.0f, 0.0f, 0.0f);
   screen_text_.init(settings_->screen_text, font_, apeiron::opengl::Usage_hint::Dynamic);
 
-  cube_model_.set<engine::Vertex_normal_texcoords>({1.0f, 1.0f, 1.0f});
+  cube_model_.init<engine::Vertex_normal_texcoords>({1.0f, 1.0f, 1.0f});
   bulb_.load("assets/models/sphere_med_poly.obj");
   teapot_.load_model();
 

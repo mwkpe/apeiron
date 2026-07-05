@@ -65,8 +65,8 @@ auto build_vertices(const glm::vec2& size, const glm::uvec2& cells,
 }  // namespace
 
 
-apeiron::opengl::Grid::Grid(const glm::vec2& size, const glm::uvec2& cells,
-    const glm::vec4& color, bool edge, float line_width)
+apeiron::opengl::Grid::Grid(const glm::vec2& size, const glm::uvec2& cells, const glm::vec4& color,
+    bool edge, float line_width)
 {
   init(size, cells, color, edge, line_width);
 }

@@ -10,7 +10,7 @@ template<typename T> apeiron::opengl::Triangles::Triangles(const std::vector<T>&
 }
 
 
-template<typename T> void apeiron::opengl::Triangles::set(const std::vector<T>& vertices)
+template<typename T> void apeiron::opengl::Triangles::init(const std::vector<T>& vertices)
 {
   set_buffers(vertices);
 }
@@ -41,13 +41,13 @@ template Triangles::Triangles(const std::vector<apeiron::engine::Vertex_texcoord
 template Triangles::Triangles(const std::vector<apeiron::engine::Vertex_normal_color>&);
 template Triangles::Triangles(const std::vector<apeiron::engine::Vertex_normal_texcoords>&);
 
-template void Triangles::set(const std::vector<apeiron::engine::Vertex>&);
-template void Triangles::set(const std::vector<apeiron::engine::Vertex_simple>&);
-template void Triangles::set(const std::vector<apeiron::engine::Vertex_normal>&);
-template void Triangles::set(const std::vector<apeiron::engine::Vertex_color>&);
-template void Triangles::set(const std::vector<apeiron::engine::Vertex_texcoords>&);
-template void Triangles::set(const std::vector<apeiron::engine::Vertex_normal_color>&);
-template void Triangles::set(const std::vector<apeiron::engine::Vertex_normal_texcoords>&);
+template void Triangles::init(const std::vector<apeiron::engine::Vertex>&);
+template void Triangles::init(const std::vector<apeiron::engine::Vertex_simple>&);
+template void Triangles::init(const std::vector<apeiron::engine::Vertex_normal>&);
+template void Triangles::init(const std::vector<apeiron::engine::Vertex_color>&);
+template void Triangles::init(const std::vector<apeiron::engine::Vertex_texcoords>&);
+template void Triangles::init(const std::vector<apeiron::engine::Vertex_normal_color>&);
+template void Triangles::init(const std::vector<apeiron::engine::Vertex_normal_texcoords>&);
 
 
 }  // namespace apeiron::opengl

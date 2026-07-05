@@ -16,9 +16,12 @@ public:
   Points() = default;
   explicit Points(const std::vector<engine::Vertex_simple>& vertices);
   explicit Points(const std::vector<engine::Vertex_color>& vertices);
-  void set(const std::vector<engine::Vertex_simple>& vertices);
-  void set(const std::vector<engine::Vertex_color>& vertices);
+
+  void init(const std::vector<engine::Vertex_simple>& vertices);
+  void init(const std::vector<engine::Vertex_color>& vertices);
+
   void set_size(float size) { point_size_ = size; }
+
   void render() const override;
   void render(std::uint32_t start, std::uint32_t count) const override;
 

@@ -15,7 +15,9 @@ class Triangles final : public Vertex_array
 public:
   Triangles() = default;
   template<typename T> explicit Triangles(const std::vector<T>& vertices);
-  template<typename T> void set(const std::vector<T>& vertices);
+
+  template<typename T> void init(const std::vector<T>& vertices);
+
   void render() const override;
   void render(std::uint32_t start, std::uint32_t count) const override;
 };

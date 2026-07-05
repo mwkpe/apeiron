@@ -18,9 +18,9 @@ public:
   Cuboid(const glm::vec3& size, const glm::vec4& color,
       const glm::vec3& position = glm::vec3{0.0f});
 
-  template<typename T = engine::Vertex> void set(const glm::vec3& size,
+  template<typename T = engine::Vertex> void init(const glm::vec3& size,
       const glm::vec3& position = glm::vec3{0.0f});
-  template<typename T = engine::Vertex> void set(const glm::vec3& size, const glm::vec4& color,
+  template<typename T = engine::Vertex> void init(const glm::vec3& size, const glm::vec4& color,
       const glm::vec3& position = glm::vec3{0.0f});
 
   void render() const override;

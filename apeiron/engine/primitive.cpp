@@ -775,8 +775,29 @@ template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(fl
 }
 
 
-template<typename T> std::vector<T> apeiron::engine::primitive::cuboid_vertices(const glm::vec3& size,
-    const glm::vec3& position)
+template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(const glm::vec2& size,
+    Face face, const glm::vec3& position)
+{
+  return quad_vertices<T>(size.x, size.y, face, position);
+}
+
+
+template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(const glm::vec2& size,
+    const glm::vec4& color, Face face, const glm::vec3& position)
+{
+  return quad_vertices<T>(size.x, size.y, color, face, position);
+}
+
+
+template<typename T> std::vector<T> apeiron::engine::primitive::quad_vertices(const glm::vec2& size,
+    const glm::mat4& color, Face face, const glm::vec3& position)
+{
+  return quad_vertices<T>(size.x, size.y, color, face, position);
+}
+
+
+template<typename T> std::vector<T> apeiron::engine::primitive::cuboid_vertices(
+    const glm::vec3& size, const glm::vec3& position)
 {
   const float x = position.x;
   const float y = position.y;
@@ -1454,6 +1475,17 @@ template std::vector<Vertex_color> quad_vertices(float, float, const glm::mat4&,
 template std::vector<Vertex_texcoords> quad_vertices(float, float, Face, const glm::vec3&);
 template std::vector<Vertex_normal_color> quad_vertices(float, float, const glm::vec4&, Face, const glm::vec3&);
 template std::vector<Vertex_normal_texcoords> quad_vertices(float, float, Face, const glm::vec3&);
+
+template std::vector<Vertex> quad_vertices(const glm::vec2&,Face, const glm::vec3&);
+template std::vector<Vertex> quad_vertices(const glm::vec2&,const glm::vec4&, Face, const glm::vec3&);
+template std::vector<Vertex> quad_vertices(const glm::vec2&,const glm::mat4&, Face, const glm::vec3&);
+template std::vector<Vertex_simple> quad_vertices(const glm::vec2&,Face, const glm::vec3&);
+template std::vector<Vertex_normal> quad_vertices(const glm::vec2&,Face, const glm::vec3&);
+template std::vector<Vertex_color> quad_vertices(const glm::vec2&,const glm::vec4&, Face, const glm::vec3&);
+template std::vector<Vertex_color> quad_vertices(const glm::vec2&,const glm::mat4&, Face, const glm::vec3&);
+template std::vector<Vertex_texcoords> quad_vertices(const glm::vec2&,Face, const glm::vec3&);
+template std::vector<Vertex_normal_color> quad_vertices(const glm::vec2&,const glm::vec4&, Face, const glm::vec3&);
+template std::vector<Vertex_normal_texcoords> quad_vertices(const glm::vec2&,Face, const glm::vec3&);
 
 template std::vector<Vertex> cuboid_vertices(const glm::vec3&, const glm::vec3&);
 template std::vector<Vertex> cuboid_vertices(const glm::vec3&, const glm::vec4&, const glm::vec3&);

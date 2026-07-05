@@ -19,15 +19,19 @@ enum class Face { Front, Back, Left, Right, Up, Down };
 namespace apeiron::engine::primitive {
 
 
-template<typename T = Vertex>
-std::vector<T> quad_vertices(float width, float height,
+template<typename T = Vertex> std::vector<T> quad_vertices(float width, float height,
     Face face = Face::Front, const glm::vec3& position = glm::vec3{0.0f});
-template<typename T = Vertex>
-std::vector<T> quad_vertices(float width, float height, const glm::vec4& color,
+template<typename T = Vertex> std::vector<T> quad_vertices(float width, float height,
+    const glm::vec4& color, Face face = Face::Front, const glm::vec3& position = glm::vec3{0.0f});
+template<typename T = Vertex> std::vector<T> quad_vertices(float width, float height,
+    const glm::mat4& color, Face face = Face::Front, const glm::vec3& position = glm::vec3{0.0f});
+
+template<typename T = Vertex> std::vector<T> quad_vertices(const glm::vec2& size,
     Face face = Face::Front, const glm::vec3& position = glm::vec3{0.0f});
-template<typename T = Vertex>
-std::vector<T> quad_vertices(float width, float height, const glm::mat4& color,
-    Face face = Face::Front, const glm::vec3& position = glm::vec3{0.0f});
+template<typename T = Vertex> std::vector<T> quad_vertices(const glm::vec2& size,
+    const glm::vec4& color, Face face = Face::Front, const glm::vec3& position = glm::vec3{0.0f});
+template<typename T = Vertex> std::vector<T> quad_vertices(const glm::vec2& size,
+    const glm::mat4& color, Face face = Face::Front, const glm::vec3& position = glm::vec3{0.0f});
 
 template<typename T = Vertex>
 std::vector<T> cuboid_vertices(const glm::vec3& size, const glm::vec3& position = glm::vec3{0.0f});
