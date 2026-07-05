@@ -7,18 +7,18 @@
 
 apeiron::engine::Camera::Camera(float pitch, float yaw, const glm::vec3& position)
 {
-  setup(pitch, yaw, position);
+  init(pitch, yaw, position);
 }
 
 
 apeiron::engine::Camera::Camera(const glm::vec3& front, const glm::vec3& up,
     const glm::vec3& position)
 {
-  setup(front, up, position);
+  init(front, up, position);
 }
 
 
-void apeiron::engine::Camera::setup(float pitch, float yaw, const glm::vec3& position)
+void apeiron::engine::Camera::init(float pitch, float yaw, const glm::vec3& position)
 {
   position_ = position;
   front_ = glm::vec3{0.0f, 0.0f, -1.0f};
@@ -29,7 +29,7 @@ void apeiron::engine::Camera::setup(float pitch, float yaw, const glm::vec3& pos
 }
 
 
-void apeiron::engine::Camera::setup(const glm::vec3& front, const glm::vec3& up,
+void apeiron::engine::Camera::init(const glm::vec3& front, const glm::vec3& up,
     const glm::vec3& position)
 {
   position_ = position;
@@ -44,7 +44,7 @@ void apeiron::engine::Camera::setup(const glm::vec3& front, const glm::vec3& up,
 }
 
 
-void apeiron::engine::Camera::setup_orbit(float pitch, float yaw, float distance)
+void apeiron::engine::Camera::init_orbit(float pitch, float yaw, float distance)
 {
   pitch_ = pitch;
   yaw_ = yaw;

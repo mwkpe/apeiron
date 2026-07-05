@@ -20,12 +20,12 @@ public:
   Camera(const glm::vec3& front, const glm::vec3& up,
       const glm::vec3& position = glm::vec3{0.0f, 0.0f, 0.0f});
 
-  void setup(float pitch = 0.0f, float yaw = 0.0f,
+  void init(float pitch = 0.0f, float yaw = 0.0f,
       const glm::vec3& position = glm::vec3{0.0f, 0.0f, 0.0f});
-  void setup(const glm::vec3& front, const glm::vec3& up,
+  void init(const glm::vec3& front, const glm::vec3& up,
       const glm::vec3& position = glm::vec3{0.0f, 0.0f, 0.0f});
 
-  void setup_orbit(float pitch, float yaw, float distance);
+  void init_orbit(float pitch, float yaw, float distance);
 
   void update();
   void update_orbit();
