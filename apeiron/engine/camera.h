@@ -14,6 +14,7 @@ class Camera
 public:
   enum class Direction { Forward, Backward, Left, Right };
 
+  Camera() = default;
   explicit Camera(float pitch, float yaw = 0.0f,
       const glm::vec3& position = glm::vec3{0.0f, 0.0f, 0.0f});
   Camera(const glm::vec3& front, const glm::vec3& up,
