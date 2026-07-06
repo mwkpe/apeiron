@@ -5,15 +5,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "apeiron/engine/vertex.h"
-
-
-namespace apeiron::engine {
-
-
-enum class Face { Front, Back, Left, Right, Up, Down };
-
-
-}  // namespace engine
+#include "apeiron/engine/enums.h"
 
 
 namespace apeiron::engine::primitive {
