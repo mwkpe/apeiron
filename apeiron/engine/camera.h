@@ -41,11 +41,12 @@ public:
   void move(Direction direction, float distances);
   void move(float dx, float dy, float dz) { position_ += glm::vec3{dx, dy, dz}; }
   void move_center(float dx, float dy, float dz) { center_ += glm::vec3{dx, dy, dz}; }
-  void zoom(std::int32_t delta, float sensitivity);
+
+  void move_orbit(float dx, float dy, float sensitivity);
+  void zoom_orbit(float delta, float sensitivity);
 
   void invert_pitch() { pitch_ = -pitch_; }
-  void orient(std::int32_t dx, std::int32_t dy, float sensitivity);
-  void orbit(std::int32_t dx, std::int32_t dy, float sensitivity);
+  void orient(float dx, float dy, float sensitivity);
 
   [[nodiscard]] float pitch() const { return pitch_; }
   [[nodiscard]] float yaw() const { return yaw_; }
