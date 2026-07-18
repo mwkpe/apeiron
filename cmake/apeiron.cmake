@@ -7,6 +7,8 @@ add_library(apeiron STATIC
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/collision.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/collision.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/color_converter.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/controller.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/controller.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/entity.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/enums.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/error.h

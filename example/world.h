@@ -2,16 +2,15 @@
 #define APEIRON_EXAMPLE_WORLD_H
 
 
-#include <cstdint>
 #include <vector>
 
 #include "apeiron/engine/camera.h"
+#include "apeiron/engine/controller.h"
 #include "apeiron/engine/event.h"
 #include "apeiron/engine/font.h"
 #include "apeiron/engine/input.h"
 
 #include "apeiron/opengl/cuboid.h"
-#include "apeiron/opengl/frame_buffer.h"
 #include "apeiron/opengl/model.h"
 #include "apeiron/opengl/renderer.h"
 #include "apeiron/opengl/text.h"
@@ -54,7 +53,7 @@ private:
   void handle_event(const apeiron::engine::Mouse_button_down_event& event);
   void handle_event(const apeiron::engine::Mouse_motion_event& event);
 
-  void update_camera(float delta_time, const engine::Input* input);
+  void update_controller(float delta_time, const engine::Input* input);
 
   const Settings* settings_;
   opengl::Renderer renderer_;
@@ -66,6 +65,7 @@ private:
   opengl::Text screen_text_;
   opengl::Multi_text axes_legend_;
   engine::Camera camera_;
+  engine::Fps_controller fps_controller_;
   engine::Font<engine::Vertex_normal> font_;
   prefab::Xy_axes xy_axes_;
   prefab::Origin origin_;

@@ -6,7 +6,7 @@
 
 
 apeiron::example::World::World(const Settings* settings) : settings_{settings},
-    camera_{-42.0f, -130.0f, {10.0f, 15.0f, 10.0f}},
+    fps_controller_{-42.0f, -130.0f, {10.0f, 15.0f, 10.0f}},
     grid_{{28.0f, 28.0f}, {28, 28}, {0.25f, 0.25f, 0.25f, 1.0f}},
     light_{&bulb_},
     cube_{&cube_model_, 0.0f, 0.0f, 0.0f}
@@ -18,6 +18,8 @@ void apeiron::example::World::init()
 {
   renderer_.init();
   update_view();
+
+  fps_controller_.apply(camera_);
 
   cube_texture_.load("assets/textures/test_pattern.png", apeiron::opengl::Pixel_format::Rgb);
   font_ = engine::load_font<engine::Vertex_normal>("assets/font/ark-pixel.json");
@@ -97,7 +99,8 @@ void apeiron::example::World::update(float time, float delta_time,
   if (input) {
     if (!settings_->show_menu) {
       ground_highlight_.set_visible(false);
-      update_camera(delta_time, input);
+      update_controller(delta_time, input);
+      fps_controller_.apply(camera_);
     }
   }
 
@@ -135,28 +138,27 @@ void apeiron::example::World::update(float time, float delta_time,
 }
 
 
-void apeiron::example::World::update_camera(float delta_time, const engine::Input* input)
+void apeiron::example::World::update_controller(float delta_time, const engine::Input* input)
 {
-  using Direction = engine::Camera::Direction;
   auto distance = settings_->camera_speed * delta_time;
 
   if (input->forward) {
-    camera_.move(Direction::Forward, distance);
+    fps_controller_.move(engine::Direction::Forward, distance);
   }
 
   if (input->backward) {
-    camera_.move(Direction::Backward, distance);
+    fps_controller_.move(engine::Direction::Backward, distance);
   }
 
   if (input->left) {
-    camera_.move(Direction::Left, distance);
+    fps_controller_.move(engine::Direction::Left, distance);
   }
 
   if (input->right) {
-    camera_.move(Direction::Right, distance);
+    fps_controller_.move(engine::Direction::Right, distance);
   }
 
-  camera_.orient(input->mouse_x_rel, input->mouse_y_rel, settings_->camera_sensitivity);
+  fps_controller_.orient(input->mouse_x_rel, input->mouse_y_rel, settings_->camera_sensitivity);
 }
 
 
@@ -173,7 +175,7 @@ void apeiron::example::World::render()
   }
 
   renderer_.use_world_space();
-  renderer_.preset_view(camera_.perspective_view());
+  renderer_.preset_view(camera_.view());
   renderer_.set_view_projection();
 
   renderer_.set_gl_wireframe(settings_->wireframe);

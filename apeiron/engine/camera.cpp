@@ -1,140 +1,64 @@
 #include "camera.h"
 
 
-#include <algorithm>
+#include <cmath>
 #include <glm/gtc/matrix_transform.hpp>
 
 
-apeiron::engine::Camera::Camera(float pitch, float yaw, const glm::vec3& position)
+glm::vec3 apeiron::engine::direction_from_angles(float pitch, float yaw)
 {
-  init(pitch, yaw, position);
+  const float p = glm::radians(pitch);
+  const float y = glm::radians(yaw);
+
+  return glm::normalize(glm::vec3{
+      std::cos(y) * std::cos(p),
+      std::sin(p),
+      std::sin(y) * std::cos(p)});
 }
 
 
-apeiron::engine::Camera::Camera(const glm::vec3& front, const glm::vec3& up,
-    const glm::vec3& position)
-{
-  init(front, up, position);
-}
-
-
-void apeiron::engine::Camera::init(float pitch, float yaw, const glm::vec3& position)
-{
-  position_ = position;
-  front_ = glm::vec3{0.0f, 0.0f, -1.0f};
-  pitch_ = pitch;
-  yaw_ = yaw;
-
-  update();
-}
-
-
-void apeiron::engine::Camera::init(const glm::vec3& front, const glm::vec3& up,
-    const glm::vec3& position)
+apeiron::engine::Camera::Camera(const glm::vec3& position, const glm::vec3& front,
+    const glm::vec3& up)
 {
   position_ = position;
   front_ = glm::normalize(front);
-  up_ = glm::normalize(up);
-
-  right_ = glm::normalize(glm::cross(front_, up_));
+  right_ = glm::normalize(glm::cross(front_, glm::normalize(up)));
   up_ = glm::normalize(glm::cross(right_, front_));
-
-  pitch_ = glm::degrees(std::asin(front_.y));
-  yaw_ = glm::degrees(std::atan2(front_.z, front_.x));
+  world_up_ = up_;
 }
 
 
-void apeiron::engine::Camera::init_orbit(float pitch, float yaw, float distance)
+void apeiron::engine::Camera::look_at(const glm::vec3& position, const glm::vec3& target)
 {
-  pitch_ = pitch;
-  yaw_ = yaw;
-  distance_ = distance;
-
-  update_orbit();
+  position_ = position;
+  front_ = glm::normalize(target - position);
+  rebuild_basis();
 }
 
 
-void apeiron::engine::Camera::update()
+void apeiron::engine::Camera::set_orientation(const glm::vec3& position, const glm::vec3& front)
 {
-  front_.x = std::cos(glm::radians(yaw_)) * std::cos(glm::radians(pitch_));
-  front_.y = std::sin(glm::radians(pitch_));
-  front_.z = std::sin(glm::radians(yaw_)) * std::cos(glm::radians(pitch_));
-  front_ = glm::normalize(front_);
+  position_ = position;
+  front_ = glm::normalize(front);
+  rebuild_basis();
+}
+
+
+void apeiron::engine::Camera::set_world_up(const glm::vec3& world_up)
+{
+  world_up_ = glm::normalize(world_up);
+  rebuild_basis();
+}
+
+
+void apeiron::engine::Camera::rebuild_basis()
+{
   right_ = glm::normalize(glm::cross(front_, world_up_));
   up_ = glm::normalize(glm::cross(right_, front_));
 }
 
 
-void apeiron::engine::Camera::update_orbit()
-{
-  float yaw = glm::radians(yaw_);
-  float pitch = glm::radians(pitch_);
-
-  position_.x = center_.x + distance_ * std::cos(pitch) * std::cos(yaw);
-  position_.y = center_.y + distance_ * std::sin(pitch);
-  position_.z = center_.z + distance_ * std::cos(pitch) * std::sin(yaw);
-
-  front_ = glm::normalize(center_ - position_);
-  right_ = glm::normalize(glm::cross(front_, world_up_));
-  up_ = glm::normalize(glm::cross(right_, front_));
-}
-
-
-void apeiron::engine::Camera::move(Direction direction, float distance)
-{
-  switch (direction) {
-    case Direction::Forward:
-      position_ += front_ * distance;
-    break;
-    case Direction::Backward:
-      position_ -= front_ * distance;
-    break;
-    case Direction::Left:
-      position_ -= glm::normalize(glm::cross(front_, world_up_)) * distance;
-    break;
-    case Direction::Right:
-      position_ += glm::normalize(glm::cross(front_, world_up_)) * distance;
-    break;
-  }
-}
-
-
-void apeiron::engine::Camera::move_orbit(float dx, float dy, float sensitivity)
-{
-  yaw_ += dx * sensitivity;
-  yaw_ = yaw_ > 360.0f ? yaw_ - 360.0f : yaw_ < -360.0f ? yaw_ + 360.0f : yaw_;
-  pitch_ += dy * sensitivity;
-  pitch_ = std::clamp(pitch_, -89.0f, 89.0f);
-
-  update_orbit();
-}
-
-
-void apeiron::engine::Camera::zoom_orbit(float delta, float sensitivity)
-{
-  distance_ = std::max(distance_ + delta * sensitivity, 0.1f);
-  update_orbit();
-}
-
-
-void apeiron::engine::Camera::orient(float dx, float dy, float sensitivity)
-{
-  yaw_ += dx * sensitivity;
-  pitch_ += dy * sensitivity;
-  yaw_ = yaw_ > 360.0f ? yaw_ - 360.0f : yaw_ < -360.0f ? yaw_ + 360.0f : yaw_;
-  pitch_ = std::clamp(pitch_, -89.0f, 89.0f);
-
-  update();
-}
-
-
-glm::mat4 apeiron::engine::Camera::perspective_view() const
+glm::mat4 apeiron::engine::Camera::view() const
 {
   return glm::lookAt(position_, position_ + front_, up_);
-}
-
-
-glm::mat4 apeiron::engine::Camera::isometric_view() const
-{
-  return glm::lookAt(center_ + position_, center_, world_up_);
 }

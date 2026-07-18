@@ -9,6 +9,7 @@ namespace apeiron::engine {
 
 
 enum class Face { Front, Back, Left, Right, Up, Down };
+enum class Direction { Forward, Backward, Left, Right };
 
 enum class Axis : std::uint8_t { X, Y, Z };
 enum class Axis_order : std::uint8_t { XYZ, XZY, YXZ, YZX, ZXY, ZYX };

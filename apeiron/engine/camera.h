@@ -2,70 +2,41 @@
 #define APEIRON_ENGINE_CAMERA_H
 
 
-#include <cstdint>
 #include <glm/glm.hpp>
 
 
 namespace apeiron::engine {
 
 
+[[nodiscard]] glm::vec3 direction_from_angles(float pitch, float yaw);
+
+
 class Camera
 {
 public:
-  enum class Direction { Forward, Backward, Left, Right };
-
   Camera() = default;
-  explicit Camera(float pitch, float yaw = 0.0f,
-      const glm::vec3& position = glm::vec3{0.0f, 0.0f, 0.0f});
-  Camera(const glm::vec3& front, const glm::vec3& up,
-      const glm::vec3& position = glm::vec3{0.0f, 0.0f, 0.0f});
+  Camera(const glm::vec3& position, const glm::vec3& target) { look_at(position, target); }
+  Camera(const glm::vec3& position, const glm::vec3& front, const glm::vec3& up);
 
-  void init(float pitch = 0.0f, float yaw = 0.0f,
-      const glm::vec3& position = glm::vec3{0.0f, 0.0f, 0.0f});
-  void init(const glm::vec3& front, const glm::vec3& up,
-      const glm::vec3& position = glm::vec3{0.0f, 0.0f, 0.0f});
-
-  void init_orbit(float pitch, float yaw, float distance);
-
-  void update();
-  void update_orbit();
-
-  void set_position(const glm::vec3& position) { position_ = position; }
-  void set_center(const glm::vec3& center) { center_ = center; }
-  void set_world_up(const glm::vec3& world_up) { world_up_ = world_up; }
-
-  void set_pitch(float pitch) { pitch_ = pitch; }
-  void set_yaw(float yaw) { yaw_ = yaw; }
-  void set_distance(float distance) { distance_ = distance; }
-
-  void move(Direction direction, float distances);
-  void move(float dx, float dy, float dz) { position_ += glm::vec3{dx, dy, dz}; }
-  void move_center(float dx, float dy, float dz) { center_ += glm::vec3{dx, dy, dz}; }
-
-  void move_orbit(float dx, float dy, float sensitivity);
-  void zoom_orbit(float delta, float sensitivity);
-
-  void invert_pitch() { pitch_ = -pitch_; }
-  void orient(float dx, float dy, float sensitivity);
-
-  [[nodiscard]] float pitch() const { return pitch_; }
-  [[nodiscard]] float yaw() const { return yaw_; }
+  void look_at(const glm::vec3& position, const glm::vec3& target);
+  void set_orientation(const glm::vec3& position, const glm::vec3& front);
+  void set_world_up(const glm::vec3& world_up);
 
   [[nodiscard]] glm::vec3 position() const { return position_; }
-  [[nodiscard]] glm::vec3 center() const { return center_; }
-  [[nodiscard]] glm::mat4 perspective_view() const;
-  [[nodiscard]] glm::mat4 isometric_view() const;
+  [[nodiscard]] glm::vec3 front() const { return front_; }
+  [[nodiscard]] glm::vec3 right() const { return right_; }
+  [[nodiscard]] glm::vec3 up() const { return up_; }
+  [[nodiscard]] glm::vec3 world_up() const { return world_up_; }
+  [[nodiscard]] glm::mat4 view() const;
 
 private:
+  void rebuild_basis();
+
   glm::vec3 position_ = glm::vec3{0.0f};
   glm::vec3 front_ = glm::vec3{0.0f, 0.0f, -1.0f};
-  glm::vec3 world_up_= glm::vec3{0.0f, 1.0f, 0.0f};
-  glm::vec3 right_ = glm::vec3{0.0f};
-  glm::vec3 up_ = glm::vec3{0.0f};
-  glm::vec3 center_ = glm::vec3{0.0f, 0.0f, 0.0f};
-  float pitch_ = 0.0f;
-  float yaw_ = 0.0f;
-  float distance_ = 1.0f;
+  glm::vec3 right_ = glm::vec3{1.0f, 0.0f, 0.0f};
+  glm::vec3 up_ = glm::vec3{0.0f, 1.0f, 0.0f};
+  glm::vec3 world_up_ = glm::vec3{0.0f, 1.0f, 0.0f};
 };
 
 
