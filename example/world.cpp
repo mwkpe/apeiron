@@ -6,7 +6,7 @@
 
 
 apeiron::example::World::World(const Settings* settings) : settings_{settings},
-    fps_controller_{-42.0f, -130.0f, {10.0f, 15.0f, 10.0f}},
+    free_controller_{-42.0f, -130.0f, {10.0f, 15.0f, 10.0f}},
     grid_{{28.0f, 28.0f}, {28, 28}, {0.25f, 0.25f, 0.25f, 1.0f}},
     light_{&bulb_},
     cube_{&cube_model_, 0.0f, 0.0f, 0.0f}
@@ -19,7 +19,7 @@ void apeiron::example::World::init()
   renderer_.init();
   update_view();
 
-  fps_controller_.apply(camera_);
+  free_controller_.apply(camera_);
 
   cube_texture_.load("assets/textures/test_pattern.png", apeiron::opengl::Pixel_format::Rgb);
   font_ = engine::load_font<engine::Vertex_normal>("assets/font/ark-pixel.json");
@@ -100,7 +100,7 @@ void apeiron::example::World::update(float time, float delta_time,
     if (!settings_->show_menu) {
       ground_highlight_.set_visible(false);
       update_controller(delta_time, input);
-      fps_controller_.apply(camera_);
+      free_controller_.apply(camera_);
     }
   }
 
@@ -143,22 +143,22 @@ void apeiron::example::World::update_controller(float delta_time, const engine::
   auto distance = settings_->camera_speed * delta_time;
 
   if (input->forward) {
-    fps_controller_.move(engine::Direction::Forward, distance);
+    free_controller_.move(engine::Direction::Forward, distance);
   }
 
   if (input->backward) {
-    fps_controller_.move(engine::Direction::Backward, distance);
+    free_controller_.move(engine::Direction::Backward, distance);
   }
 
   if (input->left) {
-    fps_controller_.move(engine::Direction::Left, distance);
+    free_controller_.move(engine::Direction::Left, distance);
   }
 
   if (input->right) {
-    fps_controller_.move(engine::Direction::Right, distance);
+    free_controller_.move(engine::Direction::Right, distance);
   }
 
-  fps_controller_.orient(input->mouse_x_rel, input->mouse_y_rel, settings_->camera_sensitivity);
+  free_controller_.orient(input->mouse_x_rel, input->mouse_y_rel, settings_->camera_sensitivity);
 }
 
 

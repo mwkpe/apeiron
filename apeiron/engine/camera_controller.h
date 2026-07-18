@@ -1,5 +1,5 @@
-#ifndef APEIRON_ENGINE_CONTROLLER_H
-#define APEIRON_ENGINE_CONTROLLER_H
+#ifndef APEIRON_ENGINE_CAMERA_CONTROLLER_H
+#define APEIRON_ENGINE_CAMERA_CONTROLLER_H
 
 
 #include <glm/glm.hpp>
@@ -10,11 +10,11 @@
 namespace apeiron::engine {
 
 
-class Fps_controller
+class Free_controller
 {
 public:
-  Fps_controller() = default;
-  Fps_controller(float pitch, float yaw, const glm::vec3& position) { init(pitch, yaw, position); }
+  Free_controller() = default;
+  Free_controller(float pitch, float yaw, const glm::vec3& position) { init(pitch, yaw, position); }
 
   void init(float pitch, float yaw, const glm::vec3& position);
 
@@ -79,4 +79,4 @@ private:
 }  // namespace apeiron::engine
 
 
-#endif  // APEIRON_ENGINE_CONTROLLER_H
+#endif  // APEIRON_ENGINE_CAMERA_CONTROLLER_H

@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "apeiron/engine/camera.h"
-#include "apeiron/engine/controller.h"
+#include "apeiron/engine/camera_controller.h"
 #include "apeiron/engine/event.h"
 #include "apeiron/engine/font.h"
 #include "apeiron/engine/input.h"
@@ -65,7 +65,7 @@ private:
   opengl::Text screen_text_;
   opengl::Multi_text axes_legend_;
   engine::Camera camera_;
-  engine::Fps_controller fps_controller_;
+  engine::Free_controller free_controller_;
   engine::Font<engine::Vertex_normal> font_;
   prefab::Xy_axes xy_axes_;
   prefab::Origin origin_;

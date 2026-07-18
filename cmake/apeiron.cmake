@@ -4,11 +4,11 @@ target_include_directories(glad PUBLIC ${CMAKE_CURRENT_LIST_DIR}/../external/pub
 add_library(apeiron STATIC
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/camera.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/camera.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/camera_controller.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/camera_controller.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/collision.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/collision.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/color_converter.h
-    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/controller.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/controller.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/entity.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/enums.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/error.h
