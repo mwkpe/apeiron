@@ -86,4 +86,5 @@ if (NOT TARGET glm::glm)
 endif ()
 
 target_compile_definitions(apeiron PUBLIC GLM_ENABLE_EXPERIMENTAL)
+target_compile_definitions(apeiron PUBLIC GLM_FORCE_EXPLICIT_CTOR)
 target_link_libraries(apeiron PUBLIC glad glm::glm)
