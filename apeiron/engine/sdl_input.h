@@ -108,7 +108,7 @@ inline Gamepad_axis get_controller_axis(SDL_GamepadAxis axis)
 }
 
 
-void add_input_event(const SDL_Event& sdl_event, Event_queue& engine_events,
+inline void add_input_event(const SDL_Event& sdl_event, Event_queue& engine_events,
     bool process_mouse_input)
 {
   switch (sdl_event.type) {
