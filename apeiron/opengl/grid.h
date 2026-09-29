@@ -26,7 +26,7 @@ public:
 
 private:
   glm::vec2 size_ = glm::vec2{1.0f};
-  glm::vec2 cells_ = glm::uvec2{1};
+  glm::uvec2 cells_ = glm::uvec2{1};
   float line_width_ = 1.0f;
 };
 
