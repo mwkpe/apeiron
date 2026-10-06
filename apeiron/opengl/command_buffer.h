@@ -2,8 +2,9 @@
 #define APEIRON_OPENGL_COMMAND_BUFFER_H
 
 
+#include <cstddef>
 #include <cstdint>
-#include <vector>
+#include <span>
 
 
 namespace apeiron::opengl {
@@ -29,8 +30,8 @@ public:
   Command_buffer& operator=(Command_buffer&&) noexcept;
 
   void init();
-  void init(const std::vector<Draw_command>& commands);
-  void update(const std::vector<Draw_command>& commands);
+  void init(std::span<const Draw_command> commands);
+  void update(std::span<const Draw_command> commands);
 
   void bind() const;
   void unbind() const;
@@ -38,6 +39,8 @@ public:
 private:
   void delete_buffer();
   std::uint32_t id_ = 0;
+  std::size_t capacity_ = 0;
+
 };
 
 
