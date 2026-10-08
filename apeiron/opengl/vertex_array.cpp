@@ -2,7 +2,8 @@
 
 
 #include <cassert>
-#include <type_traits>
+#include <cstddef>
+#include <concepts>
 #include <glad/glad.h>
 
 
@@ -110,12 +111,13 @@ template<typename T> void apeiron::opengl::Vertex_array::set_buffers(const std::
   glBindVertexArray(vao_);
 
   vertex_size_ = sizeof(T);
-  vertex_count_ = vertices.size();
+  vertex_count_ = static_cast<std::uint32_t>(vertices.size());
   usage_hint_ = as_gl(hint);
   const auto stride = static_cast<int>(vertex_size_);
 
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, vertex_count_ * vertex_size_, vertices.data(), usage_hint_);
+  glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(vertices.size() * sizeof(T)),
+      vertices.data(), usage_hint_);
 
   if constexpr (!index_vertex<T>) {
     // Position
@@ -167,13 +169,14 @@ template<typename T> void apeiron::opengl::Vertex_array::update_buffers(const st
   assert(vao_ != 0);
   assert(vbo_ != 0);
 
-  vertex_count_ = vertices.size();
+  vertex_count_ = static_cast<std::uint32_t>(vertices.size());
 
   glBindVertexArray(vao_);
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
 
   // Use sizeof(T) since vertex_size_ records how the VAO was setup by set_buffers
-  glBufferData(GL_ARRAY_BUFFER, vertex_count_ * sizeof(T), vertices.data(), usage_hint_);
+  glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(vertices.size() * sizeof(T)),
+      vertices.data(), usage_hint_);
 }
 
 
