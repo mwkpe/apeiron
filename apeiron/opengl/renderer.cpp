@@ -7,7 +7,7 @@
 
 void apeiron::opengl::Renderer::init()
 {
-  shader_.load("shader/default.vs", "shader/default.fs");
+  shader_.load("shader/default.vert", "shader/default.frag");
   shader_.use();
 
   // Init uniforms
