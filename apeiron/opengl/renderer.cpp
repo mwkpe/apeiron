@@ -2,31 +2,75 @@
 
 
 #include <glad/glad.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 
 void apeiron::opengl::Renderer::init()
 {
   shader_.load("shader/default.vs", "shader/default.fs");
   shader_.use();
-  shader_.set_uniform("render_mode", 0);
-  shader_.set_uniform("clip_scene", false);
-  shader_.set_uniform("colorize", false);
-  shader_.set_uniform("desaturate", false);
-  shader_.set_uniform("clip_scene", false);
-  shader_.set_uniform("color_mode", 0xFF);
+
+  // Init uniforms
+  use_color_shading();
+  shader_.set_uniform("color", glm::vec4{1.0f, 0.0f, 1.0f, 1.0f});
   shader_.set_uniform("texture2d", 0);
 
-  glCullFace(GL_BACK);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  use_world_space();
 
-  glEnable(GL_DEPTH_TEST);
+  enable_lighting(false);
+  enable_color_multiplication(false);
+  enable_color_desaturation(false);
+  enable_color_inversion(false);
+
+  set_light_position(glm::vec3{0.0f});
+  set_light_color(glm::vec4{1.0f, 0.0f, 1.0f, 1.0f});
+  set_color_desaturation_strength(0.0f);
+
+  enable_gl_depth_test(false);
+
+  glCullFace(GL_BACK);
   glEnable(GL_CULL_FACE);
+
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 
 void apeiron::opengl::Renderer::use() const
 {
   shader_.use();
+}
+
+
+void apeiron::opengl::Renderer::enable_gl_wireframe(bool enable)
+{
+  if (enable) {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  }
+  else {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  }
+}
+
+
+void apeiron::opengl::Renderer::enable_gl_depth_test(bool enable)
+{
+  if (enable) {
+    glEnable(GL_DEPTH_TEST);
+  }
+  else {
+    glDisable(GL_DEPTH_TEST);
+  }
+}
+
+
+void apeiron::opengl::Renderer::enable_gl_blend(bool enable)
+{
+  if (enable) {
+    glEnable(GL_BLEND);
+  }
+  else {
+    glDisable(GL_BLEND);
+  }
 }
 
 
@@ -37,20 +81,9 @@ void apeiron::opengl::Renderer::set_gl_viewport(std::int32_t x, std::int32_t y,
 }
 
 
-void apeiron::opengl::Renderer::set_gl_frame_buffer(std::int32_t id)
+void apeiron::opengl::Renderer::set_gl_frame_buffer(std::uint32_t id)
 {
   glBindFramebuffer(GL_FRAMEBUFFER, id);
-}
-
-
-void apeiron::opengl::Renderer::set_gl_wireframe(bool wireframe)
-{
-  if (wireframe) {
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  }
-  else {
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-  }
 }
 
 
@@ -97,58 +130,40 @@ void apeiron::opengl::Renderer::use_color_shading()
 }
 
 
-void apeiron::opengl::Renderer::set_view(const glm::mat4& view)
+void apeiron::opengl::Renderer::set_world_view_projection()
 {
-  shader_.set_uniform("view", view);
+  world_view_projection_ = world_projection_ * world_view_;
+  shader_.set_uniform("world_view_projection", world_view_projection_);
 }
 
 
-void apeiron::opengl::Renderer::set_projection(const glm::mat4& projection)
+void apeiron::opengl::Renderer::set_screen_projection(float width, float height)
 {
-  shader_.set_uniform("projection", projection);
+  shader_.set_uniform("screen_projection", glm::ortho(0.0f, width, 0.0f, height));
 }
 
 
-void apeiron::opengl::Renderer::set_ortho_projection(float width, float height)
+void apeiron::opengl::Renderer::enable_lighting(bool enable)
 {
-  shader_.set_uniform("projection", glm::ortho(0.0f, width, 0.0f, height));
+  shader_.set_uniform("lighting_enabled", enable);
 }
 
 
-void apeiron::opengl::Renderer::set_view_projection()
+void apeiron::opengl::Renderer::enable_color_multiplication(bool enable)
 {
-  view_projection_ = projection_ * view_;
-  shader_.set_uniform("view_projection", view_projection_);
+  shader_.set_uniform("color_multiplication_enabled", enable);
 }
 
 
-void apeiron::opengl::Renderer::set_colorize(bool colorize)
+void apeiron::opengl::Renderer::enable_color_desaturation(bool enable)
 {
-  shader_.set_uniform("colorize", colorize);
+  shader_.set_uniform("color_desaturation_enabled", enable);
 }
 
 
-void apeiron::opengl::Renderer::set_invert_color(bool invert)
+void apeiron::opengl::Renderer::enable_color_inversion(bool enable)
 {
-  shader_.set_uniform("invert_color", invert);
-}
-
-
-void apeiron::opengl::Renderer::set_desaturate(bool desaturate)
-{
-  shader_.set_uniform("desaturate", desaturate);
-}
-
-
-void apeiron::opengl::Renderer::set_desaturation_strength(float strength)
-{
-  shader_.set_uniform("desaturation_strength", strength);
-}
-
-
-void apeiron::opengl::Renderer::set_lighting(bool lighting)
-{
-  shader_.set_uniform("light_mode", lighting ? 1 : 0);
+  shader_.set_uniform("color_inversion_enabled", enable);
 }
 
 
@@ -161,6 +176,12 @@ void apeiron::opengl::Renderer::set_light_position(const glm::vec3& position)
 void apeiron::opengl::Renderer::set_light_color(const glm::vec4& color)
 {
   shader_.set_uniform("light_color", color);
+}
+
+
+void apeiron::opengl::Renderer::set_color_desaturation_strength(float strength)
+{
+  shader_.set_uniform("color_desaturation_strength", strength);
 }
 
 
@@ -203,7 +224,7 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity,
 {
   if (colorize) {
     use_vertex_color_shading();
-    set_colorize(true);
+    enable_color_multiplication();
   }
   else {
     use_color_shading();
@@ -213,7 +234,7 @@ void apeiron::opengl::Renderer::render(const engine::Entity& entity,
   shader_.set_uniform("model", entity.transform().model_matrix());
 
   meshset.render(index);
-  set_colorize(false);
+  enable_color_multiplication(false);
 }
 
 
@@ -251,7 +272,7 @@ void apeiron::opengl::Renderer::render_screen(const engine::Entity& entity,
 {
   if (colorize) {
     use_vertex_color_shading();
-    set_colorize(true);
+    enable_color_multiplication();
   }
   else {
     use_color_shading();
@@ -262,5 +283,5 @@ void apeiron::opengl::Renderer::render_screen(const engine::Entity& entity,
   shader_.set_uniform("scale", entity.transform().scale());
 
   meshset.render(index);
-  set_colorize(false);
+  enable_color_multiplication(false);
 }

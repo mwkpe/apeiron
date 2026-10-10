@@ -10,5 +10,8 @@ build*/
 .idea/
 *.sublime-workspace
 
+# AI
+.claude/
+
 # Assets
 assets/private/

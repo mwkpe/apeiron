@@ -79,12 +79,12 @@ void apeiron::example::World::init()
 
 void apeiron::example::World::update_view()
 {
-  renderer_.set_ortho_projection(static_cast<float>(settings_->render_width),
+  renderer_.set_screen_projection(static_cast<float>(settings_->render_width),
       static_cast<float>(settings_->render_height));
   renderer_.set_gl_viewport(0, 0, settings_->render_width, settings_->render_height);
 
   auto aspect_ratio = static_cast<float>(settings_->render_width) / settings_->render_height;
-  renderer_.preset_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 500.0f));
+  renderer_.set_world_projection(glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 500.0f));
 }
 
 
@@ -175,17 +175,18 @@ void apeiron::example::World::render()
   }
 
   renderer_.use_world_space();
-  renderer_.preset_view(camera_.view());
-  renderer_.set_view_projection();
+  renderer_.set_world_view(camera_.view());
+  renderer_.set_world_view_projection();
 
-  renderer_.set_gl_wireframe(settings_->wireframe);
-  renderer_.set_lighting(false);
-  renderer_.set_colorize(false);
-  renderer_.set_invert_color(settings_->invert_color);
-  renderer_.set_desaturate(settings_->desaturate);
+  renderer_.enable_gl_wireframe(settings_->wireframe);
+
+  renderer_.enable_lighting(false);
+  renderer_.enable_color_multiplication(false);
+  renderer_.enable_color_inversion(settings_->invert_color);
+  renderer_.enable_color_desaturation(settings_->desaturate);
 
   if (settings_->desaturate) {
-    renderer_.set_desaturation_strength(settings_->desaturation_strength);
+    renderer_.set_color_desaturation_strength(settings_->desaturation_strength);
   }
 
   if (settings_->lighting) {
@@ -208,13 +209,13 @@ void apeiron::example::World::render()
   }
 
   if (settings_->show_light) {
-    renderer_.set_lighting(false);
-    renderer_.set_gl_wireframe(true);
+    renderer_.enable_lighting(false);
+    renderer_.enable_gl_wireframe(true);
     renderer_.render(light_, light_.color());
-    renderer_.set_gl_wireframe(settings_->wireframe);
+    renderer_.enable_gl_wireframe(settings_->wireframe);
   }
 
-  renderer_.set_lighting(settings_->lighting && light_.is_on());
+  renderer_.enable_lighting(settings_->lighting && light_.is_on());
 
   renderer_.render(teapot_, color);
 
@@ -231,9 +232,11 @@ void apeiron::example::World::render()
   renderer_.use_color_shading();
   renderer_.render(world_text_, color);
 
-  renderer_.set_lighting(false);
+  renderer_.enable_gl_depth_test(false);
+  renderer_.enable_lighting(false);
   renderer_.use_screen_space();
   renderer_.render_screen(screen_text_, color);
+  renderer_.enable_gl_depth_test(true);
 }
 
 
@@ -243,7 +246,7 @@ void apeiron::example::World::handle_event(const engine::Mouse_button_down_event
     using namespace engine::collision;
     float norm_x = event.x / settings_->logical_width * 2.0f - 1.0f;
     float norm_y = (event.y / settings_->logical_height * 2.0f - 1.0f) * -1.0f;
-    auto ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
+    auto ray = screen_raycast(norm_x, norm_y, renderer_.inverse_world_view_projection());
 
     if (intersects(ray, light_.collider())) {
       light_.toggle();
@@ -259,7 +262,7 @@ void apeiron::example::World::handle_event(const engine::Mouse_motion_event& eve
 
     float norm_x = event.x / settings_->logical_width * 2.0f - 1.0f;
     float norm_y = (event.y / settings_->logical_height * 2.0f - 1.0f) * -1.0f;
-    Ray ray = screen_raycast(norm_x, norm_y, renderer_.inverse_view_projection());
+    Ray ray = screen_raycast(norm_x, norm_y, renderer_.inverse_world_view_projection());
     Plane plane{{0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};
 
     ground_highlight_.set_visible(false);

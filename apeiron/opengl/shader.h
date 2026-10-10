@@ -3,8 +3,10 @@
 
 
 #include <cstdint>
-#include <vector>
+#include <string>
 #include <string_view>
+#include <vector>
+
 #include <glm/glm.hpp>
 
 
@@ -14,7 +16,15 @@ namespace apeiron::opengl {
 class Shader final
 {
 public:
-  void load(std::string_view vs_file, std::string_view fs_file, std::string_view gs_file = {});
+  Shader() = default;
+  ~Shader();
+  Shader(const Shader&) = delete;
+  Shader(Shader&& other) noexcept;
+  Shader& operator=(const Shader&) = delete;
+  Shader& operator=(Shader&& other) noexcept;
+
+  void load(std::string_view vs_file_path, std::string_view fs_file_path,
+      std::string_view gs_file_path = {});
   void compose(const std::vector<std::string>& vs_files, const std::vector<std::string>& fs_files,
       const std::vector<std::string>& gs_files = {});
   void use() const;
@@ -34,6 +44,8 @@ public:
   void set_uniform(const char* name, const glm::mat4& mat) const;
 
 private:
+  void delete_program();
+
   std::uint32_t id_ = 0;
 };
 
