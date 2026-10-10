@@ -3,33 +3,9 @@
 
 #include <cassert>
 #include <cstddef>
-#include <concepts>
 #include <glad/glad.h>
 
-
-namespace {
-
-
-template<typename T> concept has_normal = requires(T v) {
-  { v.normal } -> std::same_as<glm::vec3&>;
-};
-
-template<typename T> concept has_texcoords = requires(T v) {
-  { v.texcoords } -> std::same_as<glm::vec2&>;
-};
-
-template<typename T> concept has_color = requires(T v) {
-  { v.color } -> std::same_as<glm::vec4&>;
-};
-
-template<typename T> concept index_vertex = requires(T v) {
-  { v.position } -> std::same_as<std::uint16_t&>;
-  { v.color } -> std::same_as<std::uint8_t&>;
-  { v.material } -> std::same_as<std::uint8_t&>;
-};
-
-
-}  // namespace
+#include "apeiron/engine/vertex_traits.h"
 
 
 apeiron::opengl::Vertex_array::Vertex_array()
@@ -119,27 +95,27 @@ template<typename T> void apeiron::opengl::Vertex_array::set_buffers(const std::
   glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(vertices.size() * sizeof(T)),
       vertices.data(), usage_hint_);
 
-  if constexpr (!index_vertex<T>) {
+  if constexpr (!engine::is_index_vertex<T>) {
     // Position
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(0));
     glEnableVertexAttribArray(0);
 
     // Normal
-    if constexpr (has_normal<T>) {
+    if constexpr (engine::has_normal<T>) {
       glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride,
           reinterpret_cast<void*>(offsetof(T, normal)));
       glEnableVertexAttribArray(1);
     }
 
     // Texture coordinates
-    if constexpr (has_texcoords<T>) {
+    if constexpr (engine::has_texcoords<T>) {
       glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
           reinterpret_cast<void*>(offsetof(T, texcoords)));
       glEnableVertexAttribArray(2);
     }
 
     // Color
-    if constexpr (has_color<T>) {
+    if constexpr (engine::has_color<T>) {
       glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, stride,
           reinterpret_cast<void*>(offsetof(T, color)));
       glEnableVertexAttribArray(3);

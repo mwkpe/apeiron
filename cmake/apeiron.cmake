@@ -25,6 +25,7 @@ add_library(apeiron STATIC
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/transform.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/transform.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/vertex.h
+    ${CMAKE_CURRENT_LIST_DIR}/../apeiron/engine/vertex_traits.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/command_buffer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/command_buffer.h
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/opengl/cuboid.cpp

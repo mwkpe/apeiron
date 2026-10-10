@@ -1,28 +1,18 @@
 #include "model_loader.h"
 
 
+#include <cstddef>
 #include <type_traits>
+#include <utility>
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tiny_obj_loader.h"
 
 #include "apeiron/engine/error.h"
+#include "apeiron/engine/vertex_traits.h"
 
 
 namespace {
-
-
-template<typename T> concept has_normal = requires(T v) {
-  { v.normal } -> std::same_as<glm::vec3&>;
-};
-
-template<typename T> concept has_texcoords = requires(T v) {
-  { v.texcoords } -> std::same_as<glm::vec2&>;
-};
-
-template<typename T> concept has_color = requires(T v) {
-  { v.color } -> std::same_as<glm::vec4&>;
-};
 
 
 template<typename T> T get_vertex(const tinyobj::attrib_t& attrib, const tinyobj::index_t& index)
@@ -36,7 +26,7 @@ template<typename T> T get_vertex(const tinyobj::attrib_t& attrib, const tinyobj
   }
 
   [[maybe_unused]] float nx, ny, nz;
-  if constexpr (has_normal<T>) {
+  if constexpr (apeiron::engine::has_normal<T>) {
     if (attrib.normals.empty()) {
       nx = ny = nz = 0.0f;
     }
@@ -48,7 +38,7 @@ template<typename T> T get_vertex(const tinyobj::attrib_t& attrib, const tinyobj
   }
 
   [[maybe_unused]] float s, t;
-  if constexpr (has_texcoords<T>) {
+  if constexpr (apeiron::engine::has_texcoords<T>) {
     if (attrib.texcoords.empty()) {
       s = t = 0.0f;
     }
@@ -59,7 +49,7 @@ template<typename T> T get_vertex(const tinyobj::attrib_t& attrib, const tinyobj
   }
 
   [[maybe_unused]] float r, g, b;
-  if constexpr (has_color<T>) {
+  if constexpr (apeiron::engine::has_color<T>) {
     // Color defaulted to white in LoadObj
     r = attrib.colors[3 * index.vertex_index + 0];
     g = attrib.colors[3 * index.vertex_index + 1];
