@@ -12,6 +12,7 @@ build*/
 
 # AI
 .claude/
+CLAUDE.md
 
 # Assets
 assets/private/
