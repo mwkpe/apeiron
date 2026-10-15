@@ -11,6 +11,7 @@ apeiron::opengl::Texture::Texture(Texture&& other) noexcept
   id_ = other.id_;
   other.id_ = 0;
 
+  unpack_alignment_ = other.unpack_alignment_;
   anisotropy_level_ = other.anisotropy_level_;
   generate_mipmap_ = other.generate_mipmap_;
   min_filter_ = other.min_filter_;
@@ -33,6 +34,7 @@ auto apeiron::opengl::Texture::operator=(Texture&& other) noexcept -> Texture&
   id_ = other.id_;
   other.id_ = 0;
 
+  unpack_alignment_ = other.unpack_alignment_;
   anisotropy_level_ = other.anisotropy_level_;
   generate_mipmap_ = other.generate_mipmap_;
   min_filter_ = other.min_filter_;
