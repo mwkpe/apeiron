@@ -30,7 +30,7 @@ public:
 private:
   void delete_buffer();
 
-  const std::uint32_t invalid_binding_point_ = 0xffff'ffff;
+  static constexpr std::uint32_t invalid_binding_point_ = 0xffff'ffff;
 
   std::uint32_t id_ = 0;
   std::uint32_t binding_point_ = invalid_binding_point_;

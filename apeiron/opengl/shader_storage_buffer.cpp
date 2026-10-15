@@ -49,8 +49,6 @@ void apeiron::opengl::Shader_storage_buffer::delete_buffer()
     id_ = 0;
   }
 
-  unbind();
-
   binding_point_ = invalid_binding_point_;
   binding_point_hardware_limit_ = 0;
 }
