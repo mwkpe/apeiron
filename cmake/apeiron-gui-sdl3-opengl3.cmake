@@ -2,7 +2,6 @@ add_library(apeiron-gui-sdl3-opengl3
     ${CMAKE_CURRENT_LIST_DIR}/../external/public/imgui/imconfig.h
     ${CMAKE_CURRENT_LIST_DIR}/../external/public/imgui/imgui.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../external/public/imgui/imgui.h
-    ${CMAKE_CURRENT_LIST_DIR}/../external/public/imgui/imgui_demo.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../external/public/imgui/imgui_draw.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../external/public/imgui/imgui_impl_opengl3.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../external/public/imgui/imgui_impl_opengl3.h
@@ -37,6 +36,8 @@ if (NOT TARGET SDL3::SDL3)
     message(FATAL_ERROR "SDL3 not found")
   endif ()
 endif ()
+
+target_compile_features(apeiron-gui-sdl3-opengl3 PUBLIC cxx_std_23)
 
 target_include_directories(apeiron-gui-sdl3-opengl3 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/..
     ${CMAKE_CURRENT_LIST_DIR}/../external/public/imgui

@@ -75,6 +75,8 @@ add_library(apeiron STATIC
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/utility/timer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../apeiron/utility/timer.h)
 
+target_compile_features(apeiron PUBLIC cxx_std_23)
+
 target_include_directories(apeiron PUBLIC ${CMAKE_CURRENT_LIST_DIR}/..
     PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../external/private)
 
