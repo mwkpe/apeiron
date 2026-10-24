@@ -27,7 +27,7 @@ template<typename T> T get_vertex(const tinyobj::attrib_t& attrib, const tinyobj
 
   [[maybe_unused]] float nx, ny, nz;
   if constexpr (apeiron::engine::has_normal<T>) {
-    if (attrib.normals.empty()) {
+    if (index.normal_index < 0) {
       nx = ny = nz = 0.0f;
     }
     else {
@@ -39,7 +39,7 @@ template<typename T> T get_vertex(const tinyobj::attrib_t& attrib, const tinyobj
 
   [[maybe_unused]] float s, t;
   if constexpr (apeiron::engine::has_texcoords<T>) {
-    if (attrib.texcoords.empty()) {
+    if (index.texcoord_index < 0) {
       s = t = 0.0f;
     }
     else {
