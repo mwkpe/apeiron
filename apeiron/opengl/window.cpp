@@ -9,17 +9,7 @@
 
 apeiron::opengl::Window::~Window()
 {
-  if (context_) {
-    SDL_GL_DestroyContext(context_);
-    context_ = nullptr;
-  }
-
-  if (window_) {
-    SDL_DestroyWindow(window_);
-    window_ = nullptr;
-  }
-
-  SDL_Quit();
+  destroy();
 }
 
 
@@ -27,9 +17,11 @@ apeiron::opengl::Window::Window(Window&& other) noexcept
 {
   window_ = other.window_;
   context_ = other.context_;
+  sdl_initialized_ = other.sdl_initialized_;
 
   other.window_ = nullptr;
   other.context_ = nullptr;
+  other.sdl_initialized_ = false;
 }
 
 
@@ -40,19 +32,48 @@ auto apeiron::opengl::Window::operator=(Window&& other) noexcept
     return *this;
   }
 
+  destroy();
+
   window_ = other.window_;
   context_ = other.context_;
+  sdl_initialized_ = other.sdl_initialized_;
 
   other.window_ = nullptr;
   other.context_ = nullptr;
+  other.sdl_initialized_ = false;
 
   return *this;
 }
 
 
+void apeiron::opengl::Window::destroy()
+{
+  if (context_) {
+    SDL_GL_DestroyContext(context_);
+    context_ = nullptr;
+  }
+
+  if (window_) {
+    SDL_DestroyWindow(window_);
+    window_ = nullptr;
+  }
+
+  if (sdl_initialized_) {
+    SDL_Quit();
+    sdl_initialized_ = false;
+  }
+}
+
+
 void apeiron::opengl::Window::init(const Window_settings& settings)
 {
-  SDL_Init(settings.init_flags);
+  destroy();
+
+  if (!SDL_Init(settings.init_flags)) {
+    throw engine::Error::format("Failed to initialize SDL: {}", SDL_GetError());
+  }
+
+  sdl_initialized_ = true;
 
   if (settings.gl_core) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);

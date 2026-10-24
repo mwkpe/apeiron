@@ -56,8 +56,11 @@ public:
   SDL_GLContext gl_context() { return context_; }
 
 private:
+  void destroy();
+
   SDL_Window* window_ = nullptr;
   SDL_GLContext context_ = nullptr;
+  bool sdl_initialized_ = false;
 };
 
 
