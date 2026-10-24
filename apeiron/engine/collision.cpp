@@ -1,6 +1,7 @@
 #include "collision.h"
 
 
+#include <algorithm>
 #include <cmath>
 
 
@@ -20,9 +21,12 @@ auto apeiron::engine::collision::screen_raycast(float norm_x, float norm_y,
 
 bool apeiron::engine::collision::intersects(const Ray& ray, const Sphere& sphere)
 {
-  auto distance = glm::length(glm::cross(sphere.position - ray.position,
-      sphere.position - (ray.position + ray.vector))) / glm::length(ray.vector);
-  return distance < sphere.radius;
+  // Closest point on the ray to the sphere's center, clamped to the ray's origin
+  float scale = glm::dot(sphere.position - ray.position, ray.vector) /
+      glm::dot(ray.vector, ray.vector);
+  auto point = ray.position + ray.vector * std::max(scale, 0.0f);
+
+  return glm::length(sphere.position - point) < sphere.radius;
 }
 
 
@@ -41,6 +45,12 @@ bool apeiron::engine::collision::intersects(const Ray& ray, const Quad& quad)
 
   float growth = glm::dot(normal, ray.vector);
   float scale = glm::dot(-normal, ray.position - quad.top_left) / growth;
+
+  // Quad is behind the ray's origin
+  if (scale < 0.0f) {
+    return false;
+  }
+
   auto point = ray.position + ray.vector * scale;
   auto d = point - quad.top_left;
   float u = glm::dot(d, width);
@@ -67,6 +77,12 @@ std::optional<glm::vec2> apeiron::engine::collision::intersection_point(const Ra
 
   float growth = glm::dot(normal, ray.vector);
   float scale = glm::dot(-normal, ray.position - quad.top_left) / growth;
+
+  // Quad is behind the ray's origin
+  if (scale < 0.0f) {
+    return std::nullopt;
+  }
+
   auto point = ray.position + ray.vector * scale;
   auto d = point - quad.top_left;
   float u = glm::dot(d, glm::normalize(width));
@@ -92,6 +108,11 @@ std::optional<glm::vec3> apeiron::engine::collision::intersection_point(const Ra
 
   float growth = glm::dot(plane.normal, ray.vector);
   float scale = glm::dot(-plane.normal, ray.position - plane.origin) / growth;
+
+  // Plane is behind the ray's origin
+  if (scale < 0.0f) {
+    return std::nullopt;
+  }
 
   return ray.position + ray.vector * scale;
 }
