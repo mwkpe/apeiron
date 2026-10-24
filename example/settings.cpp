@@ -1,6 +1,7 @@
 #include "settings.h"
 
 
+#include <algorithm>
 #include <string>
 #include <fstream>
 #include "toml.hpp"
@@ -22,16 +23,22 @@ auto apeiron::example::load_settings(std::string_view filename) -> Settings
   try {
     t = toml::parse_file(filename);
   }
-  catch (const toml::parse_error& e)
-  {
-    throw engine::Warning{std::string{"Settings file parse error: "} + e.what()};
+  catch (const toml::parse_error& e) {
+    throw engine::Warning::format("Settings file parse error: {}", e.what());
   }
 
   Settings settings;  // Contains default values
+
+  settings.force_x11 = t["force_x11"].value_or(settings.force_x11);
   settings.window_width = t["window_width"].value_or(settings.window_width);
   settings.window_height = t["window_height"].value_or(settings.window_height);
+
+  if (settings.window_width < 400 || settings.window_height < 300) {
+    throw engine::Error{"Window must be at least 400 x 300"};
+  }
+
   settings.msaa_samples = t["msaa_samples"].value_or(settings.msaa_samples);
-  settings.max_fps = t["max_fps"].value_or(settings.max_fps);
+  settings.max_fps = std::max(t["max_fps"].value_or(settings.max_fps), 30);
   settings.limit_fps = t["limit_fps"].value_or(settings.limit_fps);
   settings.fullscreen = t["fullscreen"].value_or(settings.fullscreen);
   settings.ignore_scaling = t["ignore_scaling"].value_or(settings.ignore_scaling);
@@ -45,6 +52,7 @@ void apeiron::example::save_settings(const Settings& settings, std::string_view 
 {
   toml::table t;
 
+  t.insert("force_x11", settings.force_x11);
   t.insert("window_width", settings.window_width);
   t.insert("window_height", settings.window_height);
   t.insert("msaa_samples", settings.msaa_samples);

@@ -12,6 +12,7 @@ namespace apeiron::example {
 
 struct Settings
 {
+  bool force_x11 = false;
   bool quit = false;
   bool show_menu = true;
   bool wireframe = false;

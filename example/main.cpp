@@ -14,6 +14,22 @@
 #include "example/world.h"
 
 
+namespace {
+
+
+void force_x11()
+{
+  #ifdef __linux__
+    if (const char* w = SDL_getenv("WAYLAND_DISPLAY"); w && *w) {
+      SDL_SetHintWithPriority(SDL_HINT_VIDEO_DRIVER, "x11", SDL_HINT_OVERRIDE);
+    }
+  #endif
+}
+
+
+}  // namespace
+
+
 int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
   apeiron::example::Settings settings;
@@ -24,6 +40,10 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
   }
   catch (const apeiron::engine::Warning& w) {
     std::cout << w.what() << std::endl;
+  }
+
+  if (settings.force_x11) {
+    force_x11();
   }
 
   const int gl_major = 3;
@@ -75,7 +95,9 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     return 1;
   }
 
-  auto frame_timer = [&settings, last_ticks = SDL_GetTicksNS()] mutable {
+  auto last_ticks = SDL_GetTicksNS();
+
+  auto frame_timer = [&settings, &last_ticks] {
     auto current_ticks = SDL_GetTicksNS();
     auto elapsed_ticks = current_ticks - last_ticks;
 
@@ -91,6 +113,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
   };
 
   std::vector<apeiron::engine::Event> engine_events;
+  bool hidden = false;
 
   while (!settings.quit) {
     auto elapsed_ticks = frame_timer();  // May also delay and hence limits fps
@@ -141,6 +164,15 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
         case SDL_EVENT_WINDOW_RESIZED:
         case SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED:
           window_changed = true;
+        break;
+        case SDL_EVENT_WINDOW_MINIMIZED:
+        case SDL_EVENT_WINDOW_OCCLUDED:
+          hidden = true;
+        break;
+        case SDL_EVENT_WINDOW_RESTORED:
+        case SDL_EVENT_WINDOW_EXPOSED:
+          hidden = false;
+        break;
         default:;
       }
     }
@@ -154,6 +186,12 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
       world.update_view();
       window_changed = false;
+    }
+
+    if (hidden) {
+      SDL_WaitEvent(nullptr);  // Block until the next event instead of rendering
+      last_ticks = SDL_GetTicksNS();  // Don't count paused time as frame time
+      continue;
     }
 
     auto input = apeiron::engine::get_input_state();

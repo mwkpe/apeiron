@@ -81,7 +81,7 @@ void apeiron::example::Menu::build(example::Settings* settings, float time_s)
     ImGui::Checkbox("Fullscreen (req. restart)", &settings->fullscreen);
     ImGui::Checkbox("Vsync (req. restart)", &settings->vsync);
     ImGui::Checkbox("Limit framerate", &settings->limit_fps);
-    ImGui::SliderInt("Max FPS", &settings->max_fps, 30, 240);
+    ImGui::SliderInt("Max FPS", &settings->max_fps, 30, 240, "%d", ImGuiSliderFlags_AlwaysClamp);
     ImGui::Checkbox("Wireframe (F4)", &settings->wireframe);
     ImGui::Text("World");
     ImGui::Checkbox("Lighting", &settings->lighting);
