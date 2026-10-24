@@ -148,7 +148,9 @@ inline void add_input_event(const SDL_Event& sdl_event, Event_queue& engine_even
     }
     break;
     case SDL_EVENT_MOUSE_WHEEL: {
-      engine_events.emplace_back(Mouse_wheel_event{sdl_event.wheel.x, sdl_event.wheel.y});
+      if (process_mouse_input) {
+        engine_events.emplace_back(Mouse_wheel_event{sdl_event.wheel.x, sdl_event.wheel.y});
+      }
     }
     break;
     default:;
