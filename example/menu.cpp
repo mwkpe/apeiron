@@ -1,10 +1,10 @@
 #include "menu.h"
 
 
-#include <cstring>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include "imgui/imgui.h"
+#include "imgui/misc/cpp/imgui_stdlib.h"
 
 
 namespace {
@@ -92,14 +92,8 @@ void apeiron::example::Menu::build(example::Settings* settings, float time_s)
     ImGui::SameLine();
     ImGui::Checkbox("Rotate", &settings->rotate_cubes);
     ImGui::Checkbox("Show ground highlight", &settings->show_ground_highlight);
-    char world_buffer[64];
-    std::memcpy(world_buffer, settings->world_text.data(), 64);
-    ImGui::InputText("World text", world_buffer, IM_ARRAYSIZE(world_buffer));
-    settings->world_text = std::string{world_buffer};
-    char screen_buffer[64];
-    std::memcpy(screen_buffer, settings->screen_text.data(), 64);
-    ImGui::InputText("Screen text", screen_buffer, IM_ARRAYSIZE(screen_buffer));
-    settings->screen_text = std::string{screen_buffer};
+    ImGui::InputText("World text", &settings->world_text);
+    ImGui::InputText("Screen text", &settings->screen_text);
     ImGui::Text("Camera");
     ImGui::SliderFloat("Speed (m/s)", &settings->camera_speed, 0.0f, 20.0f);
     ImGui::SliderFloat("Sensitivity", &settings->camera_sensitivity, 0.0f, 0.1f);
