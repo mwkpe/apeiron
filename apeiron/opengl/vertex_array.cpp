@@ -136,6 +136,8 @@ template<typename T> void apeiron::opengl::Vertex_array::set_buffers(const std::
         reinterpret_cast<void*>(offsetof(T, material)));
     glEnableVertexAttribArray(2);
   }
+
+  glBindVertexArray(0);
 }
 
 
@@ -145,9 +147,13 @@ template<typename T> void apeiron::opengl::Vertex_array::update_buffers(const st
   assert(vao_ != 0);
   assert(vbo_ != 0);
 
+  // Check if array was initialized
+  if (vertex_size_ != sizeof(T)) {
+    return;
+  }
+
   vertex_count_ = static_cast<std::uint32_t>(vertices.size());
 
-  glBindVertexArray(vao_);
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
 
   // Use sizeof(T) since vertex_size_ records how the VAO was setup by set_buffers
