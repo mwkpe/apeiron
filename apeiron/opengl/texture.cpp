@@ -101,6 +101,12 @@ void apeiron::opengl::Texture::create(const std::uint8_t* pixel,
     id_ = 0;
   }
 
+  // Restore state afterwards
+  GLint last_texture = 0;
+  GLint last_alignment = 4;
+  glGetIntegerv(GL_TEXTURE_BINDING_2D, &last_texture);
+  glGetIntegerv(GL_UNPACK_ALIGNMENT, &last_alignment);
+
   glGenTextures(1, &id_);
   glBindTexture(GL_TEXTURE_2D, id_);
 
@@ -113,9 +119,7 @@ void apeiron::opengl::Texture::create(const std::uint8_t* pixel,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy_level_);
   }
 
-  if (unpack_alignment_ != 4) {
-    glPixelStorei(GL_UNPACK_ALIGNMENT, unpack_alignment_);
-  }
+  glPixelStorei(GL_UNPACK_ALIGNMENT, unpack_alignment_);
 
   switch (pixel_format) {
     case Pixel_format::Rgb:
@@ -132,26 +136,30 @@ void apeiron::opengl::Texture::create(const std::uint8_t* pixel,
     break;
   }
 
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 4);  // Set back to default
+  glPixelStorei(GL_UNPACK_ALIGNMENT, last_alignment);
 
   if (generate_mipmap_) {
     glGenerateMipmap(GL_TEXTURE_2D);
   }
+
+  glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(last_texture));
 }
 
 
 void apeiron::opengl::Texture::update(const std::uint8_t* pixel, int width, int height,
     Pixel_format pixel_format) const
 {
+  GLint last_texture = 0;
+  GLint last_alignment = 4;
+  glGetIntegerv(GL_TEXTURE_BINDING_2D, &last_texture);
+  glGetIntegerv(GL_UNPACK_ALIGNMENT, &last_alignment);
+
   glBindTexture(GL_TEXTURE_2D, id_);
-
-  if (unpack_alignment_ != 4) {
-    glPixelStorei(GL_UNPACK_ALIGNMENT, unpack_alignment_);
-  }
-
+  glPixelStorei(GL_UNPACK_ALIGNMENT, unpack_alignment_);
   glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height,
       as_gl(pixel_format), GL_UNSIGNED_BYTE, pixel);
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 4);  // Set back to default
+  glPixelStorei(GL_UNPACK_ALIGNMENT, last_alignment);
+  glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(last_texture));
 }
 
 
