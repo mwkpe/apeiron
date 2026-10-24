@@ -48,9 +48,7 @@ void apeiron::example::World::init()
   light_.set_color(1.0f, 1.0f, 1.0f);
   light_.switch_on();
 
-  teapot_.transform().set_position(-4.0f, 0.0f, 5.0f)
-      .set_origin(0.0f, 0.0f, 0.0f)  // Offset model origin to center
-      .set_rotation_deg(0.0f, -45.0f, 0.0f);
+  teapot_.transform().set_position(-4.0f, 0.0f, 5.0f).set_rotation_deg(0.0f, -45.0f, 0.0f);
 
   std::mt19937 rng{0x102df640};
   std::uniform_real_distribution<float> dist{0.0f, 28.0f};
