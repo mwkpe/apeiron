@@ -7,6 +7,12 @@
 
 apeiron::opengl::Frame_buffer::Frame_buffer(Frame_buffer&& other) noexcept
 {
+  width_ = other.width_;
+  other.width_ = 0;
+
+  height_ = other.height_;
+  other.height_ = 0;
+
   frame_buffer_render_id_ = other.frame_buffer_render_id_;
   other.frame_buffer_render_id_ = 0;
 
@@ -34,6 +40,12 @@ auto apeiron::opengl::Frame_buffer::operator=(Frame_buffer&& other) noexcept -> 
   }
 
   delete_buffers();
+
+  width_ = other.width_;
+  other.width_ = 0;
+
+  height_ = other.height_;
+  other.height_ = 0;
 
   frame_buffer_render_id_ = other.frame_buffer_render_id_;
   other.frame_buffer_render_id_ = 0;
