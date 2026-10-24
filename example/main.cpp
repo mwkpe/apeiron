@@ -107,7 +107,9 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       }
 
       apeiron::engine::add_input_event(sdl_event, engine_events, !menu.has_mouse());
-      settings.quit = sdl_event.type == SDL_EVENT_QUIT;
+      if (sdl_event.type == SDL_EVENT_QUIT) {
+        settings.quit = true;
+      }
 
       switch (sdl_event.type) {
         case SDL_EVENT_KEY_DOWN: {
