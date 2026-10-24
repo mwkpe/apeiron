@@ -90,9 +90,7 @@ void apeiron::opengl::Grid::init(const glm::vec2& size, const glm::uvec2& cells,
 void apeiron::opengl::Grid::render() const
 {
   glBindVertexArray(vao_);
-  float global_width;
-  glGetFloatv(GL_LINE_WIDTH, &global_width);
   glLineWidth(line_width_);
   glDrawArrays(GL_LINES, 0, static_cast<GLsizei>(vertex_count_));
-  glLineWidth(global_width);
+  glLineWidth(1.0f);
 }
