@@ -80,26 +80,10 @@ void apeiron::opengl::Grid::init(const glm::vec2& size, const glm::uvec2& cells,
   }
 
   size_ = size;
+  cells_ = cells;
   line_width_ = line_width;
 
-  const auto vertices = build_vertices(size, cells, color, edge);
-  vertex_count_ = vertices.size();
-  const auto vertex_size = sizeof(engine::Vertex_color);
-
-  glGenVertexArrays(1, &vao_);
-  glGenBuffers(1, &vbo_);
-  glBindVertexArray(vao_);
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(vertices.size() * vertex_size),
-      vertices.data(), GL_STATIC_DRAW);
-  
-  // Position
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertex_size, reinterpret_cast<void*>(0));
-  glEnableVertexAttribArray(0);
-  // Color
-  glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, vertex_size,
-      reinterpret_cast<void*>(offsetof(engine::Vertex_color, color)));
-  glEnableVertexAttribArray(3);
+  set_buffers(build_vertices(size, cells, color, edge));
 }
 
 
