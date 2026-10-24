@@ -287,4 +287,5 @@ void apeiron::opengl::Frame_buffer::blit() const
   glBindFramebuffer(GL_READ_FRAMEBUFFER, frame_buffer_render_id_);
   glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frame_buffer_resolve_id_);
   glBlitFramebuffer(0, 0, width_, height_, 0, 0, width_, height_, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
